@@ -1,0 +1,91 @@
+.framer-fRVsx .framer-1vykemj {
+    flex: none;
+    height: 196px;
+    overflow: visible;
+    position: relative;
+    width: 300px;
+}
+
+.framer-fRVsx .framer-1puy8s7 {
+    bottom: 0;
+    flex: none;
+    height: 100px;
+    left: calc(50.00000000000002% - 300px / 2);
+    overflow: hidden;
+    position: absolute;
+    width: 300px;
+}
+
+.framer-fRVsx .framer-cop5fj {
+    bottom: 0;
+    flex: none;
+    height: 100px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    transform: perspective(1200px) rotate(36deg);
+}
+
+.framer-fRVsx .framer-8gayls {
+    bottom: 0;
+    flex: none;
+    height: 100px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    transform: perspective(1200px) rotate(72deg);
+}
+
+.framer-fRVsx .framer-1qr5fpp {
+    bottom: 0;
+    flex: none;
+    height: 100px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    transform: perspective(1200px) rotate(108deg);
+}
+
+.framer-fRVsx .framer-1dz9hgx {
+    background-color: #ff9400;
+    border-radius: 100px;
+    flex: none;
+    height: 100px;
+    left: calc(33.33333333333336% - 200px / 2);
+    overflow: hidden;
+    position: absolute;
+    top: calc(50.00000000000002% - 100px / 2);
+    width: 200px;
+    will-change: transform;
+}
+
+
+element.style {
+    opacity: 1;
+    transform: perspective(1200px) rotate(144deg);
+}
+.framer-fRVsx .framer-12eo3ih {
+    bottom: 0;
+    flex: none;
+    height: 100px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    transform: perspective(1200px) rotate(144deg);
+}
+
+
+.framer-fRVsx .framer-15pke3p {
+    bottom: 0;
+    flex: none;
+    height: 100px;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    transform: perspective(1200px) rotate(180deg);
+}
