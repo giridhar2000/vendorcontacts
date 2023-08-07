@@ -27,14 +27,6 @@ import stantechlogo from "../../Assets/img/stantecLogo.svg"
 import footer from "../../Assets/img/footer.png"
 
 export default function Home() {
-    var settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1
-    };
-
     return (
         <>
             <div className='home'>
