@@ -19,7 +19,7 @@
     top: 0;
 }
 
-.framer-16x9014{
+.framer-16x9014 {
     background-color: #ff7d00;
     border-top-left-radius: 200px;
     border-top-right-radius: 200px;
@@ -33,7 +33,7 @@
     will-change: transform;
 }
 
-.framer-1lvsclt{
+.framer-1lvsclt {
     background-color: #ff9400;
     border-top-left-radius: 200px;
     border-top-right-radius: 200px;
@@ -47,7 +47,7 @@
     will-change: transform;
 }
 
-.framer-1x4en10{
+.framer-1x4en10 {
     background-color: #ffab00;
     border-top-left-radius: 200px;
     border-top-right-radius: 200px;
@@ -61,7 +61,7 @@
     will-change: transform;
 }
 
-.framer-bpo1nj{
+.framer-bpo1nj {
     background-color: #ffc200;
     border-top-left-radius: 200px;
     border-top-right-radius: 200px;
@@ -75,7 +75,7 @@
     will-change: transform;
 }
 
-.framer-15daoq4{
+.framer-15daoq4 {
     background-color: #ffd800;
     border-top-left-radius: 200px;
     border-top-right-radius: 200px;
@@ -89,7 +89,7 @@
     will-change: transform;
 }
 
-.framer-2o0271{
+.framer-2o0271 {
     background-color: #ffd800;
     border-radius: 32px;
     flex: none;
@@ -98,4 +98,36 @@
     position: relative;
     width: 100%;
     will-change: transform;
+}
+
+.shape{
+    width: 349.503px;
+    height: 713.619px;
+    border-radius: 200px;
+    flex-shrink: 0;
+
+}
+.framer1 {
+    transform: rotate(-13.733deg);
+    background: #E69D4D;
+}
+
+.framer2{
+    transform: rotate(-7.654deg);
+    background: #EBB254;
+}
+
+.framer3{
+    transform: rotate(0.131deg);
+    background: #F0C65C;
+}
+
+.framer4{
+    transform: rotate(9.201deg);
+    background: #F5DA64;
+}
+
+.framer5{
+    background: #F0C65C;
+    transform: rotate(9.555deg);
 }
