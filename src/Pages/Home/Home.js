@@ -10,7 +10,7 @@ import fast from "../../Assets/img/Frame 7.svg"
 import pause from "../../Assets/img/Frame 12.svg"
 import content from "../../Assets/img/content.jpg"
 import "../../Components/Vector/Vector.css"
-import Vector from '../../Components/Vector/Vector'
+import group from "../../Assets/img/Group.png"
 import Marquee from "react-fast-marquee";
 import img1 from "../../Assets/img/img1.jpg"
 import img2 from "../../Assets/img/img2.jpg"
@@ -39,20 +39,24 @@ export default function Home() {
         <>
             <div className='home'>
                 <div className='intro'>
+                    <div className='introbody'>
+                        <div className='introcontent'>
+                            <img src={logo} alt='logoimg' style={{ width: "3vh" }} />
+                            <img src={logoFont} alt='logoimg' style={{ width: "25%" }} />
+                        </div>
 
-                    <div className='introcontent'>
-                        <img src={logo} alt='logoimg' style={{ width: "3vh" }} />
-                        <img src={logoFont} alt='logoimg' style={{ width: "25%" }} />
+                        <div>
+                            <h1 style={{ fontSize: "xxx-large" }}>The future of vendor-architect<br />collaboration is here</h1>
+                        </div>
+
+                        <button className='offerbtn'>Join the List</button>
+                        <p>*Exclusive to vendors requested by our partner firms at this time.
+                            <br /> please note this is a paid service for vendors.</p>
                     </div>
 
-                    <div>
-                        <h1 style={{ fontSize: "xxx-large" }}>The future of vendor-architect<br />collaboration is here</h1>
+                    <div className='introfooter'>
+                        <img src={group} alt='groupimg' style={{width: "100%"}}/>
                     </div>
-
-                    <button className='offerbtn'>Join the List</button>
-                    <p>*Exclusive to vendors requested by our partner firms at this time.
-                        <br /> please note this is a paid service for vendors.</p>
-
                 </div>
 
                 <div className='requests'>
@@ -334,20 +338,20 @@ export default function Home() {
                 </div>
             </div>
             <div className='footer'>
-                <img src={footer} alt='footerimg' style={{width: "100%"}}/>
+                <img src={footer} alt='footerimg' style={{ width: "100%" }} />
 
-                <div className='introcontent' style={{marginBlock: "10vh"}}>
+                <div className='introcontent' style={{ marginBlock: "10vh" }}>
                     <img src={logo} alt='logoimg' style={{ width: "3vh" }} />
                     <img src={logoFont} alt='logoimg' style={{ width: "18%" }} />
                 </div>
 
-                <span style={{fontSize: "50px", fontWeight: "600", marginBlock: "5vh"}}>
+                <span style={{ fontSize: "50px", fontWeight: "600", marginBlock: "5vh" }}>
                     We streamline communication, <br />so you can better serve your clients
                 </span><br /><br /><br />
 
                 <button className='offerbtn'>Join for Free</button><br /><br /><br />
 
-                <p style={{color: "rgba(0,0,0,0.5)"}}>® 2023 Vendorcontacts. All rights reserved.</p>
+                <p style={{ color: "rgba(0,0,0,0.5)" }}>® 2023 Vendorcontacts. All rights reserved.</p>
             </div>
         </>
     )
