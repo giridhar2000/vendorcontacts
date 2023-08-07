@@ -20,7 +20,7 @@
 }
 
 .intro span {
-    font-size: 64px;
+    font-size: xx-large;
     font-weight: 700;
 }
 
@@ -32,12 +32,15 @@
 
 .intro img {
     width: 4%;
-    margin: 4vh auto;
 }
 
 .introcontent {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    margin: 5px auto;
+    justify-content: center;
+    gap: 2vh;
+    width: 100%;
 }
 
 .offerbtn {
@@ -158,6 +161,7 @@
     margin: 0vh 20vh 0vh 20vh;
     padding: 5vh;
     border-radius: 32px;
+    padding-bottom: 10vh;
 }
 
 .aboutrow{
@@ -201,15 +205,87 @@
     margin: 5px auto;
 }
 
-.profile p{
+.profilehead p{
     margin: 0;
     color: rgba(0,0,0,0.4);
     font-weight: 600;
     font-size: 20px;
 }
 
-.profile span{
+.profilehead span{
     font-size: 48px;
     font-weight: 600;
     margin-block: 5vh;
+}
+
+.profilehead{
+    display: flex;
+    flex-direction: column;
+}
+
+.profilebody{
+    margin-top: 10vh;
+}
+
+.profilerow{
+    display: flex;
+    gap: 5vh;
+    justify-content: center;
+}
+
+.profilecolumn{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 6vh;
+    width: 30%;
+    border-radius: 32px;
+    height: 70vh;
+}
+
+.profilecolumn.black{
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+}
+
+.profilecolumn.black span{
+    font-size: 24px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+}
+
+.profilecolumn p{
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.profilespan{
+    color: rgba(0,0,0,0.6);
+    font-weight: 600;
+}
+
+.captionspan{
+    position: relative;
+    color: white;
+    font-size: xxx-large;
+    font-weight: 600;
+}
+
+.caption{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.caption p{
+    position: relative;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.caption span{
+    margin: 0;
 }

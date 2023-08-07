@@ -17,25 +17,28 @@ import clock from "../../Assets/img/clock.svg"
 import fast from "../../Assets/img/fast.svg"
 import pause from "../../Assets/img/pause.svg"
 import propic from "../../Assets/img/propic.png"
+import propic2 from "../../Assets/img/propic2.png"
+// import Vector from '../../Components/Vector/Vector'
+import "../../Components/Vector/Vector.css"
 
 export default function Home() {
 
     return (
         <div className='home'>
             <div className='intro'>
-                <img src={logo} alt='logoimg' />
+
                 <div className='introcontent'>
-                    <span>The unlimited</span>
-                    <span>Design</span>
-                    <span>subscription.</span>
+                    <img src={logo} alt='logoimg' />
+                    <span>VENDORCONTACTS</span>
                 </div>
 
-                <p>Entrust all your product design, branding and growth
-                    <br /> projects to a top designer, unlimited and for a fixed monthly price.</p>
+                <div>
+                    <h1 style={{fontSize: "xxx-large"}}>The future of vendor-architect<br />collaboration is here</h1>
+                </div>
 
-                <button className='offerbtn'>See offers</button>
-
-                <p style={{ color: 'black', fontSize: "medium" }}>14 day free trial</p>
+                <button className='offerbtn'>Join the List</button>
+                <p>*Exclusive to vendors requested by our partner firms at this time.
+                    <br /> please note this is a paid service for vendors.</p>
 
             </div>
 
@@ -182,12 +185,76 @@ export default function Home() {
             </div>
 
             <div className='profile'>
-                <img src={propic} alt='profilepic' />
-                <span>How can I help you ?</span>
-                <div>
-                    <p>All your requests are carried out by Julien Perrière, founder of </p>
-                    <p>Flexboom. Julien has more than 10 years of experience in agencies and </p>
-                    <p>startups. He was recently VP Design of Ornikar (French Tech Next40).</p>
+                <div className='profilehead'>
+                    <img src={propic} alt='profilepic' />
+                    <span>How can I help you ?</span>
+                    <div>
+                        <p>All your requests are carried out by Julien Perrière, founder of </p>
+                        <p>Flexboom. Julien has more than 10 years of experience in agencies and </p>
+                        <p>startups. He was recently VP Design of Ornikar (French Tech Next40).</p>
+                    </div>
+                </div>
+
+                <div className='profilebody'>
+
+                    <div className='profilerow'>
+                        <div className='profilecolumn' style={{ border: "8px solid #f4f4f4" }}>
+                            <img src={propic2} alt='propic2' />
+                            <p>"Julien brilliantly led the design during our hypergrowth phase. He is responsive and efficient."</p>
+                            <div>
+                                <span className='profilespan' style={{ fontSize: "20px" }}>Benjamin Gaignault</span><br />
+                                <span className='profilespan' style={{ fontSize: "14px" }}>Co-founder @Ornikar</span><br />
+                                <span className='profilespan' style={{ fontSize: "14px" }}>Co-founder @Skarlett</span>
+                            </div>
+                        </div>
+                        <div className='profilecolumn black'>
+                            <span>From 108,875 to 2,704,636</span>
+                            <span style={{ fontSize: "64px", color: "white" }}>+ 2,386%</span>
+                            <span>Growth in the number of Ornikar users</span>
+                        </div>
+                    </div>
+
+                    <div className='profilerow'>
+                        <div style={{ marginTop: "5vh", paddingInline: "15vh", width: "100%" }}>
+                            <div class="framer-2o0271" id="money">
+                                <div class="framer-x9m1eb"
+                                    style={{ opacity: 1, transform: "translateX(0px) translateY(0) scale(1) rotate(0deg) rotateX(0deg) rotateY(0deg) translateZ(0px)" }}>
+                                    <div class="framer-8mavu0"></div>
+                                    <div class="framer-16x9014"></div>
+                                    <div class="framer-1lvsclt"></div>
+                                    <div class="framer-1x4en10"></div>
+                                    <div class="framer-bpo1nj"></div>
+                                    <div class="framer-15daoq4"></div>
+                                    <div className='caption'>
+                                        <div>
+                                            <span className='captionspan' style={{ fontSize: "100px" }}>146</span>
+                                            <br />
+                                            <span className='captionspan'>million</span>
+                                        </div>
+                                        <p style={{ color: "rgba(255,255,255,0.5)" }}>Total amount of funds raised by<br /> supported companies</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='profilerow'>
+                        <div className='profilecolumn' style={{ border: "8px solid #f4f4f4" }}>
+                            <img src={propic2} alt='propic2' />
+                            <p>"I had the chance to collaborate with Julien on our branding. I recommend 200%!"</p>
+                            <div>
+                                <span className='profilespan' style={{ fontSize: "20px" }}>Antonin Delfino</span><br />
+                                <span className='profilespan' style={{ fontSize: "14px" }}>Co-founder @Ornikar</span><br />
+                                <span className='profilespan' style={{ fontSize: "14px" }}>Co-founder @Skarlett</span>
+                            </div>
+                        </div>
+                        <div className='profilecolumn black'>
+                            <span>From 108,875 to 2,704,636</span>
+                            <span style={{ fontSize: "64px", color: "white" }}>+ 2,386%</span>
+                            <span>Growth in the number of Ornikar users</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -3,31 +3,14 @@ import "../Vector/Vector.css"
 
 export default function Vector() {
     return (
-        <div class="framer-1vykemj" id="palette">
-            <div class="framer-1puy8s7">
-                <div class="framer-184haqm">
-                </div>
-            </div>
-            <div class="framer-cop5fj" style={{opacity: 1, transform: "perspective(1200px) rotate(36deg)"}}>
-                <div class="framer-1p7wige">
-                </div>
-            </div>
-            <div class="framer-8gayls" style={{opacity: 1, transform: "perspective(1200px) rotate(72deg)"}}>
-                <div class="framer-mbr4rh">
-                </div>
-            </div>
-            <div class="framer-1qr5fpp" style={{opacity: 1, transform: "perspective(1200px) rotate(108deg)"}}>
-                <div class="framer-1dz9hgx">
-                </div>
-            </div>
-            <div class="framer-12eo3ih" style={{opacity: 1, transform: "perspective(1200px) rotate(144deg)"}}>
-                <div class="framer-14zkidv">
-                </div>
-            </div>
-            <div class="framer-15pke3p" style={{opacity: 1, transform: "perspective(1200px) rotate(180deg)"}}>
-                <div class="framer-9udu7o">
-                </div>
-            </div>
+        <div class="framer-x9m1eb" 
+        style={{opacity: 1, transform: "translateX(0px) translateY(-351.774px) scale(1) rotate(0deg) rotateX(0deg) rotateY(0deg) translateZ(0px)"}}>
+            <div class="framer-8mavu0"></div>
+            <div class="framer-16x9014"></div>
+            <div class="framer-1lvsclt"></div>
+            <div class="framer-1x4en10"></div>
+            <div class="framer-bpo1nj"></div>
+            <div class="framer-15daoq4"></div>
         </div>
     )
 }
