@@ -334,7 +334,7 @@ export default function Home() {
                 </div>
             </div>
             <div className='footer'>
-                <img src={footer} alt='footerimg' />
+                <img src={footer} alt='footerimg' style={{width: "100%"}}/>
 
                 <div className='introcontent' style={{marginBlock: "10vh"}}>
                     <img src={logo} alt='logoimg' style={{ width: "3vh" }} />
