@@ -76,50 +76,50 @@
 .requestshead p {
     margin: 0;
     font-size: 20px;
-    color: rgba(0,0,0,0.4);
+    color: rgba(0, 0, 0, 0.4);
     font-weight: 600;
 }
 
-.requests .requestshead{
+.requests .requestshead {
     margin: 7vh;
 }
 
-.requestshead span{
+.requestshead span {
     padding-inline: 5vh;
     font-size: 48px;
     font-weight: 600;
 }
 
-.requestsbody{
+.requestsbody {
     display: flex;
     gap: 8vh;
 }
 
-.requestsbody img{
+.requestsbody img {
     width: 5vh;
 }
 
-.requestsitem{
+.requestsitem {
     display: flex;
     flex-direction: column;
 
 }
 
-.requestsitemhead{
+.requestsitemhead {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.requestsitem p{
+.requestsitem p {
     font-size: 20px;
 }
 
-.requestsitemhead h1{
+.requestsitemhead h1 {
     font-size: 24px;
 }
 
-.buisness{
+.buisness {
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -128,7 +128,7 @@
     border-radius: 32px;
 }
 
-.buisnessbody{
+.buisnessbody {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -136,13 +136,13 @@
 
 }
 
-.row{
+.row {
     display: flex;
     flex-direction: column;
     gap: 3vh;
 }
 
-.row span{    
+.row span {
     text-align: left;
     font-size: 24px;
     display: flex;
@@ -150,11 +150,11 @@
     font-weight: 600;
 }
 
-.row img{
+.row img {
     width: 5vh;
 }
 
-.about{
+.about {
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -164,7 +164,7 @@
     padding-bottom: 10vh;
 }
 
-.aboutrow{
+.aboutrow {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -173,24 +173,24 @@
     gap: 10vh;
 }
 
-.aboutcolumn img{
+.aboutcolumn img {
     width: 5vh;
 }
 
-.aboutcolumn p{
+.aboutcolumn p {
     margin: 0;
     font-size: 20px;
-    color: rgba(0,0,0,0.4);
+    color: rgba(0, 0, 0, 0.4);
     font-weight: 600;
 }
 
-.aboutbody{
+.aboutbody {
     display: flex;
     flex-direction: column;
     gap: 10vh;
 }
 
-.profile{
+.profile {
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -199,41 +199,41 @@
     border-radius: 32px;
 }
 
-.profile img{
+.profile img {
     width: 15vh;
     border-radius: 50%;
     margin: 5px auto;
 }
 
-.profilehead p{
+.profilehead p {
     margin: 0;
-    color: rgba(0,0,0,0.4);
+    color: rgba(0, 0, 0, 0.4);
     font-weight: 600;
     font-size: 20px;
 }
 
-.profilehead span{
+.profilehead span {
     font-size: 48px;
     font-weight: 600;
     margin-block: 5vh;
 }
 
-.profilehead{
+.profilehead {
     display: flex;
     flex-direction: column;
 }
 
-.profilebody{
+.profilebody {
     margin-top: 10vh;
 }
 
-.profilerow{
+.profilerow {
     display: flex;
     gap: 5vh;
     justify-content: center;
 }
 
-.profilecolumn{
+.profilecolumn {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -243,35 +243,35 @@
     height: 70vh;
 }
 
-.profilecolumn.black{
+.profilecolumn.black {
     background-color: rgba(0, 0, 0, 0.9);
     color: white;
 }
 
-.profilecolumn.black span{
+.profilecolumn.black span {
     font-size: 24px;
     font-weight: 600;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255, 255, 255, 0.5);
 }
 
-.profilecolumn p{
+.profilecolumn p {
     font-size: 24px;
     font-weight: 600;
 }
 
-.profilespan{
-    color: rgba(0,0,0,0.6);
+.profilespan {
+    color: rgba(0, 0, 0, 0.6);
     font-weight: 600;
 }
 
-.captionspan{
+.captionspan {
     position: relative;
     color: white;
     font-size: xxx-large;
     font-weight: 600;
 }
 
-.caption{
+.caption {
     display: flex;
     align-items: center;
     width: 100%;
@@ -280,12 +280,12 @@
     justify-content: center;
 }
 
-.caption p{
+.caption p {
     position: relative;
     font-size: 24px;
     font-weight: 600;
 }
 
-.caption span{
+.caption span {
     margin: 0;
 }
