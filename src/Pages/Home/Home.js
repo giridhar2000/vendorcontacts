@@ -11,6 +11,13 @@ import Collaboration from "../../Assets/images/handshake.svg";
 import Telescope from "../../Assets/images/telescope.svg";
 import Target from "../../Assets/images/target.svg";
 import Arrow from "../../Assets/images/arrow.svg";
+import TrustIcon from "../../Assets/images/professional-trust.svg";
+import CommunicationIcon from "../../Assets/images/communication.svg";
+import SearchIcon from "../../Assets/images/search.svg";
+import StoreIcon from "../../Assets/images/industry.svg";
+import ToolsIcon from "../../Assets/images/tools.svg";
+import AdvanceSearchIcon from "../../Assets/images/search-cap.svg";
+import GraphIcon from "../../Assets/images/graph.svg";
 
 export default function Home() {
   var settings = {
@@ -84,6 +91,104 @@ export default function Home() {
                 provide hands-on assist, leading to better design outcomes and a
                 thriving industry.
               </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="services">
+          <div className="service-container">
+            <div className="card">
+              <div className="card-head">
+                <img src={TrustIcon} alt="icon" />
+              </div>
+              <div className="card-body">
+                <h5 className="card-title">
+                  Trusted by Industry Professionals
+                </h5>
+                <p className="card-text">
+                  Created and vetted by the best in the industry.
+                </p>
+              </div>
+            </div>
+
+            <div className="card">
+              <div className="card-head">
+                <img src={CommunicationIcon} alt="icon" />
+              </div>
+              <div className="card-body">
+                <h5 className="card-title">Effective Communication Tools</h5>
+                <p className="card-text">
+                  No more email threads. Streamlined, Al assisted communication
+                </p>
+              </div>
+            </div>
+
+            <div className="card">
+              <div className="card-head">
+                <img src={SearchIcon} alt="icon" />
+              </div>
+              <div className="card-body">
+                <h5 className="card-title">Advanced Search Capabilities</h5>
+                <p className="card-text">
+                  Increased exposure through detailed and data-rich filtering
+                  tools.
+                </p>
+              </div>
+            </div>
+
+            <div className="card">
+              <div className="card-head">
+                <img src={StoreIcon} alt="icon" />
+              </div>
+              <div className="card-body">
+                <h5 className="card-title">
+                  Trusted by Industry Professionals
+                </h5>
+                <p className="card-text">
+                  For a personalized experience, where you can specify with
+                  certainty.
+                </p>
+              </div>
+            </div>
+
+            <div className="card">
+              <div className="card-head">
+                <img src={ToolsIcon} alt="icon" />
+              </div>
+              <div className="card-body">
+                <h5 className="card-title">Effective Communication Tools</h5>
+                <p className="card-text">
+                  All your projects and rep communications, in one place.
+                </p>
+              </div>
+            </div>
+
+            <div className="card">
+              <div className="card-head">
+                <img src={AdvanceSearchIcon} alt="icon" />
+              </div>
+              <div className="card-body">
+                <h5 className="card-title">Advanced Search Capabilities</h5>
+                <p className="card-text">
+                  Tools to enable library updates, lunch and learns, event
+                  invites, and more.
+                </p>
+              </div>
+            </div>
+
+            <div className="card">
+              <div className="card-head">
+                <img src={GraphIcon} alt="icon" />
+              </div>
+              <div className="card-body">
+                <h5 className="card-title">
+                  Trusted by Industry Professionals
+                </h5>
+                <p className="card-text">
+                  Organization tools make your project workflow faster, with
+                  less hassle.
+                </p>
+              </div>
             </div>
           </div>
         </section>

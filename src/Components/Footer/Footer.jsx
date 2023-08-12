@@ -19,7 +19,7 @@ const Footer = () => {
       </div>
       <div className="copyright">
         <p className="text-light">
-          ® 2023 Vendorcontacts. All rights reserved.
+          &copy; 2023 Vendorcontacts. All rights reserved.
         </p>
       </div>
     </div>
