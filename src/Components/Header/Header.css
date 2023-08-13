@@ -1,0 +1,54 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.5px solid #000000;
+    padding-inline: 10vh;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo .logo-text {
+    font-weight: 900;
+    font-size: 22px;
+}
+
+.logoIcon {
+    height: 30% !important;
+    margin-right: 0.5rem;
+}
+
+.signin {
+    margin-right: 1rem;
+    width: 114px;
+    height: 45px;
+    background: white;
+    color: black;
+    border: 1px solid #000;
+    border-radius: 22px;
+    text-transform: capitalize;
+    cursor: pointer;
+    transition: all 0.3s ease-in;
+}
+
+.signin:hover {
+    background-color: #D6DB63;
+}
+
+.request {
+    width: 148px;
+    height: 45px;
+    background-color: #D6DB63;
+    color: black;
+    border: 1px solid #000;
+    border-radius: 22px;
+    cursor: pointer;
+    transition: all 0.3s ease-in;
+}
+
+.request:hover {
+    background-color: white;
+}
