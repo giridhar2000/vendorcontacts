@@ -325,3 +325,7 @@ p {
         top: 12vh;
     }
 }
+
+@media  screen and (max-width: 1920px) {
+    
+}
