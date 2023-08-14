@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../Components/Header/Header";
 import "./Home.css";
 import Gettys from "../../Assets/images/gettys-group.svg";
@@ -21,8 +21,71 @@ import GraphIcon from "../../Assets/images/graph.svg";
 import Vector from "../../Assets/images/Vector.png";
 import bg1 from "../../Assets/images/bg.png";
 import Ellipse from "../../Assets/images/Ellipse.png";
+import Marquee from "react-fast-marquee";
+import { gsap } from "gsap";
 
 export default function Home() {
+    useEffect(() => {
+        animator();
+        // const observer = new IntersectionObserver((entries) => {
+        //     entries.forEach((entry) => {
+        //         console.log(entry)
+        //         if (entry.isIntersecting) {
+        //             entry.target.classList.add('showcontent')
+        //         } else {
+        //             entry.target.classList.remove('showcontent')
+        //         }
+        //     });
+        // });
+
+        // const hiddenElements = document.querySelectorAll('.hidden');
+        // hiddenElements.forEach((el) => observer.observe(el));
+    })
+
+    function animator() {
+        document.querySelectorAll('.codedText').forEach((t) => {
+            const arr1 = t.innerHTML.split('')
+            const arr2 = []
+            arr1.forEach((char, i) => arr2[i] = randChar()) //fill arr2 with random characters
+            t.onpointerover = () => {
+                const tl = gsap.timeline()
+                let step = 0
+                tl.fromTo(t, {
+                    innerHTML: arr2.join(''),
+                    color: '#000',
+                    background: '#bada55'
+                }, {
+                    duration: arr1.length / 20, //duration based on text length
+                    ease: 'power4.in',
+                    delay: 0.1,
+                    color: '#fff',
+                    background: '#000',
+                    onUpdate: () => {
+                        const p = Math.floor(tl.progress() * (arr1.length)) //whole number from 0 - text length
+                        if (step !== p) { //throttle the change of random characters
+                            step = p
+                            arr1.forEach((char, i) => arr2[i] = randChar())
+                            let pt1 = arr1.join('').substring(p, 0),
+                                pt2 = arr2.join('').substring(arr2.length - p, 0)
+                            if (t.classList.contains('fromRight')) {
+                                pt1 = arr2.join('').substring(arr2.length - p, 0)
+                                pt2 = arr1.join('').substring(arr1.length - p)
+                            }
+                            t.innerHTML = pt1 + pt2
+                        }
+
+                    }
+                })
+            }
+        })
+    }
+
+    function randChar() {
+        let c = "abcdefghijklmnopqrstuvwxyz1234567890!@#$^&*()…æ_+-=;[]/~`"
+        c = c[Math.floor(Math.random() * c.length)]
+        return (Math.random() > 0.5) ? c : c.toUpperCase()
+    }
+
 
     return (
         <>
@@ -45,52 +108,56 @@ export default function Home() {
                             </h1>
                         </div>
                         <img src={bg1} alt="bg" className="bg" />
-                        <img src={Ellipse} alt="bg" className="Ellipse" />
+                        {/* <img src={Ellipse} alt="bg" className="Ellipse" /> */}
                     </div>
                 </section>
 
                 <section className="team">
                     <div className="joinContainer">
                         <div className="join-block">
-                            <h2>
-                                join <br /> the list
-                            </h2>
+                            <div>
+                                <h2> join <br /> the list</h2>
+                            </div>
+                            <div className="arrow">
+                                <img src={Arrow} alt="arrow" />
+                            </div>
                         </div>
-                        <div className="arrow">
-                            <img src={Arrow} alt="arrow" />
-                        </div>
+
                     </div>
 
-                    <div className="steps">
-                        <div className="stepone green">
-                            <p>Uniting Visionaries and makers. Uniting Visionaries and makers. Uniting</p>
-                        </div>
-                        <div className="steptwo green">
-                            <p>Visionaries and </p>
-                        </div>
-                        <div className="stepthree green">
-                            <p style={{ marginLeft: "7vh" }}>Uniting Visionaries and makers . Uniting Visionaries and makers . </p>
-                        </div>
+                    <div className="steps firststep">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 348" fill="none">
+                            <path id="p1" d="M0 305H570.5V43L1443.5 43" stroke="#D9E167" stroke-width="85" stroke-linejoin="round" />
+                            <text dominant-baseline="middle" fill="black">
+                                <textPath href="#p1" startOffset="100%">
+                                    Uniting Visionaries and makers .Uniting Visionaries and makers .
+                                    <animate
+                                        attributeName="startOffset" from="-100%" to="100%"
+                                        dur="10s" begin="3s" repeatCount="indefinite" />
+                                </textPath>
+                            </text>
+                        </svg>
                     </div>
                 </section>
+
                 <div className="tilt">
-                    <div className="tiltedChild" style={{transform: "rotate(-18.351deg) translateX(-130px)"}}>
+                    <div className="tiltedChild codedText">
                         Who's my rep?
                     </div>
-                    <div className="tiltedChild" style={{transform: "rotate(9.803deg) translateY(15px)"}}>
+                    <div className="tiltedChild codedText">
                         What's the cost on this?
                     </div>
-                    <div className="tiltedChild" style={{transform: "rotate(-12.953deg) translateX(-130px) translateY(-39px)"}}>
+                    <div className="tiltedChild codedText">
                         Is this bleach cleanable?
                     </div>
-                    <div className="tiltedChild" style={{transform: "rotate(21.934deg) translateY(-11px)"}}>
+                    <div className="tiltedChild codedText">
                         Can this be made custom?
                     </div>
-                    <div className="tiltedChild" style={{transform: "rotate(-18.28deg) translateX(100px) translateY(35px)"}}>
+                    <div className="tiltedChild codedText">
                         Digital or standard vinyl?
                     </div>
                 </div>
-                
+
                 <section className="faq">
                     <div className="faq-block">
                         ALL YOUR QUESTIONS, AND REPS ON ONE PLATFORM. NO MORE LONG EMAIL
@@ -98,7 +165,6 @@ export default function Home() {
                     </div>
                 </section>
 
-                {/* mission section  */}
                 <section className="mission">
                     <div className="mission-block">
                         <div className="mission-left">
@@ -127,20 +193,23 @@ export default function Home() {
 
                 <section className="services">
                     <div className="steps">
-                        <div className="stepone green" style={{ width: "85.1%" }}>
-                            <p style={{ fontSize: "x-large" }}>Uniting Visionaries and makers . Uniting Visionaries and makers . Uniting Visionaries and makers . </p>
-                        </div>
-                        <div className="steptwo green" style={{ margin: "4.3vh 17vh 4vh auto" }}>
-                            <p style={{ fontSize: "x-large" }}>Visionaries and </p>
-                        </div>
-                        <div className="stepthree green" style={{ width: "15%" }}>
-                            <p style={{ marginLeft: "7vh", fontSize: "x-large" }}>Uniting Vision</p>
-                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 264" fill="none">
+                            <path id="p2" d="M-208 43H-47.6758V221L1348.07 221V43H1489" stroke="#D9E167" stroke-width="85" stroke-linejoin="round" />
+                            <text dominant-baseline="middle" fill="black">
+                                <textPath href="#p2" startOffset="100%">
+                                    Uniting Visionaries and makers .Uniting Visionaries and makers .
+                                    <animate
+                                        attributeName="startOffset" from="-100%" to="100%"
+                                        dur="10s" begin="3s" repeatCount="indefinite" />
+                                </textPath>
+                            </text>
+                        </svg>
                     </div>
+
                     <div className="service-container">
                         <div className="card">
-                            <div className="card-head">
-                                <img src={TrustIcon} alt="icon" />
+                            <div className="animate card-head">
+                                <img src={TrustIcon} alt="icon" className="animate" />
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title">
@@ -154,7 +223,7 @@ export default function Home() {
 
                         <div className="card">
                             <div className="card-head">
-                                <img src={CommunicationIcon} alt="icon" />
+                                <img src={CommunicationIcon} alt="icon" className="animate" />
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title">Effective Communication Tools</h5>
@@ -166,7 +235,7 @@ export default function Home() {
 
                         <div className="card">
                             <div className="card-head">
-                                <img src={SearchIcon} alt="icon" />
+                                <img src={SearchIcon} alt="icon" className="animate" />
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title">Advanced Search Capabilities</h5>
@@ -179,7 +248,7 @@ export default function Home() {
 
                         <div className="card">
                             <div className="card-head">
-                                <img src={StoreIcon} alt="icon" />
+                                <img src={StoreIcon} alt="icon" className="animate" />
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title">
@@ -194,7 +263,7 @@ export default function Home() {
 
                         <div className="card">
                             <div className="card-head">
-                                <img src={ToolsIcon} alt="icon" />
+                                <img src={ToolsIcon} alt="icon" className="animate" />
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title">Effective Communication Tools</h5>
@@ -206,7 +275,7 @@ export default function Home() {
 
                         <div className="card">
                             <div className="card-head">
-                                <img src={AdvanceSearchIcon} alt="icon" />
+                                <img src={AdvanceSearchIcon} alt="icon" className="animate" />
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title">Advanced Search Capabilities</h5>
@@ -219,7 +288,7 @@ export default function Home() {
 
                         <div className="card">
                             <div className="card-head">
-                                <img src={GraphIcon} alt="icon" />
+                                <img src={GraphIcon} alt="icon" className="animate" />
                             </div>
                             <div className="card-body">
                                 <h5 className="card-title">
@@ -233,40 +302,47 @@ export default function Home() {
                         </div>
 
                         <div className="ribbon">
-                            <img src={Vector} alt="vectorimg" />
-                            <p style={{ left: "-11vh", top: "14vh", transform: "rotate(90deg)" }}>
-                                Uniting Visionaries and makers .</p>
-                            <p style={{ top: "77%", left: "15%" }}>Uniting Visionaries and makers .</p>
-                            <p style={{ top: "14vh", right: "6vh", transform: "rotate(-90deg)" }}>Uniting Visionaries and makers .</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="601" height="390" viewBox="0 0 601 390" fill="none">
+                                <path id="p3" d="M43 0V347H558V0" stroke="#D9E167" stroke-width="85" stroke-linejoin="round" />
+                                <text dominant-baseline="middle" fill="black">
+                                    <textPath href="#p3" startOffset="100%">
+                                        Uniting Visionaries and makers .Uniting Visionaries and makers .
+                                        <animate
+                                            attributeName="startOffset" from="-100%" to="100%"
+                                            dur="10s" begin="3s" repeatCount="indefinite" />
+                                    </textPath>
+                                </text>
+                            </svg>
                         </div>
                     </div>
                 </section>
 
-                {/* collaborations section  */}
                 <section className="collaborators">
                     <h2 className="heading">In Collaboration With</h2>
                     <div className="companies">
-                        <div>
+                        <Marquee>
+
                             <img src={Gettys} alt="gettys-logo" />
-                        </div>
-                        <div>
+
+
                             <img src={IAInteriors} alt="ia-interiors" />
-                        </div>
-                        <div>
+
+
                             <img src={Gensler} alt="gensler-logo" />
-                        </div>
-                        <div>
+
+
                             <img src={Stantec} alt="stantec-logo" />
-                        </div>
-                        <div>
+
+
                             <img src={OKK} alt="okk-logo" />
-                        </div>
-                        <div>
+
+
                             <img src={HPA} alt="hpa-logo" />
-                        </div>
+
+                        </Marquee>
                     </div>
                 </section>
-            </main>
+            </main >
         </>
     );
 }
