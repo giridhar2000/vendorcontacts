@@ -337,14 +337,14 @@ p {
     }
 
     .joinContainer{
-        width: 70%;
+        width: 70vh;
         margin-right: 70%;
         align-items: center;
         justify-items: center;
     }
 
     .banner{
-        width: 220%;
+        width: 220vh;
         height: auto;
         margin: 0;
         padding: 5%;
@@ -362,7 +362,7 @@ p {
 
     .join-block{
         height: 20px;
-        width: 100%;
+        width: 110px;
         margin-left: 110%;
         background-color: #D9E167;
         background-image: none;
@@ -373,7 +373,7 @@ p {
     }
 
     .tilt{
-        width: 100%;
+        width: 110vh;
         gap: 0;
         right: 0;
         top: 120vh;
@@ -382,7 +382,7 @@ p {
     
     .tiltedChild{
         background-color: #D6DB63;
-        width: 100%;
+        width: 300vh;
         height: 10vh;
         font-weight: bold;
         font-size: xx-large;
@@ -406,7 +406,7 @@ p {
         justify-content: center;
         top: 70vh;
         background-color: #D6DB63;
-        width: 100%;
+        width: 222vh;
         height: 70vh;
         right: 31vh;
         font-size: 41px;
@@ -428,7 +428,7 @@ p {
         display: contents;
         align-items: start;
         justify-content: center;
-        width: 100%;
+        width: 100vh;
     }
 
     .mission-left h4, .mission-right h4{
