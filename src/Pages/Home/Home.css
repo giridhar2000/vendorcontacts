@@ -492,3 +492,11 @@ p {
 @media  screen and (max-width: 1920px) {
     
 }
+
+.initial-child-container {
+    gap: 10vh;
+}
+
+.marquee{
+    gap: 10vh;
+}
