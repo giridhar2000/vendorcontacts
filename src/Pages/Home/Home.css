@@ -427,7 +427,7 @@ p {
 }
 
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
-    .tilt {
+    .tilt{
         position: absolute;
         display: flex;
         flex-direction: column;
@@ -440,26 +440,55 @@ p {
     .bg {
         top: 12vh;
     }
+} 
+
+@media(max-width:767px){
+    
+    .bg, .Ellipse, .img1, .img2, .ml-1, .steps, .arrow, .ribbon{
+        display: none;
+    }
+
+    .future{
+        color: white;
+    }
+
+    .joinContainer{
+        width: 70vh;
+        margin-right: 70%;
+        align-items: center;
+        justify-items: center;
+    }
+
+    .banner{
+        width: 220vh;
+        height: auto;
+        margin: 0;
+        padding: 5%;
+        padding-bottom: 5%;
+        background-color: #e1d7ca;
+    }
+
+    .banner-heading, .banner-text, .banner-text h1 {
+        align-items: center;
+        justify-content: center;
+        text-align: none;
+        font-weight: normal;
+        text-transform: lowercase;
+    }
+
+    .join-block{
+        height: 20px;
+        width: 110px;
+        margin-left: 110%;
+        background-color: #D9E167;
+        background-image: none;
+    }
+
+    .join-block h2{
+        font-size: small;
+    }
 }
 
-
-.initial-child-container {
-    gap: 10vh;
-    align-items: center;
-}
-
-.marquee {
-    gap: 10vh;
-}
-
-/* .hidden{
-    opacity: 0;
-    filter: blur(25px);
-    transition: all 0.5s;
-} */
-
-.showcontent {
-    opacity: 1;
-    filter: blur(0);
-    transition: all 0.5s;
+@media  screen and (max-width: 1920px) {
+    
 }

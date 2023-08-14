@@ -97,13 +97,13 @@ export default function Home() {
                     <div className="banner-heading">
                         <div className="banner-text">
                             <h1>
-                                The future of <img src={Telescope} alt="telescope" />
+                                The <span className="future">future</span> of <img className="img1" src={Telescope} alt="telescope" />
                             </h1>
                             <h1>
                                 <img className="ml-1" src={Target} alt="target" /> designer-vendor
                             </h1>
                             <h1>
-                                collaboration is <img src={Collaboration} alt="collaboration" />
+                                collaboration is <img className="img2" src={Collaboration} alt="collaboration" />
                                 here
                             </h1>
                         </div>
@@ -160,7 +160,7 @@ export default function Home() {
 
                 <section className="faq">
                     <div className="faq-block">
-                        ALL YOUR QUESTIONS, AND REPS ON ONE PLATFORM. NO MORE LONG EMAIL
+                        ALL YOUR QUESTIONS, AND <br/>REPS ON ONE PLATFORM. <br/>NO MORE LONG EMAIL<br/>
                         THREADS.
                     </div>
                 </section>

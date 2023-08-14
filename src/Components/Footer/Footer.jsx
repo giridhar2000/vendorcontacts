@@ -10,8 +10,8 @@ const Footer = () => {
       </div>
       <div className="footer-content">
         <p className="fs-56 ">
-          We streamline communication, <br /> so you can better serve your
-          clients
+          We streamline communication, <br/> <span className="footer-text">so you can better serve your
+          clients</span>
         </p>
       </div>
       <div className="footerButton">

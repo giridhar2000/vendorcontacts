@@ -52,3 +52,39 @@
 .request:hover {
     background-color: white;
 }
+
+@media(max-width:767px) {
+    .header {
+        width: 210vh;
+        padding: 20px;
+        justify-content: space-between;
+        background-color: #D6DB63;
+    }
+
+    .logoIcon {
+        height: 100% !important;
+        width: auto;
+    }
+
+    .logo-text{
+        justify-content: center;
+        align-items: center;
+        font-size: 150px;
+    }
+
+    .fs-56 {
+        font-size: 70px;
+    }
+
+    .signin {
+        /* width: auto;
+        font-size: 15px; */
+        display: none;
+    }
+
+    .request {
+        /* width: auto;
+        font-size: 15px; */
+        display: none;
+    }
+}

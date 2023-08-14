@@ -131,3 +131,42 @@
     background: #F0C65C;
     transform: rotate(9.555deg);
 }
+
+@media(max-width: 767px){
+    .shape{
+        display: none;
+    }
+
+    .framer-x9m1eb {
+        display: none;
+    }
+    
+    .framer-8mavu0 {
+        display: none;
+    }
+    
+    .framer-16x9014 {
+        display: none;
+    }
+    
+    .framer-1lvsclt {
+        display: none;
+    }
+    
+    .framer-1x4en10 {
+        display: none;
+    }
+    
+    .framer-bpo1nj {
+        display: none;
+    }
+    
+    .framer-15daoq4 {
+        display: none;
+    }
+    
+    .framer-2o0271 {
+        display: none;
+    }
+    
+}
