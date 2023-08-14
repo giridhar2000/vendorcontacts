@@ -56,7 +56,7 @@
 /* media screen styles  */
 @media(max-width:767px) {
     .footer {
-        width: 100%;
+        width: 220vh;
         height: auto;
         padding: 20px;
     }
@@ -71,8 +71,11 @@
     }
 
     .footerButton button {
-        width: auto;
-        font-size: 15px;
+        display: none;
+    }
+
+    .footer-text{
+        color: #a58451;
     }
 
     .text-light {
