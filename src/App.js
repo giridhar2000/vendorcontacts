@@ -8,10 +8,9 @@ function App() {
     <BrowserRouter>
       <div className="container">
         <Home />
-      </div>
-      <div className="footer">
         <Footer />
       </div>
+        
     </BrowserRouter>
   );
 }

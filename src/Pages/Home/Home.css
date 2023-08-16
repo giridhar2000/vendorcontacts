@@ -257,6 +257,7 @@ p {
 
 .collaborators {
     margin: 2rem 4rem auto;
+    overflow-x: hidden;
 }
 
 .heading {
@@ -269,6 +270,17 @@ p {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    animation: marquee 10s linear infinite;
+    overflow-x: hidden;
+}
+
+@keyframes marquee {
+    0%{
+        transform: translateX(120%);
+    }
+    100%{
+        transform: translateX(-120%);
+    }
 }
 
 
@@ -516,9 +528,9 @@ hr {
 @media(max-width:767px) {
 
     .container {
-        width: 86vh;
+        width: max-content;
     }
-    
+
     .bg,
     .Ellipse {
         display: none;
@@ -576,7 +588,6 @@ hr {
     }
 
     .collaborators {
-        width: 85vh;
         padding-top: 5vh;
     }
 
@@ -600,12 +611,10 @@ hr {
     }
 
     .mission-right h4 {
-        width: auto;
-        font-size: 30px;
+        font-size: 27px;
     }
 
     .mission-right p {
-        width: auto;
         font-size: larger;
         text-align: left;
         padding-right: 10vh;
@@ -618,17 +627,12 @@ hr {
 
     .mission {
         padding: 0;
-        width: 85vh;
+        width: initial;
         margin-block: 5vh !important;
     }
 
     .mission-left h4 {
-        font-size: 30px;
-        width: auto;
-    }
-
-    .services {
-        width: 85vh;
+        font-size: 25px;
     }
 
     .aboutrow {
@@ -668,7 +672,12 @@ hr {
     .aboutcolumn:nth-child(5) {
         border-right: none;
     }
-
+    .companies{
+        animation: none;
+        flex-direction: column;
+        height: 100vh;
+        padding-block: 5vh;
+    }
 }
 
 @media screen and (max-width: 1920px) {}

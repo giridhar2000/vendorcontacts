@@ -367,8 +367,8 @@ export default function Home() {
                         </div>
                     </div>
                     <hr />
-                    <div className='aboutrow' style={{justifyContent: "flex-start"}}>
-                        <div className='aboutcolumn' style={{justifyContent:" center", marginBottom: "7dvh"}}>
+                    <div className='aboutrow' style={{ justifyContent: "flex-start" }}>
+                        <div className='aboutcolumn' style={{ justifyContent: " center", marginBottom: "7dvh" }}>
                             <div className='requestsitemhead'>
                                 <img src={GraphIcon} alt='img' />
                                 <h1>Trusted by Industry Professionals</h1>
@@ -377,21 +377,21 @@ export default function Home() {
                         </div>
 
                         <div className="ribbon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="601" height="390" viewBox="0 0 601 390" fill="none">
-                            <path id="p3" d="M43 0V347H558V0" stroke="#D9E167" stroke-width="85" stroke-linejoin="round" />
-                            <text dominant-baseline="middle" fill="black">
-                                <textPath href="#p3" startOffset="100%">
-                                    Uniting Visionaries and makers .Uniting Visionaries and makers .
-                                    <animate
-                                        attributeName="startOffset" from="-100%" to="100%"
-                                        dur="10s" begin="3s" repeatCount="indefinite" />
-                                </textPath>
-                            </text>
-                        </svg>
-                    </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="601" height="390" viewBox="0 0 601 390" fill="none">
+                                <path id="p3" d="M43 0V347H558V0" stroke="#D9E167" stroke-width="85" stroke-linejoin="round" />
+                                <text dominant-baseline="middle" fill="black">
+                                    <textPath href="#p3" startOffset="100%">
+                                        Uniting Visionaries and makers .Uniting Visionaries and makers .
+                                        <animate
+                                            attributeName="startOffset" from="-100%" to="100%"
+                                            dur="10s" begin="3s" repeatCount="indefinite" />
+                                    </textPath>
+                                </text>
+                            </svg>
+                        </div>
 
                     </div>
-                    
+
                 </div>
 
             </section>
@@ -399,26 +399,12 @@ export default function Home() {
             <section className="collaborators">
                 <h2 className="heading">In Collaboration With</h2>
                 <div className="companies">
-                    <Marquee>
-
-                        <img src={Gettys} alt="gettys-logo" />
-
-
-                        <img src={IAInteriors} alt="ia-interiors" />
-
-
-                        <img src={Gensler} alt="gensler-logo" />
-
-
-                        <img src={Stantec} alt="stantec-logo" />
-
-
-                        <img src={OKK} alt="okk-logo" />
-
-
-                        <img src={HPA} alt="hpa-logo" />
-
-                    </Marquee>
+                    <img src={Gettys} alt="gettys-logo" />
+                    <img src={IAInteriors} alt="ia-interiors" />
+                    <img src={Gensler} alt="gensler-logo" />
+                    <img src={Stantec} alt="stantec-logo" />
+                    <img src={OKK} alt="okk-logo" />
+                    <img src={HPA} alt="hpa-logo" />
                 </div>
             </section>
 

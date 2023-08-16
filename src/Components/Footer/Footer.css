@@ -55,10 +55,6 @@
 
 /* media screen styles  */
 @media(max-width:767px) {
-    .footer {
-       /* display: none; */
-       width: 86vh;
-    }
 
     .logo {
         width: 50px;
