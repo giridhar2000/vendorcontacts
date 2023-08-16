@@ -1,24 +1,14 @@
 .header {
     display: flex;
     justify-content: space-between;
+    padding-inline: 2vh;
     align-items: center;
-    border-bottom: 0.5px solid #000000;
-    padding-inline: 10vh;
+    border-bottom: 1px solid #000;
 }
 
-.logo {
+.headerlogo {
     display: flex;
-    align-items: center;
-}
-
-.logo .logo-text {
-    font-weight: 900;
-    font-size: 22px;
-}
-
-.logoIcon {
-    height: 30% !important;
-    margin-right: 0.5rem;
+    gap: 2vh;
 }
 
 .signin {
@@ -54,37 +44,5 @@
 }
 
 @media(max-width:767px) {
-    .header {
-        width: 210vh;
-        padding: 20px;
-        justify-content: space-between;
-        background-color: #D6DB63;
-    }
 
-    .logoIcon {
-        height: 100% !important;
-        width: auto;
-    }
-
-    .logo-text{
-        justify-content: center;
-        align-items: center;
-        font-size: 150px;
-    }
-
-    .fs-56 {
-        font-size: 70px;
-    }
-
-    .signin {
-        /* width: auto;
-        font-size: 15px; */
-        display: none;
-    }
-
-    .request {
-        /* width: auto;
-        font-size: 15px; */
-        display: none;
-    }
 }

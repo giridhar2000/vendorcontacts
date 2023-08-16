@@ -56,9 +56,8 @@
 /* media screen styles  */
 @media(max-width:767px) {
     .footer {
-        width: 220vh;
-        height: auto;
-        padding: 20px;
+       /* display: none; */
+       width: 86vh;
     }
 
     .logo {
