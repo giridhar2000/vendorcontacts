@@ -270,15 +270,16 @@ p {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    animation: marquee 10s linear infinite;
+    animation: marquee 25s linear infinite;
     overflow-x: hidden;
 }
 
 @keyframes marquee {
-    0%{
+    0% {
         transform: translateX(120%);
     }
-    100%{
+
+    100% {
         transform: translateX(-120%);
     }
 }
@@ -612,13 +613,14 @@ hr {
 
     .mission-right h4 {
         font-size: 27px;
+        width: 90vh;
     }
 
     .mission-right p {
         font-size: larger;
-        text-align: left;
-        padding-right: 10vh;
+        text-align: justify;
         padding-top: 1vh;
+        width: 75vh;
     }
 
     .tilt {
@@ -629,10 +631,12 @@ hr {
         padding: 0;
         width: initial;
         margin-block: 5vh !important;
+        height: 60vh;
     }
 
     .mission-left h4 {
         font-size: 25px;
+        width: 90vh
     }
 
     .aboutrow {
@@ -672,7 +676,8 @@ hr {
     .aboutcolumn:nth-child(5) {
         border-right: none;
     }
-    .companies{
+
+    .companies {
         animation: none;
         flex-direction: column;
         height: 100vh;
