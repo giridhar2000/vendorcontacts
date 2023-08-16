@@ -683,6 +683,12 @@ hr {
         height: 100vh;
         padding-block: 5vh;
     }
+
+    .buttons button {
+        width: 170px;
+        height: 60px;
+        font-size: larger;
+    }
 }
 
 @media screen and (max-width: 1920px) {}
