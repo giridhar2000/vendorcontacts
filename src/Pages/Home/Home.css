@@ -532,6 +532,9 @@ hr {
     .firststep {
         top: -35vh;
     }
+    .aboutcolumn{
+        padding: 6vh;
+    }
 
 }
 
