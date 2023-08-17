@@ -520,8 +520,8 @@ hr {
         flex-direction: column;
         width: 100%;
         align-items: flex-end;
-        gap: 2vh;
-        right: 11vh;
+        gap: 4vh;
+        right: 20vh;
     }
     .join-block {
         width: 25%;
