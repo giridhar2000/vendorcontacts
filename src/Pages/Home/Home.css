@@ -523,6 +523,9 @@ hr {
         gap: 2vh;
         right: 11vh;
     }
+    .join-block {
+        width: 25%;
+    }
 
 }
 
