@@ -526,6 +526,9 @@ hr {
     .join-block {
         width: 25%;
     }
+    .arrow {
+        left: 21%;
+    }
 
 }
 
