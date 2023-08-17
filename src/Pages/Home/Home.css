@@ -529,6 +529,9 @@ hr {
     .arrow {
         left: 21%;
     }
+    .firststep {
+        top: -35vh;
+    }
 
 }
 
