@@ -518,8 +518,20 @@ hr {
         flex-direction: column;
         width: 100%;
         align-items: flex-end;
-        gap: 2vh;
-        right: 11vh;
+        gap: 4vh;
+        right: 20vh;
+    }
+    .join-block {
+        width: 25%;
+    }
+    .arrow {
+        left: 21%;
+    }
+    .firststep {
+        top: -35vh;
+    }
+    .aboutcolumn{
+        padding: 6vh;
     }
 
     .arrow {
@@ -702,7 +714,7 @@ hr {
 .marquee {
     gap: 10vh;
 }
-@media only screen and (max-width: 400px) and (min-width: 390px){
+/* @media only screen and (max-width: 400px) and (min-width: 390px){
     .arrow {
         position: absolute;
         left: 50vh;
@@ -713,7 +725,7 @@ hr {
         position: absolute;
         left: 49vh;
     }
-}
+} */
 
 svg#circle {
     filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
