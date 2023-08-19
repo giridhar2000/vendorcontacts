@@ -62,11 +62,9 @@
 }
 
 .join-block {
-    background-image: url('../../Assets/images/Subtract.svg');
-    background-repeat: no-repeat;
     border-radius: 10px;
     user-select: none;
-    width: 17%;
+    width: fit-content;
 }
 
 
@@ -96,11 +94,11 @@
     left: 14%;
 }
 
-.join-block:hover>.arrow {
+.svg-btn:hover>.arrow {
     transform: translate(3vh, -3vh) scale(1.5);
 }
 
-.join-block:active .arrow {
+.svg-btn:active .arrow {
     background-color: #D9E167;
 }
 
@@ -256,7 +254,7 @@ p {
 }
 
 .collaborators {
-    margin: 2rem 4rem auto;
+    margin: 2rem 2rem auto;
     overflow-x: hidden;
 }
 
@@ -270,7 +268,7 @@ p {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    animation: marquee 25s linear infinite;
+    /* animation: marquee 25s linear infinite; */
     overflow-x: hidden;
 }
 
@@ -524,6 +522,10 @@ hr {
         right: 11vh;
     }
 
+    .arrow {
+        left: 21%;
+    }
+
 }
 
 @media(max-width:767px) {
@@ -699,4 +701,24 @@ hr {
 
 .marquee {
     gap: 10vh;
+}
+@media only screen and (max-width: 400px) and (min-width: 390px){
+    .arrow {
+        position: absolute;
+        left: 50vh;
+    }
+}
+@media only screen and (max-width: 414px) and (min-width: 400px){
+    .arrow {
+        position: absolute;
+        left: 49vh;
+    }
+}
+
+svg#circle {
+    filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+}
+
+svg#circle:active{
+    filter: none;
 }

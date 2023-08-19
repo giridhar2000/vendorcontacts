@@ -113,12 +113,30 @@ export default function Home() {
             <section className="team">
                 <div className="joinContainer">
                     <div className="join-block">
-                        <div>
-                            <h2> join <br /> the list</h2>
-                        </div>
-                        <div className="arrow">
-                            <img src={Arrow} alt="arrow" />
-                        </div>
+                        <svg id="circle" xmlns="http://www.w3.org/2000/svg" width="269" height="176" viewBox="0 0 269 176" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M135 0H0V176H269V107.642C269 107.595 269 107.547 269 107.5C269 69.8412 243.579 63.5656 220.623 65.5758C201.882 67.2169 182.019 56.1436 179.5 37.5L179.298 36.4852C178.927 34.6156 178.704 32.7147 178.482 30.8138C178.234 28.6982 177.987 26.5826 177.533 24.5101C175.588 15.6141 167.539 0 135 0Z" fill="black" />
+                            <text x="30%" y="32%" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="40px">
+                                JOIN
+
+                            </text>
+
+                            <text x="40%" y="68%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="40px">
+                                THE LIST
+                            </text>
+                            <svg id="circle" x="67%" y="-3%" xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" fill="none">
+                                <circle cx="36" cy="36" r="30" fill="black">
+
+                                </circle>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="65" height="65" x="68%" y="-1%" viewBox="0 0 65 65" fill="none">
+                                <mask id="circle" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="65" height="65">
+                                    <rect y="32.0541" width="45.3313" height="45.3313" transform="rotate(-45 0 32.0541)" fill="#D9D9D9" />
+                                </mask>
+                                <g mask="url(#circle)">
+                                    <path d="M38.9656 27.8136L22.7048 44.0744L20.0337 41.4032L36.2944 25.1424L21.3359 25.1424L21.3693 21.3694H42.7387V42.7388L38.9656 42.7722L38.9656 27.8136Z" fill="white" />
+                                </g>
+                            </svg>
+                        </svg>
                     </div>
 
                 </div>
@@ -131,9 +149,10 @@ export default function Home() {
                                 Uniting Visionaries and makers .Uniting Visionaries and makers .
                                 <animate
                                     attributeName="startOffset" from="-100%" to="100%"
-                                    dur="10s" begin="3s" repeatCount="indefinite" />
+                                    dur="10s" begin="1s" repeatCount="indefinite" />
                             </textPath>
                         </text>
+
                     </svg>
                 </div>
             </section>
