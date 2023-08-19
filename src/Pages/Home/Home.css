@@ -714,18 +714,7 @@ hr {
 .marquee {
     gap: 10vh;
 }
-/* @media only screen and (max-width: 400px) and (min-width: 390px){
-    .arrow {
-        position: absolute;
-        left: 50vh;
-    }
-}
-@media only screen and (max-width: 414px) and (min-width: 400px){
-    .arrow {
-        position: absolute;
-        left: 49vh;
-    }
-} */
+
 
 svg#circle {
     filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
