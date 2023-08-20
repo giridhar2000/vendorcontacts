@@ -115,7 +115,7 @@
 
 .firststep {
     position: relative;
-    top: -20vh;
+    top: -22vh;
     pointer-events: none;
 }
 
@@ -284,7 +284,6 @@ p {
 
 
 .ribbon {
-    position: relative;
     margin-left: 15%;
 }
 
@@ -521,16 +520,20 @@ hr {
         gap: 4vh;
         right: 20vh;
     }
+
     .join-block {
         width: 25%;
     }
+
     .arrow {
         left: 21%;
     }
+
     .firststep {
         top: -35vh;
     }
-    .aboutcolumn{
+
+    .aboutcolumn {
         padding: 6vh;
     }
 
@@ -540,48 +543,82 @@ hr {
 
 }
 
+.menu{
+    display: none;
+}
+
 @media(max-width:767px) {
 
     .container {
-        width: max-content;
+        overflow-x: hidden;
+    }
+
+    .headerlogo {
+        gap: 1vh;
+    }
+
+    .headerlogo img{
+        width: 10%;
+    }
+
+    .headerlogo h1{
+        font-size: large;
+    }
+
+    .right {
+        display: none;
+    }
+
+    .menu{
+        display: block;
     }
 
     .bg,
     .Ellipse {
-        display: none;
+        width: 100%;
+        left: 0;
+        mask-image: linear-gradient(50deg, transparent 75%, #0f0f0f 100%);
+        top: 82px;
+        pointer-events: none;
     }
 
     .banner {
-        width: max-content;
         margin: 2rem auto !important;
     }
 
     .banner-heading {
-        width: max-content;
         margin: 2rem auto !important;
     }
 
     .banner-text {
-        font-size: 36px;
+        font-size: 17px;
         align-items: center;
         padding-left: 1vh;
     }
 
+    .banner-text h1 img {
+        height: 35px;
+    }
+
     .team {
-        height: auto;
+        height: 15vh;
     }
 
     .steps {
-        /* height: auto;
-        width: fit-content;
+        height: auto;
         text-align: center;
-        margin-block: 5vh !important; */
-        display: none;
+        top: -11vh;
     }
 
     .join-block {
-        width: 40%;
-        margin: 2rem auto !important;
+        margin-left: 4vh !important;
+        margin-bottom: 4vh !important;
+        width: auto;
+    }
+
+    .join-block svg {
+        width: 25%;
+        height: 25%;
     }
 
     .arrow {
@@ -592,14 +629,18 @@ hr {
     .faq {
         height: auto;
         text-align: center;
-        border-top: 2px solid black;
-        border-bottom: 2px solid black;
-        border-left: none;
-        border-right: none;
     }
 
     .faq-block {
+        width: auto;
+        font-size: 25px;
+        font-weight: 600;
         justify-content: center;
+    }
+
+    .faq,
+    .mission {
+        margin-inline: 15px !important;
     }
 
     .collaborators {
@@ -622,47 +663,54 @@ hr {
     .mission-block {
         flex-direction: column;
         padding: 2vh;
-        gap: 6vh;
+        gap: 4vh;
     }
 
     .mission-right h4 {
-        font-size: 27px;
-        width: 90vh;
+        font-size: larger;
+        width: fit-content;
     }
 
     .mission-right p {
-        font-size: larger;
-        text-align: justify;
-        padding-top: 1vh;
-        width: 75vh;
+        font-size: medium;
+        padding-top: 2vh;
+        width: fit-content;
+        padding-right: 3vh;
     }
 
     .tilt {
-        display: none;
+        margin-block: 2vh !important;
+        position: static;
+        align-items: center;
+    }
+
+    .tiltedChild {
+        width: 75%;
     }
 
     .mission {
         padding: 0;
         width: initial;
         margin-block: 5vh !important;
-        /* height: 60vh; */
+        border-bottom-right-radius: 100px;
     }
 
     .mission-left h4 {
-        font-size: 25px;
-        width: 90vh
+        font-size: larger;
+        width: fit-content;
     }
 
     .aboutrow {
         justify-content: flex-start;
         flex-direction: column;
         align-items: flex-start;
+        margin-inline: 15px !important;
     }
 
     .aboutcolumn {
         width: 100%;
         text-align: center;
-        border: 1px solid gray;
+        border: 1px solid gray !important;
         border-inline: none;
     }
 
@@ -680,15 +728,10 @@ hr {
         display: none;
     }
 
-    .ribbon {
-        margin: 0rem auto !important;
-    }
 
-    .aboutcolumn:nth-child(1),
-    .aboutcolumn:nth-child(2),
-    .aboutcolumn:nth-child(4),
-    .aboutcolumn:nth-child(5) {
-        border-right: none;
+    .ribbon svg{
+        width: 100%;
+        height: 75%;
     }
 
     .companies {
@@ -720,6 +763,6 @@ svg#circle {
     filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
 }
 
-svg#circle:active{
+svg#circle:active {
     filter: none;
 }
