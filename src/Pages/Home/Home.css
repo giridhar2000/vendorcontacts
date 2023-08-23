@@ -517,7 +517,7 @@ hr {
         flex-direction: column;
         width: 100%;
         align-items: flex-end;
-        gap: 4vh;
+        gap: 2vh;
         right: 20vh;
     }
 
