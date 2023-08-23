@@ -727,7 +727,6 @@ hr {
     }
 
     .aboutcolumn p {
-        text-align: center;
         width: 100%;
     }
 
@@ -759,8 +758,6 @@ hr {
         font-size: larger;
     }
 }
-
-@media screen and (max-width: 1920px) {}
 
 .initial-child-container {
     gap: 10vh;
