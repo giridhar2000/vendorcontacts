@@ -254,7 +254,7 @@ p {
 }
 
 .collaborators {
-    margin: 2rem 2rem auto;
+    margin: 2rem 2rem 2rem 2rem;
     overflow-x: hidden;
 }
 
