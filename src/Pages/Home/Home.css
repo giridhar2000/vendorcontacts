@@ -596,6 +596,18 @@ hr {
         padding-left: 1vh;
     }
 
+    .requestsitemhead {
+        text-align: left;
+        padding-left: 2vh;
+    }
+
+    .requestsitemhead h1 {
+        text-align: left;
+    }
+    .requestsitemhead p {
+        text-align: left;
+    }
+
     .banner-text h1 img {
         height: 35px;
     }
