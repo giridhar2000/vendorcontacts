@@ -254,7 +254,7 @@ p {
 }
 
 .collaborators {
-    margin: 2rem 2rem auto;
+    margin: 2rem 2rem 2rem 2rem;
     overflow-x: hidden;
 }
 
@@ -523,7 +523,7 @@ hr {
         flex-direction: column;
         width: 100%;
         align-items: flex-end;
-        gap: 4vh;
+        gap: 2vh;
         right: 20vh;
         top: 95%;
     }
@@ -601,6 +601,18 @@ hr {
         font-size: 17px;
         align-items: center;
         padding-left: 1vh;
+    }
+
+    .requestsitemhead {
+        text-align: left;
+        padding-left: 2vh;
+    }
+
+    .requestsitemhead h1 {
+        text-align: left;
+    }
+    .aboutcolumn p {
+        text-align: left;
     }
 
     .banner-text h1 img {
@@ -722,7 +734,6 @@ hr {
     }
 
     .aboutcolumn p {
-        text-align: center;
         width: 100%;
     }
 
@@ -754,8 +765,6 @@ hr {
         font-size: larger;
     }
 }
-
-@media screen and (max-width: 1920px) {}
 
 .initial-child-container {
     gap: 10vh;
