@@ -398,7 +398,7 @@ export default function Home() {
                         <div className="ribbon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="601" height="390" viewBox="0 0 601 390" fill="none">
                                 <path id="p3" d="M43 0V347H558V0" stroke="#D9E167" stroke-width="85" stroke-linejoin="round" />
-                                <text dominant-baseline="middle" fill="black">
+                                <text dominant-baseline="middle" fill="black" font-size="32px">
                                     <textPath href="#p3" startOffset="100%">
                                         Uniting Visionaries and makers .Uniting Visionaries and makers .
                                         <animate

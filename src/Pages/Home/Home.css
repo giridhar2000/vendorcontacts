@@ -298,93 +298,99 @@ p {
     gap: 6px;
     right: 31vh;
     margin-top: 1vh;
+    top: 85%;
 }
 
 .tiltedChild {
     background-color: #000;
     color: white;
     padding: 2vh;
+    padding-inline: 5vh;
     border-radius: 5vh;
     text-align: center;
-    width: fit-content;
-    width: 20%;
+    width: 17%;
     cursor: pointer;
 }
 
 .tiltedChild:nth-child(1) {
     animation-delay: 1000ms;
+    transform:  rotate(-38.351deg);;
     animation: bounceInDown1 3s;
 }
 
 .tiltedChild:nth-child(2) {
     animation-delay: 800ms;
+    transform: rotate(9.803deg) translateX(17vh);
     animation: bounceInDown2 2.5s;
 }
 
 .tiltedChild:nth-child(3) {
     animation-delay: 600ms;
+    transform: rotate(-12.953deg) translateY(6vh);
     animation: bounceInDown3 2s;
 }
 
 .tiltedChild:nth-child(4) {
     animation-delay: 400ms;
+    transform: rotate(21.934deg) translateY(4vh) translateX(22vh);
     animation: bounceInDown4 1.5s;
 }
 
 .tiltedChild:nth-child(5) {
     animation-delay: 200ms;
+    transform: rotate(-18.28deg) translateX(-6vh) translateY(15vh);;
     animation: bounceInDown5 1s;
 }
 
 @keyframes bounceInDown1 {
     0% {
         opacity: 0;
-        transform: translateY(-2000px) rotate(-18.351deg);
+        transform: translateY(-2000px) 
     }
 
-    60% {
+    40% {
         opacity: 1;
-        transform: translateY(30px) rotate(-18.351deg);
+        transform: translateY(30px)  rotate(38.351deg);
     }
 
-    80% {
-        transform: translateY(-10px) rotate(0deg);
+    75% {
+        transform: translateY(-10px)  rotate(-38.351deg);
     }
 
     100% {
-        transform: translateY(0);
+        transform: translateY(0)  rotate(-38.351deg);
     }
 }
 
 @keyframes bounceInDown2 {
     0% {
         opacity: 0;
-        transform: translateY(-2000px) rotate(9.803deg);
+        transform: translateY(-2000px) translateX(17vh) rotate(9.803deg);
     }
 
     60% {
         opacity: 1;
-        transform: translateY(30px) rotate(9.803deg);
+        transform: translateY(30px) translateX(17vh) rotate(-9.803deg);
     }
 
     80% {
-        transform: translateY(-10px) rotate(0deg);
+        transform: translateY(-10px) translateX(17vh) rotate(9.803deg);
     }
 
     100% {
-        transform: translateY(0);
+        transform: translateY(0) translateX(17vh) rotate(9.803deg);
     }
 }
 
 @keyframes bounceInDown3 {
     0% {
         opacity: 0;
-        transform: translateY(-2000px) rotate(-18.351deg);
+        transform: translateY(-2000px) rotate(12.351deg);
     }
 
     60% {
         opacity: 1;
-        transform: translateY(30px) rotate(-12.953deg);
+        transform: translateY(30px) rotate(12.953deg);
     }
 
     80% {
@@ -392,47 +398,47 @@ p {
     }
 
     100% {
-        transform: translateY(0);
+        transform: translateY(7vh) rotate(-12.953deg);
     }
 }
 
 @keyframes bounceInDown4 {
     0% {
         opacity: 0;
-        transform: translateY(-2000px) rotate(21.934deg);
+        transform: translateY(-2000px) translateX(22vh) rotate(21.934deg);
     }
 
     60% {
         opacity: 1;
-        transform: translateY(30px) rotate(21.934deg);
+        transform: translateY(30px) translateX(22vh) rotate(-21.934deg);
     }
 
     80% {
-        transform: translateY(-10px) rotate(0deg);
+        transform: translateY(-10px) translateX(22vh) rotate(21.934deg);
     }
 
     100% {
-        transform: translateY(0);
+        transform: translateY(4vh) translateX(22vh) rotate(21.934deg);
     }
 }
 
 @keyframes bounceInDown5 {
     0% {
         opacity: 0;
-        transform: translateY(-2000px) rotate(-18.28deg);
+        transform: translateY(-2000px) rotate(18.28deg);
     }
 
     60% {
         opacity: 1;
-        transform: translateY(30px) rotate(-18.28deg);
+        transform: translateY(30px) rotate(18.28deg);
     }
 
     80% {
-        transform: translateY(-10px) rotate(0deg);
+        transform: translateY(-10px) rotate(-18.28deg);
     }
 
     100% {
-        transform: translateY(0);
+        transform:  translateX(-6vh) translateY(15vh) rotate(-18.28deg);
     }
 }
 
@@ -519,6 +525,7 @@ hr {
         align-items: flex-end;
         gap: 4vh;
         right: 20vh;
+        top: 95%;
     }
 
     .join-block {
@@ -530,7 +537,7 @@ hr {
     }
 
     .firststep {
-        top: -35vh;
+        top: -25vh;
     }
 
     .aboutcolumn {
