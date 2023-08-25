@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../Components/Header/Header";
 import "./Home.css";
 import Gettys from "../../Assets/images/gettys-group.svg";
@@ -10,7 +10,6 @@ import HPA from "../../Assets/images/hpa.svg";
 import Collaboration from "../../Assets/images/handshake.svg";
 import Telescope from "../../Assets/images/telescope.svg";
 import Target from "../../Assets/images/target.svg";
-import Arrow from "../../Assets/images/arrow.svg";
 import TrustIcon from "../../Assets/images/professional-trust.svg";
 import CommunicationIcon from "../../Assets/images/communication.svg";
 import SearchIcon from "../../Assets/images/search.svg";
@@ -18,13 +17,11 @@ import StoreIcon from "../../Assets/images/industry.svg";
 import ToolsIcon from "../../Assets/images/tools.svg";
 import AdvanceSearchIcon from "../../Assets/images/search-cap.svg";
 import GraphIcon from "../../Assets/images/graph.svg";
-import Vector from "../../Assets/images/Vector.png";
 import bg1 from "../../Assets/images/bg.png";
-import Ellipse from "../../Assets/images/Ellipse.png";
-import Marquee from "react-fast-marquee";
 import { gsap } from "gsap";
 
 export default function Home() {
+    const [open, setOpen] = useState(false)
     useEffect(() => {
         animator();
         // const observer = new IntersectionObserver((entries) => {
@@ -91,6 +88,35 @@ export default function Home() {
         <>
 
             <Header />
+            {open &&
+                <div id="myModal" className="modal">
+
+                    <div className="modal-content">
+                        <span className="close" onClick={() => setOpen(false)}>&times;</span>
+
+                        <div className="modalform">
+                            <h4>One step away from the future
+                                of designer-vendor collaboration.</h4>
+
+                            <p>Please provide your email to join this ecosystem.</p>
+
+                            <form>
+                                <div>
+                                    <label>E-mail ID</label><br />
+                                    <input className="mailinput" type="text" placeholder="thejacobdesigner@gmail.com" /><br />
+                                </div>
+                                <br />
+                                <div>
+                                    <input type="checkbox" />&nbsp;
+                                    <label className="checklabel">By clicking "Accept," you agree to our Terms and Conditions.</label><br />
+                                </div>
+                                <br />
+                                <input type="submit" value="Send" className="submit-btn"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
             <section className="banner">
                 <div className="banner-heading">
                     <div className="banner-text">
@@ -112,7 +138,7 @@ export default function Home() {
 
             <section className="team">
                 <div className="joinContainer">
-                    <div className="join-block">
+                    <div className="join-block" onClick={() => setOpen(true)}>
                         <svg id="circle" xmlns="http://www.w3.org/2000/svg" width="269" height="176" viewBox="0 0 269 176" fill="none">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M135 0H0V176H269V107.642C269 107.595 269 107.547 269 107.5C269 69.8412 243.579 63.5656 220.623 65.5758C201.882 67.2169 182.019 56.1436 179.5 37.5L179.298 36.4852C178.927 34.6156 178.704 32.7147 178.482 30.8138C178.234 28.6982 177.987 26.5826 177.533 24.5101C175.588 15.6141 167.539 0 135 0Z" fill="black" />
                             <text x="30%" y="32%" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="40px">
@@ -147,9 +173,9 @@ export default function Home() {
                         <text dominant-baseline="middle" fill="black" font-size="32px">
                             <textPath href="#p1" startOffset="100%">
                                 Uniting Visionaries and makers .Uniting Visionaries and makers .
-                                <animate
+                                {/* <animate
                                     attributeName="startOffset" from="-100%" to="100%"
-                                    dur="10s" begin="1s" repeatCount="indefinite" />
+                                    dur="10s" begin="1s" repeatCount="indefinite" /> */}
                             </textPath>
                         </text>
 
