@@ -19,6 +19,7 @@ import AdvanceSearchIcon from "../../Assets/images/search-cap.svg";
 import GraphIcon from "../../Assets/images/graph.svg";
 import bg1 from "../../Assets/images/bg.png";
 import { gsap } from "gsap";
+import Footer from "../../Components/Footer/Footer";
 
 export default function Home() {
     const [open, setOpen] = useState(false)
@@ -452,7 +453,7 @@ export default function Home() {
                     <img src={HPA} alt="hpa-logo" />
                 </div>
             </section>
-
+            <Footer />
         </>
     );
 }

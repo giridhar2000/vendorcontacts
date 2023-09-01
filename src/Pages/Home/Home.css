@@ -546,6 +546,12 @@ hr {
     .arrow {
         left: 21%;
     }
+    .modal{
+        padding-top: 50px !important;
+    }
+    .modalform {
+        padding: 1vh;
+    }
 
 }
 

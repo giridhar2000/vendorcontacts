@@ -1,16 +1,20 @@
 import "./App.css";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home/Home";
-import Footer from "./Components/Footer/Footer";
+import Login from "./Pages/Login/Login";
 
 function App() {
   return (
     <BrowserRouter>
       <div className="container">
-        <Home />
-        <Footer />
-      </div>
         
+        <Routes>
+          <Route exact path="/" element={<Home />}></Route>
+          <Route exact path="/login" element={<Login />}></Route>
+        </Routes>
+        
+      </div>
+
     </BrowserRouter>
   );
 }

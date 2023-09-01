@@ -3,8 +3,13 @@ import "./Header.css";
 import { Button, Drawer } from 'antd';
 import Icon from "../../Assets/images/logo-icon.svg";
 import menu from "../../Assets/img/menu.svg";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate()
+  const signin = () => {
+    navigate('/login')
+  }
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
     setOpen(true);
@@ -20,7 +25,7 @@ const Header = () => {
       </div>
       <div className="right">
         <div className="buttons">
-          <button className="signin">Sign in</button>
+          <button className="signin" onClick={signin}>Sign in</button>
           <button className="request">Request Invite</button>
         </div>
       </div>
