@@ -155,10 +155,6 @@
     flex: 1;
 }
 
-.mission-right h4,
-p {
-    width: 500px;
-}
 
 .mission-right h4 {
     font-size: 32px;
@@ -559,7 +555,7 @@ hr {
     display: none;
 }
 
-@media(max-width:767px) {
+@media(max-width:1100px) {
 
     .container {
         overflow-x: hidden;

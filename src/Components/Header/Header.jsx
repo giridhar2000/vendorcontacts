@@ -4,8 +4,8 @@ import { Button, Drawer } from "antd";
 import Icon from "../../Assets/images/logo-icon.svg";
 import { AiOutlineArrowRight, AiOutlineUser } from "react-icons/ai";
 import { BsChatLeftText, BsBell } from "react-icons/bs";
-import menu from "../../Assets/img/menu.svg";
 import { useNavigate } from "react-router-dom";
+
 
 const Header = () => {
   const navigate = useNavigate()
@@ -31,53 +31,47 @@ const Header = () => {
         )}
       </div>
 
-      {isAuth ?
-        (
-          <div className="right">
-            <form className="header-form">
-              <button>
-                <svg
-                  width={17}
-                  height={16}
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  role="img"
-                  aria-labelledby="search"
-                >
-                  <path
-                    d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9"
-                    stroke="currentColor"
-                    strokeWidth="1.333"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-              <input
-                className="header-input"
-                placeholder="Search your favourite vendor"
-                required
-                type="text"
-              />
-              <button>
-                <div className="form-button">
-                  <AiOutlineArrowRight />
-                </div>
-              </button>
-            </form>
-            <div className="right">
-              <div className="buttons">
-                <button className="signin" onClick={signin}>Sign in</button>
-                <button className="request">Request Invite</button>
+      {isAuth ? (
+        <div className="right">
+          <form className="header-form">
+            <button>
+              <svg
+                width={17}
+                height={16}
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                role="img"
+                aria-labelledby="search"
+              >
+                <path
+                  d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9"
+                  stroke="currentColor"
+                  strokeWidth="1.333"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            <input
+              className="header-input"
+              placeholder="Search your favourite vendor"
+              required
+              type="text"
+            />
+            <button>
+              <div className="form-button">
+                <AiOutlineArrowRight />
               </div>
-            </div>
-          </div>
-        ) : ""}
+            </button>
+          </form>
 
+
+        </div>
+      ) : null}
       <div className="right">
         {!isAuth ? (
           <div className="buttons">
-            <button className="signin">Sign in</button>
+            <button className="signin" onClick={signin}>Sign in</button>
             <button className="request">Request Invite</button>
           </div>
         ) : (
@@ -148,7 +142,7 @@ const Header = () => {
           <div className="buttons">
             {!isAuth ? (
               <div className="buttons">
-                <button className="signin">Sign in</button>
+                <button className="signin" onClick={signin}>Sign in</button>
                 <button className="request">Request Invite</button>
               </div>
             ) : (

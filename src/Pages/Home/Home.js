@@ -18,6 +18,7 @@ import AdvanceSearchIcon from "../../Assets/images/search-cap.svg";
 import GraphIcon from "../../Assets/images/graph.svg";
 import bg1 from "../../Assets/images/bg.png";
 import { gsap } from "gsap";
+import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 import Header from "../../Components/Header/Header";
 
@@ -88,8 +89,7 @@ export default function Home() {
 
     return (
         <>
-
-            <Header />
+            <Header/>
             {open &&
                 <div id="myModal" className="modal">
 
