@@ -35,7 +35,7 @@ export default function Login() {
                                 </div>
                                 <p className='forgotpass'>Forgot Password?</p>
                                 <button className='loginbtn'>Log In</button>
-                                <p>Don't have an account? <span className='loginsignup' onClick={() => setSignUp(false)}><b>Sign Up</b></span></p>
+                                <p className='p'>Don't have an account? <span className='loginsignup' onClick={() => setSignUp(false)}><b>Sign Up</b></span></p>
                             </div>
                         </>
                         :
@@ -76,7 +76,7 @@ export default function Login() {
                                 </div>
                                 <p className='forgotpass'>By Clicking "Sign Up", You Agree to Our Terms of Use and Privacy Policy</p>
                                 <button className='loginbtn'>Sign Up</button>
-                                <p>Already have an account? <span className='loginsignup' onClick={() => { setSignUp(true) }}><b>Login</b></span></p>
+                                <p className='p'>Already have an account? <span className='loginsignup' onClick={() => { setSignUp(true) }}><b>Login</b></span></p>
                             </div>
                         </>
                 }
@@ -86,8 +86,6 @@ export default function Login() {
 
             </div>
             <img src={loginbg} alt="login" className='loginimg' />
-
-
         </div>
     )
 }
