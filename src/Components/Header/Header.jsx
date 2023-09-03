@@ -31,7 +31,6 @@ const Header = () => {
         )}
       </div>
 
-
       {isAuth ? (
         <div className="right">
           <form className="header-form">
@@ -69,7 +68,6 @@ const Header = () => {
 
         </div>
       ) : null}
-
       <div className="right">
         {!isAuth ? (
           <div className="buttons">
