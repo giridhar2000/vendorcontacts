@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../Components/Header/Header";
 import "./Home.css";
 import Gettys from "../../Assets/images/gettys-group.svg";
 import IAInteriors from "../../Assets/images/ia_interior_architects.svg";
@@ -88,7 +87,7 @@ export default function Home() {
     return (
         <>
 
-            <Header />
+           
             {open &&
                 <div id="myModal" className="modal">
 
