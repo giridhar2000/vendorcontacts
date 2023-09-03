@@ -4,8 +4,14 @@ import { Button, Drawer } from "antd";
 import Icon from "../../Assets/images/logo-icon.svg";
 import { AiOutlineArrowRight, AiOutlineUser } from "react-icons/ai";
 import { BsChatLeftText, BsBell } from "react-icons/bs";
+import menu from "../../Assets/img/menu.svg";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate()
+  const signin = () => {
+    navigate('/login')
+  }
   const [open, setOpen] = useState(false);
   const [isAuth, setIsAuth] = useState(true);
   const showDrawer = () => {
@@ -58,6 +64,10 @@ const Header = () => {
               </div>
             </button>
           </form>
+      <div className="right">
+        <div className="buttons">
+          <button className="signin" onClick={signin}>Sign in</button>
+          <button className="request">Request Invite</button>
         </div>
       ) : null}
 
@@ -151,6 +161,8 @@ const Header = () => {
                 </p>
               </div>
             )}
+            <button className="signin" onClick={signin}>Sign in</button>
+            <button className="request">Request Invite</button>
           </div>
         </Drawer>
       </div>
