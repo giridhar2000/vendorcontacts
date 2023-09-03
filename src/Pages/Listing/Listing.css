@@ -1,0 +1,66 @@
+hr{
+  max-width: 55.8%;
+  margin-left: 21.5%;
+  background-color: lightgrey;
+}
+
+.filter{
+  max-width: 55.8%;
+  height: auto;
+  display: flex;
+  margin: 20px 0 20px 21.5% !important;
+  background-color: #fff;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter button{
+  background-color: #fff;
+  outline: none;
+  border: 0;
+  color: black;
+  align-items: center;
+  padding-block: 5px;
+  cursor: pointer;
+  font-family: "Poppins";
+  font-size: medium;
+}
+
+.Dropdown-control{
+  background-color: #fff;
+  border-radius: 30px;
+  border: 2px solid #000;
+  padding-left: 20px;
+  cursor: pointer;
+}
+
+.Dropdown-menu{
+  border-radius: 5px;
+  max-width: 70%;
+  margin-left: 12px;
+}
+
+.Dropdown-placeholder{
+  margin-right: 35px;
+  /* font-size: small; */
+}
+
+.cardcontainer{
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 10px;
+  padding: 20px;
+  padding-left: 20%;
+}
+
+.card {
+  width: 35%;
+  height: 250px;
+  border: 2px solid black;
+  border-right: 2px solid #000;
+  margin: 10px;
+}
+
+
