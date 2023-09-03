@@ -14,12 +14,12 @@
     margin-top: 4vh;
 }
 
-.names{
+.names {
     display: flex;
     gap: 2vh;
 }
 
-.nameip{
+.nameip {
     width: 32.5%;
 }
 
@@ -46,24 +46,61 @@
     margin-top: 5vh;
 }
 
-.loginContainer{
+.loginContainer {
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
-    margin-top: 7vh;
+    margin-top: 5vh;
 }
 
-.forgotpass{
+.forgotpass {
     font-size: smaller;
     cursor: pointer;
 }
 
-.login .loginimg{
+.login .loginimg {
     position: absolute;
-    top: 47vh;
-    width: 25%;
+    bottom: 0;
 }
 
-.loginsignup{
+.loginsignup {
     cursor: pointer;
+}
+
+@media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
+    .login .loginimg {
+        width: 30%;
+    }
+}
+
+@media(max-width:1100px) {
+    .login{
+        padding: 2vh;
+    }
+    .login .loginimg {
+        display: none;
+    }
+
+    .loginContainer{
+        flex-direction: column;
+    }
+
+    .loginText{
+        margin-block: 5vh !important;
+    }
+
+    .passip, .emailip, .nameip {
+        width: auto;
+        margin-top: 2vh !important;
+    }
+
+    .forgotpass{
+        margin-block: 2vh !important;
+    }
+    .loginbtn{
+        margin-top: 3vh !important;
+    }
+    .p{
+        margin-block: 2vh !important;
+    }
 }
