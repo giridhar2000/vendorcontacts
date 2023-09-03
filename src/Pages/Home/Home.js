@@ -19,6 +19,8 @@ import GraphIcon from "../../Assets/images/graph.svg";
 import bg1 from "../../Assets/images/bg.png";
 import { gsap } from "gsap";
 import Footer from "../../Components/Footer/Footer";
+import Header from "../../Components/Header/Header";
+
 
 export default function Home() {
     const [open, setOpen] = useState(false)
@@ -87,7 +89,7 @@ export default function Home() {
     return (
         <>
 
-           
+            <Header />
             {open &&
                 <div id="myModal" className="modal">
 
@@ -111,7 +113,7 @@ export default function Home() {
                                     <label className="checklabel">By clicking "Accept," you agree to our Terms and Conditions.</label><br />
                                 </div>
                                 <br />
-                                <input type="submit" value="Send" className="submit-btn"/>
+                                <input type="submit" value="Send" className="submit-btn" />
                             </form>
                         </div>
                     </div>
