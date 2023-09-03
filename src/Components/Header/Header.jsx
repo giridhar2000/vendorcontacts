@@ -31,7 +31,7 @@ const Header = () => {
         )}
       </div>
 
-      {isAuth ? (
+      {!isAuth ? (
         <div className="right">
           <form className="header-form">
             <button>
@@ -69,7 +69,7 @@ const Header = () => {
         </div>
       ) : null}
       <div className="right">
-        {!isAuth ? (
+        {isAuth ? (
           <div className="buttons">
             <button className="signin" onClick={signin}>Sign in</button>
             <button className="request">Request Invite</button>
