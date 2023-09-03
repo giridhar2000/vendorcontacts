@@ -66,6 +66,7 @@ const Header = () => {
             </button>
           </form>
 
+
         </div>
       ) : null}
 
@@ -159,6 +160,8 @@ const Header = () => {
                 </p>
               </div>
             )}
+            <button className="signin" onClick={signin}>Sign in</button>
+            <button className="request">Request Invite</button>
           </div>
         </Drawer>
       </div>
