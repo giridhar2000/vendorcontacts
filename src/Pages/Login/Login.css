@@ -99,6 +99,7 @@
     }
     .loginbtn{
         margin-top: 3vh !important;
+        width: 100%;
     }
     .p{
         margin-block: 2vh !important;
