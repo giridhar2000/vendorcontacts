@@ -18,6 +18,8 @@ import AdvanceSearchIcon from "../../Assets/images/search-cap.svg";
 import GraphIcon from "../../Assets/images/graph.svg";
 import bg1 from "../../Assets/images/bg.png";
 import { gsap } from "gsap";
+import Header from "../../Components/Header/Header";
+import Footer from "../../Components/Footer/Footer";
 
 export default function Home() {
     const [open, setOpen] = useState(false)
@@ -85,7 +87,7 @@ export default function Home() {
 
     return (
         <>
-
+            <Header/>
            
             {open &&
                 <div id="myModal" className="modal">
@@ -451,7 +453,7 @@ export default function Home() {
                     <img src={HPA} alt="hpa-logo" />
                 </div>
             </section>
-
+            <Footer />
         </>
     );
 }

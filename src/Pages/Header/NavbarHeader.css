@@ -1,0 +1,26 @@
+.navbarheader{
+    display: flex;
+    align-items: center;
+    gap: 5vh;
+    margin: 2rem 3rem auto;
+}
+
+.backbtn{
+    border: 1px solid black;
+    border-radius: 3vh;
+}
+
+.backbtn p{
+    width: 40px;
+    margin: 0;
+    padding: 0vh;
+    text-align: center;
+    font-size: larger;
+    
+}
+
+.backbtn:hover{
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
