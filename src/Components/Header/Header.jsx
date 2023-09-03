@@ -7,7 +7,7 @@ import { BsChatLeftText, BsBell } from "react-icons/bs";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(true);
   const showDrawer = () => {
     setOpen(true);
   };
