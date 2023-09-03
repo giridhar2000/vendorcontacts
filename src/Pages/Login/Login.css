@@ -71,6 +71,11 @@
     .login .loginimg {
         width: 30%;
     }
+
+    .loginContainer{
+        margin-top: -1vh;
+    }
+
 }
 
 @media(max-width:1100px) {
