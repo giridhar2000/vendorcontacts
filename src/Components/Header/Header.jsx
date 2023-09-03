@@ -38,7 +38,7 @@ const Header = () => {
         </Button>
         <Drawer title="Vendor Connect" placement="right" onClose={onClose} open={open}>
           <div className="buttons">
-            <button className="signin">Sign in</button>
+            <button className="signin" onClick={signin}>Sign in</button>
             <button className="request">Request Invite</button>
           </div>
         </Drawer>
