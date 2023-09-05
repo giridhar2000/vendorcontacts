@@ -37,7 +37,7 @@ const Listing = () => {
               active clients.
           </p>
           </div>
-          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.7em', borderRadius:'3.5px'}}/>
+          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.5em', borderRadius:'3.5px'}}/>
         </div>
         <div className="listingcard">
           <img src={bg1} alt="bg"/>
@@ -51,7 +51,7 @@ const Listing = () => {
               active clients.
           </p>
           </div>
-          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.7em', borderRadius:'3.5px'}}/>
+          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.5em', borderRadius:'3.5px'}}/>
         </div>
         <div className="listingcard">
           <img src={bg1} alt="bg"/>
@@ -65,7 +65,7 @@ const Listing = () => {
               active clients.
           </p>
           </div>
-          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.7em', borderRadius:'3.5px'}}/>
+          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.5em', borderRadius:'3.5px'}}/>
         </div>
         <div className="listingcard">
           <img src={bg1} alt="bg"/>
@@ -79,7 +79,7 @@ const Listing = () => {
               active clients.
           </p>
           </div>
-          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.7em', borderRadius:'3.5px'}}/>
+          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.5em', borderRadius:'3.5px'}}/>
         </div>
         <div className="listingcard">
           <img src={bg1} alt="bg"/>
@@ -93,7 +93,7 @@ const Listing = () => {
               active clients.
           </p>
           </div>
-          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.7em', borderRadius:'3.5px'}}/>
+          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.5em', borderRadius:'3.5px'}}/>
         </div>
         <div className="listingcard">
           <img src={bg1} alt="bg"/>
@@ -107,9 +107,15 @@ const Listing = () => {
               active clients.
           </p>
           </div>
-          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.7em', borderRadius:'3.5px'}}/>
+          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.5em', borderRadius:'3.5px'}}/>
         </div>
       </div>
+      <div className="load">
+      <button>
+        Load More
+      </button>
+      </div>
+      <br/>
       <Footer />
     </>
   );

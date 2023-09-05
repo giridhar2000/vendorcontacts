@@ -1,14 +1,14 @@
 hr{
-  max-width: 63.5%;
-  margin-left: 21.5%;
+  max-width: 68.7%;
+  margin-left: 15.2%;
   background-color: lightgrey;
 }
 
 .filter{
-  max-width: 63.5%;
+  max-width: 68.7%;
   height: auto;
   display: flex;
-  margin: 20px 0 20px 21.5% !important;
+  margin: 20px 0 20px 15% !important;
   background-color: #fff;
   align-items: center;
   justify-content: space-between;
@@ -52,7 +52,7 @@ hr{
   flex-wrap: wrap;
   margin: 10px;
   padding: 20px;
-  padding-left: 20%;
+  padding-left: 14%;
 }
 
 .listingcard {
@@ -95,11 +95,28 @@ hr{
 }
 
 .listingname p:nth-child(3) {
-  font-size: 70%;
+  font-size: 60%;
   font-weight: bold;
   margin-top: 25px;
-  max-height: 60%;
+  max-height: 50% !important;
 }
 
+.load{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.load button{
+  background-color: #fff;
+  outline: none;
+  border: 2px solid #000;
+  color: black;
+  align-items: center;
+  padding-block: 5px;
+  cursor: pointer;
+  font-family: "Poppins";
+  font-size: medium;
+}
 
 
