@@ -3,6 +3,7 @@ import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 import bg1 from "../../Assets/img/img1.jpg";
 import { CgOptions } from "react-icons/cg";
+import { BsFillArrowUpRightSquareFill } from "react-icons/bs";
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import "./Listing.css";
@@ -36,6 +37,7 @@ const Listing = () => {
               active clients.
           </p>
           </div>
+          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.7em', borderRadius:'3.5px'}}/>
         </div>
         <div className="listingcard">
           <img src={bg1} alt="bg"/>
@@ -49,6 +51,7 @@ const Listing = () => {
               active clients.
           </p>
           </div>
+          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.7em', borderRadius:'3.5px'}}/>
         </div>
         <div className="listingcard">
           <img src={bg1} alt="bg"/>
@@ -62,6 +65,7 @@ const Listing = () => {
               active clients.
           </p>
           </div>
+          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.7em', borderRadius:'3.5px'}}/>
         </div>
         <div className="listingcard">
           <img src={bg1} alt="bg"/>
@@ -75,6 +79,7 @@ const Listing = () => {
               active clients.
           </p>
           </div>
+          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.7em', borderRadius:'3.5px'}}/>
         </div>
         <div className="listingcard">
           <img src={bg1} alt="bg"/>
@@ -88,6 +93,7 @@ const Listing = () => {
               active clients.
           </p>
           </div>
+          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.7em', borderRadius:'3.5px'}}/>
         </div>
         <div className="listingcard">
           <img src={bg1} alt="bg"/>
@@ -101,6 +107,7 @@ const Listing = () => {
               active clients.
           </p>
           </div>
+          <BsFillArrowUpRightSquareFill style={{backgroundColor:'black', color:'#D9E167', margin:'10px 10px 0 0', width:'6.15%', height:'1.7em', borderRadius:'3.5px'}}/>
         </div>
       </div>
       <Footer />
