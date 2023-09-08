@@ -303,13 +303,14 @@
     padding-inline: 5vh;
     border-radius: 5vh;
     text-align: center;
-    width: 17%;
+    width: 18%;
     cursor: pointer;
 }
 
 .tiltedChild:nth-child(1) {
     animation-delay: 1000ms;
-    transform:  rotate(-38.351deg);;
+    transform: rotate(-38.351deg);
+    ;
     animation: bounceInDown1 3s;
 }
 
@@ -333,27 +334,28 @@
 
 .tiltedChild:nth-child(5) {
     animation-delay: 200ms;
-    transform: rotate(-18.28deg) translateX(-6vh) translateY(15vh);;
+    transform: rotate(-18.28deg) translateX(-6vh) translateY(15vh);
+    ;
     animation: bounceInDown5 1s;
 }
 
 @keyframes bounceInDown1 {
     0% {
         opacity: 0;
-        transform: translateY(-2000px) 
+        transform: translateY(-2000px)
     }
 
     40% {
         opacity: 1;
-        transform: translateY(30px)  rotate(38.351deg);
+        transform: translateY(30px) rotate(38.351deg);
     }
 
     75% {
-        transform: translateY(-10px)  rotate(-38.351deg);
+        transform: translateY(-10px) rotate(-38.351deg);
     }
 
     100% {
-        transform: translateY(0)  rotate(-38.351deg);
+        transform: translateY(0) rotate(-38.351deg);
     }
 }
 
@@ -433,7 +435,7 @@
     }
 
     100% {
-        transform:  translateX(-6vh) translateY(15vh) rotate(-18.28deg);
+        transform: translateX(-6vh) translateY(15vh) rotate(-18.28deg);
     }
 }
 
@@ -461,7 +463,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-left: 10vh;
+    padding-left: 10vh;
+    border-bottom: 1px solid black;
 }
 
 .aboutcolumn img {
@@ -472,13 +475,11 @@
     font-size: 16px;
     color: rgba(0, 0, 0, 0.4);
     font-weight: 600;
-    width: 35dvh;
 }
 
 .requestsitemhead h1 {
     font-size: 25px;
     margin: 0;
-    width: 58%;
 }
 
 hr {
@@ -519,8 +520,8 @@ hr {
         width: 100%;
         align-items: flex-end;
         gap: 2vh;
-        right: 20vh;
-        top: 95%;
+        right: 30vh;
+        top: 100%;
     }
 
     .join-block {
@@ -542,20 +543,32 @@ hr {
     .arrow {
         left: 21%;
     }
-    .modal{
+
+    .modal {
         padding-top: 50px !important;
     }
+
     .modalform {
         padding: 1vh;
     }
 
+    #aboutcolumn {
+        margin-bottom: 18dvh;
+        padding-right: 0.5vh;
+    }
+
 }
 
-.menu{
+.menu {
     display: none;
 }
 
 @media(max-width:1100px) {
+
+    .header {
+        margin-left: 4vh !important;
+        padding-left: 0;
+    }
 
     .container {
         overflow-x: hidden;
@@ -565,11 +578,11 @@ hr {
         gap: 1vh;
     }
 
-    .headerlogo img{
+    .headerlogo img {
         width: 10%;
     }
 
-    .headerlogo h1{
+    .headerlogo h1 {
         font-size: large;
     }
 
@@ -577,7 +590,7 @@ hr {
         display: none;
     }
 
-    .menu{
+    .menu {
         display: block;
     }
 
@@ -606,12 +619,12 @@ hr {
 
     .requestsitemhead {
         text-align: left;
-        padding-left: 2vh;
     }
 
     .requestsitemhead h1 {
         text-align: left;
     }
+
     .aboutcolumn p {
         text-align: left;
     }
@@ -699,9 +712,7 @@ hr {
     }
 
     .tilt {
-        margin-block: 2vh !important;
-        position: static;
-        align-items: center;
+        display: none;
     }
 
     .tiltedChild {
@@ -725,13 +736,16 @@ hr {
         flex-direction: column;
         align-items: flex-start;
         margin-inline: 15px !important;
+        padding-left: 0;
     }
 
     .aboutcolumn {
-        width: 100%;
         text-align: center;
         border: 1px solid gray !important;
         border-inline: none;
+        padding-left: 2vh;
+        width: 90%;
+        padding-right: 2vh;
     }
 
     .aboutcolumn p {
@@ -739,7 +753,6 @@ hr {
     }
 
     .requestsitemhead h1 {
-        text-align: center;
         width: 100%;
     }
 
@@ -748,7 +761,7 @@ hr {
     }
 
 
-    .ribbon svg{
+    .ribbon svg {
         width: 100%;
         height: 75%;
     }
@@ -765,6 +778,7 @@ hr {
         height: 60px;
         font-size: larger;
     }
+
     .modalform form {
         margin: 1vh !important;
         gap: 0vh;
@@ -806,7 +820,7 @@ svg#circle:active {
 
 .modal {
     position: fixed;
-    z-index: 1; 
+    z-index: 1;
     padding-top: 100px;
     left: 0;
     top: 0;
@@ -817,70 +831,70 @@ svg#circle:active {
     backdrop-filter: blur(7px);
 
 }
-  
-  .modal-content {
+
+.modal-content {
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
     border: 2px solid #000;
     width: 50%;
     border-radius: 3vh;
-  }
-  
-  .close {
+}
+
+.close {
     color: #aaaaaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
+}
+
+.close:hover,
+.close:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;
-  }
+}
 
-  .modalform{
+.modalform {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+}
 
-  .modalform h4{
+.modalform h4 {
     padding: 0;
     margin: 0;
     font-size: 40px;
     text-align: center;
-  }
+}
 
-  .modalform p{
+.modalform p {
     color: #565656a3;
     font-size: 24px;
     margin: 1vh;
     width: auto;
-  }
+}
 
-  .mailinput{
+.mailinput {
     padding: 2vh;
     width: 80%;
     border-radius: 2vh;
     border: 1px solid black;
-  }
+}
 
-  .modalform form{
+.modalform form {
     margin: 5vh;
     display: flex;
     flex-direction: column;
     gap: 1vh;
-  }
+}
 
-  .checklabel{
+.checklabel {
     color: #565656f5;
     font-size: medium;
-  }
+}
 
-  .submit-btn{
+.submit-btn {
     border-radius: 4vh;
     outline: none;
     border: none;
@@ -891,8 +905,8 @@ svg#circle:active {
     cursor: pointer;
     color: black;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  }
+}
 
-  .submit-btn:active{
+.submit-btn:active {
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-  }
+}
