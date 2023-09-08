@@ -386,7 +386,6 @@ export default function Home() {
                             <p>Increased exposure through detailed and data-rich filtering tools.</p>
                         </div>
                     </div>
-                    <hr />
                     <div className='aboutrow'>
                         <div className='aboutcolumn'>
                             <div className='requestsitemhead'>
@@ -412,9 +411,8 @@ export default function Home() {
                             <p>Tools to enable library updates, lunch and learns, event invites, and more.</p>
                         </div>
                     </div>
-                    <hr />
-                    <div className='aboutrow' style={{ justifyContent: "flex-start" }}>
-                        <div className='aboutcolumn' style={{ justifyContent: " center", marginBottom: "7dvh" }}>
+                    <div className='aboutrow' style={{ justifyContent: "flex-start", border: "none" }}>
+                        <div className='aboutcolumn' id="aboutcolumn" style={{ justifyContent: " center" }}>
                             <div className='requestsitemhead'>
                                 <img src={GraphIcon} alt='img' />
                                 <h1>Trusted by Industry Professionals</h1>
