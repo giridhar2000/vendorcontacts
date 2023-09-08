@@ -66,7 +66,9 @@
 .loginsignup {
     cursor: pointer;
 }
-
+.ant-spin-dot-item {
+    background-color: #000 !important;
+  }
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
     .login .loginimg {
         width: 30%;

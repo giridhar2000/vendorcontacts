@@ -2,24 +2,58 @@ import React, { useState } from "react";
 import "./Header.css";
 import { Button, Drawer } from "antd";
 import Icon from "../../Assets/images/logo-icon.svg";
-import { AiOutlineArrowRight, AiOutlineUser } from "react-icons/ai";
+import {
+  AiOutlineArrowRight,
+  AiOutlineUser,
+  AiOutlineLogout,
+} from "react-icons/ai";
 import { BsChatLeftText, BsBell } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import UserContext from "../../contexts/authContext";
+import { Popover } from "antd";
+import { toast } from "react-toastify";
+import supabase from "../../utils";
 
 
 const Header = () => {
-  const navigate = useNavigate()
+  const [isAuth,setIsAuth] = useContext(UserContext);
+  const navigate = useNavigate();
   const signin = () => {
-    navigate('/login')
-  }
+    navigate("/login");
+  };
   const [open, setOpen] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
   const showDrawer = () => {
     setOpen(true);
   };
   const onClose = () => {
     setOpen(false);
   };
+
+
+  async function logout(){
+    const { error } = await supabase.auth.signOut();
+    if(error){
+      toast("Logout failed",{ type: "error" })
+      return;
+    }
+    localStorage.removeItem('auth')
+    setIsAuth(false);
+    navigate('/')
+  }
+
+  const content = (
+    <div>
+      <p style={{ display: "flex", alignItems: "center", cursor: "pointer" }} onClick={()=> navigate("/profile")}>
+        <AiOutlineUser style={{ marginRight: ".5rem" }} />
+        View profile
+      </p>
+      <p style={{ display: "flex", alignItems: "center", cursor: "pointer" }} onClick={logout}>
+        <AiOutlineLogout style={{ marginRight: ".5rem" }} />
+        Logout
+      </p>
+    </div>
+  );
   return (
     <div className="header">
       <div className="headerlogo">
@@ -64,21 +98,23 @@ const Header = () => {
               </div>
             </button>
           </form>
-
-
         </div>
       ) : null}
       <div className="right">
         {!isAuth ? (
           <div className="buttons">
-            <button className="signin" onClick={signin}>Sign in</button>
+            <button className="signin" onClick={signin}>
+              Sign in
+            </button>
             <button className="request">Request Invite</button>
           </div>
         ) : (
           <div className="buttons icons">
-            <BsChatLeftText />
+            <BsChatLeftText onClick={()=>navigate('/chats')} />
             <BsBell />
-            <AiOutlineUser />
+            <Popover placement="bottomRight" content={content} trigger="click">
+              <AiOutlineUser />
+            </Popover>
           </div>
         )}
       </div>
@@ -142,24 +178,29 @@ const Header = () => {
           <div className="buttons">
             {!isAuth ? (
               <div className="buttons">
-                <button className="signin" onClick={signin}>Sign in</button>
+                <button className="signin" onClick={signin}>
+                  Sign in
+                </button>
                 <button className="request">Request Invite</button>
               </div>
             ) : (
               <div className="buttons icons">
-                <p>
+                <p  onClick={()=>navigate('/chats')}>
                   <BsChatLeftText /> Chats
                 </p>
                 <p>
                   <BsBell /> Notifications
                 </p>
-                <p>
+                <p onClick={()=>navigate('/profile')}>
                   <AiOutlineUser /> Profile
+                </p>
+                <p onClick={logout}>
+                  <AiOutlineLogout />
+                  Logout
                 </p>
               </div>
             )}
-            <button className="signin" onClick={signin}>Sign in</button>
-            <button className="request">Request Invite</button>
+          
           </div>
         </Drawer>
       </div>

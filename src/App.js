@@ -5,19 +5,58 @@ import Profile from "./Pages/Vendor_Profile/Profile";
 import Login from "./Pages/Login/Login";
 import Listing from "./Pages/Listing/Listing";
 import Chats from "./Pages/Chats/Chats";
+import { AuthProvider } from "./contexts/authContext";
+import ProtectedRoute from "./Pages/Protected/Protected";
+
+let routes = [
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/profile",
+    element: (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/chats",
+    element: (
+      <ProtectedRoute>
+        <Chats />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/listing",
+    element: (
+      <ProtectedRoute>
+        <Listing />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+];
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="container">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route exact path="/profile" element={<Profile />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/chats" element={<Chats />} />
-          <Route exact path="/listing" element={<Listing/>} />
-        </Routes>
-      </div>
+      <AuthProvider>
+        <div className="container">
+          <Routes>
+          {
+            routes.map((route,i)=>{
+              return <Route key={i} exact path={route.path} element={route.element} />
+            })
+          }
+          </Routes>
+        </div>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

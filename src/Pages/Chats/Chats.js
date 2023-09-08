@@ -14,7 +14,7 @@ const onChange = (checked) => {
   console.log(`switch to ${checked}`);
 };
 const Chats = () => {
-  const [selectedChat, setSelectedChat] = useState(true);
+  const [selectedChat, setSelectedChat] = useState(false);
   return (
     <>
       <Header />
