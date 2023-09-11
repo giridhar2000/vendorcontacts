@@ -9,7 +9,7 @@ export default function Signup() {
       <NavbarHeader />
       <img src={loginbg} alt="login" className="loginimg" />
       <div className="loginContainer lg-page" style={{ justifyContent: "space-evenly" }}>
-        <div className="loginText" style={{ width: " 25%" }}>
+        <div className="loginText">
           <h1 style={{ margin: 0 }}>Let's get started!</h1>
           <span>
             Free membership is open to professionals in the architecture and design industry.
@@ -17,8 +17,6 @@ export default function Signup() {
         </div>
         <div className="Loginform">
           <p style={{ color: "#6F6F6F" }}>Select your profession</p>
-          {/* <button className='signupBtn'>Architect</button><br />
-              <button className='signupBtn'>vendor</button> */}
           <div>
             <div className="button">
               <input type="radio" id="Architect" name="signupBtn" />
