@@ -3,6 +3,10 @@
   height: 400px;
   position: relative;
 }
+.center{
+  display: grid;
+  place-items: center;
+}
 .cover-pic img {
   width: 100%;
   height: 100%;
@@ -19,6 +23,7 @@
   bottom: -10%;
   left: 32vh;
 }
+
 .profile-pic img {
   width: 100%;
   height: 100%;
