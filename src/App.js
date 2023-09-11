@@ -8,7 +8,9 @@ import Chats from "./Pages/Chats/Chats";
 import { AuthProvider } from "./contexts/authContext";
 import ProtectedRoute from "./Pages/Protected/Protected";
 import Edit from "./Pages/Edit/Edit";
+import { QueryClient, QueryClientProvider } from "react-query";
 
+const queryClient = new QueryClient();
 let routes = [
   {
     path: "/",
@@ -55,22 +57,24 @@ let routes = [
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <div className="container">
-          <Routes>
-            {routes.map((route, i) => {
-              return (
-                <Route
-                  key={i}
-                  exact
-                  path={route.path}
-                  element={route.element}
-                />
-              );
-            })}
-          </Routes>
-        </div>
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <div className="container">
+            <Routes>
+              {routes.map((route, i) => {
+                return (
+                  <Route
+                    key={i}
+                    exact
+                    path={route.path}
+                    element={route.element}
+                  />
+                );
+              })}
+            </Routes>
+          </div>
+        </AuthProvider>
+      </QueryClientProvider>
     </BrowserRouter>
   );
 }

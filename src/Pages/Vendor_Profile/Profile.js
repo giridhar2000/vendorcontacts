@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 import bg1 from "../../Assets/img/img1.jpg";
@@ -6,7 +6,82 @@ import logo from "../../Assets/img/gensler_logo.png";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import "./Profile.css";
 import PdfCard from "../../Components/PdfCard/PdfCard";
+import supabase from "../../utils/supabase.config";
+import { getUser } from "../../utils/profile_helper";
+import { useQuery } from "react-query";
+import { Skeleton } from "antd";
+
 const Profile = () => {
+  const { data: profile, isLoading } = useQuery("profile", getUser);
+
+  if (isLoading) {
+    return (
+      <>
+        <Header />
+        <div className="cover-pic center">
+          <Skeleton.Image active={isLoading} />
+          <div className="profile-pic center">
+            <Skeleton.Image active={isLoading} />
+          </div>
+        </div>
+        <div className="profile-body">
+          <div className="profile-info">
+            <div className="profile-name">
+            <Skeleton
+            active={isLoading}
+            paragraph={{
+              rows: 3,
+            }}
+          />
+            </div>
+            <div className="profile-about">
+              <p>
+              <Skeleton
+              active={isLoading}
+              paragraph={{
+                rows: 2,
+              }}
+            />
+              </p>
+            </div>
+          </div>
+          <div className="profile-box center">
+            <Skeleton
+              active={isLoading}
+              paragraph={{
+                rows: 2,
+              }}
+            />
+          </div>
+          <div className="profile-desc center">
+            <Skeleton
+              active={isLoading}
+              paragraph={{
+                rows: 2,
+              }}
+            />
+          </div>
+          <div className="profile-downloads">
+            <Skeleton
+              active={isLoading}
+              paragraph={{
+                rows: 1,
+              }}
+            />
+            <hr />
+            <div className="pdf-cards">
+              <PdfCard />
+              <PdfCard />
+              <PdfCard />
+              <PdfCard />
+            </div>
+          </div>
+        </div>
+
+        <Footer />
+      </>
+    );
+  }
   return (
     <>
       <Header />
@@ -54,24 +129,25 @@ const Profile = () => {
             Europe, Greater China, Asia Pacific, and the Middle East. Founded in
             1965, the firm works globally with more than 4,000 clients across
             more than 29 practice areas spanning the work, lifestyle, community,
-            and health sectors.<br/> <br/>  We are guided by our mission to create a better
-            world through the power of design and believe the source of our
-            strength is our people. By leveraging our diversity of ideas, our
-            research and innovation, our shared values, and our One-Firm Firm
-            culture, we are moving forward together into a new era defined by
-            design. By empowering our people and working seamlessly as an
-            interconnected firm, we’re able to make the greatest impact for our
-            communities as we continue to tackle the world’s challenges.
+            and health sectors.
+            <br /> <br /> We are guided by our mission to create a better world
+            through the power of design and believe the source of our strength
+            is our people. By leveraging our diversity of ideas, our research
+            and innovation, our shared values, and our One-Firm Firm culture, we
+            are moving forward together into a new era defined by design. By
+            empowering our people and working seamlessly as an interconnected
+            firm, we’re able to make the greatest impact for our communities as
+            we continue to tackle the world’s challenges.
           </p>
         </div>
         <div className="profile-downloads">
           <p>Downloads</p>
-          <hr/>
+          <hr />
           <div className="pdf-cards">
-          <PdfCard/>
-          <PdfCard/>
-          <PdfCard/>
-          <PdfCard/>
+            <PdfCard />
+            <PdfCard />
+            <PdfCard />
+            <PdfCard />
           </div>
         </div>
       </div>

@@ -4,17 +4,18 @@ import "../Login/Login.css";
 import loginbg from "../../Assets/img/loginbg.png";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import supabase from "../../utils";
+import supabase from "../../utils/supabase.config.js";
 import { useContext } from "react";
 import UserContext from "../../contexts/authContext";
 import { Spin } from "antd";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Login() {
   const [signup, setSignUp] = useState(true);
   const [ip, setIp] = useState("password");
   const [cip, setCIp] = useState("password");
   const [loading, setLoading] = useState(false);
-  const [isAuth,setIsAuth]=useContext(UserContext);
+  const [isAuth, setIsAuth] = useContext(UserContext);
   const navigate = useNavigate();
 
   // States for sign ups................
@@ -40,6 +41,11 @@ export default function Login() {
       let { data: user, error } = await supabase.auth.signUp({
         email: email,
         password: password,
+        options: {
+          data: {
+            name: firstName + " " + lastName,
+          },
+        },
       });
 
       if (error) {
@@ -50,17 +56,11 @@ export default function Login() {
       }
 
       if (user) {
-        const { data, error } = await supabase.from("profiles").insert([
-          {
-            email: email,
-            display_name: firstName + " " + lastName,
-          },
-        ]);
+        localStorage.setItem("auth", JSON.stringify(user));
+        setIsAuth(true);
+        toast("Profile created", { type: "success" });
+        navigate("/listing");
       }
-      localStorage.setItem("auth",JSON.stringify(user))
-      setIsAuth(true);
-      toast("Profile created", { type: "success" });
-      navigate("/listing");
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -85,7 +85,7 @@ export default function Login() {
         toast(error.message, { type: "error" });
         return;
       }
-      localStorage.setItem("auth",JSON.stringify(data))
+      localStorage.setItem("auth", JSON.stringify(data));
       setIsAuth(true);
       toast("Login successfull", { type: "success" });
       // Redirect to another page
@@ -206,12 +206,18 @@ export default function Login() {
                 )}
               </div>
               <p className="forgotpass">Forgot Password?</p>
-              <button className="loginbtn" disabled={loading} onClick={handleLogin}>
-              {
-                loading ? <><Spin style={{marginRight:".5rem"}}/> Logging in...</>:"Log in"
-              }
-    
-              
+              <button
+                className="loginbtn"
+                disabled={loading}
+                onClick={handleLogin}
+              >
+                {loading ? (
+                  <>
+                    <Spin style={{ marginRight: ".5rem" }} /> Logging in...
+                  </>
+                ) : (
+                  "Log in"
+                )}
               </button>
               <p className="p">
                 Don't have an account?{" "}
@@ -434,10 +440,18 @@ export default function Login() {
                 By Clicking "Sign Up", You Agree to Our Terms of Use and Privacy
                 Policy
               </p>
-              <button className="loginbtn" onClick={handleSubmit} disabled={loading}>
-              {
-                loading ? <><Spin style={{marginRight:".5rem"}}/> Signing up...</>: "Sign up"
-              }
+              <button
+                className="loginbtn"
+                onClick={handleSubmit}
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <Spin style={{ marginRight: ".5rem" }} /> Signing up...
+                  </>
+                ) : (
+                  "Sign up"
+                )}
               </button>
               <p className="p">
                 Already have an account?{" "}

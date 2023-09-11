@@ -13,7 +13,7 @@ import { useContext } from "react";
 import UserContext from "../../contexts/authContext";
 import { Popover } from "antd";
 import { toast } from "react-toastify";
-import supabase from "../../utils";
+import supabase from '../../utils/supabase.config';
 
 
 const Header = () => {
