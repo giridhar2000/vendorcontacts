@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home/Home";
 import Profile from "./Pages/Vendor_Profile/Profile";
+import Signup from "./Pages/Signup/Signup";
 import Login from "./Pages/Login/Login";
 import Listing from "./Pages/Listing/Listing";
 import Chats from "./Pages/Chats/Chats";
@@ -42,7 +43,11 @@ let routes = [
   },
   {
     path: "/login",
-    element: <Login />,
+    element: <Login />
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
   },
   {
     path: "/edit",

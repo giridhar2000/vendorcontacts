@@ -100,7 +100,7 @@ export default function Login() {
   return (
     <div className="login">
       <NavbarHeader />
-      <div className="loginContainer">
+      <div className="loginContainer lg-page">
         {signup ? (
           <>
             <div className="loginText">
@@ -109,7 +109,7 @@ export default function Login() {
                 Please provide your login details to access the content.
               </span>
             </div>
-            <div className="loginform">
+            <div className="Loginform">
               <div className="emailip">
                 <input
                   placeholder="Buisness Email"
@@ -236,7 +236,7 @@ export default function Login() {
                 design industry.
               </span>
             </div>
-            <div className="loginform">
+            <div className="Loginform">
               <div className="names">
                 <div className="nameip">
                   <input

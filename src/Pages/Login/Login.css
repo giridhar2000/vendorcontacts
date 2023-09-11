@@ -46,11 +46,13 @@
     margin-top: 5vh;
 }
 
-.loginContainer {
+.loginContainer.lg-page {
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
-    margin-top: 5vh;
+    margin-top: 5vh !important;
+    /* margin: 0; */
+    padding: 0;
 }
 
 .forgotpass {
@@ -74,7 +76,7 @@
         width: 30%;
     }
 
-    .loginContainer{
+    .loginContainer.lg-page{
         margin-top: -1vh;
     }
 
@@ -88,7 +90,7 @@
         display: none;
     }
 
-    .loginContainer{
+    .loginContainer.lg-page{
         flex-direction: column;
     }
 
