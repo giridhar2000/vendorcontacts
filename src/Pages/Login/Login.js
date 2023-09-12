@@ -8,13 +8,15 @@ import supabase from "../../utils/supabase.config.js";
 import { useContext } from "react";
 import UserContext from "../../contexts/authContext";
 import { Spin } from "antd";
-import { v4 as uuidv4 } from "uuid";
+import { getUserById } from "../../utils/profile_helper";
 
 export default function Login() {
   const [signup, setSignUp] = useState(true);
   const [ip, setIp] = useState("password");
   const [cip, setCIp] = useState("password");
   const [loading, setLoading] = useState(false);
+  const [userType, setUserType] = useState(null);
+  const [next, setNext] = useState(false);
   const [isAuth, setIsAuth] = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -44,6 +46,7 @@ export default function Login() {
         options: {
           data: {
             name: firstName + " " + lastName,
+            type: userType || "architect",
           },
         },
       });
@@ -85,11 +88,23 @@ export default function Login() {
         toast(error.message, { type: "error" });
         return;
       }
-      localStorage.setItem("auth", JSON.stringify(data));
-      setIsAuth(true);
-      toast("Login successfull", { type: "success" });
-      // Redirect to another page
-      navigate("/listing");
+      let profile = await getUserById(data?.user?.id);
+      if (profile?.type === "vendor") {
+        localStorage.setItem("auth", JSON.stringify(data));
+        setIsAuth(true);
+        toast(`Welcome ${profile.display_name}`, { type: "success" });
+        // Redirect to another page
+        navigate("/profile");
+      } else if (profile?.type === "architect") {
+        localStorage.setItem("auth", JSON.stringify(data));
+        setIsAuth(true);
+        toast(`Welcome ${profile.display_name}`, { type: "success" });
+        // Redirect to another page
+        navigate("/listing");
+      } else {
+        toast("No user type found", { type: "error" });
+        setLoading(false);
+      }
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -229,242 +244,301 @@ export default function Login() {
           </>
         ) : (
           <>
-            <div className="loginText">
-              <h1>Let's get started!</h1>
-              <span>
-                Free membership is open to professionals in the architecture and
-                design industry.
-              </span>
-            </div>
-            <div className="Loginform">
-              <div className="names">
-                <div className="nameip">
-                  <input
-                    placeholder="First name"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
+            {userType && next ? (
+              <>
+                {" "}
+                <div className="loginText">
+                  <h1>Let's get started!</h1>
+                  <span>
+                    Free membership is open to professionals in the architecture
+                    and design industry.
+                  </span>
                 </div>
-                <div className="nameip">
-                  <input
-                    placeholder="Last name"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
+                <div className="Loginform">
+                  <div className="names">
+                    <div className="nameip">
+                      <input
+                        placeholder="First name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                      />
+                    </div>
+                    <div className="nameip">
+                      <input
+                        placeholder="Last name"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="emailip">
+                    <input
+                      placeholder="Buisness Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="passip">
+                    <input
+                      placeholder="Password"
+                      type={ip}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+
+                    {ip === "password" ? (
+                      <svg
+                        onClick={() => setIp("text")}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                          <path
+                            d="M1 12C1 12 5 20 12 20C19 20 23 12 23 12"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="3"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></circle>{" "}
+                        </g>
+                      </svg>
+                    ) : (
+                      <svg
+                        onClick={() => setIp("password")}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="M2 2L22 22"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                          <path
+                            d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                          <path
+                            d="M14 14.2362C13.4692 14.7112 12.7684 15.0001 12 15.0001C10.3431 15.0001 9 13.657 9 12.0001C9 11.1764 9.33193 10.4303 9.86932 9.88818"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    )}
+                  </div>
+                  <div className="passip">
+                    <input
+                      placeholder="Confirm password"
+                      type={cip}
+                      value={cPassword}
+                      onChange={(e) => setCPassword(e.target.value)}
+                    />
+
+                    {cip === "password" ? (
+                      <svg
+                        onClick={() => setCIp("text")}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                          <path
+                            d="M1 12C1 12 5 20 12 20C19 20 23 12 23 12"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="3"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></circle>{" "}
+                        </g>
+                      </svg>
+                    ) : (
+                      <svg
+                        onClick={() => setCIp("password")}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="M2 2L22 22"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                          <path
+                            d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                          <path
+                            d="M14 14.2362C13.4692 14.7112 12.7684 15.0001 12 15.0001C10.3431 15.0001 9 13.657 9 12.0001C9 11.1764 9.33193 10.4303 9.86932 9.88818"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    )}
+                  </div>
+                  <p className="forgotpass">
+                    By Clicking "Sign Up", You Agree to Our Terms of Use and
+                    Privacy Policy
+                  </p>
+                  <button
+                    className="loginbtn"
+                    onClick={handleSubmit}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <Spin style={{ marginRight: ".5rem" }} /> Signing up...
+                      </>
+                    ) : (
+                      "Sign up"
+                    )}
+                  </button>
+                  <p className="p">
+                    Already have an account?{" "}
+                    <span
+                      className="loginsignup"
+                      onClick={() => {
+                        setSignUp(true);
+                      }}
+                    >
+                      <b>Login</b>
+                    </span>
+                  </p>
                 </div>
-              </div>
-              <div className="emailip">
-                <input
-                  placeholder="Buisness Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="passip">
-                <input
-                  placeholder="Password"
-                  type={ip}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-
-                {ip === "password" ? (
-                  <svg
-                    onClick={() => setIp("text")}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                      {" "}
-                      <path
-                        d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12"
-                        stroke="#000000"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>{" "}
-                      <path
-                        d="M1 12C1 12 5 20 12 20C19 20 23 12 23 12"
-                        stroke="#000000"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>{" "}
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="3"
-                        stroke="#000000"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></circle>{" "}
-                    </g>
-                  </svg>
-                ) : (
-                  <svg
-                    onClick={() => setIp("password")}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                      {" "}
-                      <path
-                        d="M2 2L22 22"
-                        stroke="#000000"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>{" "}
-                      <path
-                        d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335"
-                        stroke="#000000"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>{" "}
-                      <path
-                        d="M14 14.2362C13.4692 14.7112 12.7684 15.0001 12 15.0001C10.3431 15.0001 9 13.657 9 12.0001C9 11.1764 9.33193 10.4303 9.86932 9.88818"
-                        stroke="#000000"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>{" "}
-                    </g>
-                  </svg>
-                )}
-              </div>
-              <div className="passip">
-                <input
-                  placeholder="Confirm password"
-                  type={cip}
-                  value={cPassword}
-                  onChange={(e) => setCPassword(e.target.value)}
-                />
-
-                {cip === "password" ? (
-                  <svg
-                    onClick={() => setCIp("text")}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                      {" "}
-                      <path
-                        d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12"
-                        stroke="#000000"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>{" "}
-                      <path
-                        d="M1 12C1 12 5 20 12 20C19 20 23 12 23 12"
-                        stroke="#000000"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>{" "}
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="3"
-                        stroke="#000000"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></circle>{" "}
-                    </g>
-                  </svg>
-                ) : (
-                  <svg
-                    onClick={() => setCIp("password")}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                      {" "}
-                      <path
-                        d="M2 2L22 22"
-                        stroke="#000000"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>{" "}
-                      <path
-                        d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335"
-                        stroke="#000000"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>{" "}
-                      <path
-                        d="M14 14.2362C13.4692 14.7112 12.7684 15.0001 12 15.0001C10.3431 15.0001 9 13.657 9 12.0001C9 11.1764 9.33193 10.4303 9.86932 9.88818"
-                        stroke="#000000"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      ></path>{" "}
-                    </g>
-                  </svg>
-                )}
-              </div>
-              <p className="forgotpass">
-                By Clicking "Sign Up", You Agree to Our Terms of Use and Privacy
-                Policy
-              </p>
-              <button
-                className="loginbtn"
-                onClick={handleSubmit}
-                disabled={loading}
-              >
-                {loading ? (
-                  <>
-                    <Spin style={{ marginRight: ".5rem" }} /> Signing up...
-                  </>
-                ) : (
-                  "Sign up"
-                )}
-              </button>
-              <p className="p">
-                Already have an account?{" "}
-                <span
-                  className="loginsignup"
-                  onClick={() => {
-                    setSignUp(true);
-                  }}
+              </>
+            ) : (
+              <div className="signup">
+                <div
+                  className="loginContainer lg-page"
+                  style={{ justifyContent: "space-evenly" }}
                 >
-                  <b>Login</b>
-                </span>
-              </p>
-            </div>
+                  <div className="loginText">
+                    <h1 style={{ margin: 0 }}>Let's get started!</h1>
+                    <span>
+                      Free membership is open to professionals in the
+                      architecture and design industry.
+                    </span>
+                  </div>
+                  <div className="Loginform">
+                    <p style={{ color: "#6F6F6F" }}>Select your profession</p>
+                    <div className="buttons-select">
+                      <div className="button">
+                        <input
+                          type="radio"
+                          id="Architect"
+                          name="signupBtn"
+                          value="architect"
+                          onChange={(e) => setUserType(e.target.value)}
+                        />
+                        <label className="btn btn-default" for="Architect">
+                          Architect
+                        </label>
+                      </div>
+                      <div className="button">
+                        <input
+                          type="radio"
+                          id="Vendor"
+                          name="signupBtn"
+                          value="vendor"
+                          onChange={(e) => setUserType(e.target.value)}
+                        />
+                        <label className="btn btn-default" for="Vendor">
+                          Vendor
+                        </label>
+                      </div>
+                    </div>
+                    <hr
+                      style={{
+                        maxWidth: "100%",
+                        margin: "0",
+                        marginTop: "2vh",
+                      }}
+                    />
+                    <button className="loginbtn" onClick={() => setNext(true)}>
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>

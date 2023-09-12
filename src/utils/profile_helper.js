@@ -11,3 +11,13 @@ export async function getUser() {
   if (error) return error;
   return profile;
 }
+export async function getUserById(id) {
+  
+  let { data: profile, error } = await supabase
+    .from("profiles")
+    .select('*')
+    .eq("id", id)
+    .single();
+  if (error) return error;
+  return profile;
+}
