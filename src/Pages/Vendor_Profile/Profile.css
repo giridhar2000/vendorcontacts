@@ -39,6 +39,7 @@
 }
 
 .profile-info {
+  width: 70%;
   display: flex;
   margin-inline: 100px;
   margin-top: 30px;
@@ -46,10 +47,9 @@
 .profile-name {
   display: flex;
   flex-direction: column;
-  padding: 0 160px;
+  padding: 0 10px;
   text-align: left;
-  flex: 0.7;
-  max-width: 60%;
+  width: 40%;
 }
 .profile-name p {
   display: inline;
@@ -64,13 +64,14 @@
   font-weight: 300;
   margin-top: -30px;
 }
-.profile-name p:nth-child(3) {
+.profile-name p:nth-child(3),.profile-name p:nth-child(4) {
   font-size: 1rem;
   display: flex;
   align-items: center;
   font-weight: bolder;
+  cursor: pointer;
 }
-.profile-name p:nth-child(3) button {
+.profile-name p:nth-child(3) button ,.profile-name p:nth-child(4) button{
   background-color: #000;
   border-radius: 30px;
   outline: none;
@@ -83,9 +84,10 @@
   padding-inline: 14px;
   padding-block: 5px;
   cursor: pointer;
+  
 }
 .profile-about {
-  max-width: 40%;
+  width: 40%;
 }
 .profile-about p {
   opacity: 0.8;
@@ -99,6 +101,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.no-pic{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.no-pic svg{
+  font-size: 4.5rem;
+  color: #b1b1b1;
 }
 .line {
   width: 5px;
@@ -143,38 +154,55 @@
     bottom: unset;
     transform: translate(-50%, -50%);
   }
+  .profile-body{
+    align-items: flex-start;
+  }
   .profile-info {
     padding: 0;
     margin: 0;
     flex-direction: column;
     margin-top: 50px;
   }
+  .profile-name p:nth-child(3){
+    margin-block: .5rem !important;
+  }
   .profile-name {
     padding: 30px;
     margin-top: 30px !important;
+    width: 100% !important;
   }
 
   .profile-about {
-    max-width: 100%;
-    padding: 30px;
+    padding: 10px;
     margin-top: -40px !important;
   }
   .profile-about p {
     opacity: 0.8;
     font-size: 0.8rem;
   }
+  .profile-box{
+    width: 100% !important;
+  }
   .profile-box p {
     font-size: 1rem;
     margin-left: 30px !important;
+  }
+  .profile-desc{
+    width: 90% !important;
+    align-self: center;
   }
   .profile-desc p {
     font-size: 0.8rem;
   }
   .profile-downloads{
-    width: 80%;
+    width: 90% !important;
+    align-self: center;
    
   }
   .pdf-cards{
     flex-direction: column;
+}
+.profile-name p:nth-child(3) button ,.profile-name p:nth-child(4) button{
+  margin-left: .5rem !important;
 }
 }
