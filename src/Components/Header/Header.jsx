@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Header.css";
-import { Button, Drawer } from "antd";
+import { Button, Drawer, Skeleton } from "antd";
 import Icon from "../../Assets/images/logo-icon.svg";
 import {
   AiOutlineArrowRight,
@@ -10,19 +10,20 @@ import {
 import { BsChatLeftText, BsBell } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import UserContext from "../../contexts/authContext";
+import AuthContext from "../../contexts/authContext";
+import UserContext from "../../contexts/userContext";
 import { Popover } from "antd";
 import { toast } from "react-toastify";
-import supabase from '../../utils/supabase.config';
-
+import supabase from "../../utils/supabase.config";
 
 const Header = () => {
-  const [isAuth,setIsAuth] = useContext(UserContext);
+  const [isAuth, setIsAuth] = useContext(AuthContext);
+  const [profile, isLoading] = useContext(UserContext);
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
   const signin = () => {
     navigate("/login");
   };
-  const [open, setOpen] = useState(false);
   const showDrawer = () => {
     setOpen(true);
   };
@@ -30,25 +31,30 @@ const Header = () => {
     setOpen(false);
   };
 
-
-  async function logout(){
+  async function logout() {
     const { error } = await supabase.auth.signOut();
-    if(error){
-      toast("Logout failed",{ type: "error" })
+    if (error) {
+      toast("Logout failed", { type: "error" });
       return;
     }
-    localStorage.removeItem('auth')
+    localStorage.removeItem("auth");
     setIsAuth(false);
-    navigate('/')
+    navigate("/");
   }
 
   const content = (
     <div>
-      <p style={{ display: "flex", alignItems: "center", cursor: "pointer" }} onClick={()=> navigate("/profile")}>
+      <p
+        style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+        onClick={() => navigate("/profile")}
+      >
         <AiOutlineUser style={{ marginRight: ".5rem" }} />
         View profile
       </p>
-      <p style={{ display: "flex", alignItems: "center", cursor: "pointer" }} onClick={logout}>
+      <p
+        style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+        onClick={logout}
+      >
         <AiOutlineLogout style={{ marginRight: ".5rem" }} />
         Logout
       </p>
@@ -110,13 +116,26 @@ const Header = () => {
           </div>
         ) : (
           <div className="buttons icons">
-            <BsChatLeftText onClick={()=>navigate('/chats')} />
+            <BsChatLeftText onClick={() => navigate("/chats")} />
             <BsBell />
             <Popover placement="bottomRight" content={content} trigger="click">
-              <AiOutlineUser />
+              {isLoading ? (
+                <Skeleton.Avatar active={isLoading} shape={"circle"} />
+              ) : (
+                <>
+                  {profile?.profile_pic ? (
+                    <div className="profile_pic_label small-pic">
+                      <img src={profile?.profile_pic} alt="profile" />
+                    </div>
+                  ) : (
+                    <AiOutlineUser />
+                  )}
+                </>
+              )}
             </Popover>
           </div>
         )}
+        
       </div>
 
       <div className="menu">
@@ -185,13 +204,13 @@ const Header = () => {
               </div>
             ) : (
               <div className="buttons icons">
-                <p  onClick={()=>navigate('/chats')}>
+                <p onClick={() => navigate("/chats")}>
                   <BsChatLeftText /> Chats
                 </p>
                 <p>
                   <BsBell /> Notifications
                 </p>
-                <p onClick={()=>navigate('/profile')}>
+                <p onClick={() => navigate("/profile")}>
                   <AiOutlineUser /> Profile
                 </p>
                 <p onClick={logout}>
@@ -200,7 +219,6 @@ const Header = () => {
                 </p>
               </div>
             )}
-          
           </div>
         </Drawer>
       </div>

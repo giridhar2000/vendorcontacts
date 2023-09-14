@@ -149,10 +149,14 @@ input:not(:placeholder-shown) ~ .reset {
   align-items: center;
   justify-content: center;
 }
-.icons svg {
+.icons svg,.small-pic {
   font-size: 1.6rem;
-  margin-inline: 2rem;
+  margin-inline: 1rem;
   cursor: pointer;
+}
+.small-pic{
+  width: 33px !important;
+  height: 33px !important;
 }
 
 @media (max-width: 1100px) {

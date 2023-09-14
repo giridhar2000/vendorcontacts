@@ -1,20 +1,46 @@
-import React, { useContext } from "react";
+import React from "react";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 import bg1 from "../../Assets/img/img1.jpg";
 import { AiOutlineArrowRight, AiOutlineUser, AiFillEdit } from "react-icons/ai";
+import { BsFillChatDotsFill } from "react-icons/bs";
 import "./Profile.css";
 import PdfCard from "../../Components/PdfCard/PdfCard";
 import { Empty, Skeleton } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
-import UserContext from "../../contexts/userContext";
+import { getUserById,getUser } from "../../utils/profile_helper";
+import { useQuery, useMutation } from "react-query";
+import { createChat } from "../../utils/chat_helper";
 
 const Profile = () => {
   const navigate = useNavigate();
   let { id } = useParams();
-  const [profile, isLoading] = useContext(UserContext);
+  const { data: profile, isLoading } = useQuery(
+    `profile/${id}`,
+    () => {
+      return getUserById(id);
+    },
+    {
+      active: id,
+    }
+  );
 
-  if (isLoading) {
+  const { data: user, isLoading: isLoading2 } = useQuery("profile", getUser);
+
+  // Mutation for sending message
+  const create_chat_mutation = useMutation(createChat, {
+    onSuccess: (data) =>{
+        if(data){
+            navigate('/chats',{
+                state:{
+                    data
+                }
+            })
+        }
+    }
+  });
+
+  if (isLoading || isLoading2) {
     return (
       <>
         <Header />
@@ -87,12 +113,6 @@ const Profile = () => {
                 <AiOutlineArrowRight />
               </button>
             </p>
-            <p onClick={() => navigate("/edit")}>
-              Edit profile{" "}
-              <button onClick={() => navigate("/edit")}>
-                <AiFillEdit />
-              </button>
-            </p>
           </div>
           <div className="profile-about">
             {profile?.bio ? (
@@ -108,6 +128,22 @@ const Profile = () => {
           <div className="profile-box">
             <div className="line"></div>
             <p>{profile?.quote ? profile?.quote : "**Update your quote**"}</p>
+          </div>
+          <div
+            className="chat-icon"
+            onClick={() => {
+              if (user){
+                console.log(profile)
+                create_chat_mutation.mutateAsync({
+                    reciver: profile,
+                    user,
+                  });
+              }
+                
+             
+            }}
+          >
+            <BsFillChatDotsFill />
           </div>
         </div>
 

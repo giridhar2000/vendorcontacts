@@ -62,7 +62,13 @@ export default function Login() {
         localStorage.setItem("auth", JSON.stringify(user));
         setIsAuth(true);
         toast("Profile created", { type: "success" });
-        navigate("/listing");
+        if(userType === "vendor"){
+          navigate("/profile");
+
+        }else{
+
+          navigate("/listing");
+        }
       }
     } catch (error) {
       setLoading(false);

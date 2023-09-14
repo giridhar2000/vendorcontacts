@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 import bg1 from "../../Assets/img/img1.jpg";
@@ -8,13 +8,13 @@ import { FiCamera } from "react-icons/fi";
 import "./Edit.css";
 import supabase from "../../utils/supabase.config";
 import { toast } from "react-toastify";
-import { getUser, updateUserProfile } from "../../utils/profile_helper";
-import { useQuery } from "react-query";
+import { updateUserProfile } from "../../utils/profile_helper";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../contexts/userContext";
 
 const Edit = () => {
-  const { data: profile, isLoading } = useQuery("profile", getUser);
-  let navigate=useNavigate()
+  const [profile, isLoading] = useContext(UserContext);
+  let navigate = useNavigate();
   const [url, setUrl] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -22,6 +22,7 @@ const Edit = () => {
   const [location, setLocation] = useState("");
   const [quote, setQuote] = useState("");
   const [bio, setBio] = useState("");
+
   const checkFileExists = async (bucketName, filePath) => {
     const { data, error } = await supabase.storage
       .from(bucketName)
@@ -55,17 +56,16 @@ const Edit = () => {
           cacheControl: "3600",
           upsert: true,
         });
-     
+
       return;
     }
 
     const { data, error } = await supabase.storage
       .from("profile_pics")
       .upload("public/" + file?.name, file);
-      setUrl(
-        `https://kzthdyjkhdwyqztvlvmp.supabase.co/storage/v1/object/public/profile_pics/public/${file.name}`
-      );
-   
+    setUrl(
+      `https://kzthdyjkhdwyqztvlvmp.supabase.co/storage/v1/object/public/profile_pics/public/${file.name}`
+    );
   }
 
   async function updateProfile() {
@@ -85,10 +85,14 @@ const Edit = () => {
     );
     if (res) {
       toast("Profile updated", { type: "success" });
-      navigate('/profile')
+      navigate("/profile");
     } else {
       toast("Profile not updated", { type: "error" });
     }
+  }
+
+  if (isLoading) {
+    return <p>Loading....</p>;
   }
 
   return (

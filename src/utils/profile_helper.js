@@ -41,3 +41,16 @@ export async function updateUserProfile(
    }
    return true;
 }
+
+
+export async function getVendors(start,end){
+  const { data, error } = await supabase
+    .from("profiles")
+    .select('*')
+    .range(start,end)
+    .eq("type", 'vendor')
+   if(error){
+    return false;
+   }
+   return data;
+}
