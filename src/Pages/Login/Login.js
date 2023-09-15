@@ -9,6 +9,8 @@ import { useContext } from "react";
 import UserContext from "../../contexts/authContext";
 import { Spin } from "antd";
 import { getUserById } from "../../utils/profile_helper";
+import { v4 as uuidv4 } from "uuid";
+import HubspotForm from 'react-hubspot-form'
 
 export default function Login() {
   const [signup, setSignUp] = useState(true);
@@ -26,6 +28,14 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
+
+  <HubspotForm
+    portalId='22384747'
+    formId='556eed30-2d51-4224-86f8-ffa83f0bde15'
+    onSubmit={() => console.log('Submit!')}
+    onReady={(form) => console.log('Form ready!', form)}
+    loading={<div>Loading...</div>}
+  />
 
   const handleSubmit = async () => {
     // Perform form validation
