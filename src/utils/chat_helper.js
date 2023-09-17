@@ -28,8 +28,7 @@ export async function checkIsChatExist(chat_id) {
 }
 
 // Functions for creating chat
-export async function createChat({ reciver, user }) {
-  console.log("Hi");
+export async function createChat({ reciver, user, project_id }) {
   if (!reciver?.id || !user?.id) {
     console.log("No id found");
     return false;
@@ -37,10 +36,28 @@ export async function createChat({ reciver, user }) {
   if (user) {
     try {
       let chatId = createChatId(reciver.id, user.id);
+      chatId = chatId + project_id || "";
       let isChatExist = await checkIsChatExist(chatId);
-      console.log(chatId, isChatExist);
+
       if (isChatExist.status) {
         let { data } = isChatExist;
+        if (project_id) {
+          const { data: data2, error } = await supabase
+            .from("chats")
+            .update({ project_id })
+            .eq("chat_id", data[0].chat_id)
+            .select();
+          const { data: data3, error: error2 } = await supabase
+            .from("v_p")
+            .insert([{ vendor_id: reciver?.id, project_id }])
+            .select();
+        } else {
+          const { data: data2, error } = await supabase
+            .from("chats")
+            .update({ project_id: "NA" })
+            .eq("chat_id", data[0].chat_id)
+            .select();
+        }
         return data[0];
       } else {
         let sender = user;
@@ -56,9 +73,16 @@ export async function createChat({ reciver, user }) {
               reciver_id: reciver.id,
               reciver_name: reciver.display_name,
               reciver_image: reciver.profile_pic,
+              project_id: project_id || "NA",
             },
           ])
           .select();
+        if (project_id) {
+          const { data: data3, error: error2 } = await supabase
+            .from("v_p")
+            .insert([{ vendor_id: reciver?.id, project_id }])
+            .select();
+        }
         console.log("data", data);
         if (error) {
           console.log(error);
@@ -80,7 +104,7 @@ export async function getAllChats(user_id) {
     let { data, error } = await supabase
       .from("chats")
       .select("*")
-      .eq("type", "vendor")
+      .eq("project_id", "NA")
       .or(`sender_id.eq.${user_id},reciver_id.eq.${user_id}`);
     if (error) {
       return [];
@@ -92,9 +116,52 @@ export async function getAllChats(user_id) {
     return [];
   }
 }
+export async function getAllChatsByProjectId(user_id, project_id) {
+  console.log(user_id, project_id);
+  try {
+    let { data, error } = await supabase
+      .from("chats")
+      .select("*")
+      .eq("project_id", project_id)
+      .or(`sender_id.eq.${user_id},reciver_id.eq.${user_id}`);
 
-export async function getAllProjects(user_id) {
- 
+    if (error) {
+      return [];
+    }
+    return data;
+  } catch (err) {
+    alert("Something went wrong");
+    console.log(err);
+    return [];
+  }
+}
+
+export async function getAllProjects(user_id, type) {
+  try {
+    if (type === "vendor") {
+      let { data: v_p, error } = await supabase
+        .from("v_p")
+        .select(`projects (project_id,name)`)
+        .eq("vendor_id", user_id);
+      if (error) return [];
+      var myData = v_p.map((key) => {
+        return key.projects;
+      });
+      return myData;
+    }
+    let { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .eq("created_by", user_id);
+    if (error) {
+      return [];
+    }
+    return data;
+  } catch (err) {
+    alert("Something went wrong");
+    console.log(err);
+    return [];
+  }
 }
 
 export function printName(id1, id2, name1, name2, user_id) {
@@ -177,7 +244,7 @@ export async function sendMessage({ chatData, text, user_id }) {
 }
 
 export async function getMessages(chat_id) {
-  console.log('inside',chat_id);
+  console.log("inside", chat_id);
   const { data, error } = await supabase
     .from("messages")
     .select("*")

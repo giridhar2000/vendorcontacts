@@ -221,6 +221,19 @@
     background-color: #f0f0f0 !important;
 }
 
+.create-project{
+  background-color: #d6db63;
+  border: 0;
+  outline: none;
+  padding: .6rem .7rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.create-project svg{
+  font-size: .6rem;
+  margin-top: .5rem !important;
+}
+
 @media (max-width: 1100px) {
   .messages-box-container > p {
     display: none;

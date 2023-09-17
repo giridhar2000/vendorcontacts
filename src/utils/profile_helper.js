@@ -54,3 +54,14 @@ export async function getVendors(start,end){
    }
    return data;
 }
+export async function getAllUsers(id,type){
+  const { data, error } = await supabase
+    .from("profiles")
+    .select('*')
+    .neq("id",id)
+    .neq("type", type)
+   if(error){
+    return false;
+   }
+   return data;
+}

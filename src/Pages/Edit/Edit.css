@@ -45,6 +45,11 @@
   padding-left: 0;
   margin-top: 4vh;
 }
+.project-input{
+  margin-top: 0 !important;
+  margin-bottom: 1rem !important;
+  width: 90% !important;
+}
 
 .names {
   display: flex;
