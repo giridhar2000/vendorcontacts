@@ -8,7 +8,7 @@ import "./Profile.css";
 import PdfCard from "../../Components/PdfCard/PdfCard";
 import { Empty, Skeleton } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
-import { getUserById,getUser } from "../../utils/profile_helper";
+import { getUserById, getUser } from "../../utils/profile_helper";
 import { useQuery, useMutation } from "react-query";
 import { createChat } from "../../utils/chat_helper";
 
@@ -29,15 +29,15 @@ const Profile = () => {
 
   // Mutation for sending message
   const create_chat_mutation = useMutation(createChat, {
-    onSuccess: (data) =>{
-        if(data){
-            navigate('/chats',{
-                state:{
-                    data
-                }
-            })
-        }
-    }
+    onSuccess: (data) => {
+      if (data) {
+        navigate("/chats", {
+          state: {
+            data,
+          },
+        });
+      }
+    },
   });
 
   if (isLoading || isLoading2) {
@@ -107,12 +107,14 @@ const Profile = () => {
           <div className="profile-name">
             <p>{profile?.display_name}</p>
             <p>{profile?.location}</p>
-            <p>
-              Visit Rep's profile{" "}
-              <button>
-                <AiOutlineArrowRight />
-              </button>
-            </p>
+            {id === user?.id ? (
+              <p onClick={() => navigate("/edit")}>
+                Edit profile{" "}
+                <button onClick={() => navigate("/edit")}>
+                  <AiFillEdit />
+                </button>
+              </p>
+            ) : null}
           </div>
           <div className="profile-about">
             {profile?.bio ? (
@@ -129,22 +131,22 @@ const Profile = () => {
             <div className="line"></div>
             <p>{profile?.quote ? profile?.quote : "**Update your quote**"}</p>
           </div>
-          <div
-            className="chat-icon"
-            onClick={() => {
-              if (user){
-                console.log(profile)
-                create_chat_mutation.mutateAsync({
+          {id !== user?.id ? (
+            <div
+              className="chat-icon"
+              onClick={() => {
+                if (user) {
+                  console.log(profile);
+                  create_chat_mutation.mutateAsync({
                     reciver: profile,
                     user,
                   });
-              }
-                
-             
-            }}
-          >
-            <BsFillChatDotsFill />
-          </div>
+                }
+              }}
+            >
+              <BsFillChatDotsFill />
+            </div>
+          ) : null}
         </div>
 
         <div className="profile-desc">

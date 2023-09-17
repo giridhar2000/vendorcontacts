@@ -75,7 +75,7 @@ export async function createChat({ reciver, user }) {
   }
 }
 
-export async function getAllVendorsChats(user_id) {
+export async function getAllChats(user_id) {
   try {
     let { data, error } = await supabase
       .from("chats")
@@ -93,22 +93,8 @@ export async function getAllVendorsChats(user_id) {
   }
 }
 
-export async function getAllProjectsChats(user_id) {
-  try {
-    let { data, error } = await supabase
-      .from("chats")
-      .select("*")
-      .eq("type", "project")
-      .or(`sender_id.eq.${user_id},reciver_id.eq.${user_id}`);
-    if (error) {
-      return [];
-    }
-    return data;
-  } catch (err) {
-    alert("Something went wrong");
-    console.log(err);
-    return [];
-  }
+export async function getAllProjects(user_id) {
+ 
 }
 
 export function printName(id1, id2, name1, name2, user_id) {
@@ -191,6 +177,7 @@ export async function sendMessage({ chatData, text, user_id }) {
 }
 
 export async function getMessages(chat_id) {
+  console.log('inside',chat_id);
   const { data, error } = await supabase
     .from("messages")
     .select("*")

@@ -17,8 +17,8 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import supabase from "../../utils/supabase.config";
 import {
-  getAllVendorsChats,
-  getAllProjectsChats,
+  getAllChats,
+  getAllProjects,
   printName,
   printPic,
   sendMessage,
@@ -36,17 +36,18 @@ const Chats = () => {
   const [selectedChat, setSelectedChat] = useState(location?.state?.data);
   const [profile, isLoading] = useContext(UserContext);
   const [text, setText] = useState("");
-  const { data: vendors_chat, isLoading: isLoading2 } = useQuery(
-    `vendors/${profile?.id}`,
-    async ()=>{
-      let data= await getAllVendorsChats(profile?.id);
+
+  const { data: chats, isLoading: isLoading2 } = useQuery(
+    ["chats", profile?.id],
+    async () => {
+      let data = await getAllChats(profile?.id);
       return data;
     }
   );
-  const { data: projects_chat, isLoading: isLoading3 } = useQuery(
-    `projects/${profile?.id}`,
-    async()=>{
-      let data= await getAllProjectsChats(profile?.id);
+  const { data: projects, isLoading: isLoading3 } = useQuery(
+    ["projects", profile?.id],
+    async () => {
+      let data = await getAllProjects(profile?.id);
       return data;
     }
   );
@@ -55,22 +56,19 @@ const Chats = () => {
     ["messaagelist", selectedChat?.chat_id],
     () => getMessages(selectedChat?.chat_id),
     {
-      enabled: selectedChat !== null,
+      enabled: selectedChat?.chat_id != null,
     }
   );
+
   // Mutation for sending message
   const send_message_mutation = useMutation(sendMessage, {
     onSuccess: (data) => {
       setText("");
-      // Invalidate and refetch
-      // queryClient.invalidateQueries(['messaagelist', chatData?.chat_id])
-      // update_latest_message_mutation.mutate({ text: textRef.current.value, chatData })
-      // add_chat_notification.mutate({ reciver_id: data?.reciver_id, chat_id: data?.chat_id, message_id: data?.id })
     },
   });
 
   useEffect(() => {
-    const messages = supabase
+    const chats = supabase
       .channel("custom-all-channel")
       .on(
         "postgres_changes",
@@ -80,12 +78,20 @@ const Chats = () => {
             "messaagelist",
             payload?.new?.chat_id,
           ]);
-          console.log(payload);
         }
       )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "chats" },
+        (payload) => {
+          queryClient.invalidateQueries(["chats", profile?.id]);
+        }
+      )
+
       .subscribe();
     return () => {
-      messages.unsubscribe();
+      chats.unsubscribe();
+      setSelectedChat(null);
     };
   }, []);
 
@@ -109,40 +115,52 @@ const Chats = () => {
                   </div>
                 </div>
                 <div className="projects-body">
-                  {projects_chat?.map((chat) => {
-                    return (
-                      <Chat
-                        chat={chat}
-                        user_id={profile?.id}
-                        key={chat?.id}
-                        selectedChat={selectedChat}
-                        setSelectedChat={setSelectedChat}
-                      />
-                    );
-                  })}
+                  {projects
+                    ?.sort(
+                      (a, b) =>
+                        Date.parse(b.updated_at) - Date.parse(a.updated_at)
+                    )
+                    ?.map((chat) => {
+                      return (
+                        <Chat
+                          chat={chat}
+                          user_id={profile?.id}
+                          key={chat?.id}
+                          selectedChat={selectedChat}
+                          setSelectedChat={setSelectedChat}
+                        />
+                      );
+                    })}
                 </div>
               </div>
               <div className="vendors">
                 <div className="vendors-header">
-                  <p>Vendors</p>
+                  <p>{profile?.type === "vendor" ? "Architects" : "Vendors"}</p>
                   <div className="header-icons">
                     <AiOutlinePlusCircle />
                     <BsThreeDotsVertical />
                   </div>
                 </div>
                 <div className="vendors-body">
-                  {vendors_chat?.map((chat) => {
-                    return (
-                      <Chat
-                        isSwitch={false}
-                        chat={chat}
-                        user_id={profile?.id}
-                        key={chat?.id}
-                        selectedChat={selectedChat}
-                        setSelectedChat={setSelectedChat}
-                      />
-                    );
-                  })}
+                  {chats
+                    ?.sort(
+                      (a, b) =>
+                        Date.parse(b.updated_at) - Date.parse(a.updated_at)
+                    )
+                    ?.map((chat, i) => {
+                      return (
+                        <Chat
+                          index={i}
+                          last={chats?.length - 1}
+                          isSwitch={false}
+                          chat={chat}
+                          user_id={profile?.id}
+                          key={chat?.id}
+                          selectedChat={selectedChat}
+                          setSelectedChat={setSelectedChat}
+                        />
+                      );
+                    })}
                 </div>
               </div>
             </div>
@@ -164,51 +182,34 @@ const Chats = () => {
             <div className="messages-box messages-box-sc">
               <div className="projects projects-sc">
                 <div className="projects-header">
-                  <p>
-                    {selectedChat?.type === "vendor" ? "Vendors" : "Projects"}
-                  </p>
+                  <p>Chats</p>
                   <div className="header-icons">
                     <AiOutlinePlusCircle />
                     <BsThreeDotsVertical />
                   </div>
                 </div>
                 <div className="projects-body">
-                  {selectedChat?.type === "vendor"
-                    ? vendors_chat?.map((chat) => {
-                        return (
-                          <Chat
-                            isSwitch={false}
-                            chat={chat}
-                            user_id={profile?.id}
-                            key={chat?.id}
-                            selectedChat={selectedChat}
-                            setSelectedChat={setSelectedChat}
-                          />
-                        );
-                      })
-                    : projects_chat.map((chat) => {
-                        return <Chat chat={chat} />;
-                      })}
+                  {chats
+                    ?.sort(
+                      (a, b) =>
+                        Date.parse(b.updated_at) - Date.parse(a.updated_at)
+                    )
+                    .map((chat) => {
+                      return (
+                        <Chat
+                          isSwitch={false}
+                          chat={chat}
+                          user_id={profile?.id}
+                          key={chat?.id}
+                          selectedChat={selectedChat}
+                          setSelectedChat={setSelectedChat}
+                        />
+                      );
+                    })}
                 </div>
               </div>
               <div className="vendors vendors-sc">
-                <div className="vendors-body vendors-body-sc">
-                  <ScrollToBottom
-                    className="scroll"
-                    checkInterval={17}
-                    sticky={true}
-                  >
-                    {messages?.map((message) => {
-                      return (
-                        <div key={message.id} className={`${message?.sender_id===profile?.id ? 'mine' :'others'}`}>
-                          <p>{message?.text}</p>
-                          <p>08:00 PM</p>
-                        </div>
-                      );
-                    })}
-                    
-                  </ScrollToBottom>
-                </div>
+                <Messeges messages={messages} profile={profile} />
                 <div className="chat-input">
                   <div
                     className="header-form"
@@ -256,7 +257,32 @@ const Chats = () => {
     </>
   );
 };
+
+function Messeges({ messages, profile }) {
+  return (
+    <div className="vendors-body vendors-body-sc">
+      <ScrollToBottom className="scroll" checkInterval={17} sticky={true}>
+        {messages?.map((message) => {
+          return (
+            <div
+              key={message.id}
+              className={`${
+                message?.sender_id === profile?.id ? "mine" : "others"
+              }`}
+            >
+              <p>{message?.text}</p>
+              <p>08:00 PM</p>
+            </div>
+          );
+        })}
+      </ScrollToBottom>
+    </div>
+  );
+}
+
 function Chat({
+  index,
+  last,
   isSwitch = true,
   chat,
   user_id,
@@ -271,11 +297,12 @@ function Chat({
     sender_image,
     reciver_image,
   } = chat;
+
   return (
     <div
       className={`projects-chat ${
         selectedChat?.id === chat?.id ? "bg-dark" : ""
-      }`}
+      } ${last === index ? "" : "border-bottom"}`}
       onClick={() => setSelectedChat(chat)}
     >
       <div className="chat-pic">

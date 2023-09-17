@@ -81,12 +81,6 @@ const Profile = () => {
           <div className="profile-name">
             <p>{profile?.display_name}</p>
             <p>{profile?.location}</p>
-            <p>
-              Visit Rep's profile{" "}
-              <button>
-                <AiOutlineArrowRight />
-              </button>
-            </p>
             <p onClick={() => navigate("/edit")}>
               Edit profile{" "}
               <button onClick={() => navigate("/edit")}>
