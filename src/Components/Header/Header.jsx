@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Header.css";
 import { Button, Drawer, Skeleton } from "antd";
-import Icon from "../../Assets/images/logo-icon.svg";
+import Icon from "../../Assets/images/DESIGNPORT-01.png";
 import {
   AiOutlineArrowRight,
   AiOutlineUser,
@@ -63,12 +63,12 @@ const Header = () => {
   return (
     <div className="header">
       <div className="headerlogo">
-        <img src={Icon} alt="" className="logoIcon" />
-        {!isAuth ? (
+        <img src={Icon} alt="" className="logoIcon" style={{width: "100%"}}/>
+        {/* {!isAuth ? (
           <h1 className="logo-text">VENDORCONTACTS</h1>
         ) : (
           <h2 className="logo-text">VENDORCONTACTS</h2>
-        )}
+        )} */}
       </div>
 
       {isAuth ? (

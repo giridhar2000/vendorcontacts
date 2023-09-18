@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 import bg1 from "../../Assets/img/img1.jpg";
@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { updateUserProfile } from "../../utils/profile_helper";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/userContext";
+import { UploadOutlined } from '@ant-design/icons';
 
 const Edit = () => {
   const [profile, isLoading] = useContext(UserContext);
@@ -22,6 +23,7 @@ const Edit = () => {
   const [location, setLocation] = useState("");
   const [quote, setQuote] = useState("");
   const [bio, setBio] = useState("");
+
 
   const checkFileExists = async (bucketName, filePath) => {
     const { data, error } = await supabase.storage
@@ -157,14 +159,22 @@ const Edit = () => {
               />
             </div>
             {/* <div className='passip'>
-                                    <input placeholder='Bio' type={cip} />
-                                </div> */}
+              <input placeholder='Bio' type={cip} />
+            </div> */}
             <div className="bio">Bio</div>
             <textarea
               class="textarea"
               id="txtInput"
               onChange={(e) => setBio(e.target.value)}
             ></textarea>
+            <div className="bio">Attachment</div>
+            <div className="attachment">
+              <label for="file-upload" class="custom-file-upload">
+                Upload
+              </label>
+              <input id="file-upload" type="file" />
+              <UploadOutlined />
+            </div>
             <script
               src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"
               type="text/javascript"
