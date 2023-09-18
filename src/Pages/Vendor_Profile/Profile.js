@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 import bg1 from "../../Assets/img/img1.jpg";
-import { AiOutlineArrowRight, AiOutlineUser, AiFillEdit } from "react-icons/ai";
+import {  AiOutlineUser, AiFillEdit } from "react-icons/ai";
 import "./Profile.css";
 import PdfCard from "../../Components/PdfCard/PdfCard";
 import { Empty, Skeleton } from "antd";
@@ -81,12 +81,6 @@ const Profile = () => {
           <div className="profile-name">
             <p>{profile?.display_name}</p>
             <p>{profile?.location}</p>
-            <p>
-              Visit Rep's profile{" "}
-              <button>
-                <AiOutlineArrowRight />
-              </button>
-            </p>
             <p onClick={() => navigate("/edit")}>
               Edit profile{" "}
               <button onClick={() => navigate("/edit")}>

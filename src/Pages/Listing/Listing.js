@@ -20,6 +20,8 @@ const Listing = () => {
   const [profile, isLoading] = useContext(UserContext);
   const { data: vendors, isLoading:isLoading2 } = useQuery(`profile/${profile?.id}`, async () => {
     return await getVendors(0, 6);
+  },{
+    enabled:profile?.id !== null
   });
 
   if (isLoading || isLoading2) {
@@ -40,7 +42,7 @@ const Listing = () => {
       </div>
       <hr />
       <div className="cardcontainer">
-        {vendors?.map((vendor, i) => {
+        {vendors?.map((vendor) => {
           return (
             <div className="listingcard" key={vendor?.id}>
               {vendor?.profile_pic ? (
