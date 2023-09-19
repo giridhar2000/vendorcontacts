@@ -111,6 +111,14 @@
   font-size: .9rem;
 }
 
+.custom-file-upload{
+  cursor: pointer;
+}
+
+input#docpicker{
+  cursor: pointer;
+}
+
 textarea#txtInput.textarea {
   background-color: lightgray;
   outline: 0;

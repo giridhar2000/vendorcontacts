@@ -169,11 +169,15 @@ const Edit = () => {
             ></textarea>
             <div className="bio">Attachment</div>
             <div className="attachment">
-              <label for="file-upload" class="custom-file-upload">
+              <label for="file-upload" class="custom-file-upload" id="docpicker">
                 Upload
+                &nbsp;{url ? <file src={url} /> : <UploadOutlined />}
+                <input 
+                type="file" 
+                id="docpicker"
+                accept=".pdf,image/*,.doc,.docx,.xml, application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
+                onChange={handleUpload}/>
               </label>
-              <input id="file-upload" type="file" />
-              <UploadOutlined />
             </div>
             <script
               src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"
