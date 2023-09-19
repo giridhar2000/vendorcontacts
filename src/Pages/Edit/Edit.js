@@ -165,6 +165,7 @@ const Edit = () => {
             <textarea
               class="textarea"
               id="txtInput"
+              maxLength="500"
               onChange={(e) => setBio(e.target.value)}
             ></textarea>
             <div className="bio">Attachment</div>
