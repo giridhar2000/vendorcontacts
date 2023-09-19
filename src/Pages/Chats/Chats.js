@@ -221,7 +221,6 @@ const Chats = () => {
                   <p>Projects</p>
                   <div className="header-icons">
                     <AiOutlinePlusCircle onClick={() => setAddProject(true)} />
-                    <BsThreeDotsVertical />
                   </div>
                 </div>
                 <div className="projects-body">
@@ -256,7 +255,6 @@ const Chats = () => {
                   <p>{profile?.type === "vendor" ? "Architects" : "Vendors"}</p>
                   <div className="header-icons">
                     <AiOutlinePlusCircle onClick={() => setAddChat(true)} />
-                    <BsThreeDotsVertical />
                   </div>
                 </div>
                 <div className="vendors-body">
@@ -312,7 +310,6 @@ const Chats = () => {
                   <p>Chats</p>
                   <div className="header-icons">
                     <AiOutlinePlusCircle onClick={() => setAddChat(true)} />
-                    <BsThreeDotsVertical />
                   </div>
                 </div>
                 <div className="projects-body">
@@ -401,7 +398,6 @@ const Chats = () => {
                   <p>{selectedProject?.name}</p>
                   <div className="header-icons">
                     <AiOutlinePlusCircle onClick={() => setAddChatToProject(true)} />
-                    {/* <BsThreeDotsVertical /> */}
                   </div>
                 </div>
                 <div className="projects-body">

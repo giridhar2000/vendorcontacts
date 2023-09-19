@@ -8,21 +8,21 @@ import { FiCamera } from "react-icons/fi";
 import "./Edit.css";
 import supabase from "../../utils/supabase.config";
 import { toast } from "react-toastify";
-import { updateUserProfile } from "../../utils/profile_helper";
+import { getUser, updateUserProfile } from "../../utils/profile_helper";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/userContext";
 import { UploadOutlined } from '@ant-design/icons';
-
+import { useQuery } from "react-query";
 const Edit = () => {
-  const [profile, isLoading] = useContext(UserContext);
+  const {data:profile,isLoading}=useQuery('profile',getUser)
   let navigate = useNavigate();
   const [url, setUrl] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [location, setLocation] = useState("");
-  const [quote, setQuote] = useState("");
-  const [bio, setBio] = useState("");
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [quote, setQuote] = useState(null);
+  const [bio, setBio] = useState(null);
 
 
   const checkFileExists = async (bucketName, filePath) => {
@@ -118,7 +118,7 @@ const Edit = () => {
                 onChange={handleUpload}
               />
               <label htmlFor="profile_pic" className="profile_pic_label">
-                {url ? <img src={url} /> : <AiOutlineCloudUpload />}
+                {url ? <img src={url} /> : profile?.profile_pic ?<img src={profile?.profile_pic} /> : <AiOutlineCloudUpload />}
               </label>
               <p>{url ? "Uploaded" : "Upload your logo here"}</p>
             </div>
@@ -126,12 +126,14 @@ const Edit = () => {
               <div className="nameip">
                 <input
                   placeholder="First name"
+                  value={profile?.display_name && firstName ===null ? profile?.display_name?.split(' ')[0] :firstName }
                   onChange={(e) => setFirstName(e.target.value)}
                 />
               </div>
               <div className="nameip">
                 <input
                   placeholder="Last name"
+                  value={profile?.display_name && lastName ===null ? profile?.display_name?.split(' ')[1] :lastName }
                   onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
@@ -143,18 +145,21 @@ const Edit = () => {
             <div className="emailip">
               <input
                 placeholder="Buisness Email"
+                value={profile?.email && email ===null ? profile?.email :email }
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="emailip">
               <input
                 placeholder="Location"
+                value={profile?.location && location ===null ? profile?.location:location }
                 onChange={(e) => setLocation(e.target.value)}
               />
             </div>
             <div className="passip">
               <input
                 placeholder="Profile Quote"
+                value={profile?.quote && quote ===null ? profile?.quote :quote }
                 onChange={(e) => setQuote(e.target.value)}
               />
             </div>
@@ -166,6 +171,7 @@ const Edit = () => {
               class="textarea"
               id="txtInput"
               maxLength="500"
+              value={profile?.bio && bio ===null ? profile?.bio :bio }
               onChange={(e) => setBio(e.target.value)}
             ></textarea>
             <div className="bio">Attachment</div>

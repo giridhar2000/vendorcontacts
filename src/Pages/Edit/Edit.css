@@ -129,6 +129,7 @@ textarea#txtInput.textarea {
   width: 400px !important;
   height: 150px !important;
   max-height: 250px;
+  padding: .6rem 1rem;
 }
 
 .loginContainer {

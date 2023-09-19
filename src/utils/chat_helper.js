@@ -16,10 +16,10 @@ export async function checkIsChatExist(chat_id) {
       .select("*")
       .eq("chat_id", chat_id);
     if (error) {
-      return { status: false, data };
+      return { status: false, data: {} };
     }
-    if (data?.length !== 0) return { status: true, data };
-    else return { status: false, data };
+    if (data && data?.length !== 0) return { status: true, data };
+    else return { status: false, data: {} };
   } catch (err) {
     alert("Something went wrong");
     console.log(err);
@@ -103,7 +103,9 @@ export async function getAllChats(user_id) {
   try {
     let { data, error } = await supabase
       .from("chats")
-      .select("*")
+      .select(
+        "id,chat_id,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image,recent_message,updated_at"
+      )
       .eq("project_id", "NA")
       .or(`sender_id.eq.${user_id},reciver_id.eq.${user_id}`);
     if (error) {
@@ -121,7 +123,7 @@ export async function getAllChatsByProjectId(user_id, project_id) {
   try {
     let { data, error } = await supabase
       .from("chats")
-      .select("*")
+      .select("id,chat_id,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image,recent_message,updated_at")
       .eq("project_id", project_id)
       .or(`sender_id.eq.${user_id},reciver_id.eq.${user_id}`);
 
@@ -247,7 +249,7 @@ export async function getMessages(chat_id) {
   console.log("inside", chat_id);
   const { data, error } = await supabase
     .from("messages")
-    .select("*")
+    .select("id,created_at,text,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image")
     .eq("chat_id", chat_id);
   if (error) throw error;
   return data;

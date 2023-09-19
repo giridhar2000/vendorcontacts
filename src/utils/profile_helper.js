@@ -5,7 +5,7 @@ export async function getUser() {
   let user = data?.user;
   let { data: profile, error } = await supabase
     .from("profiles")
-    .select("*")
+    .select("id,email,display_name,profile_pic,bio,type,location,quote,status")
     .eq("id", user?.id)
     .single();
   if (error) return error;
@@ -14,7 +14,7 @@ export async function getUser() {
 export async function getUserById(id) {
   let { data: profile, error } = await supabase
     .from("profiles")
-    .select("*")
+    .select("id,display_name,profile_pic,bio,location,quote")
     .eq("id", id)
     .single();
   if (error) return error;
@@ -46,7 +46,7 @@ export async function updateUserProfile(
 export async function getVendors(start,end){
   const { data, error } = await supabase
     .from("profiles")
-    .select('*')
+    .select('id,profile_pic,display_name,location,bio')
     .range(start,end)
     .eq("type", 'vendor')
    if(error){
@@ -57,7 +57,7 @@ export async function getVendors(start,end){
 export async function getAllUsers(id,type){
   const { data, error } = await supabase
     .from("profiles")
-    .select('*')
+    .select('id,profile_pic,display_name,bio')
     .neq("id",id)
     .neq("type", type)
    if(error){
