@@ -161,7 +161,7 @@ textarea#txtInput.textarea {
   border-radius: 50%;
   background-color: rgb(218, 218, 218);
   overflow: hidden;
-
+  cursor: pointer;
 }
 
 .profile_pic_label img {
