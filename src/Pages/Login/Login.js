@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import NavbarHeader from "../Header/NavbarHeader";
 import "../Login/Login.css";
 import loginbg from "../../Assets/img/loginbg.png";
 import { toast } from "react-toastify";
@@ -10,7 +9,7 @@ import UserContext from "../../contexts/authContext";
 import { Spin } from "antd";
 import { getUserById } from "../../utils/profile_helper";
 import { v4 as uuidv4 } from "uuid";
-import HubspotForm from 'react-hubspot-form'
+import Icon from "../../Assets/images/logo-icon.svg";
 
 export default function Login() {
   const [signup, setSignUp] = useState(true);
@@ -29,14 +28,9 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
 
-  <HubspotForm
-    portalId='22384747'
-    formId='556eed30-2d51-4224-86f8-ffa83f0bde15'
-    onSubmit={() => console.log('Submit!')}
-    onReady={(form) => console.log('Form ready!', form)}
-    loading={<div>Loading...</div>}
-  />
-
+  const back = () => {
+    navigate("/")
+  }
   const handleSubmit = async () => {
     // Perform form validation
     if (!firstName || !lastName || !email || !password) {
@@ -72,10 +66,10 @@ export default function Login() {
         localStorage.setItem("auth", JSON.stringify(user));
         setIsAuth(true);
         toast("Profile created", { type: "success" });
-        if(userType === "vendor"){
+        if (userType === "vendor") {
           navigate("/profile");
 
-        }else{
+        } else {
 
           navigate("/listing");
         }
@@ -130,7 +124,15 @@ export default function Login() {
 
   return (
     <div className="login">
-      <NavbarHeader />
+      <div className='navbarheader'>
+        <div className='backbtn' onClick={back}>
+          <p>&larr;</p>
+        </div>
+        <div className="headerlogo">
+          <img src={Icon} alt="" className="logoIcon"/>
+          <h1 className="logo-text" style={{ fontSize: "x-large" }}>VENDORCONTACTS</h1>
+        </div>
+      </div>
       <div className="loginContainer lg-page">
         {signup ? (
           <>

@@ -135,12 +135,43 @@
     line-height: 5vh;
   }
 
+  .navbarheader{
+    display: flex;
+    align-items: center;
+    gap: 5vh;
+    margin: 2rem 3rem auto;
+}
+
+.backbtn{
+    border: 1px solid black;
+    border-radius: 3vh;
+}
+
+.backbtn p{
+    width: 40px;
+    margin: 0;
+    padding: 0vh;
+    text-align: center;
+    font-size: larger;
+    
+}
+
+.backbtn:hover{
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
   @media(max-width:1100px) {
     .loginimg{
         display: none;
     }
 }
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
+    .navbarheader{
+        margin: 1rem 3rem auto !important;
+    }
+    
     .login .loginimg {
         width: 30%;
     }
