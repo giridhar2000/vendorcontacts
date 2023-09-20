@@ -401,7 +401,7 @@ const Chats = () => {
                   <p>{selectedProject?.name}</p>
                   <div className="header-icons">
                     <AiOutlinePlusCircle onClick={() => setAddChatToProject(true)} />
-                    <BsThreeDotsVertical />
+                    {/* <BsThreeDotsVertical /> */}
                   </div>
                 </div>
                 <div className="projects-body">
@@ -512,7 +512,7 @@ const Chats = () => {
                     <p>{reciver?.display_name}</p>
                     <p>
                       {reciver?.bio
-                        ? reciver?.bio?.substring(0, 52) + " ..."
+                        ? reciver?.bio?.substring(0, 52)
                         : null}
                     </p>
                   </div>
@@ -562,7 +562,7 @@ const Chats = () => {
                     <p>{reciver?.display_name}</p>
                     <p>
                       {reciver?.bio
-                        ? reciver?.bio?.substring(0, 52) + " ..."
+                        ? reciver?.bio?.substring(0, 52)
                         : null}
                     </p>
                   </div>
@@ -637,7 +637,7 @@ const Chats = () => {
                     <p>{reciver?.display_name}</p>
                     <p>
                       {reciver?.bio
-                        ? reciver?.bio?.substring(0, 52) + " ..."
+                        ? reciver?.bio?.substring(0, 52)
                         : null}
                     </p>
                   </div>
@@ -716,7 +716,7 @@ function Chat({ index, last, chat, user_id, selectedChat, setSelectedChat }) {
         </p>
         <p>
           {chat?.recent_message
-            ? chat?.recent_message?.substring(0, 10) + "..."
+            ? chat?.recent_message?.substring(0, 10)
             : ""}
         </p>
       </div>
