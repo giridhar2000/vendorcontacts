@@ -7,7 +7,6 @@ const UserContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 	const [isAuth,setIsAuth]=useState(JSON.parse(localStorage.getItem('auth')))
-	console.log('is auth',isAuth);
     const { data:auth, isLoading } = useQuery("auth",async()=>{
 		const { data, error } = await supabase.auth.getUser();
         return data?.user !== null;

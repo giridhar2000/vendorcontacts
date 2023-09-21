@@ -16,7 +16,7 @@ import ProtectedLoginRoute from "../Protected/LoginProtect";
 const Routing = () => {
   const [isAuth, setIsAuth] = useContext(AuthContext);
   const { data: profile, isLoading } = useQuery("profile", getUser, {
-    enabled: isAuth,
+    enabled: isAuth !== undefined,
   });
   let routes = [
     {
