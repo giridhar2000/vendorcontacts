@@ -2,13 +2,28 @@ import React from "react";
 import "./PdfCard.css";
 import { BsDownload } from "react-icons/bs";
 import bg1 from "../../Assets/img/img1.jpg";
-const PdfCard = () => {
+import supabase from "../../utils/supabase.config";
+const PdfCard = ({ doc }) => {
+  async function download() {
+    const filePath=`public/${doc.name}`;
+    const { data, error } = await supabase.storage
+    .from("profile_docs")
+    .download(filePath);
+    console.log(filePath)
+    if(error){
+      console.log(error)
+      }
+      if(data){
+        console.log(data)
+      }
+  }
   return (
     <div className="pdf-card">
       <div className="pdf-card-row1">
         <div className="pdf">PDF</div>
-        <p>List of Materials</p>
-        <BsDownload />
+        <p>{doc?.name}</p>
+          <a target="_blank" href={`https://kzthdyjkhdwyqztvlvmp.supabase.co/storage/v1/object/public/profile_docs/public/${doc.name}`} download><BsDownload /></a>
+        
       </div>
       <div className="pdf-card-image">
         <img src={bg1} alt="card img" />
