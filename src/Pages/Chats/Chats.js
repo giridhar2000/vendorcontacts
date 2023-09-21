@@ -5,6 +5,8 @@ import {
   AiOutlinePlusCircle,
   AiOutlineUser,
   AiOutlineSend,
+  AiOutlineSearch,
+  AiOutlinePlus,
 } from "react-icons/ai";
 import {
   BsThreeDotsVertical,
@@ -24,7 +26,7 @@ import {
   sendMessage,
   getMessages,
   createChat,
-  getAllChatsByProjectId
+  getAllChatsByProjectId,
 } from "../../utils/chat_helper";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import UserContext from "../../contexts/userContext";
@@ -48,6 +50,20 @@ const Chats = () => {
   const [projectName, setProjectName] = useState("");
   const [selectedChatIds, setSelectedChatIds] = useState([]);
   const [selectedChats, setSelectedChats] = useState([]);
+  const [filteredProfiles, setFilteredProfiles] = useState([]);
+  const [input, setInput] = useState("");
+
+  useEffect(() => {
+    if (input === "") {
+      setFilteredProfiles([]);
+      return;
+    }
+    setFilteredProfiles((old) => {
+      return profiles?.filter((value) =>
+        value?.display_name?.toLowerCase()?.includes(input?.toLowerCase())
+      );
+    });
+  }, [input]);
 
   //Fetching chats of a particular user
   const { data: profiles, isLoading: isLoading4 } = useQuery(
@@ -68,12 +84,16 @@ const Chats = () => {
   );
   //Fetching chats of a particular project
   const { data: chatsOfProject, isLoading: isLoading5 } = useQuery(
-    ["chatsOfProject", profile?.id,selectedProject?.project_id],
+    ["chatsOfProject", profile?.id, selectedProject?.project_id],
     async () => {
-      let data = await getAllChatsByProjectId(profile?.id,selectedProject?.project_id);
+      let data = await getAllChatsByProjectId(
+        profile?.id,
+        selectedProject?.project_id
+      );
       return data;
-    },{
-      enabled:selectedProject?.project_id !== null
+    },
+    {
+      enabled: selectedProject?.project_id !== null,
     }
   );
 
@@ -81,11 +101,10 @@ const Chats = () => {
   const { data: projects, isLoading: isLoading3 } = useQuery(
     ["projects", profile?.id],
     async () => {
-      let data = await getAllProjects(profile?.id,profile?.type);
+      let data = await getAllProjects(profile?.id, profile?.type);
       return data;
     }
   );
-
 
   // Fetching all messages from a chat
   let { data: messages } = useQuery(
@@ -133,6 +152,7 @@ const Chats = () => {
       }
     },
   });
+
   // Mutation for Creating chats in a project
   const create_chats_mutation = useMutation(createChat, {
     onSuccess: (data) => {
@@ -160,6 +180,7 @@ const Chats = () => {
         { event: "*", schema: "public", table: "chats" },
         (payload) => {
           queryClient.invalidateQueries(["chats", profile?.id]);
+          queryClient.invalidateQueries( ["chatsOfProject", profile?.id, selectedProject?.project_id]);
         }
       )
       .on(
@@ -181,10 +202,10 @@ const Chats = () => {
   function handleSelectChats(profile) {
     if (selectedChatIds.includes(profile?.id)) {
       setSelectedChats((old) => {
-        return old.filter((item) => item.id !== profile.id);
+        return old?.filter((item) => item.id !== profile.id);
       });
       setSelectedChatIds((old) => {
-        return old.filter((item) => item !== profile?.id);
+        return old?.filter((item) => item !== profile?.id);
       });
       return;
     }
@@ -206,6 +227,25 @@ const Chats = () => {
     create_project_mutation.mutateAsync({
       user_id: profile?.id,
       name: projectName,
+    });
+  }
+  function handleAddChatToProject(project_id) {
+    setProjectAdding(true);
+    const pr = new Promise((resolve, reject) => {
+      selectedChats.forEach((chat,index,array) => {
+        create_chats_mutation.mutateAsync({
+          reciver: chat,
+          user: profile,
+          project_id,
+        });
+        if(index===array.length-1) resolve()
+      });
+    });
+    pr.then(() => {
+      setProjectAdding(false);
+      setSelectedChats([]);
+      setSelectedChatIds([]);
+      setAddChatToProject(false);
     });
   }
   return (
@@ -298,7 +338,7 @@ const Chats = () => {
               <BsSkipBackwardCircleFill
                 onClick={() => {
                   setSelectedChat(false);
-                  setSelectedProject(null)
+                  setSelectedProject(null);
                 }}
                 style={{ marginRight: ".4rem", cursor: "pointer" }}
               />{" "}
@@ -318,7 +358,7 @@ const Chats = () => {
                       (a, b) =>
                         Date.parse(b.updated_at) - Date.parse(a.updated_at)
                     )
-                    .map((chat) => {
+                    ?.map((chat) => {
                       return (
                         <Chat
                           chat={chat}
@@ -386,7 +426,7 @@ const Chats = () => {
               <BsSkipBackwardCircleFill
                 onClick={() => {
                   setSelectedProject(null);
-                  setSelectedChat(false)
+                  setSelectedChat(false);
                 }}
                 style={{ marginRight: ".4rem", cursor: "pointer" }}
               />{" "}
@@ -397,7 +437,9 @@ const Chats = () => {
                 <div className="projects-header">
                   <p>{selectedProject?.name}</p>
                   <div className="header-icons">
-                    <AiOutlinePlusCircle onClick={() => setAddChatToProject(true)} />
+                    <AiOutlinePlusCircle
+                      onClick={() => setAddChatToProject(true)}
+                    />
                   </div>
                 </div>
                 <div className="projects-body">
@@ -406,7 +448,7 @@ const Chats = () => {
                       (a, b) =>
                         Date.parse(b.updated_at) - Date.parse(a.updated_at)
                     )
-                    .map((chat) => {
+                    ?.map((chat) => {
                       return (
                         <Chat
                           chat={chat}
@@ -470,7 +512,6 @@ const Chats = () => {
               ? "Select Architect to chat"
               : "Select Vendor to chat"
           }
-          centered
           footer={null}
           open={addChat}
           onCancel={() => setAddChat(false)}
@@ -479,49 +520,65 @@ const Chats = () => {
             overflowY: "auto",
           }}
         >
-          {profiles
-            ?.sort(
-              (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
-            )
-            ?.map((reciver, i) => {
-              return (
-                <div
-                  key={reciver?.id}
-                  className={`projects-chat`}
-                  onClick={() => {
-                    if (profile) {
-                      create_chat_mutation.mutateAsync({
-                        reciver,
-                        user: profile,
-                      });
-                    }
-                  }}
-                >
-                  <div className="chat-pic">
-                    {reciver?.profile_pic ? (
-                      <img src={reciver?.profile_pic} />
-                    ) : (
-                      <AiOutlineUser />
-                    )}
-                  </div>
-                  <div className="chat-info">
-                    <p>{reciver?.display_name}</p>
-                    <p>
-                      {reciver?.bio
-                        ? reciver?.bio?.substring(0, 52)
-                        : null}
-                    </p>
-                  </div>
+          <div className="search-chat-input">
+            <AiOutlineSearch />
+            <input
+              type="text"
+              placeholder="Search here"
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </div>
+
+          {filteredProfiles?.map((reciver, i) => {
+            return (
+              <div
+                key={reciver?.id}
+                className={`projects-chat`}
+                onClick={() => {
+                  if (profile) {
+                    create_chat_mutation.mutateAsync({
+                      reciver,
+                      user: profile,
+                    });
+                  }
+                }}
+              >
+                <div className="chat-pic">
+                  {reciver?.profile_pic ? (
+                    <img src={reciver?.profile_pic} />
+                  ) : (
+                    <AiOutlineUser />
+                  )}
                 </div>
-              );
-            })}
+                <div className="chat-info">
+                  <p>{reciver?.display_name}</p>
+                  <p>{reciver?.bio ? reciver?.bio?.substring(0, 52) : null}</p>
+                </div>
+              </div>
+            );
+          })}
         </Modal>
         <Modal
-          title={
-            "Add chat to " +selectedProject?.name
-          }
-          centered
-          footer={null}
+          title={"Add chat to " + selectedProject?.name}
+          footer={[
+            <button
+              className="create-project"
+              onClick={() => {
+                handleAddChatToProject(selectedProject?.project_id);
+              }}
+              disabled={projectAdding}
+            >
+              {projectAdding ? (
+                <>
+                  Adding... <Spin />
+                </>
+              ) : (
+                <>
+                  <AiOutlinePlus /> Add
+                </>
+              )}
+            </button>,
+          ]}
           open={addChatToProject}
           onCancel={() => setAddChatToProject(false)}
           bodyStyle={{
@@ -529,22 +586,33 @@ const Chats = () => {
             overflowY: "auto",
           }}
         >
-          {profiles
-            ?.sort(
-              (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
-            )
+          <div className="search-chat-input">
+            <AiOutlineSearch />
+            <input
+              type="text"
+              placeholder="Search here"
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </div>
+          {filteredProfiles
+            ?.filter((value) => {
+              let bool = false;
+              chatsOfProject?.map((val) => {
+                if (val.chat_id.includes(value.id)) {
+                  bool = true;
+                }
+              });
+              if (!bool) return value;
+            })
             ?.map((reciver, i) => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat`}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
                   onClick={() => {
-                    if (profile) {
-                      create_chat_mutation.mutateAsync({
-                        reciver,
-                        user: profile,
-                      });
-                    }
+                    handleSelectChats(reciver);
                   }}
                 >
                   <div className="chat-pic">
@@ -557,9 +625,7 @@ const Chats = () => {
                   <div className="chat-info">
                     <p>{reciver?.display_name}</p>
                     <p>
-                      {reciver?.bio
-                        ? reciver?.bio?.substring(0, 52)
-                        : null}
+                      {reciver?.bio ? reciver?.bio?.substring(0, 52) : null}
                     </p>
                   </div>
                 </div>
@@ -569,10 +635,9 @@ const Chats = () => {
         <Modal
           title={
             profile?.type === "vendor"
-              ? "Select Architects in Project "+ projectName
-              : "Select Vendors in Project "+ projectName 
+              ? "Select Architects in Project " + projectName
+              : "Select Vendors in Project " + projectName
           }
-          centered
           footer={[
             <button
               className="create-project"
@@ -606,40 +671,39 @@ const Chats = () => {
           </div>
 
           <h3>Select Members</h3>
-
-          {profiles
-            ?.sort(
-              (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)
-            )
-            ?.map((reciver, i) => {
-              return (
-                <div
-                  key={reciver?.id}
-                  className={`projects-chat ${
-                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                  }`}
-                  onClick={() => {
-                    handleSelectChats(reciver);
-                  }}
-                >
-                  <div className="chat-pic">
-                    {reciver?.profile_pic ? (
-                      <img src={reciver?.profile_pic} />
-                    ) : (
-                      <AiOutlineUser />
-                    )}
-                  </div>
-                  <div className="chat-info">
-                    <p>{reciver?.display_name}</p>
-                    <p>
-                      {reciver?.bio
-                        ? reciver?.bio?.substring(0, 52)
-                        : null}
-                    </p>
-                  </div>
+          <div className="search-chat-input">
+            <AiOutlineSearch />
+            <input
+              type="text"
+              placeholder="Search here"
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </div>
+          {filteredProfiles?.map((reciver, i) => {
+            return (
+              <div
+                key={reciver?.id}
+                className={`projects-chat ${
+                  selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                }`}
+                onClick={() => {
+                  handleSelectChats(reciver);
+                }}
+              >
+                <div className="chat-pic">
+                  {reciver?.profile_pic ? (
+                    <img src={reciver?.profile_pic} />
+                  ) : (
+                    <AiOutlineUser />
+                  )}
                 </div>
-              );
-            })}
+                <div className="chat-info">
+                  <p>{reciver?.display_name}</p>
+                  <p>{reciver?.bio ? reciver?.bio?.substring(0, 52) : null}</p>
+                </div>
+              </div>
+            );
+          })}
         </Modal>
       </div>
     </>
@@ -711,9 +775,7 @@ function Chat({ index, last, chat, user_id, selectedChat, setSelectedChat }) {
           {printName(sender_id, reciver_id, sender_name, reciver_name, user_id)}
         </p>
         <p>
-          {chat?.recent_message
-            ? chat?.recent_message?.substring(0, 10)
-            : ""}
+          {chat?.recent_message ? chat?.recent_message?.substring(0, 10) : ""}
         </p>
       </div>
       <div className="chat-time">
@@ -722,11 +784,14 @@ function Chat({ index, last, chat, user_id, selectedChat, setSelectedChat }) {
     </div>
   );
 }
-function Project({ index, last, project, user_id,setSelectedProject }) {
+function Project({ index, last, project, user_id, setSelectedProject }) {
   let { name, pic } = project;
 
   return (
-    <div className={`projects-chat ${last === index ? "" : "border-bottom"}`} onClick={()=>setSelectedProject(project)}>
+    <div
+      className={`projects-chat ${last === index ? "" : "border-bottom"}`}
+      onClick={() => setSelectedProject(project)}
+    >
       <div className="chat-pic">
         {pic ? <img src={pic} /> : <AiOutlineUser />}
       </div>

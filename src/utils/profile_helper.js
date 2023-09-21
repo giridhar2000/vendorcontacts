@@ -5,7 +5,7 @@ export async function getUser() {
   let user = data?.user;
   let { data: profile, error } = await supabase
     .from("profiles")
-    .select("id,email,display_name,profile_pic,bio,type,location,quote,status")
+    .select("id,email,display_name,profile_pic,bio,type,location,quote,status,type")
     .eq("id", user?.id)
     .single();
   if (error) return error;
@@ -14,7 +14,7 @@ export async function getUser() {
 export async function getUserById(id) {
   let { data: profile, error } = await supabase
     .from("profiles")
-    .select("id,display_name,profile_pic,bio,location,quote")
+    .select("id,email,display_name,profile_pic,bio,location,quote,type,status")
     .eq("id", id)
     .single();
   if (error) return error;

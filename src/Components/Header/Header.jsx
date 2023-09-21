@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Header.css";
 import { Button, Drawer, Skeleton } from "antd";
-import Icon from "../../Assets/images/DESIGNPORT-01.png";
+import Icon from "../../Assets/images/logo-icon.svg";
 import {
   AiOutlineArrowRight,
   AiOutlineUser,
@@ -74,11 +74,11 @@ const Header = () => {
     <div className="header">
       <div className="headerlogo" onClick={()=>navigate('/')}>
         <img src={Icon} alt="" className="logoIcon" style={{width: "100%"}}/>
-        {/* {!isAuth ? (
+        {!isAuth ? (
           <h1 className="logo-text">VENDORCONTACTS</h1>
         ) : (
           <h2 className="logo-text">VENDORCONTACTS</h2>
-        )} */}
+        )}
       </div>
 
       {isAuth ? (
