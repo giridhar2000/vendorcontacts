@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/userContext";
 import { UploadOutlined } from '@ant-design/icons';
 import { useQuery } from "react-query";
+import FileUpload from "../../Components/FileUpload/FileUpload";
 const Edit = () => {
   const {data:profile,isLoading}=useQuery('profile',getUser)
   let navigate = useNavigate();
@@ -30,8 +31,6 @@ const Edit = () => {
       .from(bucketName)
       .list(filePath);
 
-    console.log("data", data);
-    console.log("error", error);
     if (error) {
       console.error(error);
       return false;
@@ -52,7 +51,7 @@ const Edit = () => {
     if (e.target.files && e.target.files.length) {
       file = e.target.files[0];
     }
-   
+
     const fileExists = await checkFileExists(
       "profile_pics",
       `public/${file.name}`
@@ -191,6 +190,7 @@ const Edit = () => {
                 accept=".pdf,image/*,.doc,.docx,.xml, application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
                 onChange={handleUpload}/>
               </label>
+              {/* <FileUpload /> */}
             </div>
             <script
               src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"

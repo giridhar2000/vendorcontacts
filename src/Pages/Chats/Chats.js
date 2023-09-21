@@ -34,7 +34,7 @@ import ScrollToBottom from "react-scroll-to-bottom";
 import { getAllUsers } from "../../utils/profile_helper";
 import { createProject } from "../../utils/project_helper";
 const onChange = (checked) => {
-  console.log(`switch to ${checked}`);
+  // console.log(`switch to ${checked}`);
 };
 const Chats = () => {
   const location = useLocation();
