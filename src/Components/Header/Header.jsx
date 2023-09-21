@@ -22,7 +22,7 @@ import { getUser } from "../../utils/profile_helper";
 const Header = () => {
   const [isAuth,setIsAuth]=useContext(AuthContext)
   const {data:profile,isLoading}=useQuery('profile',getUser,{
-    enabled:isAuth
+    enabled:isAuth !== undefined
   })
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -48,7 +48,6 @@ const Header = () => {
   }
 
 
-  console.log('profile',profile);
   const content = (
     <div>
       <p

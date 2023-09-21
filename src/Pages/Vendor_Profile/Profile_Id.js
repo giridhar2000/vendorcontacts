@@ -136,7 +136,6 @@ const Profile = () => {
               className="chat-icon"
               onClick={() => {
                 if (user) {
-                  console.log(profile);
                   create_chat_mutation.mutateAsync({
                     reciver: profile,
                     user,

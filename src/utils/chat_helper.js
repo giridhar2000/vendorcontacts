@@ -21,8 +21,7 @@ export async function checkIsChatExist(chat_id) {
     if (data && data?.length !== 0) return { status: true, data };
     else return { status: false, data: {} };
   } catch (err) {
-    alert("Something went wrong");
-    console.log(err);
+    alert("Something went wrong")
     return { status: false, data: {} };
   }
 }
@@ -30,7 +29,6 @@ export async function checkIsChatExist(chat_id) {
 // Functions for creating chat
 export async function createChat({ reciver, user, project_id }) {
   if (!reciver?.id || !user?.id) {
-    console.log("No id found");
     return false;
   }
   if (user) {
@@ -83,9 +81,7 @@ export async function createChat({ reciver, user, project_id }) {
             .insert([{ vendor_id: reciver?.id, project_id }])
             .select();
         }
-        console.log("data", data);
         if (error) {
-          console.log(error);
           return null;
         }
         if (data) {
@@ -93,7 +89,6 @@ export async function createChat({ reciver, user, project_id }) {
         }
       }
     } catch (err) {
-      console.log(err);
       return null;
     }
   }
@@ -114,12 +109,10 @@ export async function getAllChats(user_id) {
     return data;
   } catch (err) {
     alert("Something went wrong");
-    console.log(err);
     return [];
   }
 }
 export async function getAllChatsByProjectId(user_id, project_id) {
-  console.log(user_id, project_id);
   try {
     let { data, error } = await supabase
       .from("chats")
@@ -133,7 +126,6 @@ export async function getAllChatsByProjectId(user_id, project_id) {
     return data;
   } catch (err) {
     alert("Something went wrong");
-    console.log(err);
     return [];
   }
 }
@@ -161,7 +153,6 @@ export async function getAllProjects(user_id, type) {
     return data;
   } catch (err) {
     alert("Something went wrong");
-    console.log(err);
     return [];
   }
 }
@@ -246,7 +237,6 @@ export async function sendMessage({ chatData, text, user_id }) {
 }
 
 export async function getMessages(chat_id) {
-  console.log("inside", chat_id);
   const { data, error } = await supabase
     .from("messages")
     .select("id,created_at,text,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image")

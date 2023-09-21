@@ -13,8 +13,10 @@ import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/userContext";
 import { UploadOutlined } from '@ant-design/icons';
 import { useQuery } from "react-query";
+import { Upload, Button, message } from "antd";
+
 const Edit = () => {
-  const {data:profile,isLoading}=useQuery('profile',getUser)
+  const { data: profile, isLoading } = useQuery('profile', getUser)
   let navigate = useNavigate();
   const [url, setUrl] = useState("");
   const [firstName, setFirstName] = useState(null);
@@ -30,8 +32,6 @@ const Edit = () => {
       .from(bucketName)
       .list(filePath);
 
-    console.log("data", data);
-    console.log("error", error);
     if (error) {
       console.error(error);
       return false;
@@ -41,18 +41,40 @@ const Edit = () => {
     return files.length > 0;
   };
 
+  async function handleFileUpload(e) {
+    let file;
+    if (e.file) {
+      file = e.file
+    }
+    const fileExists = await checkFileExists(
+      "profile_pics",
+      `public/${file.name}`
+    );
+    if (fileExists) {
+      const { data, error } = await supabase.storage
+        .from("profile_pics")
+        .update("public/" + file?.name, file, {
+          cacheControl: "3600",
+          upsert: true,
+        });
+
+      return;
+    }
+
+  }
+
   async function handleUpload(e) {
-    const maxSize=5*1024*1024 // 5mb
-    if(e.target.files[0]?.size > maxSize ){
-      e.target.value="";
-      toast("Max size limit is 5MB",{type:"error"});
+    const maxSize = 5 * 1024 * 1024 // 5mb
+    if (e.target.files[0]?.size > maxSize) {
+      e.target.value = "";
+      toast("Max size limit is 5MB", { type: "error" });
       return;
     }
     let file;
     if (e.target.files && e.target.files.length) {
       file = e.target.files[0];
     }
-   
+
     const fileExists = await checkFileExists(
       "profile_pics",
       `public/${file.name}`
@@ -103,6 +125,22 @@ const Edit = () => {
     return <p>Loading....</p>;
   }
 
+  const props = {
+    beforeUpload: (file) => {
+      const isPNG = file.type === 'application/pdf';
+      if (file.size > 400000) {
+        message.error("file should be less than 5MB")
+      }
+      else if (!isPNG) {
+        message.error(`${file.name} is not a PDF file`);
+      }
+      return isPNG || Upload.LIST_IGNORE;
+    },
+    onChange: (info) => {
+      console.log(info.fileList);
+    },
+  };
+
   return (
     <>
       <Header />
@@ -124,7 +162,7 @@ const Edit = () => {
                 onChange={handleUpload}
               />
               <label htmlFor="profile_pic" className="profile_pic_label">
-                {url ? <img src={url} /> : profile?.profile_pic ?<img src={profile?.profile_pic} /> : <AiOutlineCloudUpload />}
+                {url ? <img src={url} /> : profile?.profile_pic ? <img src={profile?.profile_pic} /> : <AiOutlineCloudUpload />}
               </label>
               <p>{url ? "Uploaded" : "Upload your logo here"}</p>
             </div>
@@ -132,14 +170,14 @@ const Edit = () => {
               <div className="nameip">
                 <input
                   placeholder="First name"
-                  value={profile?.display_name && firstName ===null ? profile?.display_name?.split(' ')[0] :firstName }
+                  value={profile?.display_name && firstName === null ? profile?.display_name?.split(' ')[0] : firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
               </div>
               <div className="nameip">
                 <input
                   placeholder="Last name"
-                  value={profile?.display_name && lastName ===null ? profile?.display_name?.split(' ')[1] :lastName }
+                  value={profile?.display_name && lastName === null ? profile?.display_name?.split(' ')[1] : lastName}
                   onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
@@ -151,21 +189,21 @@ const Edit = () => {
             <div className="emailip">
               <input
                 placeholder="Buisness Email"
-                value={profile?.email && email ===null ? profile?.email :email }
+                value={profile?.email && email === null ? profile?.email : email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="emailip">
               <input
                 placeholder="Location"
-                value={profile?.location && location ===null ? profile?.location:location }
+                value={profile?.location && location === null ? profile?.location : location}
                 onChange={(e) => setLocation(e.target.value)}
               />
             </div>
             <div className="passip">
               <input
                 placeholder="Profile Quote"
-                value={profile?.quote && quote ===null ? profile?.quote :quote }
+                value={profile?.quote && quote === null ? profile?.quote : quote}
                 onChange={(e) => setQuote(e.target.value)}
               />
             </div>
@@ -177,20 +215,14 @@ const Edit = () => {
               class="textarea"
               id="txtInput"
               maxLength="500"
-              value={profile?.bio && bio ===null ? profile?.bio :bio }
+              value={profile?.bio && bio === null ? profile?.bio : bio}
               onChange={(e) => setBio(e.target.value)}
             ></textarea>
             <div className="bio">Attachment</div>
             <div className="attachment">
-              <label for="file-upload" class="custom-file-upload" id="docpicker">
-                Upload
-                &nbsp;{url ? <file src={url} /> : <UploadOutlined />}
-                <input 
-                type="file" 
-                id="docpicker"
-                accept=".pdf,image/*,.doc,.docx,.xml, application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
-                onChange={handleUpload}/>
-              </label>
+              <Upload accept=".pdf" {...props} customRequest={handleFileUpload}>
+                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              </Upload>
             </div>
             <script
               src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"
