@@ -12,6 +12,7 @@
   display: flex;
   gap: 2vh;
   width: 15%;
+  cursor: pointer;
 }
 
 .signin {

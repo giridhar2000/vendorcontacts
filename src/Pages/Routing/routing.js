@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "../Home/Home";
 import Profile from "../Vendor_Profile/Profile";
@@ -8,13 +8,27 @@ import Listing from "../Listing/Listing";
 import Chats from "../Chats/Chats";
 import ProtectedRoute from "../Protected/Protected";
 import Edit from "../Edit/Edit";
+import AuthContext from "../../contexts/authContext";
+import { getUser } from "../../utils/profile_helper";
+import { useQuery } from "react-query";
+import ProtectedLoginRoute from "../Protected/LoginProtect";
 
 const Routing = () => {
-
+  const [isAuth, setIsAuth] = useContext(AuthContext);
+  const { data: profile, isLoading } = useQuery("profile", getUser, {
+    enabled: isAuth,
+  });
   let routes = [
     {
       path: "/",
-      element: <Home/>
+      element:
+        isAuth && profile && profile?.type === "vendor" ? (
+          <Profile />
+        ) : isAuth && profile && profile?.type === "architect" ? (
+          <Listing />
+        ) : (
+          <Home />
+        ),
     },
     {
       path: "/profile",
@@ -28,7 +42,7 @@ const Routing = () => {
       path: "/profile/:id",
       element: (
         <ProtectedRoute>
-          <Profile_Id/>
+          <Profile_Id />
         </ProtectedRoute>
       ),
     },
@@ -50,7 +64,11 @@ const Routing = () => {
     },
     {
       path: "/login",
-      element: <Login />,
+      element: (
+        <ProtectedLoginRoute>
+          <Login />
+        </ProtectedLoginRoute>
+      ),
     },
     {
       path: "/edit",
@@ -64,11 +82,12 @@ const Routing = () => {
 
   return (
     <Routes>
-      {routes.map((route, i) => {
-        return (
-          <Route key={i} exact path={route.path} element={route.element} />
-        );
-      })}
+      {!isLoading &&
+        routes.map((route, i) => {
+          return (
+            <Route key={i} exact path={route.path} element={route.element} />
+          );
+        })}
     </Routes>
   );
 };

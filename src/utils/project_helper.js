@@ -11,3 +11,4 @@ export async function createProject({user_id,name}) {
     }
    return data[0]?.project_id;
 }
+

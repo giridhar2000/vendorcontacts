@@ -7,18 +7,17 @@ import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import "./Listing.css";
 import { useQuery } from "react-query";
-import { getVendors } from "../../utils/profile_helper";
+import { getUser, getVendors } from "../../utils/profile_helper";
 import { Image } from "antd";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/userContext";
-
 const options = ["Recent", "Popular", "Oldest"];
 const defaultOption = options[0];
 
 const Listing = () => {
   const navigate = useNavigate();
-  const [profile, isLoading] = useContext(UserContext);
-  const { data: vendors, isLoading:isLoading2 } = useQuery(`profile/${profile?.id}`, async () => {
+  const {data:profile,isLoading}=useQuery('profile',getUser)
+  const { data: vendors, isLoading:isLoading2 } = useQuery(['profile',profile?.id], async () => {
     return await getVendors(0, 6);
   },{
     enabled:profile?.id !== null

@@ -15,10 +15,15 @@ import UserContext from "../../contexts/userContext";
 import { Popover } from "antd";
 import { toast } from "react-toastify";
 import supabase from "../../utils/supabase.config";
+import { useQuery } from "react-query";
+import { getUser } from "../../utils/profile_helper";
+
 
 const Header = () => {
-  const [isAuth, setIsAuth] = useContext(AuthContext);
-  const [profile, isLoading] = useContext(UserContext);
+  const [isAuth,setIsAuth]=useContext(AuthContext)
+  const {data:profile,isLoading}=useQuery('profile',getUser,{
+    enabled:isAuth
+  })
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const signin = () => {
@@ -37,11 +42,13 @@ const Header = () => {
       toast("Logout failed", { type: "error" });
       return;
     }
+    setIsAuth(false)
     localStorage.removeItem("auth");
-    setIsAuth(false);
     navigate("/");
   }
 
+
+  console.log('profile',profile);
   const content = (
     <div>
       <p
@@ -60,10 +67,13 @@ const Header = () => {
       </p>
     </div>
   );
+
+
+
   return (
     <div className="header">
-      <div className="headerlogo">
-        <img src={Icon} alt="" className="logoIcon" />
+      <div className="headerlogo" onClick={()=>navigate('/')}>
+        <img src={Icon} alt="" className="logoIcon" style={{width: "100%"}}/>
         {!isAuth ? (
           <h1 className="logo-text">VENDORCONTACTS</h1>
         ) : (

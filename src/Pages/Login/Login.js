@@ -8,8 +8,10 @@ import { useContext } from "react";
 import UserContext from "../../contexts/authContext";
 import { Spin } from "antd";
 import { getUserById } from "../../utils/profile_helper";
+import HubspotForm from "react-hubspot-form";
 import { v4 as uuidv4 } from "uuid";
 import Icon from "../../Assets/images/logo-icon.svg";
+
 
 export default function Login() {
   const [signup, setSignUp] = useState(true);
@@ -28,9 +30,20 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
 
+
+  <HubspotForm
+    portalId="22384747"
+    formId="556eed30-2d51-4224-86f8-ffa83f0bde15"
+    onSubmit={() => console.log("Submit!")}
+    onReady={(form) => console.log("Form ready!", form)}
+    loading={<div>Loading...</div>}
+  />;
+
+
   const back = () => {
     navigate("/")
   }
+
   const handleSubmit = async () => {
     // Perform form validation
     if (!firstName || !lastName || !email || !password) {
@@ -63,18 +76,35 @@ export default function Login() {
         toast(error.message, { type: "error" });
         return;
       }
-
-      if (user) {
-        localStorage.setItem("auth", JSON.stringify(user));
+      toast("Profile created", { type: "success" });
+      let profile = await getUserById(user?.id);
+      if (profile.status === false) {
+        localStorage.setItem("auth", JSON.stringify(true));
         setIsAuth(true);
-        toast("Profile created", { type: "success" });
-        if (userType === "vendor") {
-          navigate("/profile");
+        toast(
+          <p>
+            Welcome {profile.display_name} <br />
+            Please update your profile !!
+          </p>,
+          { type: "warning" }
+        );
+        console.log(profile?.status);
+        navigate("/edit");
+      }
 
-        } else {
+      // localStorage.setItem("auth", JSON.stringify(user));
+      // setIsAuth(true);
+      else if (profile?.type === "vendor") {
+        localStorage.setItem("auth", JSON.stringify(true));
+        setIsAuth(true);
+        toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
+        navigate("/profile");
+      } else {
+        localStorage.setItem("auth", JSON.stringify(true));
+        setIsAuth(true);
+        toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
+        navigate("/listing");
 
-          navigate("/listing");
-        }
       }
     } catch (error) {
       setLoading(false);
@@ -107,14 +137,31 @@ export default function Login() {
         return;
       }
       let profile = await getUserById(data?.user?.id);
-      if (profile?.type === "vendor") {
+      console.log("profile", profile);
+      if (profile.status === false) {
         localStorage.setItem("auth", JSON.stringify(data));
+        toast(
+          <p>
+            Welcome {profile.display_name} <br />
+            Please update your profile !!
+          </p>,
+          { type: "warning" }
+        );
+        console.log(profile?.status);
+        localStorage.setItem("auth", JSON.stringify(true));
         setIsAuth(true);
+        navigate("/edit");
+      } else if (profile?.type === "vendor") {
+        // localStorage.setItem("auth", JSON.stringify(data));
+
         toast(`Welcome ${profile.display_name}`, { type: "success" });
         // Redirect to another page
+        localStorage.setItem("auth", JSON.stringify(true));
+        setIsAuth(true);
         navigate("/profile");
       } else if (profile?.type === "architect") {
-        localStorage.setItem("auth", JSON.stringify(data));
+        // localStorage.setItem("auth", JSON.stringify(data));
+        localStorage.setItem("auth", JSON.stringify(true));
         setIsAuth(true);
         toast(`Welcome ${profile.display_name}`, { type: "success" });
         // Redirect to another page
