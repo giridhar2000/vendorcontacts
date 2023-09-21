@@ -42,11 +42,17 @@ const Edit = () => {
   };
 
   async function handleUpload(e) {
+    const maxSize=5*1024*1024 // 5mb
+    if(e.target.files[0]?.size > maxSize ){
+      e.target.value="";
+      toast("Max size limit is 5MB",{type:"error"});
+      return;
+    }
     let file;
     if (e.target.files && e.target.files.length) {
       file = e.target.files[0];
     }
-    console.log("Hi");
+   
     const fileExists = await checkFileExists(
       "profile_pics",
       `public/${file.name}`
