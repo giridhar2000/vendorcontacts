@@ -41,7 +41,10 @@ export default function Login() {
       toast("Password does not matching", { type: "error" });
       return;
     }
-
+    var _hsq = window._hsq = window._hsq || [];
+    _hsq.push(['setPath', 'http://localhost:3000/login']);
+    _hsq.push(['trackPageView']);
+    console.log(_hsq)
     try {
       setLoading(true);
       let { data: user, error } = await supabase.auth.signUp({
@@ -57,7 +60,6 @@ export default function Login() {
 
       if (error) {
         setLoading(false);
-        console.log(error);
         toast(error.message, { type: "error" });
         return;
       }
@@ -76,12 +78,19 @@ export default function Login() {
       }
     } catch (error) {
       setLoading(false);
-      console.log(error);
       toast(error.message, { type: "error" });
     }
   };
 
   async function handleLogin() {
+    var _hsq = window._hsq = window._hsq || [];
+    _hsq.push(['setPath', 'http://localhost:3000/login']);
+    _hsq.push(['trackPageView']);
+    _hsq.push(["identify",{
+      email: email
+  }]);
+    console.log(_hsq)
+
     if (!email || !password) {
       toast("Please fill out all fields", { type: "error" });
       return;
@@ -94,7 +103,6 @@ export default function Login() {
       });
       if (error) {
         setLoading(false);
-        console.log(error);
         toast(error.message, { type: "error" });
         return;
       }
@@ -117,7 +125,6 @@ export default function Login() {
       }
     } catch (error) {
       setLoading(false);
-      console.log(error);
       toast(error.message, { type: "error" });
     }
   }

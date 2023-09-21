@@ -31,8 +31,7 @@ serve(async (req) => {
     .single()
 
 
-  console.log('text', record.text);
-  console.log('chat_id', record?.chat_id);
+
 
   return new Response('ok')
 })
