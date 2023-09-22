@@ -2,17 +2,25 @@ import React, { useContext } from "react";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 import bg1 from "../../Assets/img/img1.jpg";
-import {  AiOutlineUser, AiFillEdit } from "react-icons/ai";
+import { AiOutlineUser, AiFillEdit } from "react-icons/ai";
 import "./Profile.css";
 import PdfCard from "../../Components/PdfCard/PdfCard";
 import { Empty, Skeleton } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import UserContext from "../../contexts/userContext";
-
+import { getAllDocs } from "../../utils/profile_helper";
+import { useQuery } from "react-query";
 const Profile = () => {
   const navigate = useNavigate();
   let { id } = useParams();
   const [profile, isLoading] = useContext(UserContext);
+  const { data: docs, isLoading: isLoading2 } = useQuery(
+    ["docs", profile?.id],
+    async () => {
+      const res = await getAllDocs(profile?.id);
+      return res;
+    }
+  );
 
   if (isLoading) {
     return (
@@ -119,10 +127,9 @@ const Profile = () => {
           <p>Downloads</p>
           <hr />
           <div className="pdf-cards">
-            <PdfCard />
-            <PdfCard />
-            <PdfCard />
-            <PdfCard />
+            {docs?.map((doc) => {
+              return <PdfCard doc={doc} key={doc.id}/>;
+            })}
           </div>
         </div>
       </div>

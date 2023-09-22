@@ -5,18 +5,18 @@ import bg1 from "../../Assets/img/img1.jpg";
 import { ImPencil } from "react-icons/im";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { FiCamera } from "react-icons/fi";
+import { TiTick } from "react-icons/ti";
 import "./Edit.css";
 import supabase from "../../utils/supabase.config";
 import { toast } from "react-toastify";
 import { getUser, updateUserProfile } from "../../utils/profile_helper";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/userContext";
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined } from "@ant-design/icons";
 import { useQuery } from "react-query";
-import { Upload, Button, message } from "antd";
 
 const Edit = () => {
-  const { data: profile, isLoading } = useQuery('profile', getUser)
+  const { data: profile, isLoading } = useQuery("profile", getUser);
   let navigate = useNavigate();
   const [url, setUrl] = useState("");
   const [firstName, setFirstName] = useState(null);
@@ -25,7 +25,7 @@ const Edit = () => {
   const [location, setLocation] = useState(null);
   const [quote, setQuote] = useState(null);
   const [bio, setBio] = useState(null);
-
+  const [docUrls, setDocUrls] = useState([]);
 
   const checkFileExists = async (bucketName, filePath) => {
     const { data, error } = await supabase.storage
@@ -44,7 +44,7 @@ const Edit = () => {
   async function handleFileUpload(e) {
     let file;
     if (e.file) {
-      file = e.file
+      file = e.file;
     }
     const fileExists = await checkFileExists(
       "profile_pics",
@@ -60,18 +60,17 @@ const Edit = () => {
 
       return;
     }
-
   }
 
   async function handleUpload(e) {
-    const maxSize = 5 * 1024 * 1024 // 5mb
+    const maxSize = 5 * 1024 * 1024; // 5mb
     if (e.target.files[0]?.size > maxSize) {
       e.target.value = "";
       toast("Max size limit is 5MB", { type: "error" });
       return;
     }
     let file;
-    if (e.target.files && e.target.files.length) {
+    if (e.target.files && e.target?.files?.length) {
       file = e.target.files[0];
     }
 
@@ -113,6 +112,12 @@ const Edit = () => {
       quote || profile?.quote,
       bio || profile?.bio
     );
+    docUrls.forEach(async (doc) => {
+      const { data, error } = await supabase
+        .from("files")
+        .insert([{ file: doc, user_id: profile?.id,name:doc?.name }])
+        .select();
+    });
     if (res) {
       toast("Profile updated", { type: "success" });
       navigate("/profile");
@@ -121,25 +126,52 @@ const Edit = () => {
     }
   }
 
+  async function handleDocUpload(e) {
+    try {
+      let bool = false;
+      const maxSize = 5 * 1024 * 1024; // 5mb
+      let file;
+      if (e.target.files && e.target?.files?.length) {
+        file = e.target.files[0];
+      }
+      if (file?.size > maxSize) {
+        toast("Max size limit is 5MB", { type: "error" });
+        e.target.value = "";
+        return;
+      }
+      const fileExists = await checkFileExists(
+        "profile_docs",
+        `public/${file.name}`
+      );
+      if (fileExists) {
+        const { data, error } = await supabase.storage
+          .from("profile_docs")
+          .update("public/" + file?.name, file, {
+            cacheControl: "3600",
+            upsert: true,
+          });
+
+        return;
+      }
+
+      const { data, error } = await supabase.storage
+        .from("profile_docs")
+        .upload("public/" + file?.name, file);
+      setDocUrls([
+        ...docUrls,
+        {
+          file:`https://kzthdyjkhdwyqztvlvmp.supabase.co/storage/v1/object/public/profile_pics/public/${file.name}`,
+          name:file?.name
+        },
+      ]);
+    } catch (err) {
+      return false;
+    }
+  }
+
   if (isLoading) {
     return <p>Loading....</p>;
   }
-
-  const props = {
-    beforeUpload: (file) => {
-      const isPNG = file.type === 'application/pdf';
-      if (file.size > 400000) {
-        message.error("file should be less than 5MB")
-      }
-      else if (!isPNG) {
-        message.error(`${file.name} is not a PDF file`);
-      }
-      return isPNG || Upload.LIST_IGNORE;
-    },
-    onChange: (info) => {
-      console.log(info.fileList);
-    },
-  };
 
   return (
     <>
@@ -162,7 +194,13 @@ const Edit = () => {
                 onChange={handleUpload}
               />
               <label htmlFor="profile_pic" className="profile_pic_label">
-                {url ? <img src={url} /> : profile?.profile_pic ? <img src={profile?.profile_pic} /> : <AiOutlineCloudUpload />}
+                {url ? (
+                  <img src={url} />
+                ) : profile?.profile_pic ? (
+                  <img src={profile?.profile_pic} />
+                ) : (
+                  <AiOutlineCloudUpload />
+                )}
               </label>
               <p>{url ? "Uploaded" : "Upload your logo here"}</p>
             </div>
@@ -170,14 +208,22 @@ const Edit = () => {
               <div className="nameip">
                 <input
                   placeholder="First name"
-                  value={profile?.display_name && firstName === null ? profile?.display_name?.split(' ')[0] : firstName}
+                  value={
+                    profile?.display_name && firstName === null
+                      ? profile?.display_name?.split(" ")[0]
+                      : firstName
+                  }
                   onChange={(e) => setFirstName(e.target.value)}
                 />
               </div>
               <div className="nameip">
                 <input
                   placeholder="Last name"
-                  value={profile?.display_name && lastName === null ? profile?.display_name?.split(' ')[1] : lastName}
+                  value={
+                    profile?.display_name && lastName === null
+                      ? profile?.display_name?.split(" ")[1]
+                      : lastName
+                  }
                   onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
@@ -189,21 +235,29 @@ const Edit = () => {
             <div className="emailip">
               <input
                 placeholder="Buisness Email"
-                value={profile?.email && email === null ? profile?.email : email}
+                value={
+                  profile?.email && email === null ? profile?.email : email
+                }
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="emailip">
               <input
                 placeholder="Location"
-                value={profile?.location && location === null ? profile?.location : location}
+                value={
+                  profile?.location && location === null
+                    ? profile?.location
+                    : location
+                }
                 onChange={(e) => setLocation(e.target.value)}
               />
             </div>
             <div className="passip">
               <input
                 placeholder="Profile Quote"
-                value={profile?.quote && quote === null ? profile?.quote : quote}
+                value={
+                  profile?.quote && quote === null ? profile?.quote : quote
+                }
                 onChange={(e) => setQuote(e.target.value)}
               />
             </div>
@@ -220,9 +274,18 @@ const Edit = () => {
             ></textarea>
             <div className="bio">Attachment</div>
             <div className="attachment">
-              <Upload accept=".pdf" {...props} customRequest={handleFileUpload}>
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-              </Upload>
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={handleDocUpload}
+              />
+              {docUrls?.map((doc, i) => {
+                return (
+                  <div key={i} style={{ width: "40px", height: "40px" }}>
+                    <TiTick />
+                  </div>
+                );
+              })}
             </div>
             <script
               src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"
