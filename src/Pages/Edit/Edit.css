@@ -46,6 +46,7 @@
   padding: 2vh;
   padding-left: 0;
   margin-top: 4vh;
+
 }
 
 .project-input {
@@ -200,6 +201,10 @@ input[type="file" i] {
 
   .loginContainer {
     margin-top: -1vh;
+  } 
+
+  .passip, .emailip, .nameip {
+    padding-bottom: 1vh;
   }
 
 }

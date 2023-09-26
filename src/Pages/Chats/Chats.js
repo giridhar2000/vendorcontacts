@@ -14,7 +14,7 @@ import {
   BsSkipBackwardCircleFill,
 } from "react-icons/bs";
 import { MdOutlineNavigateNext } from "react-icons/md";
-import { Switch, Empty, Modal, Spin } from "antd";
+import { Switch, Empty, Modal, Spin, message } from "antd";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import supabase from "../../utils/supabase.config";
@@ -224,29 +224,37 @@ const Chats = () => {
 
   async function handleAddProject() {
     setProjectAdding(true);
-    create_project_mutation.mutateAsync({
-      user_id: profile?.id,
-      name: projectName,
-    });
+    if(projectName){
+      create_project_mutation.mutateAsync({
+        user_id: profile?.id,
+        name: projectName,
+      });
+    }
+    else{
+      setProjectAdding(false);
+      message.error("provide project name")
+    }
+
   }
   function handleAddChatToProject(project_id) {
-    setProjectAdding(true);
-    const pr = new Promise((resolve, reject) => {
-      selectedChats.forEach((chat,index,array) => {
-        create_chats_mutation.mutateAsync({
-          reciver: chat,
-          user: profile,
-          project_id,
-        });
-        if(index===array.length-1) resolve()
-      });
-    });
-    pr.then(() => {
-      setProjectAdding(false);
-      setSelectedChats([]);
-      setSelectedChatIds([]);
-      setAddChatToProject(false);
-    });
+    // setProjectAdding(true);
+    console.log(project_id)
+    // const pr = new Promise((resolve, reject) => {
+    //   selectedChats.forEach((chat,index,array) => {
+    //     create_chats_mutation.mutateAsync({
+    //       reciver: chat,
+    //       user: profile,
+    //       project_id,
+    //     });
+    //     if(index===array.length-1) resolve()
+    //   });
+    // });
+    // pr.then(() => {
+    //   setProjectAdding(false);
+    //   setSelectedChats([]);
+    //   setSelectedChatIds([]);
+    //   setAddChatToProject(false);
+    // });
   }
   return (
     <>
@@ -667,6 +675,7 @@ const Chats = () => {
               value={projectName}
               placeholder="Project Name"
               onChange={(e) => setProjectName(e.target.value)}
+              required
             />
           </div>
 

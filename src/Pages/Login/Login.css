@@ -179,6 +179,9 @@
     .loginContainer.lg-page{
         margin-top: -1vh;
     }
+    .button label{
+        line-height: 6vh;
+    }
 
 }
 
