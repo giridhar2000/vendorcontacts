@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/userContext";
 import { UploadOutlined } from "@ant-design/icons";
 import { useQuery } from "react-query";
+import { Button, message, Upload } from 'antd';
 
 const Edit = () => {
   const { data: profile, isLoading } = useQuery("profile", getUser);
@@ -115,7 +116,7 @@ const Edit = () => {
     docUrls.forEach(async (doc) => {
       const { data, error } = await supabase
         .from("files")
-        .insert([{ file: doc, user_id: profile?.id,name:doc?.name }])
+        .insert([{ file: doc, user_id: profile?.id, name: doc?.name }])
         .select();
     });
     if (res) {
@@ -127,51 +128,73 @@ const Edit = () => {
   }
 
   async function handleDocUpload(e) {
-    try {
-      let bool = false;
-      const maxSize = 5 * 1024 * 1024; // 5mb
+    // try {
       let file;
-      if (e.target.files && e.target?.files?.length) {
-        file = e.target.files[0];
+      if (e.file) {
+        file = e.file;
       }
-      if (file?.size > maxSize) {
-        toast("Max size limit is 5MB", { type: "error" });
-        e.target.value = "";
-        return;
-      }
-      const fileExists = await checkFileExists(
-        "profile_docs",
-        `public/${file.name}`
-      );
-      if (fileExists) {
-        const { data, error } = await supabase.storage
-          .from("profile_docs")
-          .update("public/" + file?.name, file, {
-            cacheControl: "3600",
-            upsert: true,
-          });
+      console.log(file)
+      
+    //   const fileExists = await checkFileExists(
+    //     "profile_docs",
+    //     `public/${file.name}`
+    //   );
+    //   if (fileExists) {
+    //     const { data, error } = await supabase.storage
+    //       .from("profile_docs")
+    //       .update("public/" + file?.name, file, {
+    //         cacheControl: "3600",
+    //         upsert: true,
+    //       });
 
-        return;
-      }
+    //     return;
+    //   }
 
-      const { data, error } = await supabase.storage
-        .from("profile_docs")
-        .upload("public/" + file?.name, file);
-      setDocUrls([
-        ...docUrls,
-        {
-          file:`https://kzthdyjkhdwyqztvlvmp.supabase.co/storage/v1/object/public/profile_pics/public/${file.name}`,
-          name:file?.name
-        },
-      ]);
-    } catch (err) {
-      return false;
-    }
+    //   const { data, error } = await supabase.storage
+    //     .from("profile_docs")
+    //     .upload("public/" + file?.name, file);
+    //   setDocUrls([
+    //     ...docUrls,
+    //     {
+    //       file: `https://kzthdyjkhdwyqztvlvmp.supabase.co/storage/v1/object/public/profile_pics/public/${file.name}`,
+    //       name: file?.name
+    //     },
+    //   ]);
+    // } catch (err) {
+    //   return false;
+    // }
   }
 
   if (isLoading) {
     return <p>Loading....</p>;
   }
+
+  const props = {
+    name: 'file',
+    headers: {
+      authorization: 'authorization-text',
+    },
+    beforeUpload: (file) => {
+      const isPNG = file.type === 'application/pdf';
+      if(file.size>5000000){
+        message.error(`${file.name} should be less than 5mb`);
+      }
+      if (!isPNG) {
+        message.error(`${file.name} is not a PDF file`);
+      }
+      return isPNG || Upload.LIST_IGNORE;
+    },
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
 
   return (
     <>
@@ -274,7 +297,7 @@ const Edit = () => {
             ></textarea>
             <div className="bio">Attachment</div>
             <div className="attachment">
-              <input
+              {/* <input
                 type="file"
                 accept="application/pdf"
                 onChange={handleDocUpload}
@@ -285,7 +308,10 @@ const Edit = () => {
                     <TiTick />
                   </div>
                 );
-              })}
+              })} */}
+              <Upload {...props} accept=".pdf" customRequest={handleDocUpload}>
+                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              </Upload>
             </div>
             <script
               src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"
