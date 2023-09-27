@@ -1,4 +1,4 @@
-import React,{useContext} from "react";
+import React,{useContext, useState} from "react";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 import { CgOptions } from "react-icons/cg";
@@ -17,11 +17,16 @@ const defaultOption = options[0];
 const Listing = () => {
   const navigate = useNavigate();
   const {data:profile,isLoading}=useQuery('profile',getUser)
-  const { data: vendors, isLoading:isLoading2 } = useQuery(['profile',profile?.id], async () => {
-    return await getVendors(0, 6);
-  },{
-    enabled:profile?.id !== null
+  const [currentPage, setCurrentPage] = useState(0);
+  const { data: vendors, isLoading: isLoading2, fetchNextPage } = useQuery(['profile', profile?.id, currentPage], async () => {
+    return await getVendors(currentPage * 3, 3); // Adjust your API call based on currentPage
+  }, {
+    enabled: profile?.id !== null
   });
+
+  const loadMoreData = () => {
+    setCurrentPage((prevPage) => prevPage + 1); // Increment currentPage
+  };
 
   if (isLoading || isLoading2) {
     return <p>Loading...</p>;
@@ -78,7 +83,7 @@ const Listing = () => {
         })}
       </div>
       <div className="load">
-        <button>Load More</button>
+        <button onClick={loadMoreData}>Load More</button>
       </div>
       <br />
       <Footer />
