@@ -5,7 +5,7 @@
   padding-inline: 2vh;
   align-items: center;
   border-bottom: 1px solid #000;
-  margin-left: 8vh;
+  margin-left: 2vh;
 }
 
 .headerlogo {
@@ -58,7 +58,7 @@
 /* styling of whole input container */
 .header-form {
   --timing: 0.3s;
-  --width-of-input: 30rem;
+  --width-of-input: 35rem;
   --height-of-input: 48px;
   --border-height: 2px;
   --input-bg: transparent;
@@ -75,6 +75,7 @@
   transition: border-radius 0.5s ease;
   background: var(--input-bg, #fff);
   border: 1px solid rgba(140, 140, 140, 0.398);
+  margin-left: 10rem;
 }
 /* styling of Input */
 .header-input {
