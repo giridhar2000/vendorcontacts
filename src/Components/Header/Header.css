@@ -13,6 +13,7 @@
   gap: 2vh;
   width: 15%;
   cursor: pointer;
+  align-items: center;
 }
 
 .signin {
