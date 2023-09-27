@@ -203,7 +203,6 @@ const Header = () => {
             </div>
           ) : null}
 
-          <div className="buttons">
             {!isAuth ? (
               <div className="buttons">
                 <button className="signin" onClick={signin}>
@@ -228,7 +227,6 @@ const Header = () => {
                 </p>
               </div>
             )}
-          </div>
         </Drawer>
       </div>
     </div>

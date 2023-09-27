@@ -153,7 +153,7 @@
     padding: 0vh;
     text-align: center;
     font-size: larger;
-    
+    margin: 3px;
 }
 
 .backbtn:hover{
@@ -180,7 +180,7 @@
         margin-top: -1vh;
     }
     .button label{
-        line-height: 6vh;
+        line-height: 7vh;
     }
 
 }
