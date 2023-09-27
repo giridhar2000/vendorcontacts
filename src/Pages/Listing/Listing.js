@@ -8,31 +8,66 @@ import "react-dropdown/style.css";
 import "./Listing.css";
 import { useQuery } from "react-query";
 import { getUser, getVendors } from "../../utils/profile_helper";
-import { Image } from "antd";
+import { Image, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/userContext";
+import supabase from "../../utils/supabase.config";
+import { useEffect } from "react";
+
+
+
 const options = ["Recent", "Popular", "Oldest"];
 const defaultOption = options[0];
 
+
 const Listing = () => {
   const navigate = useNavigate();
-  const {data:profile,isLoading}=useQuery('profile',getUser)
-  const [currentPage, setCurrentPage] = useState(0);
-  const { data: vendors, isLoading: isLoading2, fetchNextPage } = useQuery(['profile', profile?.id, currentPage], async () => {
-    return await getVendors(currentPage * 3, 3); // Adjust your API call based on currentPage
-  }, {
-    enabled: profile?.id !== null
-  });
-
+  // const {data:profile,isLoading}=useQuery('profile',getUser)
+  // const [currentPage, setCurrentPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false)
+  const [page, setPage] = useState(0);
+  const [data, setData] = useState([])
+  let from, to;
+  // const { data: vendors, isLoading: isLoading2, fetchNextPage } = useQuery(['profile', profile?.id, currentPage], async () => {
+  //   return await getVendors(from, to); // Adjust your API call based on currentPage
+  // }, {
+  //   enabled: profile?.id !== null
+  // });
   const loadMoreData = () => {
-    setCurrentPage((prevPage) => prevPage + 1); // Increment currentPage
+    var ITEM_PER_PAGE = 2
+    from = page * ITEM_PER_PAGE
+    to = from + ITEM_PER_PAGE
+    if (page > 0){
+      from += 1;
+    } 
+    return {from, to}
   };
 
-  if (isLoading || isLoading2) {
-    return <p>Loading...</p>;
+  async function getVendors() {
+    setIsLoading(true)
+    const {from, to} = loadMoreData()
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id,profile_pic,display_name,location,bio")
+      .range(from, to)
+      .eq("type", "vendor");
+      setPage(page+1)
+      setData((currentData)=> [...currentData, ...data])
+      console.log(page)
+    if (error) {
+      return false;
+    }
+    setIsLoading(false)
+    return data;
   }
+
+  useEffect(()=>{
+    getVendors()
+  }, [])
+
   return (
     <>
+    {/* {isLoading? <div className="spin"><Spin /></div> : ""} */}
       <Header />
       <div className="filter">
         <button>
@@ -46,9 +81,9 @@ const Listing = () => {
       </div>
       <hr />
       <div className="cardcontainer">
-        {vendors?.map((vendor) => {
+        {data?.map((vendor) => {
           return (
-            <div className="listingcard" key={vendor?.id}>
+            <div className="listingcard" key={vendor?.id} onClick={() => navigate(`/profile/${vendor?.id}`)}>
               {vendor?.profile_pic ? (
                 <img src={vendor?.profile_pic} alt="bg" />
               ) : (
@@ -66,7 +101,7 @@ const Listing = () => {
                 <p>{vendor?.location}</p>
                 <p>{vendor?.bio}</p>
               </div>
-              <BsFillArrowUpRightSquareFill
+              {/* <BsFillArrowUpRightSquareFill
                 onClick={() => navigate(`/profile/${vendor?.id}`)}
                 style={{
                   cursor: "pointer",
@@ -77,13 +112,13 @@ const Listing = () => {
                   height: "1.5em",
                   borderRadius: "3.5px",
                 }}
-              />
+              /> */}
             </div>
           );
         })}
       </div>
       <div className="load">
-        <button onClick={loadMoreData}>Load More</button>
+        <button onClick={getVendors}>Load More</button>
       </div>
       <br />
       <Footer />

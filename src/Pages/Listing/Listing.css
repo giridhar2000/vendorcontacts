@@ -75,6 +75,7 @@ hr{
   border: 2px solid black;
   border-right: 2px solid #000;
   margin: 10px;
+  cursor: pointer;
 }
 
 .listingcard img {
@@ -113,6 +114,14 @@ hr{
   margin-top: 25px;
   max-height: 50% !important;
 }
+
+/* .spin{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(50%, 50%);
+  background-color: aliceblue;
+} */
 
 .load{
   display: flex;

@@ -80,7 +80,7 @@ const Header = () => {
         )}
       </div>
 
-      {isAuth ? (
+      {/* {isAuth ? (
         <div className="right">
           <form className="header-form">
             <button>
@@ -114,7 +114,7 @@ const Header = () => {
             </button>
           </form>
         </div>
-      ) : null}
+      ) : null} */}
       <div className="right">
         {!isAuth ? (
           <div className="buttons">
@@ -126,7 +126,7 @@ const Header = () => {
         ) : (
           <div className="buttons icons">
             <BsChatLeftText onClick={() => navigate("/chats")} />
-            <BsBell />
+            {/* <BsBell /> */}
             <Popover placement="bottomRight" content={content} trigger="click">
               {isLoading ? (
                 <Skeleton.Avatar active={isLoading} shape={"circle"} />
