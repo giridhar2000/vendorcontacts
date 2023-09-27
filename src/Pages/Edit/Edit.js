@@ -135,42 +135,43 @@ const Edit = () => {
     }
   }
 
-  async function handleDocUpload(e) {
-    // try {
-    let file;
-    if (e.file) {
-      file = e.file;
+  async function handleDocUpload(info) {
+console.log(info);
+let onSuccess=info.onSuccess;
+let file=info.file;
+    try {
+
+        const fileExists = await checkFileExists(
+          "profile_docs",
+          `public/${file.name}`
+        );
+        if (fileExists) {
+          const { data, error } = await supabase.storage
+            .from("profile_docs")
+            .update("public/" + file?.name, file, {
+              cacheControl: "3600",
+              upsert: true,
+            });
+
+          // return;
+        } else {
+          const { data, error } = await supabase.storage
+            .from("profile_docs")
+            .upload("public/" + file?.name, file);
+          setDocUrls([
+            ...docUrls,
+            {
+              file: `https://kzthdyjkhdwyqztvlvmp.supabase.co/storage/v1/object/public/profile_pics/public/${file.name}`,
+              name: file?.name,
+            },
+          ]);
+         onSuccess(file);
+        }
+
+    } catch (err) {
+      console.log(err);
+      return false
     }
-    console.log(file);
-
-    //   const fileExists = await checkFileExists(
-    //     "profile_docs",
-    //     `public/${file.name}`
-    //   );
-    //   if (fileExists) {
-    //     const { data, error } = await supabase.storage
-    //       .from("profile_docs")
-    //       .update("public/" + file?.name, file, {
-    //         cacheControl: "3600",
-    //         upsert: true,
-    //       });
-
-    //     return;
-    //   }
-
-    //   const { data, error } = await supabase.storage
-    //     .from("profile_docs")
-    //     .upload("public/" + file?.name, file);
-    //   setDocUrls([
-    //     ...docUrls,
-    //     {
-    //       file: `https://kzthdyjkhdwyqztvlvmp.supabase.co/storage/v1/object/public/profile_pics/public/${file.name}`,
-    //       name: file?.name
-    //     },
-    //   ]);
-    // } catch (err) {
-    //   return false;
-    // }
   }
 
   if (isLoading) {
@@ -186,6 +187,7 @@ const Edit = () => {
       const isPNG = file.type === "application/pdf";
       if (file.size > 5000000) {
         message.error(`${file.name} should be less than 5mb`);
+        return false;
       }
       if (!isPNG) {
         message.error(`${file.name} is not a PDF file`);
@@ -193,6 +195,7 @@ const Edit = () => {
       return isPNG || Upload.LIST_IGNORE;
     },
     onChange(info) {
+      console.log(info);
       if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
       }
@@ -317,7 +320,7 @@ const Edit = () => {
                   </div>
                 );
               })} */}
-              <Upload {...props} accept=".pdf" customRequest={handleDocUpload}>
+              <Upload {...props} accept=".pdf" customRequest={handleDocUpload} multiple maxCount={5}>
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
             </div>
