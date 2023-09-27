@@ -21,7 +21,7 @@ export async function checkIsChatExist(chat_id) {
     if (data && data?.length !== 0) return { status: true, data };
     else return { status: false, data: {} };
   } catch (err) {
-    alert("Something went wrong")
+    alert("Something went wrong");
     return { status: false, data: {} };
   }
 }
@@ -116,7 +116,9 @@ export async function getAllChatsByProjectId(user_id, project_id) {
   try {
     let { data, error } = await supabase
       .from("chats")
-      .select("id,chat_id,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image,recent_message,updated_at")
+      .select(
+        "id,chat_id,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image,recent_message,updated_at"
+      )
       .eq("project_id", project_id)
       .or(`sender_id.eq.${user_id},reciver_id.eq.${user_id}`);
 
@@ -131,27 +133,30 @@ export async function getAllChatsByProjectId(user_id, project_id) {
 }
 
 export async function getAllProjects(user_id, type) {
+  var myData;
   try {
-    if (type === "vendor") {
-      let { data: v_p, error } = await supabase
-        .from("v_p")
-        .select(`projects (project_id,name)`)
-        .eq("vendor_id", user_id);
-      if (error) return [];
-      var myData = v_p.map((key) => {
-        return key.projects;
-      });
-      return myData;
-    }
-    let { data, error } = await supabase
+    let { data: v_p, error } = await supabase
+      .from("v_p")
+      .select(`projects (project_id,name,created_at)`)
+      .eq("vendor_id", user_id);
+    if (error) return [];
+    myData = v_p.map((key) => {
+      return key.projects;
+    });
+
+    let { data, error: error2 } = await supabase
       .from("projects")
       .select("*")
       .eq("created_by", user_id);
+
     if (error) {
       return [];
     }
+
+    if (myData) return [...myData, ...data];
     return data;
   } catch (err) {
+    console.log(err);
     alert("Something went wrong");
     return [];
   }
@@ -236,11 +241,40 @@ export async function sendMessage({ chatData, text, user_id }) {
   } else return {};
 }
 
+export async function sendMessageToGroup({ groupData, text, profile }) {
+  if (!text) return;
+
+  let message = {
+    group_id: groupData?.group_id,
+    text,
+    sender_id: profile?.id,
+    sender_name: profile?.display_name,
+    sender_image: profile?.profile_pic,
+  };
+  const { data, error } = await supabase.from("messages").insert([message]);
+  console.log(data, error);
+  if (data) {
+    return data[0];
+  } else return {};
+}
+
 export async function getMessages(chat_id) {
   const { data, error } = await supabase
     .from("messages")
-    .select("id,created_at,text,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image")
+    .select(
+      "id,created_at,text,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image"
+    )
     .eq("chat_id", chat_id);
+  if (error) throw error;
+  return data;
+}
+export async function getMessagesFromGroup(group_id) {
+  const { data, error } = await supabase
+    .from("messages")
+    .select(
+      "id,created_at,text,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image"
+    )
+    .eq("group_id", group_id);
   if (error) throw error;
   return data;
 }
