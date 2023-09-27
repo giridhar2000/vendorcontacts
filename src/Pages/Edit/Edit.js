@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/userContext";
 import { UploadOutlined } from "@ant-design/icons";
 import { useQuery } from "react-query";
-import { Button, message, Upload } from 'antd';
+import { Button, message, Upload } from "antd";
 
 const Edit = () => {
   const { data: profile, isLoading } = useQuery("profile", getUser);
@@ -28,6 +28,12 @@ const Edit = () => {
   const [bio, setBio] = useState(null);
   const [docUrls, setDocUrls] = useState([]);
 
+  useEffect(() => {
+    let fName = profile?.display_name.split(" ")[0];
+    let lName = profile?.display_name.split(" ")[1];
+    setFirstName(fName);
+    setLastName(lName);
+  }, [profile]);
   const checkFileExists = async (bucketName, filePath) => {
     const { data, error } = await supabase.storage
       .from(bucketName)
@@ -99,42 +105,44 @@ const Edit = () => {
   }
 
   async function updateProfile() {
-    let name;
-    if (!firstName && !lastName) {
-      name = profile?.display_name;
-    } else {
+    try {
+      let name;
+
       name = firstName + " " + lastName;
-    }
-    const res = await updateUserProfile(
-      url || profile?.profile_pic,
-      name,
-      email || profile?.email,
-      location || profile?.location,
-      quote || profile?.quote,
-      bio || profile?.bio
-    );
-    docUrls.forEach(async (doc) => {
-      const { data, error } = await supabase
-        .from("files")
-        .insert([{ file: doc, user_id: profile?.id, name: doc?.name }])
-        .select();
-    });
-    if (res) {
-      toast("Profile updated", { type: "success" });
-      navigate("/profile");
-    } else {
+
+      const res = await updateUserProfile(
+        url || profile?.profile_pic,
+        name,
+        email || profile?.email,
+        location || profile?.location,
+        quote || profile?.quote,
+        bio || profile?.bio
+      );
+      docUrls.forEach(async (doc) => {
+        const { data, error } = await supabase
+          .from("files")
+          .insert([{ file: doc, user_id: profile?.id, name: doc?.name }])
+          .select();
+      });
+      if (res) {
+        toast("Profile updated", { type: "success" });
+        navigate("/profile");
+      } else {
+        toast("Profile not updated", { type: "error" });
+      }
+    } catch (err) {
       toast("Profile not updated", { type: "error" });
     }
   }
 
   async function handleDocUpload(e) {
     // try {
-      let file;
-      if (e.file) {
-        file = e.file;
-      }
-      console.log(file)
-      
+    let file;
+    if (e.file) {
+      file = e.file;
+    }
+    console.log(file);
+
     //   const fileExists = await checkFileExists(
     //     "profile_docs",
     //     `public/${file.name}`
@@ -170,13 +178,13 @@ const Edit = () => {
   }
 
   const props = {
-    name: 'file',
+    name: "file",
     headers: {
-      authorization: 'authorization-text',
+      authorization: "authorization-text",
     },
     beforeUpload: (file) => {
-      const isPNG = file.type === 'application/pdf';
-      if(file.size>5000000){
+      const isPNG = file.type === "application/pdf";
+      if (file.size > 5000000) {
         message.error(`${file.name} should be less than 5mb`);
       }
       if (!isPNG) {
@@ -185,12 +193,12 @@ const Edit = () => {
       return isPNG || Upload.LIST_IGNORE;
     },
     onChange(info) {
-      if (info.file.status !== 'uploading') {
+      if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
       }
-      if (info.file.status === 'done') {
+      if (info.file.status === "done") {
         message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === 'error') {
+      } else if (info.file.status === "error") {
         message.error(`${info.file.name} file upload failed.`);
       }
     },
