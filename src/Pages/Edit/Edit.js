@@ -136,41 +136,55 @@ const Edit = () => {
   }
 
   async function handleDocUpload(info) {
-console.log(info);
-let onSuccess=info.onSuccess;
-let file=info.file;
+    console.log(info);
+    let onSuccess = info.onSuccess;
+    let file = info.file;
     try {
+      const fileExists = await checkFileExists(
+        "profile_docs",
+        `public/${file.name}`
+      );
+      if (fileExists) {
+        const { data, error } = await supabase.storage
+          .from("profile_docs")
+          .update("public/" + file?.name, file, {
+            cacheControl: "3600",
+            upsert: true,
+          });
 
-        const fileExists = await checkFileExists(
-          "profile_docs",
-          `public/${file.name}`
-        );
-        if (fileExists) {
-          const { data, error } = await supabase.storage
-            .from("profile_docs")
-            .update("public/" + file?.name, file, {
-              cacheControl: "3600",
-              upsert: true,
-            });
-
-          // return;
-        } else {
-          const { data, error } = await supabase.storage
-            .from("profile_docs")
-            .upload("public/" + file?.name, file);
-          setDocUrls([
-            ...docUrls,
-            {
-              file: `https://kzthdyjkhdwyqztvlvmp.supabase.co/storage/v1/object/public/profile_pics/public/${file.name}`,
-              name: file?.name,
-            },
-          ]);
-         onSuccess(file);
-        }
-
+        // return;
+      } else {
+        const { data, error } = await supabase.storage
+          .from("profile_docs")
+          .upload("public/" + file?.name, file);
+        setDocUrls([
+          ...docUrls,
+          {
+            file: `https://kzthdyjkhdwyqztvlvmp.supabase.co/storage/v1/object/public/profile_pics/public/${file.name}`,
+            name: file?.name,
+          },
+        ]);
+        onSuccess(file);
+      }
     } catch (err) {
       console.log(err);
-      return false
+      return false;
+    }
+  }
+
+  async function handleRemove(file) {
+
+    try {
+      const { data, error } = await supabase.storage
+        .from("profile_docs")
+        .remove([`public/${file?.name}`]);
+
+      setDocUrls((old) => {
+        return old.filter((obj) => obj.name !== file.name);
+      });
+    } catch (err) {
+      console.log(err);
+      return false;
     }
   }
 
@@ -320,7 +334,14 @@ let file=info.file;
                   </div>
                 );
               })} */}
-              <Upload {...props} accept=".pdf" customRequest={handleDocUpload} multiple maxCount={5}>
+              <Upload
+                {...props}
+                accept=".pdf"
+                customRequest={handleDocUpload}
+                onRemove={handleRemove}
+                multiple
+                maxCount={5}
+              >
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
             </div>
