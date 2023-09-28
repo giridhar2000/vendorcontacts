@@ -26,9 +26,9 @@ import {
   sendMessage,
   getMessages,
   createChat,
-  getAllChatsByProjectId,
   sendMessageToGroup,
   getMessagesFromGroup,
+  formatSupabaseTimestampToTime,
 } from "../../utils/chat_helper";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import UserContext from "../../contexts/userContext";
@@ -64,6 +64,39 @@ const Chats = () => {
   const [selectedChats, setSelectedChats] = useState([]);
   const [filteredProfiles, setFilteredProfiles] = useState([]);
   const [input, setInput] = useState("");
+  // const [page, setPage] = useState(0);
+  // const [messages, setMessages] = useState([]);
+  // let from, to;
+
+  // const loadMoreData = () => {
+  //   var ITEM_PER_PAGE = 5;
+  //   from = page * ITEM_PER_PAGE;
+  //   to = from + ITEM_PER_PAGE;
+  //   if (page > 0) {
+  //     from += 1;
+  //   }
+  //   return { from, to };
+  // };
+
+  // Fetching all messages from a chat
+  let { data: messages } = useQuery(
+    ["messaagelist", selectedChat?.chat_id],
+    async () => {
+      // const { from, to } = loadMoreData();
+      return await getMessages(selectedChat?.chat_id);
+    },
+    {
+      enabled: selectedChat?.chat_id != null,
+    }
+  );
+
+ 
+  // useEffect(() => {
+  //   if (newMessages) {
+  //     console.log(newMessages);
+  //     setMessages((old) => [...old, ...newMessages]);
+  //   }
+  // }, [newMessages]);
 
   useEffect(() => {
     if (input === "") {
@@ -98,10 +131,7 @@ const Chats = () => {
   const { data: chatsOfProject, isLoading: isLoading5 } = useQuery(
     ["chatsOfProject", profile?.id, selectedProject?.project_id],
     async () => {
-      let data = await getAllChatsByProjectId(
-        profile?.id,
-        selectedProject?.project_id
-      );
+      let data = await getAllChats(profile?.id, selectedProject?.project_id);
       return data;
     },
     {
@@ -113,7 +143,7 @@ const Chats = () => {
   const { data: projects, isLoading: isLoading3 } = useQuery(
     ["projects", profile?.id],
     async () => {
-      let data = await getAllProjects(profile?.id, profile?.type);
+      let data = await getAllProjects(profile?.id);
       return data;
     }
   );
@@ -121,19 +151,12 @@ const Chats = () => {
   // Fetching all groups from a project
   let { data: groups } = useQuery(
     ["groups", selectedProject?.project_id],
-    () => getGroups(selectedProject?.project_id, profile?.id),
+    () => getGroups(selectedProject?.project_id),
     {
       enabled: selectedProject?.project_id != null && profile?.id !== null,
     }
   );
-  // Fetching all messages from a chat
-  let { data: messages } = useQuery(
-    ["messaagelist", selectedChat?.chat_id],
-    () => getMessages(selectedChat?.chat_id),
-    {
-      enabled: selectedChat?.chat_id != null,
-    }
-  );
+
   // Fetching all messages from a chat
   let { data: messagesOfGroup } = useQuery(
     ["messaagelist", selectedGroup?.group_id],
@@ -153,13 +176,13 @@ const Chats = () => {
 
   // Mutation for sending message
   const send_message_mutation = useMutation(sendMessage, {
-    onSuccess: (data) => {
+    onSuccess: () => {
       setText("");
     },
   });
   // Mutation for sending message
   const send_message_to_group_mutation = useMutation(sendMessageToGroup, {
-    onSuccess: (data) => {
+    onSuccess: () => {
       setText("");
     },
   });
@@ -212,7 +235,6 @@ const Chats = () => {
         selectedChats.forEach((chat) => {
           create_members_mutation.mutateAsync({
             reciver: chat,
-            user: profile,
             group_id: data,
           });
         });
@@ -275,7 +297,10 @@ const Chats = () => {
         "postgres_changes",
         { event: "*", schema: "public", table: "groups" },
         (payload) => {
-          queryClient.invalidateQueries(["groups", selectedProject?.project_id])
+          queryClient.invalidateQueries([
+            "groups",
+            selectedProject?.project_id,
+          ]);
         }
       )
 
@@ -311,7 +336,6 @@ const Chats = () => {
       create_project_mutation.mutateAsync({
         user_id: profile?.id,
         name: projectName,
-        type: profile?.type,
       });
     } else {
       setProjectAdding(false);
@@ -444,6 +468,7 @@ const Chats = () => {
                             key={chat?.id}
                             selectedChat={selectedChat}
                             setSelectedChat={setSelectedChat}
+                            setSelectedGroup={setSelectedGroup}
                           />
                         );
                       })
@@ -463,6 +488,7 @@ const Chats = () => {
               <BsSkipBackwardCircleFill
                 onClick={() => {
                   setSelectedChat(false);
+                  setSelectedGroup(null);
                   setSelectedProject(null);
                 }}
                 style={{ marginRight: ".4rem", cursor: "pointer" }}
@@ -491,13 +517,18 @@ const Chats = () => {
                           key={chat?.id}
                           selectedChat={selectedChat}
                           setSelectedChat={setSelectedChat}
+                          setSelectedGroup={setSelectedGroup}
                         />
                       );
                     })}
                 </div>
               </div>
               <div className="vendors vendors-sc">
-                <Messeges messages={messages} profile={profile} />
+                <Messeges
+                  messages={messages}
+                  profile={profile}
+                  hide={!selectedChat && !selectedGroup}
+                />
                 <div className="chat-input">
                   <div
                     className="header-form"
@@ -551,6 +582,7 @@ const Chats = () => {
               <BsSkipBackwardCircleFill
                 onClick={() => {
                   setSelectedProject(null);
+                  setSelectedGroup(false);
                   setSelectedChat(false);
                 }}
                 style={{ marginRight: ".4rem", cursor: "pointer" }}
@@ -644,7 +676,11 @@ const Chats = () => {
               <div className="vendors vendors-sc">
                 {selectedGroup === null ? (
                   <>
-                    <Messeges messages={messages} profile={profile} />
+                    <Messeges
+                      messages={messages}
+                      profile={profile}
+                      hide={!selectedChat && !selectedGroup}
+                    />
                     <div className="chat-input">
                       <div
                         className="header-form"
@@ -691,6 +727,7 @@ const Chats = () => {
                       messages={messagesOfGroup}
                       profile={profile}
                       groupMode={true}
+                      hide={!selectedChat && !selectedGroup}
                     />
                     <div className="chat-input">
                       <div
@@ -1018,32 +1055,48 @@ const Chats = () => {
   );
 };
 
-function Messeges({ messages, profile, groupMode = false }) {
+function Messeges({ messages, profile, groupMode = false, hide = true }) {
   return (
     <div className="vendors-body vendors-body-sc">
-      <ScrollToBottom className="scroll" checkInterval={17} sticky={true}>
-        {messages?.map((message) => {
-          return (
-            <div
-              key={message.id}
-              className={`${
-                message?.sender_id === profile?.id ? "mine" : "others"
-              }`}
-            >
-              <p>{message?.text}</p>
-              <p>
-                {groupMode ? (
-                  <span>
-                    {message?.sender_name}
-                    <br />
-                  </span>
-                ) : null}
-                08:00 PM{" "}
-              </p>
-            </div>
-          );
-        })}
-      </ScrollToBottom>
+      {hide ? (
+        <p
+          style={{
+            width: "100%",
+            height: "90%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          Please select a chat
+        </p>
+      ) : (
+        <ScrollToBottom className="scroll" checkInterval={17} sticky={true}>
+          {messages
+
+            ?.map((message) => {
+              return (
+                <div
+                  key={message.id}
+                  className={`${
+                    message?.sender_id === profile?.id ? "mine" : "others"
+                  }`}
+                >
+                  <p>{message?.text}</p>
+                  <p>
+                    {groupMode ? (
+                      <span>
+                        {message?.sender_name}
+                        <br />
+                      </span>
+                    ) : null}
+                    {formatSupabaseTimestampToTime(message?.created_at)}
+                  </p>
+                </div>
+              );
+            })}
+        </ScrollToBottom>
+      )}
     </div>
   );
 }
@@ -1072,35 +1125,21 @@ function Chat({
         selectedChat?.id === chat?.id ? "bg-dark" : ""
       } ${last === index ? "" : "border-bottom"}`}
       onClick={() => {
-        setSelectedGroup ? setSelectedGroup(null) : null;
+        setSelectedGroup(null);
         setSelectedChat(chat);
       }}
     >
       <div className="chat-pic">
-        {printPic(
-          sender_id,
-          reciver_id,
-          sender_image,
-          reciver_image,
-          user_id
-        ) ? (
+        {printPic(sender_id, sender_image, reciver_image, user_id) ? (
           <img
-            src={printPic(
-              sender_id,
-              reciver_id,
-              sender_image,
-              reciver_image,
-              user_id
-            )}
+            src={printPic(sender_id, sender_image, reciver_image, user_id)}
           />
         ) : (
           <AiOutlineUser />
         )}
       </div>
       <div className="chat-info">
-        <p>
-          {printName(sender_id, reciver_id, sender_name, reciver_name, user_id)}
-        </p>
+        <p>{printName(sender_id, sender_name, reciver_name, user_id)}</p>
         <p>
           {chat?.recent_message ? chat?.recent_message?.substring(0, 10) : ""}
         </p>
