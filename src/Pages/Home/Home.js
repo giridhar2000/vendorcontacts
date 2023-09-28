@@ -20,7 +20,7 @@ import bg1 from "../../Assets/images/bg.png";
 import { gsap } from "gsap";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
-
+import pdf from "../../Assets/TNC.pdf"
 
 export default function Home() {
     const [open, setOpen] = useState(false)
@@ -108,7 +108,7 @@ export default function Home() {
                                 <br />
                                 <div>
                                     <input type="checkbox" />&nbsp;
-                                    <label className="checklabel">By clicking "Accept," you agree to our Terms and Conditions.</label><br />
+                                    <label className="checklabel">By clicking "Accept," you agree to our <a  href = {pdf} target = "_blank">Terms and Conditions</a>.</label><br />
                                 </div>
                                 <br />
                                 <input type="submit" value="Send" className="submit-btn" />
