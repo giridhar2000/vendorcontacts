@@ -262,7 +262,6 @@ const Chats = () => {
             selectedProject?.project_id,
           ]);
           queryClient.invalidateQueries(["chats", profile?.id]);
-          
         }
       )
       .on(
@@ -276,7 +275,7 @@ const Chats = () => {
         "postgres_changes",
         { event: "*", schema: "public", table: "groups" },
         (payload) => {
-          queryClient.invalidateQueries(["groups", selectedProject?.project_id]);
+          queryClient.invalidateQueries(["groups", selectedProject?.project_id])
         }
       )
 
@@ -312,7 +311,7 @@ const Chats = () => {
       create_project_mutation.mutateAsync({
         user_id: profile?.id,
         name: projectName,
-        type:profile?.type
+        type: profile?.type,
       });
     } else {
       setProjectAdding(false);
@@ -362,7 +361,7 @@ const Chats = () => {
     <div>
       <p
         style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-        onClick={() => setCreateGroup(true)} 
+        onClick={() => setCreateGroup(true)}
       >
         Create group
       </p>
@@ -576,7 +575,7 @@ const Chats = () => {
                   </div>
                 </div>
                 <div className="projects-body">
-                  {groups && groups?.length === 0 ? null : (
+                  {groups && groups?.length >= 0 ? (
                     <p
                       style={{
                         borderBottom: "1px solid #000",
@@ -588,18 +587,18 @@ const Chats = () => {
                     >
                       Groups
                     </p>
-                  )}
+                  ) : null}
                   {groups
                     ?.sort(
                       (a, b) =>
                         Date.parse(b.created_at) - Date.parse(a.created_at)
                     )
-                    ?.filter((group)=>{
-                      let isSee=group?.created_by===profile?.id
-                        groupMembers?.forEach((member)=>{
-                         if(member?.group_id === group?.group_id) isSee=true
-                        })
-                      return isSee
+                    ?.filter((group) => {
+                      let isSee = group?.created_by === profile?.id;
+                      groupMembers?.forEach((member) => {
+                        if (member?.group_id === group?.group_id) isSee = true;
+                      });
+                      return isSee;
                     })
                     ?.map((group) => {
                       return (

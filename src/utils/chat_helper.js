@@ -16,11 +16,13 @@ export async function checkIsChatExist(chat_id) {
       .select("*")
       .eq("chat_id", chat_id);
     if (error) {
-      return { status: false, data: {} };
+      throw new Error(error)
+      // return { status: false, data: {} };
     }
     if (data && data?.length !== 0) return { status: true, data };
     else return { status: false, data: {} };
   } catch (err) {
+    console.log(err)
     alert("Something went wrong");
     return { status: false, data: {} };
   }
@@ -238,7 +240,9 @@ export async function sendMessage({ chatData, text, user_id }) {
   const { data, error } = await supabase.from("messages").insert([message]);
   if (data) {
     return data[0];
-  } else return {};
+  } else return {
+    
+  };
 }
 
 export async function sendMessageToGroup({ groupData, text, profile }) {
