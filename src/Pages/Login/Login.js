@@ -45,6 +45,19 @@ export default function Login() {
   }
 
   const handleSubmit = async () => {
+    var _hsq = window._hsq = window._hsq || [];
+    // _hsq.push(['setPath', 'http://localhost:3000/login']);
+    //   _hsq.push(['trackPageView']);
+    //   _hsq.push(["identify",{
+    //     email: email
+    // }]);
+    _hsq.push(["trackCustomBehavioralEvent", {
+      name: "Signup",
+      properties: {
+        email: email
+      }
+    }]);
+    console.log(_hsq)
     // Perform form validation
     if (!firstName || !lastName || !email || !password) {
       toast("Please fill out all fields", { type: "error" });
@@ -54,10 +67,6 @@ export default function Login() {
       toast("Password does not matching", { type: "error" });
       return;
     }
-    var _hsq = window._hsq = window._hsq || [];
-    _hsq.push(['setPath', 'http://localhost:3000/login']);
-    _hsq.push(['trackPageView']);
-    console.log(_hsq)
     try {
       setLoading(true);
       let { data: user, error } = await supabase.auth.signUp({
@@ -116,9 +125,9 @@ export default function Login() {
     var _hsq = window._hsq = window._hsq || [];
     _hsq.push(['setPath', 'http://localhost:3000/login']);
     _hsq.push(['trackPageView']);
-    _hsq.push(["identify",{
+    _hsq.push(["identify", {
       email: email
-  }]);
+    }]);
     console.log(_hsq)
 
     if (!email || !password) {
@@ -183,7 +192,7 @@ export default function Login() {
           <p>&larr;</p>
         </div>
         <div className="headerlogo">
-          <img src={Icon} alt="" className="logoIcon"/>
+          <img src={Icon} alt="" className="logoIcon" />
           <h1 className="logo-text" style={{ fontSize: "x-large" }}>VENDORCONTACTS</h1>
         </div>
       </div>

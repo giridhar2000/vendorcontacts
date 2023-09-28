@@ -579,7 +579,7 @@ hr {
     }
 
     .headerlogo img {
-        width: 10%;
+        width: 40%;
     }
 
     .headerlogo h1 {
@@ -682,6 +682,15 @@ hr {
 
     * {
         margin: 0 !important;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .Loginform {
+        width: 100%;
+    }
+
+    .button label{
+        line-height: 6vh;
     }
 
     .header {

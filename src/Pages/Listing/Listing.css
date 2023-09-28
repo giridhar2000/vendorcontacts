@@ -75,6 +75,7 @@ hr{
   border: 2px solid black;
   border-right: 2px solid #000;
   margin: 10px;
+  cursor: pointer;
 }
 
 .listingcard img {
@@ -114,6 +115,14 @@ hr{
   max-height: 50% !important;
 }
 
+/* .spin{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(50%, 50%);
+  background-color: aliceblue;
+} */
+
 .load{
   display: flex;
   align-items: center;
@@ -131,6 +140,26 @@ hr{
   font-family: "Poppins";
   font-size: medium;
 }
+
+/* .items .item{
+  background:#f3f3f3;
+  padding: 20px;
+  border-radius: 10px;
+  border:solid 1px #aaa;
+  display:inline-block;
+  width: 31%;
+  margin:1%;
+}
+
+.items .item .item-title{
+  font-size: 20pt;
+  font-weight:bold;
+  letter-spacing: -1px;
+}
+
+.items .item .item-image{
+  width: 100%;
+} */
 
 @media(max-width:1100px) {
   .cardcontainer{
