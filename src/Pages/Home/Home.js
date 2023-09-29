@@ -45,9 +45,8 @@ export default function Home() {
         // hiddenElements.forEach((el) => observer.observe(el));
     })
 
-    async function invite( e, email ) {
+    async function invite( email ) {
         if(email && checkbox){
-            e.preventDefault();
             try {
               const { data, error } = await supabase
                 .from("invite_email")
@@ -140,7 +139,7 @@ export default function Home() {
                                 </div>
                                 <br />
                             </form>
-                            <button className="submit-btn" onClick={(e)=>invite(e,email)}>Send</button>
+                            <button className="submit-btn" onClick={()=>invite(email)}>Send</button>
 
                         </div>
                     </div>
