@@ -21,9 +21,14 @@ import { gsap } from "gsap";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 import pdf from "../../Assets/TNC.pdf"
+import supabase from "../../utils/supabase.config";
+import { message } from "antd";
 
 export default function Home() {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
+    const [email, setEmail] = useState("");
+    const [checkbox, setCheckbox] = useState(false);
+
     useEffect(() => {
         animator();
         // const observer = new IntersectionObserver((entries) => {
@@ -39,6 +44,29 @@ export default function Home() {
         // const hiddenElements = document.querySelectorAll('.hidden');
         // hiddenElements.forEach((el) => observer.observe(el));
     })
+
+    async function invite( e, email ) {
+        if(email && checkbox){
+            e.preventDefault();
+            try {
+              const { data, error } = await supabase
+                .from("invite_email")
+                .insert([
+                  {
+                    email_id: email
+                  },
+                ])
+              if (error) throw new Error(error);
+              return data[0]?.email_id;
+            } catch (err) {
+              return null;
+            }
+        }
+        else{
+            message.error("please enter your email id and click on the checkbox")
+        }
+
+      }
 
     function animator() {
         document.querySelectorAll('.codedText').forEach((t) => {
@@ -103,16 +131,17 @@ export default function Home() {
                             <form>
                                 <div>
                                     <label>E-mail ID</label><br />
-                                    <input className="mailinput" type="text" placeholder="thejacobdesigner@gmail.com" /><br />
+                                    <input className="mailinput" type="text" placeholder="thejacobdesigner@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)}/><br />
                                 </div>
                                 <br />
                                 <div>
-                                    <input type="checkbox" />&nbsp;
+                                    <input type="checkbox" name="agreement" onChange={(e)=>setCheckbox(e.target.value)} />&nbsp;
                                     <label className="checklabel">By clicking "Accept," you agree to our <a  href = {pdf} target = "_blank">Terms and Conditions</a>.</label><br />
                                 </div>
                                 <br />
-                                <input type="submit" value="Send" className="submit-btn" />
                             </form>
+                            <button className="submit-btn" onClick={(e)=>invite(e,email)}>Send</button>
+
                         </div>
                     </div>
                 </div>
