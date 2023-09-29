@@ -4,7 +4,8 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #000;
-  margin-left: 2vh;
+  margin-left: 5%;
+  padding-right: 2%;
 }
 
 .headerlogo {

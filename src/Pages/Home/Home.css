@@ -110,6 +110,7 @@
     border: 2px solid black;
     height: 354px;
     margin: 3rem 4rem auto;
+    display: flex;
 }
 
 .firststep {
@@ -122,7 +123,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    width: 722px;
+    width: 100%;
     font-size: 41px;
     margin: 5rem;
 }
@@ -130,10 +131,9 @@
 .mission {
     background-color: #D9E167;
     padding: 5rem;
-    height: 400px;
     border-bottom-right-radius: 327px;
-    height: 654px;
     margin: 4rem;
+    margin-bottom: 0;
 }
 
 .mission-block {
@@ -171,7 +171,6 @@
 
 
 .services {
-    margin: 7rem auto;
     display: flex;
     flex-direction: column;
 }
@@ -279,21 +278,20 @@
 
 
 .ribbon {
-    margin-left: 15%;
+    margin: 0 auto;
 }
 
 
 
 .tilt {
-    position: absolute;
+    /* position: absolute; */
     display: flex;
     flex-direction: column;
     width: 100%;
-    align-items: flex-end;
-    gap: 6px;
-    right: 31vh;
-    margin-top: 1vh;
-    top: 85%;
+    align-items: center;
+    /* right: 31vh;
+    margin-top: 1vh; */
+    /* top: 85%; */
 }
 
 .tiltedChild {
@@ -303,7 +301,6 @@
     padding-inline: 5vh;
     border-radius: 5vh;
     text-align: center;
-    width: 18%;
     cursor: pointer;
 }
 
@@ -334,7 +331,7 @@
 
 .tiltedChild:nth-child(5) {
     animation-delay: 200ms;
-    transform: rotate(-18.28deg) translateX(-6vh) translateY(15vh);
+    transform: rotate(-18.28deg) translateX(-6vh) translateY(12vh);
     ;
     animation: bounceInDown5 1s;
 }
@@ -514,14 +511,14 @@ hr {
 
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
     .tilt {
-        position: absolute;
+        /* position: absolute;
         display: flex;
         flex-direction: column;
         width: 100%;
         align-items: flex-end;
         gap: 2vh;
         right: 30vh;
-        top: 100%;
+        top: 100%; */
     }
 
     .join-block {
@@ -816,16 +813,6 @@ hr {
 .marquee {
     gap: 10vh;
 }
-
-
-svg#circle {
-    filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
-}
-
-svg#circle:active {
-    filter: none;
-}
-
 
 .modal {
     position: fixed;
