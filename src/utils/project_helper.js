@@ -14,7 +14,6 @@ export async function createProject({ user_id, name }) {
 
     return data[0]?.project_id;
   } catch (err) {
-    // console.log(err);
     return null;
   }
 }
@@ -31,7 +30,6 @@ export async function createGroupToProject({ user_id, project_id, name }) {
     if (error) throw new Error(ErrorBoundary);
     return data[0]?.group_id;
   } catch (err) {
-    // console.log(err);
     return null;
   }
 }
@@ -55,7 +53,6 @@ export async function createMembers({ reciver, group_id }) {
     if (error) throw new Error(error);
     return data[0]?.id;
   } catch (err) {
-    // console.log(err);
     return null;
   }
 }
