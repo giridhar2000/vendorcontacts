@@ -17,7 +17,6 @@
 
 .messages-box {
   width: 100%;
-  height: auto;
   display: flex;
 }
 .messages-box-sc {
@@ -29,6 +28,9 @@
   display: flex;
   flex-direction: column;
   border: 0.5px solid #4f4f4fad;
+  height: 500px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 .projects {
   flex: 0.6;
@@ -37,6 +39,7 @@
 .vendors {
   flex: 0.4;
 }
+
 .projects-sc {
   flex: 0.3;
 }
@@ -45,34 +48,32 @@
   position: relative;
   display: flex;
   flex-direction: column;
-
 }
 .vendors-body-sc {
   overflow-y: auto;
   padding-bottom: 1rem;
   height: 84%;
 }
-.scroll{
-    overflow-x: hidden;
-    overflow-y: auto;
-    width:100% !important;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+.scroll {
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100% !important;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
-.scroll::-webkit-scrollbar{
-    display: none  !important;
+.scroll::-webkit-scrollbar {
+  display: none !important;
 }
 
 .mine {
-  align-self: flex-end ;
+  align-self: flex-end;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
   margin: 10px;
   margin-right: 1rem !important;
-  
 }
 .others {
   align-self: flex-start;
@@ -82,7 +83,7 @@
   align-items: flex-start;
   max-width: 50%;
   margin: 15px 0;
-  margin-left: .9rem;
+  margin-left: 0.9rem;
 }
 .mine p,
 .others p {
@@ -126,7 +127,7 @@
 }
 .projects-header,
 .vendors-header {
-  height: 70px;
+  height: 10%;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -154,8 +155,8 @@
 .vendors-body {
   overflow-y: auto;
 }
-.vendors-body{
-    padding: .4rem;
+.vendors-body {
+  padding: 0.4rem;
 }
 .projects-chat {
   display: flex;
@@ -165,12 +166,12 @@
   cursor: pointer;
   padding-inline: 1.3rem;
   padding-bottom: 0rem;
-  margin-block: .7rem;
+  margin-block: 0.7rem;
   border-radius: 10px;
   background: #f6f6f6;
-  margin-inline: .5rem;
+  margin-inline: 0.5rem;
 }
-.border-bottom{
+.border-bottom {
   border-bottom: 0.5px solid #a2a2a294;
 }
 .chat-pic {
@@ -199,13 +200,16 @@
   flex: 0.9;
 }
 .chat-info p {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   margin: 0 !important;
   color: #8f8f8f;
 }
 .chat-info p:first-child {
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   color: #000;
+}
+.chat-info p:nth-child(2){
+  color: #434343 !important;
 }
 .chat-time {
   text-align: center;
@@ -220,39 +224,37 @@
 .ant-switch-checked {
   background-color: #d6db63 !important;
 }
-.bg-dark
-{
-    background-color: #f0f0f0 !important;
+.bg-dark {
+  background-color: #d8d8d8fc !important;
 }
 
-.create-project{
+.create-project {
   background-color: #d6db63;
   border: 0;
   outline: none;
-  padding: .6rem .7rem;
+  padding: 0.6rem 0.7rem;
   border-radius: 10px;
   cursor: pointer;
 }
-.create-project svg{
-  font-size: .6rem;
-  margin-top: .5rem !important;
+.create-project svg {
+  font-size: 0.6rem;
+  margin-top: 0.5rem !important;
 }
 
-.search-chat-input{
+.search-chat-input {
   width: 87%;
   margin: 10px !important;
-  padding: .5rem;
+  padding: 0.5rem;
   border: 0;
   border-bottom: 1px solid #d6db63;
   display: flex;
   align-items: center;
 }
-.search-chat-input input{
+.search-chat-input input {
   width: 100%;
   border: 0;
   outline: none;
-  margin-left: .3rem;
-
+  margin-left: 0.3rem;
 }
 @media (max-width: 1100px) {
   .messages-box-container > p {

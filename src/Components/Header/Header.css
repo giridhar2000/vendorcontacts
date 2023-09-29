@@ -90,7 +90,7 @@
 }
 .header-input::placeholder {
   opacity: 0.9;
-  font-family: "Quicksand", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 /* styling of animated border */
 .header-form:before {
