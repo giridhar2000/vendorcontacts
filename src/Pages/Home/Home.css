@@ -624,22 +624,20 @@ hr {
         width: 100%;
         left: 0;
         mask-image: linear-gradient(50deg, transparent 75%, #0f0f0f 100%);
-        top: 82px;
+        top: 0;
         pointer-events: none;
     }
 
-    .banner {
-        margin: 2rem auto !important;
-    }
-
     .banner-heading {
-        margin: 2rem auto !important;
+        position: relative;
     }
 
     .banner-text {
         font-size: 17px;
         align-items: center;
         padding-left: 1vh;
+        margin-block: 2rem !important;
+        z-index: 9;
     }
 
     .requestsitemhead {
@@ -712,7 +710,7 @@ hr {
     }
 
     .collaborators {
-        padding-top: 5vh;
+        padding-top: 10vh;
     }
 
     .collaborators .heading{
