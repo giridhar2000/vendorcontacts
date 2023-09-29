@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import "./Chats.css";
 import Header from "../../Components/Header/Header";
+import { debounce } from "lodash";
 import {
   AiOutlinePlusCircle,
   AiOutlineUser,
@@ -30,7 +31,12 @@ import {
   getMessagesFromGroup,
   formatSupabaseTimestampToTime,
 } from "../../utils/chat_helper";
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  useInfiniteQuery,
+} from "react-query";
 import UserContext from "../../contexts/userContext";
 import ScrollToBottom from "react-scroll-to-bottom";
 import { getAllUsers } from "../../utils/profile_helper";
@@ -64,19 +70,9 @@ const Chats = () => {
   const [selectedChats, setSelectedChats] = useState([]);
   const [filteredProfiles, setFilteredProfiles] = useState([]);
   const [input, setInput] = useState("");
-  // const [page, setPage] = useState(0);
-  // const [messages, setMessages] = useState([]);
-  // let from, to;
-
-  // const loadMoreData = () => {
-  //   var ITEM_PER_PAGE = 5;
-  //   from = page * ITEM_PER_PAGE;
-  //   to = from + ITEM_PER_PAGE;
-  //   if (page > 0) {
-  //     from += 1;
-  //   }
-  //   return { from, to };
-  // };
+  // const [chats, setChats] = useState([]);
+  const [isChatLoading, setIsChatLoading] = useState(true);
+  const [page, setPage] = useState(0);
 
   // Fetching all messages from a chat
   let { data: messages } = useQuery(
@@ -89,14 +85,6 @@ const Chats = () => {
       enabled: selectedChat?.chat_id != null,
     }
   );
-
- 
-  // useEffect(() => {
-  //   if (newMessages) {
-  //     console.log(newMessages);
-  //     setMessages((old) => [...old, ...newMessages]);
-  //   }
-  // }, [newMessages]);
 
   useEffect(() => {
     if (input === "") {
@@ -119,32 +107,67 @@ const Chats = () => {
     }
   );
 
-  //Fetching chats of a particular user
-  const { data: chats, isLoading: isLoading2 } = useQuery(
+  // //Fetching chats of a particular user
+  // const { data: chats, isLoading: isLoading2 } = useQuery(
+  //   ["chats", profile?.id, page],
+  //   async () => {
+  //     const { from, to } = loadMoreData();
+  //     console.log(from, to);
+  //     let data = await getAllChats(profile?.id, null, from, to);
+  //     // setChats((old) => [...data, ...old]);
+  //     setIsChatLoading(false);
+  //     return data;
+  //   }
+  // );
+
+  const {
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    data: chats,
+  } = useInfiniteQuery(
     ["chats", profile?.id],
-    async () => {
-      let data = await getAllChats(profile?.id);
-      return data;
+    ({ pageParam = 0 }) => getAllChats(profile?.id, null, pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return allPages?.length;
+      },
     }
   );
+
   //Fetching chats of a particular project
-  const { data: chatsOfProject, isLoading: isLoading5 } = useQuery(
+  const {
+    fetchNextPage: fetchNextPageChatsOfProject,
+    hasNextPage: hasNextPageChatsOfProject,
+    isFetchingNextPage: isFetchingNextPageChatsOfProject,
+    data: chatsOfProject,
+  } = useInfiniteQuery(
     ["chatsOfProject", profile?.id, selectedProject?.project_id],
-    async () => {
-      let data = await getAllChats(profile?.id, selectedProject?.project_id);
-      return data;
-    },
+    ({ pageParam = 0 }) =>
+      getAllChats(profile?.id, selectedProject?.project_id, pageParam),
     {
       enabled: selectedProject?.project_id !== null,
+      getNextPageParam: (lastPage, allPages) => {
+        return allPages?.length;
+      },
     }
   );
 
   // Fetching projects of a particular user
-  const { data: projects, isLoading: isLoading3 } = useQuery(
+  const {
+    fetchNextPage: fetchNextPageProjects,
+    hasNextPage: hasNextPageProjects,
+    isFetchingNextPage: isFetchingNextPageProjects,
+    data: projects,
+    isLoading: isLoading3,
+  } = useInfiniteQuery(
     ["projects", profile?.id],
-    async () => {
-      let data = await getAllProjects(profile?.id);
-      return data;
+    ({ pageParam = 0 }) => getAllProjects(profile?.id, pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        console.log("Next page");
+        return allPages?.length;
+      },
     }
   );
 
@@ -278,12 +301,12 @@ const Chats = () => {
         "postgres_changes",
         { event: "*", schema: "public", table: "chats" },
         (payload) => {
+          queryClient.invalidateQueries(["chats", profile?.id]);
           queryClient.invalidateQueries([
             "chatsOfProject",
             profile?.id,
             selectedProject?.project_id,
           ]);
-          queryClient.invalidateQueries(["chats", profile?.id]);
         }
       )
       .on(
@@ -300,6 +323,7 @@ const Chats = () => {
           queryClient.invalidateQueries([
             "groups",
             selectedProject?.project_id,
+            payload?.new?.group_id,
           ]);
         }
       )
@@ -392,8 +416,68 @@ const Chats = () => {
     </div>
   );
 
+  // Infinite scrolling logic ---------------------->
+
+  async function handleScroll(e) {
+    try {
+      let fetching = false;
+      const { scrollHeight, scrollTop, clientHeight } = e.target;
+      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        fetching = true;
+        if (hasNextPage) {
+          await fetchNextPage();
+        }
+
+        fetching = false;
+      }
+    } catch (err) {
+      // console.log(err)
+    }
+  }
+  async function handleScrollChatsOfProject(e) {
+    try {
+      let fetching = false;
+      const { scrollHeight, scrollTop, clientHeight } = e.target;
+      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        fetching = true;
+        if (hasNextPageChatsOfProject) {
+          await fetchNextPageChatsOfProject();
+        }
+
+        fetching = false;
+      }
+    } catch (err) {
+      // console.log(err)
+    }
+  }
+  async function handleScrollProjects(e) {
+    try {
+      let fetching = false;
+      const { scrollHeight, scrollTop, clientHeight } = e.target;
+      if (!fetching && scrollHeight - scrollTop <= clientHeight * 1.2) {
+        fetching = true;
+        if (hasNextPageProjects) {
+          await fetchNextPageProjects();
+        }
+
+        fetching = false;
+      }
+    } catch (err) {
+      // console.log(err)
+    }
+  }
+  const handleDebouncedScroll = debounce((e) => handleScroll(e), 1000);
+  const handleDebouncedScrollChatsOfProject = debounce(
+    (e) => handleScrollChatsOfProject(e),
+    1500
+  );
+  const handleDebouncedScrollProjects = debounce(
+    (e) => handleScrollProjects(e),
+    2000
+  );
+
   //Returning loading indicator
-  if (isLoading || isLoading3 || isLoading2 || isLoading4) {
+  if (isLoading || isLoading3 || isLoading4) {
     return <p>Loading....</p>;
   }
 
@@ -412,31 +496,56 @@ const Chats = () => {
                     <AiOutlinePlusCircle onClick={() => setAddProject(true)} />
                   </div>
                 </div>
-                <div className="projects-body">
-                  {!projects || projects?.length === 0 ? (
+                <div
+                  className="projects-body"
+                  onScroll={handleDebouncedScrollProjects}
+                >
+                  {!projects || projects?.pages.length === 0 ? (
                     <Empty
                       image={Empty.PRESENTED_IMAGE_SIMPLE}
                       description={"No projects"}
                     />
                   ) : (
-                    projects
-                      ?.sort(
-                        (a, b) =>
-                          Date.parse(b.created_at) - Date.parse(a.created_at)
-                      )
-                      ?.map((project, i) => {
-                        return (
-                          <Project
-                            index={i}
-                            last={projects?.length - 1}
-                            project={project}
-                            user_id={profile?.id}
-                            key={project?.id}
-                            setSelectedProject={setSelectedProject}
-                          />
-                        );
-                      })
+                    projects?.pages?.map((page) => {
+                      return (
+                        <>
+                          {page
+                            ?.sort(
+                              (a, b) =>
+                                Date.parse(b.created_at) -
+                                Date.parse(a.created_at)
+                            )
+                            ?.map((project, i) => {
+                              return (
+                                <Project
+                                  index={i}
+                                  last={
+                                    projects?.pages[projects?.length - 1]
+                                      ?.length - 1
+                                  }
+                                  project={project}
+                                  user_id={profile?.id}
+                                  key={project?.id}
+                                  setSelectedProject={setSelectedProject}
+                                />
+                              );
+                            })}
+                        </>
+                      );
+                    })
                   )}
+                  {isFetchingNextPageProjects ? (
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Spin />
+                    </div>
+                  ) : null}
                 </div>
               </div>
               <div className="vendors">
@@ -446,33 +555,52 @@ const Chats = () => {
                     <AiOutlinePlusCircle onClick={() => setAddChat(true)} />
                   </div>
                 </div>
-                <div className="vendors-body">
-                  {chats && chats?.length === 0 ? (
+                <div className="vendors-body" onScroll={handleDebouncedScroll}>
+                  {chats && chats?.pages?.length === 0 ? (
                     <Empty
                       image={Empty.PRESENTED_IMAGE_SIMPLE}
                       description={"No chats"}
                     />
                   ) : (
-                    chats
-                      ?.sort(
-                        (a, b) =>
-                          Date.parse(b.updated_at) - Date.parse(a.updated_at)
-                      )
-                      ?.map((chat, i) => {
-                        return (
-                          <Chat
-                            index={i}
-                            last={chats?.length - 1}
-                            chat={chat}
-                            user_id={profile?.id}
-                            key={chat?.id}
-                            selectedChat={selectedChat}
-                            setSelectedChat={setSelectedChat}
-                            setSelectedGroup={setSelectedGroup}
-                          />
-                        );
-                      })
+                    chats?.pages?.map((page) => {
+                      return (
+                        <>
+                          {page
+                            ?.sort(
+                              (a, b) =>
+                                Date.parse(b.updated_at) -
+                                Date.parse(a.updated_at)
+                            )
+                            ?.map((chat, i) => {
+                              return (
+                                <Chat
+                                  index={i}
+                                  last={chats?.length - 1}
+                                  chat={chat}
+                                  user_id={profile?.id}
+                                  key={chat?.id}
+                                  selectedChat={selectedChat}
+                                  setSelectedChat={setSelectedChat}
+                                  setSelectedGroup={setSelectedGroup}
+                                />
+                              );
+                            })}
+                        </>
+                      );
+                    })
                   )}
+                  {isFetchingNextPage ? (
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Spin />
+                    </div>
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -503,24 +631,43 @@ const Chats = () => {
                     <AiOutlinePlusCircle onClick={() => setAddChat(true)} />
                   </div>
                 </div>
-                <div className="projects-body">
-                  {chats
-                    ?.sort(
-                      (a, b) =>
-                        Date.parse(b.updated_at) - Date.parse(a.updated_at)
-                    )
-                    ?.map((chat) => {
-                      return (
-                        <Chat
-                          chat={chat}
-                          user_id={profile?.id}
-                          key={chat?.id}
-                          selectedChat={selectedChat}
-                          setSelectedChat={setSelectedChat}
-                          setSelectedGroup={setSelectedGroup}
-                        />
-                      );
-                    })}
+                <div className="projects-body" onScroll={handleDebouncedScroll}>
+                  {chats?.pages?.map((page) => {
+                    return (
+                      <>
+                        {page
+                          ?.sort(
+                            (a, b) =>
+                              Date.parse(b.updated_at) -
+                              Date.parse(a.updated_at)
+                          )
+                          ?.map((chat) => {
+                            return (
+                              <Chat
+                                chat={chat}
+                                user_id={profile?.id}
+                                key={chat?.id}
+                                selectedChat={selectedChat}
+                                setSelectedChat={setSelectedChat}
+                                setSelectedGroup={setSelectedGroup}
+                              />
+                            );
+                          })}
+                      </>
+                    );
+                  })}
+                  {isFetchingNextPage ? (
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Spin />
+                    </div>
+                  ) : null}
                 </div>
               </div>
               <div className="vendors vendors-sc">
@@ -606,7 +753,10 @@ const Chats = () => {
                     </Popover>
                   </div>
                 </div>
-                <div className="projects-body">
+                <div
+                  className="projects-body"
+                  onScroll={handleDebouncedScrollChatsOfProject}
+                >
                   {groups && groups?.length >= 0 ? (
                     <p
                       style={{
@@ -654,23 +804,43 @@ const Chats = () => {
                   >
                     Chats
                   </p>
-                  {chatsOfProject
-                    ?.sort(
-                      (a, b) =>
-                        Date.parse(b.updated_at) - Date.parse(a.updated_at)
-                    )
-                    ?.map((chat) => {
-                      return (
-                        <Chat
-                          chat={chat}
-                          user_id={profile?.id}
-                          key={chat?.id}
-                          selectedChat={selectedChat}
-                          setSelectedChat={setSelectedChat}
-                          setSelectedGroup={setSelectedGroup}
-                        />
-                      );
-                    })}
+                  {chatsOfProject?.pages?.map((page) => {
+                    return (
+                      <>
+                        {page
+                          ?.sort(
+                            (a, b) =>
+                              Date.parse(b.updated_at) -
+                              Date.parse(a.updated_at)
+                          )
+                          ?.map((chat) => {
+                            return (
+                              <Chat
+                                chat={chat}
+                                user_id={profile?.id}
+                                key={chat?.id}
+                                selectedChat={selectedChat}
+                                setSelectedChat={setSelectedChat}
+                                setSelectedGroup={setSelectedGroup}
+                              />
+                            );
+                          })}
+                      </>
+                    );
+                  })}
+
+                  {isFetchingNextPageChatsOfProject ? (
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Spin />
+                    </div>
+                  ) : null}
                 </div>
               </div>
               <div className="vendors vendors-sc">
@@ -866,11 +1036,14 @@ const Chats = () => {
           {filteredProfiles
             ?.filter((value) => {
               let bool = false;
-              chatsOfProject?.map((val) => {
-                if (val.chat_id.includes(value.id)) {
-                  bool = true;
-                }
+              chatsOfProject?.pages?.map((page) => {
+                page?.map((val) => {
+                  if (val.chat_id.includes(value.id)) {
+                    bool = true;
+                  }
+                });
               });
+
               if (!bool) return value;
             })
             ?.map((reciver, i) => {
@@ -1072,29 +1245,27 @@ function Messeges({ messages, profile, groupMode = false, hide = true }) {
         </p>
       ) : (
         <ScrollToBottom className="scroll" checkInterval={17} sticky={true}>
-          {messages
-
-            ?.map((message) => {
-              return (
-                <div
-                  key={message.id}
-                  className={`${
-                    message?.sender_id === profile?.id ? "mine" : "others"
-                  }`}
-                >
-                  <p>{message?.text}</p>
-                  <p>
-                    {groupMode ? (
-                      <span>
-                        {message?.sender_name}
-                        <br />
-                      </span>
-                    ) : null}
-                    {formatSupabaseTimestampToTime(message?.created_at)}
-                  </p>
-                </div>
-              );
-            })}
+          {messages?.map((message) => {
+            return (
+              <div
+                key={message.id}
+                className={`${
+                  message?.sender_id === profile?.id ? "mine" : "others"
+                }`}
+              >
+                <p>{message?.text}</p>
+                <p>
+                  {groupMode ? (
+                    <span>
+                      {message?.sender_name}
+                      <br />
+                    </span>
+                  ) : null}
+                  {formatSupabaseTimestampToTime(message?.created_at)}
+                </p>
+              </div>
+            );
+          })}
         </ScrollToBottom>
       )}
     </div>
