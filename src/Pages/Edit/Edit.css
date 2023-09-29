@@ -191,7 +191,7 @@ input[type=file]::file-selector-button {
 }
 
 input[type="file" i] {
-  font-family: "Poppins";
+  font-family: 'Poppins', 'Helvetica Neue', 'San Francisco', Arial, sans-serif;
 }
 
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {

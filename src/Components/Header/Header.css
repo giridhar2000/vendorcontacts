@@ -90,7 +90,7 @@
 }
 .header-input::placeholder {
   opacity: 0.9;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', 'Helvetica Neue', 'San Francisco', Arial, sans-serif;
 }
 /* styling of animated border */
 .header-form:before {

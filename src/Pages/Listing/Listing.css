@@ -22,7 +22,7 @@ hr{
   align-items: center;
   padding-block: 5px;
   cursor: pointer;
-  font-family: "Poppins";
+  font-family: 'Poppins', 'Helvetica Neue', 'San Francisco', Arial, sans-serif;
   font-size: medium;
 }
 
@@ -137,7 +137,7 @@ hr{
   align-items: center;
   padding-block: 5px;
   cursor: pointer;
-  font-family: "Poppins";
+  font-family: 'Poppins', 'Helvetica Neue', 'San Francisco', Arial, sans-serif;
   font-size: medium;
 }
 
