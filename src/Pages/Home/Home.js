@@ -243,11 +243,13 @@ export default function Home() {
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 264" fill="none">
                         <path id="p2" d="M-208 43H-47.6758V221L1348.07 221V43H1489" stroke="#D9E167" stroke-width="85" stroke-linejoin="round" />
                         <text dominant-baseline="middle" fill="black" font-size="32px">
-                            <textPath href="#p2" startOffset="100%">
+                            <textPath href="#p2" >
                                 Uniting Visionaries and makers .Uniting Visionaries and makers .
-                                <animate
+                                Uniting Visionaries and makers .Uniting Visionaries and makers .
+                                Uniting Visionaries and makers .Uniting Visionaries and makers .
+                                {/* <animate
                                     attributeName="startOffset" from="-100%" to="100%"
-                                    dur="10s" begin="3s" repeatCount="indefinite" />
+                                    dur="10s" begin="3s" repeatCount="indefinite" /> */}
                             </textPath>
                         </text>
                     </svg>
@@ -414,24 +416,26 @@ export default function Home() {
                             <p>Tools to enable library updates, lunch and learns, event invites, and more.</p>
                         </div>
                     </div>
-                    <div className='aboutrow' style={{ justifyContent: "flex-start", border: "none" }}>
-                        <div className='aboutcolumn' id="aboutcolumn" style={{ justifyContent: " center" }}>
-                            <div className='requestsitemhead'>
+                    <div className='aboutrow lastrow' style={{ justifyContent: "flex-start", border: "none" }}>
+                        <div className='aboutcolumn lastcolumn' id="aboutcolumn" style={{ justifyContent: " center" }}>
+                            <div className='requestsitemhead lastitem'>
                                 <img src={GraphIcon} alt='img' />
                                 <h1>Trusted by Industry Professionals</h1>
                             </div>
-                            <p>Organization tools make your project workflow faster, with less hassle.</p>
+                            <p className="lastitem">Organization tools make your project workflow faster, with less hassle.</p>
                         </div>
 
                         <div className="ribbon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="601" height="390" viewBox="0 0 601 390" fill="none">
                                 <path id="p3" d="M43 0V347H558V0" stroke="#D9E167" stroke-width="85" stroke-linejoin="round" />
                                 <text dominant-baseline="middle" fill="black" font-size="32px">
-                                    <textPath href="#p3" startOffset="100%">
+                                    <textPath href="#p3">
                                         Uniting Visionaries and makers .Uniting Visionaries and makers .
-                                        <animate
+                                        Uniting Visionaries and makers .Uniting Visionaries and makers .
+
+                                        {/* <animate
                                             attributeName="startOffset" from="-100%" to="100%"
-                                            dur="10s" begin="3s" repeatCount="indefinite" />
+                                            dur="10s" begin="3s" repeatCount="indefinite" /> */}
                                     </textPath>
                                 </text>
                             </svg>

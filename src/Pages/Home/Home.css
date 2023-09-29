@@ -7,7 +7,7 @@
 }
 
 .banner {
-    margin: 4rem 4rem auto;
+    margin: 0rem 4rem auto;
 }
 
 .banner-text {
@@ -15,6 +15,7 @@
     flex-direction: column;
     align-items: flex-start;
     font-size: 40px;
+    margin-top: 4rem;
 }
 
 .banner-heading {
@@ -23,10 +24,7 @@
 
 .bg {
     position: absolute;
-    left: 50%;
-    width: 50%;
-    top: 92px;
-    height: 80%;
+    right: 0;
     mask-image: linear-gradient(40deg, transparent 50%, #0f0f0f 80%);
 }
 
@@ -284,14 +282,11 @@
 
 
 .tilt {
-    /* position: absolute; */
     display: flex;
     flex-direction: column;
     width: 100%;
     align-items: center;
-    /* right: 31vh;
-    margin-top: 1vh; */
-    /* top: 85%; */
+    transform: translateY(-15vh);
 }
 
 .tiltedChild {
@@ -458,20 +453,25 @@
 
 .aboutrow {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     padding-left: 10vh;
     border-bottom: 1px solid black;
+    align-items: flex-start;
 }
 
 .aboutcolumn img {
     width: 5vh;
 }
 
+.requestsitemhead {
+    width: 75%;
+}
+
 .aboutcolumn p {
     font-size: 16px;
     color: rgba(0, 0, 0, 0.4);
     font-weight: 600;
+    width: 75%;
 }
 
 .requestsitemhead h1 {
@@ -495,6 +495,7 @@ hr {
     flex-direction: column;
     width: 30%;
     justify-content: center;
+    height: 5vh;
 }
 
 .aboutcolumn:nth-child(1),
@@ -504,21 +505,32 @@ hr {
     border-right: 1px solid gray;
 }
 
+.lastrow{
+    padding-left: 0 !important;
+}
+
+.lastitem{
+    padding-left: 3vh;
+}
+
+.lastcolumn{
+    padding-left: 7vh;
+    border-bottom: 1px solid black;
+}
+
 .aboutbody {
     display: flex;
     flex-direction: column;
+    margin-top: -1vh;
 }
 
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
-    .tilt {
-        /* position: absolute;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        align-items: flex-end;
-        gap: 2vh;
-        right: 30vh;
-        top: 100%; */
+    .tilt{
+        transform: translateY(-2vh);
+    }
+
+    .bg{
+        width: 50%;
     }
 
     .join-block {
@@ -537,6 +549,10 @@ hr {
         padding: 6vh;
     }
 
+    .lastcolumn{
+        padding-left: 7.5vh !important;
+    }
+
     .arrow {
         left: 21%;
     }
@@ -551,7 +567,6 @@ hr {
 
     #aboutcolumn {
         margin-bottom: 18dvh;
-        padding-right: 0.5vh;
     }
 
 }
@@ -561,6 +576,19 @@ hr {
 }
 
 @media(max-width:1100px) {
+
+    *{
+        font-family: 'Quicksand', sans-serif !important;
+    }
+
+    .banner-text h1{
+        font-weight: 600;
+
+    }
+
+    .faq-block{
+        font-family: 'Quicksand', sans-serif;
+    }
 
     .header {
         margin-left: 4vh !important;
@@ -616,6 +644,12 @@ hr {
 
     .requestsitemhead {
         text-align: left;
+        padding-bottom: 2vh;
+
+    }
+
+    .ant-drawer-title{
+        font-family: 'Quicksand', sans-serif;
     }
 
     .requestsitemhead h1 {
@@ -666,20 +700,29 @@ hr {
         font-size: 25px;
         font-weight: 600;
         justify-content: center;
+        margin: 0rem auto !important;
+        padding-block: 2vh;
+
     }
 
     .faq,
     .mission {
         margin-inline: 15px !important;
+        margin-top: 3vh !important;
     }
 
     .collaborators {
         padding-top: 5vh;
     }
 
+    .collaborators .heading{
+        font-family: 'Quicksand', sans-serif;
+    }
+
+
+
     * {
         margin: 0 !important;
-        font-family: 'Poppins', sans-serif;
     }
 
     .Loginform {
