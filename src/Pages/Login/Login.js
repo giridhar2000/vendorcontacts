@@ -11,7 +11,7 @@ import { getUserById } from "../../utils/profile_helper";
 import HubspotForm from "react-hubspot-form";
 import { v4 as uuidv4 } from "uuid";
 import Icon from "../../Assets/images/logo-icon.svg";
-
+import pdf from "../../Assets/TNC.pdf"
 
 export default function Login() {
   const [signup, setSignUp] = useState(true);
@@ -536,8 +536,8 @@ export default function Login() {
                     )}
                   </div>
                   <p className="forgotpass">
-                    By Clicking "Sign Up", You Agree to Our Terms of Use and
-                    Privacy Policy
+                    By Clicking "Sign Up", You Agree to Our <a href={pdf} target="_blank">Terms of Use and
+                    Privacy Policy</a>
                   </p>
                   <button
                     className="loginbtn"
