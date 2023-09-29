@@ -74,7 +74,7 @@ const Profile = () => {
       <Header />
       <div className="cover-pic">
         <img src={bg1} alt="bg" />
-        {profile.profile_pic ? (
+        {profile?.profile_pic ? (
           <div className="profile-pic">
             <img src={profile?.profile_pic} alt="profile" />
           </div>

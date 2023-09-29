@@ -1,4 +1,4 @@
-import React,{useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 import { CgOptions } from "react-icons/cg";
@@ -14,60 +14,53 @@ import UserContext from "../../contexts/userContext";
 import supabase from "../../utils/supabase.config";
 import { useEffect } from "react";
 
-
-
 const options = ["Recent", "Popular", "Oldest"];
 const defaultOption = options[0];
 
-
 const Listing = () => {
   const navigate = useNavigate();
-  // const {data:profile,isLoading}=useQuery('profile',getUser)
-  // const [currentPage, setCurrentPage] = useState(0);
-  const [isLoading, setIsLoading] = useState(false)
+  const { data: profile, isLoadin: isLoading3 } = useQuery("profile", getUser);
+  const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(0);
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
   let from, to;
-  // const { data: vendors, isLoading: isLoading2, fetchNextPage } = useQuery(['profile', profile?.id, currentPage], async () => {
-  //   return await getVendors(from, to); // Adjust your API call based on currentPage
-  // }, {
-  //   enabled: profile?.id !== null
-  // });
+
   const loadMoreData = () => {
-    var ITEM_PER_PAGE = 2
-    from = page * ITEM_PER_PAGE
-    to = from + ITEM_PER_PAGE
-    if (page > 0){
+    var ITEM_PER_PAGE = 2;
+    from = page * ITEM_PER_PAGE;
+    to = from + ITEM_PER_PAGE;
+    if (page > 0) {
       from += 1;
-    } 
-    return {from, to}
+    }
+    return { from, to };
   };
 
-  async function getVendors() {
-    setIsLoading(true)
-    const {from, to} = loadMoreData()
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("id,profile_pic,display_name,location,bio")
-      .range(from, to)
-      .eq("type", "vendor");
-      setPage(page+1)
-      setData((currentData)=> [...currentData, ...data])
-      console.log(page)
-    if (error) {
-      return false;
+  const { data: vendors } = useQuery(
+    ["profile", profile?.id, page],
+    async () => {
+      const { from, to } = loadMoreData();
+      return await getVendors(from, to); // Adjust your API call based on currentPage
+    },
+    {
+      enabled: profile?.id !== null,
     }
-    setIsLoading(false)
-    return data;
+  );
+
+  function increasePage() {
+    setIsLoading(true);
+    setPage(page + 1);
   }
 
-  useEffect(()=>{
-    getVendors()
-  }, [])
+  useEffect(() => {
+    if (vendors) {
+      setData((currentData) => [...currentData, ...vendors]);
+      setIsLoading(false);
+    }
+  }, [vendors]);
 
   return (
     <>
-    {/* {isLoading? <div className="spin"><Spin /></div> : ""} */}
+      {/* {isLoading? <div className="spin"><Spin /></div> : ""} */}
       <Header />
       <div className="filter">
         <button>
@@ -83,7 +76,11 @@ const Listing = () => {
       <div className="cardcontainer">
         {data?.map((vendor) => {
           return (
-            <div className="listingcard" key={vendor?.id} onClick={() => navigate(`/profile/${vendor?.id}`)}>
+            <div
+              className="listingcard"
+              key={vendor?.id}
+              onClick={() => navigate(`/profile/${vendor?.id}`)}
+            >
               {vendor?.profile_pic ? (
                 <img src={vendor?.profile_pic} alt="bg" />
               ) : (
@@ -118,7 +115,11 @@ const Listing = () => {
         })}
       </div>
       <div className="load">
-        <button onClick={getVendors}>Load More</button>
+        {isLoading ? (
+          <Spin />
+        ) : (
+          <button onClick={increasePage}>Load More</button>
+        )}
       </div>
       <br />
       <Footer />
