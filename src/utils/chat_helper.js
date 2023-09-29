@@ -1,17 +1,13 @@
 import supabase from "./supabase.config";
 
-
-
 // Helper function for time format ----------->
 
 export function formatSupabaseTimestampToTime(timestamp) {
   const date = new Date(timestamp);
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
   return `${hours}:${minutes}`;
 }
-
-
 
 // Helper function for creating chat id   -------->
 
@@ -42,7 +38,7 @@ export async function checkIsChatExist(chat_id) {
 
 // Functions for creating chat   -------->      returns {  < Chat data > }  ||  null
 
-export async function createChat({ reciver, user, project_id=false }) {
+export async function createChat({ reciver, user, project_id = false }) {
   if (!reciver?.id || !user?.id) return null;
 
   try {
@@ -105,8 +101,18 @@ export async function createChat({ reciver, user, project_id=false }) {
 
 // Getting all chats from DB if thers project id in parameter then it should fetch all the chats under that project -------->   returns [ < All chats > ] || []
 
-export async function getAllChats(user_id, project_id = null) {
+export async function getAllChats(user_id, project_id = null, page = 0) {
   try {
+    let from, to;
+    const loadMoreData = () => {
+      var ITEM_PER_PAGE = 7;
+      from = page * ITEM_PER_PAGE;
+      to = from + ITEM_PER_PAGE;
+      if (page > 0) {
+        from += 1;
+      }
+    };
+    loadMoreData();
     if (!user_id) throw new Error("User id is null");
     let { data, error } = await supabase
       .from("chats")
@@ -114,7 +120,10 @@ export async function getAllChats(user_id, project_id = null) {
         "id,chat_id,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image,recent_message,updated_at"
       )
       .eq("project_id", project_id || "NA")
-      .or(`sender_id.eq.${user_id},reciver_id.eq.${user_id}`);
+      .or(`sender_id.eq.${user_id},reciver_id.eq.${user_id}`)
+      .order("updated_at", { ascending: false })
+      // .limit(5)
+      .range(from, to);
 
     if (error) throw new Error(error);
     return data;
@@ -124,17 +133,31 @@ export async function getAllChats(user_id, project_id = null) {
   }
 }
 
-// Getting all the projects of current user  ----------->        returns [ < All projects > ] || []  
+// Getting all the projects of current user  ----------->        returns [ < All projects > ] || []
 
-export async function getAllProjects(user_id) {
+export async function getAllProjects(user_id, page = 0) {
   var myData;
   try {
+    let from, to;
+    const loadMoreData = () => {
+      var ITEM_PER_PAGE = 7;
+      from = page * ITEM_PER_PAGE;
+      to = from + ITEM_PER_PAGE;
+      if (page > 0) {
+        from += 1;
+      }
+    };
+    loadMoreData();
     // Fetching projects who is joined a projects of current user
     let { data: v_p, error } = await supabase
       .from("v_p")
-      .select(`projects (project_id,name,created_at)`)
-      .eq("vendor_id", user_id);
+      .select(`projects (id,project_id,name,created_at)`)
+      .eq("vendor_id", user_id)
+      .order("created_at", { ascending: false })
+      .range(from, to);
+
     if (error) throw new Error(error);
+
     myData = v_p.map((d) => {
       return d.projects;
     });
@@ -142,9 +165,11 @@ export async function getAllProjects(user_id) {
     // fetching projects which has created by current user
     let { data, error: error2 } = await supabase
       .from("projects")
-      .select("*")
-      .eq("created_by", user_id);
+      .select("id,project_id,name,created_at,created_by")
+      .eq("created_by", user_id)
+      .order("created_at", { ascending: false })
 
+      .range(from, to);
     if (error2) throw new Error(error2);
 
     if (myData) return [...myData, ...data];
@@ -275,18 +300,29 @@ export async function sendMessageToGroup({ groupData, text, profile }) {
 
 // getting all messages from chat id  ------------------>             returns [ < messages > ] || []
 
-export async function getMessages(chat_id) {
+export async function getMessages(chat_id, page = 0) {
   try {
+    let from, to;
+    const loadMoreData = () => {
+      var ITEM_PER_PAGE = 7;
+      from = page * ITEM_PER_PAGE;
+      to = from + ITEM_PER_PAGE;
+      if (page > 0) {
+        from += 1;
+      }
+    };
+    loadMoreData();
     const { data, error } = await supabase
       .from("messages")
       .select(
         "id,created_at,text,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image"
       )
       .eq("chat_id", chat_id)
-      .order('id', { ascending: true })
-      // .limit(10)
-      // .range(from,to);
+      .order("created_at", { ascending: false })
+      .range(from, to);
+
     if (error) throw new Error(error);
+    data?.reverse()
     return data;
   } catch (err) {
     // console.log(err);
