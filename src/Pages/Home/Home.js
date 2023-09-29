@@ -160,6 +160,7 @@ export default function Home() {
                                 </mask>
                                 <g mask="url(#circle)">
                                     <path d="M38.9656 27.8136L22.7048 44.0744L20.0337 41.4032L36.2944 25.1424L21.3359 25.1424L21.3693 21.3694H42.7387V42.7388L38.9656 42.7722L38.9656 27.8136Z" fill="white" />
+
                                 </g>
                             </svg>
                         </svg>
@@ -171,7 +172,8 @@ export default function Home() {
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 348" fill="none">
                         <path id="p1" d="M0 305H570.5V43L1443.5 43" stroke="#D9E167" stroke-width="85" stroke-linejoin="round" />
                         <text dominant-baseline="middle" fill="black" font-size="32px">
-                            <textPath href="#p1" startOffset="100%">
+                            <textPath href="#p1">
+                                Uniting Visionaries and makers .Uniting Visionaries and makers .
                                 Uniting Visionaries and makers .Uniting Visionaries and makers .
                                 {/* <animate
                                     attributeName="startOffset" from="-100%" to="100%"
@@ -183,7 +185,15 @@ export default function Home() {
                 </div>
             </section>
 
-            <div className="tilt">
+
+
+            <section className="faq">
+                <div className="faq-block">
+                    ALL YOUR QUESTIONS, AND <br />REPS ON ONE PLATFORM. <br />NO MORE LONG EMAIL<br />
+                    THREADS.
+                </div>
+
+                <div className="tilt">
                 <div className="tiltedChild codedText">
                     Who's my rep?
                 </div>
@@ -200,12 +210,6 @@ export default function Home() {
                     Digital or standard vinyl?
                 </div>
             </div>
-
-            <section className="faq">
-                <div className="faq-block">
-                    ALL YOUR QUESTIONS, AND <br />REPS ON ONE PLATFORM. <br />NO MORE LONG EMAIL<br />
-                    THREADS.
-                </div>
             </section>
 
             <section className="mission">
