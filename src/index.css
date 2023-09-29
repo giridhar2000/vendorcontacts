@@ -1,11 +1,21 @@
 body {
   margin: 0;
-  font-family: 'Poppins', 'Helvetica Neue', 'San Francisco', Arial, sans-serif;
+  @font-face {
+      font-family: "futura-bk-bt-book";
+      src: url("https://candyfonts.com/wp-data/2019/04/06/51567/FutuBk.ttf") format("woff"),
+        url("https://candyfonts.com/wp-data/2019/04/06/51567/FutuBk.ttf") format("opentype"),
+        url("https://candyfonts.com/wp-data/2019/04/06/51567/FutuBk.ttf") format("truetype");
+    }
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: white;
 }
 
 code {
-  font-family: 'Poppins', 'Helvetica Neue', 'San Francisco', Arial, sans-serif;
+  @font-face {
+      font-family: "futura-bk-bt-book";
+      src: url("https://candyfonts.com/wp-data/2019/04/06/51567/FutuBk.ttf") format("woff"),
+        url("https://candyfonts.com/wp-data/2019/04/06/51567/FutuBk.ttf") format("opentype"),
+        url("https://candyfonts.com/wp-data/2019/04/06/51567/FutuBk.ttf") format("truetype");
+    }
 }
