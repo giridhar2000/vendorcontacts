@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef, memo } from "react";
 import "./Chats.css";
 import Header from "../../Components/Header/Header";
 import { debounce } from "lodash";
@@ -38,7 +38,7 @@ import {
   useInfiniteQuery,
 } from "react-query";
 import UserContext from "../../contexts/userContext";
-import ScrollToBottom from "react-scroll-to-bottom";
+// import ScrollToBottom from "react-scroll-to-bottom";
 import { getAllUsers } from "../../utils/profile_helper";
 import {
   createProject,
@@ -74,14 +74,19 @@ const Chats = () => {
   const [page, setPage] = useState(0);
 
   // Fetching all messages from a chat
-  let { data: messages } = useQuery(
+  let {
+    fetchNextPage: fetchNextPageMessages,
+    hasNextPage: hasNextPageMessages,
+    isFetchingNextPage: isFetchingNextPageMessages,
+    data: messages,
+  } = useInfiniteQuery(
     ["messaagelist", selectedChat?.chat_id],
-    async () => {
-      // const { from, to } = loadMoreData();
-      return await getMessages(selectedChat?.chat_id);
-    },
+    ({ pageParam = 0 }) => getMessages(selectedChat?.chat_id, pageParam),
     {
       enabled: selectedChat?.chat_id != null,
+      getNextPageParam: (lastPage, allPages) => {
+        return allPages?.length;
+      },
     }
   );
 
@@ -354,8 +359,8 @@ const Chats = () => {
   }
 
   async function handleAddProject() {
-    setProjectAdding(true);
     if (projectName) {
+      setProjectAdding(true);
       create_project_mutation.mutateAsync({
         user_id: profile?.id,
         name: projectName,
@@ -366,8 +371,8 @@ const Chats = () => {
     }
   }
   async function handleAddGroup() {
-    setGroupAdding(true);
     if (groupName) {
+      setGroupAdding(true);
       create_group_mutation.mutateAsync({
         user_id: profile?.id,
         project_id: selectedProject?.project_id,
@@ -379,6 +384,7 @@ const Chats = () => {
     }
   }
   function handleAddChatToProject(project_id) {
+    if (!input) return;
     setProjectAdding(true);
     console.log(project_id);
     const pr = new Promise((resolve, reject) => {
@@ -674,6 +680,9 @@ const Chats = () => {
                   messages={messages}
                   profile={profile}
                   hide={!selectedChat && !selectedGroup}
+                  fetchNextPageMessages={fetchNextPageMessages}
+                  hasNextPageMessages={hasNextPageMessages}
+                  isFetchingNextPageMessages={isFetchingNextPageMessages}
                 />
                 <div className="chat-input">
                   <div
@@ -849,6 +858,9 @@ const Chats = () => {
                       messages={messages}
                       profile={profile}
                       hide={!selectedChat && !selectedGroup}
+                      fetchNextPageMessages={fetchNextPageMessages}
+                      hasNextPageMessages={hasNextPageMessages}
+                      isFetchingNextPageMessages={isFetchingNextPageMessages}
                     />
                     <div className="chat-input">
                       <div
@@ -1227,49 +1239,98 @@ const Chats = () => {
   );
 };
 
-function Messeges({ messages, profile, groupMode = false, hide = true }) {
-  return (
-    <div className="vendors-body vendors-body-sc">
-      {hide ? (
-        <p
-          style={{
-            width: "100%",
-            height: "90%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          Please select a chat
-        </p>
-      ) : (
-        <ScrollToBottom className="scroll" checkInterval={17} sticky={true}>
-          {messages?.map((message) => {
-            return (
-              <div
-                key={message.id}
-                className={`${
-                  message?.sender_id === profile?.id ? "mine" : "others"
-                }`}
-              >
-                <p>{message?.text}</p>
-                <p>
-                  {groupMode ? (
-                    <span>
-                      {message?.sender_name}
-                      <br />
-                    </span>
-                  ) : null}
-                  {formatSupabaseTimestampToTime(message?.created_at)}
-                </p>
-              </div>
-            );
-          })}
-        </ScrollToBottom>
-      )}
-    </div>
-  );
-}
+const Messeges = memo(
+  ({
+    messages,
+    profile,
+    groupMode = false,
+    hide = true,
+    fetchNextPageMessages,
+    hasNextPageMessages,
+    isFetchingNextPageMessages,
+  }) => {
+    const ref = useRef(null);
+
+    useEffect(() => {
+      console.log('pages',messages?.pages)
+      if (messages?.pages[messages?.pages?.length-1].length) {
+        ref?.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+        });
+      }
+    }, [messages?.pages]);
+
+    async function handleScroll(e) {
+
+      if (e.target.scrollTop === 0) {
+        if (hasNextPageMessages) {
+          await fetchNextPageMessages();
+        }
+      }
+    }
+    return (
+      <div className="vendors-body vendors-body-sc" onScroll={handleScroll}>
+        {isFetchingNextPageMessages ? <Spin /> : null}
+        {hide ? (
+          <p
+            style={{
+              width: "100%",
+              height: "90%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            Please select a chat
+          </p>
+        ) : (
+          <div>
+            {messages?.pages
+              ?.reverse()
+              ?.map((page) => {
+              return (
+                <div>
+                  {page
+                    ?.sort(
+                      (a, b) =>
+                        Date.parse(a.created_at) -
+                        Date.parse(b.created_at)
+                    )
+                    // ?.reverse()
+                    ?.map((message) => {
+                      return (
+                        <div
+                          key={message.id}
+                          className={`${
+                            message?.sender_id === profile?.id
+                              ? "mine"
+                              : "others"
+                          }`}
+                        >
+                          <p>{message?.text}</p>
+                          <p>
+                            {groupMode ? (
+                              <span>
+                                {message?.sender_name}
+                                <br />
+                              </span>
+                            ) : null}
+                            {formatSupabaseTimestampToTime(message?.created_at)}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  <div ref={ref} />
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  }
+);
 
 function Chat({
   index,
@@ -1364,7 +1425,7 @@ function Project({ index, last, project, user_id, setSelectedProject }) {
       <div className="chat-pic" onClick={() => setSelectedProject(project)}>
         {pic ? <img src={pic} /> : <AiOutlineUser />}
       </div>
-      <div className="chat-info">
+      <div className="chat-info" onClick={() => setSelectedProject(project)}>
         <p>{name}</p>
       </div>
       <div className="chat-time">

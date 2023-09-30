@@ -302,16 +302,16 @@ export async function sendMessageToGroup({ groupData, text, profile }) {
 
 export async function getMessages(chat_id, page = 0) {
   try {
-    // let from, to;
-    // const loadMoreData = () => {
-    //   var ITEM_PER_PAGE = 7;
-    //   from = page * ITEM_PER_PAGE;
-    //   to = from + ITEM_PER_PAGE;
-    //   if (page > 0) {
-    //     from += 1;
-    //   }
-    // };
-    // loadMoreData();
+    let from, to;
+    const loadMoreData = () => {
+      var ITEM_PER_PAGE = 15;
+      from = page * ITEM_PER_PAGE;
+      to = from + ITEM_PER_PAGE;
+      if (page > 0) {
+        from += 1;
+      }
+    };
+    loadMoreData();
     const { data, error } = await supabase
       .from("messages")
       .select(
@@ -319,12 +319,13 @@ export async function getMessages(chat_id, page = 0) {
       )
       .eq("chat_id", chat_id)
       .order("created_at", { ascending: false })
-      .limit(50)
-      // .range(from, to);
+      // .order("created_at", { ascending: true })
+      .range(from, to)
+      // .limit(50)
 
     if (error) throw new Error(error);
-    data?.reverse()
-    return data;
+    // const  d= data?.reverse()
+    return data.reverse();
   } catch (err) {
     // console.log(err);
     return [];
