@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import "./Chats.css";
 import Header from "../../Components/Header/Header";
 import { debounce } from "lodash";
@@ -354,8 +354,8 @@ const Chats = () => {
   }
 
   async function handleAddProject() {
-    setProjectAdding(true);
     if (projectName) {
+      setProjectAdding(true);
       create_project_mutation.mutateAsync({
         user_id: profile?.id,
         name: projectName,
@@ -366,8 +366,8 @@ const Chats = () => {
     }
   }
   async function handleAddGroup() {
-    setGroupAdding(true);
     if (groupName) {
+      setGroupAdding(true);
       create_group_mutation.mutateAsync({
         user_id: profile?.id,
         project_id: selectedProject?.project_id,
@@ -379,6 +379,7 @@ const Chats = () => {
     }
   }
   function handleAddChatToProject(project_id) {
+    if(!input) return
     setProjectAdding(true);
     console.log(project_id);
     const pr = new Promise((resolve, reject) => {
@@ -1228,6 +1229,15 @@ const Chats = () => {
 };
 
 function Messeges({ messages, profile, groupMode = false, hide = true }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (messages?.length) {
+      ref?.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  }, [messages?.length]);
   return (
     <div className="vendors-body vendors-body-sc">
       {hide ? (
@@ -1243,7 +1253,7 @@ function Messeges({ messages, profile, groupMode = false, hide = true }) {
           Please select a chat
         </p>
       ) : (
-        <ScrollToBottom className="scroll" checkInterval={17} sticky={true}>
+        <div>
           {messages?.map((message) => {
             return (
               <div
@@ -1265,7 +1275,8 @@ function Messeges({ messages, profile, groupMode = false, hide = true }) {
               </div>
             );
           })}
-        </ScrollToBottom>
+          <div ref={ref} />
+        </div>
       )}
     </div>
   );
@@ -1361,10 +1372,10 @@ function Project({ index, last, project, user_id, setSelectedProject }) {
   };
   return (
     <div className={`projects-chat ${last === index ? "" : "border-bottom"}`}>
-      <div className="chat-pic" onClick={() => setSelectedProject(project)}>
+      <div className="chat-pic" onClick={() => setSelectedProject(project)} >
         {pic ? <img src={pic} /> : <AiOutlineUser />}
       </div>
-      <div className="chat-info">
+      <div className="chat-info"onClick={() => setSelectedProject(project)}>
         <p>{name}</p>
       </div>
       <div className="chat-time">
