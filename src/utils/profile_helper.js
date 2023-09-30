@@ -9,7 +9,7 @@ export async function getUser() {
     let { data: profile, error } = await supabase
       .from("profiles")
       .select(
-        "id,email,display_name,profile_pic,bio,type,location,quote,status,type"
+        "id,email,display_name,profile_pic,bio,type,location,quote,status,type,cover_pic"
       )
       .eq("id", user?.id)
       .single();
@@ -28,7 +28,7 @@ export async function getUserById(id) {
     let { data: profile, error } = await supabase
       .from("profiles")
       .select(
-        "id,email,display_name,profile_pic,bio,location,quote,type,status"
+        "id,email,display_name,profile_pic,bio,location,quote,type,status,cover_pic"
       )
       .eq("id", id)
       .single();
@@ -48,7 +48,8 @@ export async function updateUserProfile(
   email,
   location,
   quote,
-  bio
+  bio,
+  cover
 ) {
   try {
     let { data: user } = await supabase.auth.getUser();
@@ -63,6 +64,7 @@ export async function updateUserProfile(
         quote,
         email,
         display_name: name,
+        cover_pic:cover
       })
       .eq("id", id);
     if (error) throw new Error(error);
@@ -79,7 +81,7 @@ export async function getVendors(start, end) {
   try {
     const { data, count, error } = await supabase
       .from("profiles")
-      .select("id,profile_pic,display_name,location,bio", { count: "exact" })
+      .select("id,profile_pic,display_name,location,bio,cover_pic", { count: "exact" })
       .range(start, end)
       .eq("type", "vendor");
 

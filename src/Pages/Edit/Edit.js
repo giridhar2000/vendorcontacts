@@ -26,6 +26,7 @@ const Edit = () => {
   const [location, setLocation] = useState(null);
   const [quote, setQuote] = useState(null);
   const [bio, setBio] = useState(null);
+  const [cover, setCover] = useState(null);
   const [docUrls, setDocUrls] = useState([]);
 
   useEffect(() => {
@@ -48,26 +49,26 @@ const Edit = () => {
     return files.length > 0;
   };
 
-  async function handleFileUpload(e) {
-    let file;
-    if (e.file) {
-      file = e.file;
-    }
-    const fileExists = await checkFileExists(
-      "profile_pics",
-      `public/${file.name}`
-    );
-    if (fileExists) {
-      const { data, error } = await supabase.storage
-        .from("profile_pics")
-        .update("public/" + file?.name, file, {
-          cacheControl: "3600",
-          upsert: true,
-        });
+  // async function handleFileUpload(e) {
+  //   let file;
+  //   if (e.file) {
+  //     file = e.file;
+  //   }
+  //   const fileExists = await checkFileExists(
+  //     "profile_pics",
+  //     `public/${file.name}`
+  //   );
+  //   if (fileExists) {
+  //     const { data, error } = await supabase.storage
+  //       .from("profile_pics")
+  //       .update("public/" + file?.name, file, {
+  //         cacheControl: "3600",
+  //         upsert: true,
+  //       });
 
-      return;
-    }
-  }
+  //     return;
+  //   }
+  // }
 
   async function handleUpload(e) {
     const maxSize = 5 * 1024 * 1024; // 5mb
@@ -103,6 +104,40 @@ const Edit = () => {
       `https://kzthdyjkhdwyqztvlvmp.supabase.co/storage/v1/object/public/profile_pics/public/${file.name}`
     );
   }
+  async function handleCoverUpload(e) {
+    const maxSize = 5 * 1024 * 1024; // 5mb
+    if (e.target.files[0]?.size > maxSize) {
+      e.target.value = "";
+      toast("Max size limit is 5MB", { type: "error" });
+      return;
+    }
+    let file;
+    if (e.target.files && e.target?.files?.length) {
+      file = e.target.files[0];
+    }
+
+    const fileExists = await checkFileExists(
+      "cover_pics",
+      `public/${file.name}`
+    );
+    if (fileExists) {
+      const { data, error } = await supabase.storage
+        .from("cover_pics")
+        .update("public/" + file?.name, file, {
+          cacheControl: "3600",
+          upsert: true,
+        });
+
+      return;
+    }
+
+    const { data, error } = await supabase.storage
+      .from("cover_pics")
+      .upload("public/" + file?.name, file);
+    setCover(
+      `https://kzthdyjkhdwyqztvlvmp.supabase.co/storage/v1/object/public/cover_pics/public/${file.name}`
+    );
+  }
 
   async function updateProfile() {
     try {
@@ -116,7 +151,8 @@ const Edit = () => {
         email || profile?.email,
         location || profile?.location,
         quote || profile?.quote,
-        bio || profile?.bio
+        bio || profile?.bio,
+        cover || profile?.cover_pic
       );
       docUrls.forEach(async (doc) => {
         const { data, error } = await supabase
@@ -173,7 +209,6 @@ const Edit = () => {
   }
 
   async function handleRemove(file) {
-
     try {
       const { data, error } = await supabase.storage
         .from("profile_docs")
@@ -225,11 +260,27 @@ const Edit = () => {
     <>
       <Header />
       <div className="cover-pic">
-        <img src={bg1} alt="bg" />
-        <button className="coverbtn">
+        {cover ? (
+          <img src={cover} alt="cover" />
+        ) : profile?.cover_pic ? (
+          <img src={profile?.cover_pic} alt="bg" />
+        ) : (
+          <img src={bg1} alt="bg" />
+        )}
+
+        <input
+          type="file"
+          name="cover"
+          id="cover"
+          accept="image/*"
+          style={{ display: "none" }}
+          onChange={handleCoverUpload}
+        />
+
+        <label className="coverbtn" htmlFor={"cover"}>
           <FiCamera />
           &nbsp; Change Photo
-        </button>
+        </label>
       </div>
       <div className="login">
         <div className="loginContainer">
