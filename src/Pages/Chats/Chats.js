@@ -45,11 +45,10 @@ import {
   createGroupToProject,
   createMembers,
   getGroups,
+  updateStatus,
   getMembers,
 } from "../../utils/project_helper";
-const onChange = (checked) => {
-  // console.log(`switch to ${checked}`);
-};
+
 const Chats = () => {
   const location = useLocation();
   const queryClient = useQueryClient();
@@ -165,7 +164,7 @@ const Chats = () => {
     ({ pageParam = 0 }) => getAllProjects(profile?.id, pageParam),
     {
       getNextPageParam: (lastPage, allPages) => {
-        console.log("Next page");
+        // console.log("Next page");
         return allPages?.length;
       },
     }
@@ -299,6 +298,17 @@ const Chats = () => {
       )
       .on(
         "postgres_changes",
+        { event: "*", schema: "public", table: "groups" },
+        (payload) => {
+          console.log(payload);
+          queryClient.invalidateQueries([
+            "groups",
+            selectedProject?.project_id,
+          ]);
+        }
+      )
+      .on(
+        "postgres_changes",
         { event: "*", schema: "public", table: "chats" },
         (payload) => {
           queryClient.invalidateQueries(["chats", profile?.id]);
@@ -314,17 +324,6 @@ const Chats = () => {
         { event: "*", schema: "public", table: "projects" },
         (payload) => {
           queryClient.invalidateQueries(["projects", profile?.id]);
-        }
-      )
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "groups" },
-        (payload) => {
-          queryClient.invalidateQueries([
-            "groups",
-            selectedProject?.project_id,
-            payload?.new?.group_id,
-          ]);
         }
       )
 
@@ -1352,21 +1351,28 @@ function Group({
   );
 }
 function Project({ index, last, project, user_id, setSelectedProject }) {
-  let { name, pic } = project;
-
+  let { project_id, name, pic, is_active } = project;
+  const onChange = async (id, checked) => {
+    try {
+      await updateStatus(id, checked);
+    } catch (err) {
+      // console.log(err)
+    }
+  };
   return (
-    <div
-      className={`projects-chat ${last === index ? "" : "border-bottom"}`}
-      onClick={() => setSelectedProject(project)}
-    >
-      <div className="chat-pic">
+    <div className={`projects-chat ${last === index ? "" : "border-bottom"}`}>
+      <div className="chat-pic" onClick={() => setSelectedProject(project)}>
         {pic ? <img src={pic} /> : <AiOutlineUser />}
       </div>
       <div className="chat-info">
         <p>{name}</p>
       </div>
       <div className="chat-time">
-        <Switch defaultChecked onChange={onChange} size="small" />
+        <Switch
+          defaultChecked={is_active}
+          onChange={(c) => onChange(project_id, c)}
+          size="small"
+        />
 
         <p>08:30 PM</p>
       </div>
