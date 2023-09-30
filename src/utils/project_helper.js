@@ -89,3 +89,24 @@ export async function getMembers(user_id) {
     return [];
   }
 }
+
+
+
+
+// Function for updating project status -------------------->   returns true || false
+
+export async function updateStatus(project_id,status) {
+  try {
+    const {  error } = await supabase
+      .from("projects")
+      .update({is_active:status})
+      .eq("project_id", project_id);
+    if (error) throw new Error(error);
+    return true;
+  } catch (err) {
+    // console.log(err);
+    return false;
+  }
+}
+
+

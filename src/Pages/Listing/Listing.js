@@ -83,6 +83,8 @@ const Listing = () => {
             >
               {vendor?.profile_pic ? (
                 <img src={vendor?.profile_pic} alt="bg" />
+              ) : vendor?.cover_pic ? (
+                <img src={vendor?.cover_pic} alt="bg" />
               ) : (
                 <Image
                   width={200}

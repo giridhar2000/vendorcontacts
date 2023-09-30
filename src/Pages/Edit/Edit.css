@@ -104,6 +104,8 @@
   z-index: 1;
   right: 24%;
   margin-top: 3%;
+  font-size: .7rem;
+ text-align: center;
 }
 
 .bio {

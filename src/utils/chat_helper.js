@@ -151,7 +151,7 @@ export async function getAllProjects(user_id, page = 0) {
     // Fetching projects who is joined a projects of current user
     let { data: v_p, error } = await supabase
       .from("v_p")
-      .select(`projects (id,project_id,name,created_at)`)
+      .select(`projects (id,project_id,name,created_at,is_active)`)
       .eq("vendor_id", user_id)
       .order("created_at", { ascending: false })
       .range(from, to);
@@ -165,7 +165,7 @@ export async function getAllProjects(user_id, page = 0) {
     // fetching projects which has created by current user
     let { data, error: error2 } = await supabase
       .from("projects")
-      .select("id,project_id,name,created_at,created_by")
+      .select("id,project_id,name,created_at,created_by,is_active")
       .eq("created_by", user_id)
       .order("created_at", { ascending: false })
 
@@ -302,16 +302,16 @@ export async function sendMessageToGroup({ groupData, text, profile }) {
 
 export async function getMessages(chat_id, page = 0) {
   try {
-    let from, to;
-    const loadMoreData = () => {
-      var ITEM_PER_PAGE = 7;
-      from = page * ITEM_PER_PAGE;
-      to = from + ITEM_PER_PAGE;
-      if (page > 0) {
-        from += 1;
-      }
-    };
-    loadMoreData();
+    // let from, to;
+    // const loadMoreData = () => {
+    //   var ITEM_PER_PAGE = 7;
+    //   from = page * ITEM_PER_PAGE;
+    //   to = from + ITEM_PER_PAGE;
+    //   if (page > 0) {
+    //     from += 1;
+    //   }
+    // };
+    // loadMoreData();
     const { data, error } = await supabase
       .from("messages")
       .select(
@@ -319,7 +319,8 @@ export async function getMessages(chat_id, page = 0) {
       )
       .eq("chat_id", chat_id)
       .order("created_at", { ascending: false })
-      .range(from, to);
+      .limit(50)
+      // .range(from, to);
 
     if (error) throw new Error(error);
     data?.reverse()
