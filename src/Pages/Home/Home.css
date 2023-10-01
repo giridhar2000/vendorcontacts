@@ -669,13 +669,16 @@ hr {
     .steps {
         height: auto;
         text-align: center;
-        top: -11vh;
+        top: -5vh;
+       
     }
+  
 
     .join-block {
-        margin-left: 4vh !important;
-        margin-bottom: 4vh !important;
-        width: auto;
+        margin-left: 14vh !important;
+        width: 700px !important;
+        margin-bottom: 9vh !important;
+      
     }
 
     .join-block svg {
@@ -691,6 +694,7 @@ hr {
     .faq {
         height: auto;
         text-align: center;
+        
     }
 
     .faq-block {
@@ -707,6 +711,9 @@ hr {
     .mission {
         margin-inline: 15px !important;
         margin-top: 3vh !important;
+    }
+    .faq{
+        margin-top: 23vh !important;
     }
 
     .collaborators {

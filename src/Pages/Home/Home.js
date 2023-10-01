@@ -56,6 +56,8 @@ export default function Home() {
                   },
                 ])
               if (error) throw new Error(error);
+              message.success("Congrats! you are now on waiting list")
+              setOpen(false);
               return data[0]?.email_id;
             } catch (err) {
               return null;
