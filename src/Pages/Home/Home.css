@@ -662,7 +662,7 @@ hr {
   }
 
   .join-block {
-    margin-left: 14vh !important;
+    margin-left: 3vh !important;
     width: 700px !important;
     margin-bottom: 9vh !important;
   }
@@ -752,7 +752,11 @@ hr {
   }
 
   .tiltedChild {
-    width: 75%;
+    width: 60%;
+    /* height: 3vh !important;
+    padding: 0 !important;
+    padding-inline: 0 !important;
+    font-size: 8px !important; */
   }
 
   .mission {
@@ -766,7 +770,7 @@ hr {
     font-size: larger;
     width: fit-content;
   }
-    .aboutrow {
+  .aboutrow {
     justify-content: flex-start;
     flex-direction: column;
     align-items: flex-start;
@@ -774,7 +778,7 @@ hr {
     padding-left: 0;
     /* margin-top: 10rem; */
   }
-  .aboutbody{
+  .aboutbody {
     margin-top: 3rem !important;
   }
   .aboutcolumn {
@@ -797,19 +801,28 @@ hr {
   hr {
     display: none;
   }
-
-  .ribbon svg {
+  .ribbon {
+    display: flex;
     width: 100%;
-    height: 75%;
+    justify-content: center;
+  }
+  .ribbon svg {
+    width: 60%;
+    height: auto;
   }
 
   .companies {
     animation: none;
-    flex-direction: column;
-    height: 100vh;
-    padding-block: 5vh;
+    flex-direction: row;
+    height: 40vh;
+    padding: 5vh;
+    display: flex;
+    flex-wrap: wrap;
   }
-
+  .companies img {
+    width: 82px;
+    margin-inline: 10px !important;
+  }
   .buttons button {
     width: 170px;
     height: 60px;
