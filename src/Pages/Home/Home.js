@@ -6,9 +6,9 @@ import Gensler from "../../Assets/images/Gensler_logo.svg";
 import Stantec from "../../Assets/images/stantec.svg";
 import OKK from "../../Assets/images/OKK.svg";
 import HPA from "../../Assets/images/hpa.svg";
-import Collaboration from "../../Assets/images/handshake.svg";
-import Telescope from "../../Assets/images/telescope.svg";
-import Target from "../../Assets/images/target.svg";
+// import Collaboration from "../../Assets/images/handshake.svg";
+// import Telescope from "../../Assets/images/telescope.svg";
+// import Target from "../../Assets/images/target.svg";
 import TrustIcon from "../../Assets/images/professional-trust.svg";
 import CommunicationIcon from "../../Assets/images/communication.svg";
 import SearchIcon from "../../Assets/images/search.svg";
@@ -33,18 +33,6 @@ export default function Home() {
 
   useEffect(() => {
     animator();
-    // const observer = new IntersectionObserver((entries) => {
-    //     entries.forEach((entry) => {
-    //         if (entry.isIntersecting) {
-    //             entry.target.classList.add('showcontent')
-    //         } else {
-    //             entry.target.classList.remove('showcontent')
-    //         }
-    //     });
-    // });
-
-    // const hiddenElements = document.querySelectorAll('.hidden');
-    // hiddenElements.forEach((el) => observer.observe(el));
   });
 
   async function invite(email) {
@@ -65,6 +53,8 @@ export default function Home() {
     } else {
       message.error("please enter your email id and click on the checkbox");
     }
+    setEmail("")
+    setCheckbox(false)
   }
 
   function animator() {
@@ -127,14 +117,14 @@ export default function Home() {
 
             <div className="modalform">
               <h4>
-                One step away from the future of designer-vendor collaboration.
+                Join the list
               </h4>
 
-              <p>Please provide your email to join this ecosystem.</p>
+              <p>You're one step away from easy communication with your reps :)</p>
 
               <form>
                 <div>
-                 
+                 {/* <label style={{color: 'rgba(0,0,0,0.5)'}}>Email</label><br /> */}
                   <input
                     className="mailinput"
                     type="text"
@@ -164,31 +154,32 @@ export default function Home() {
                 <br />
               </form>
               <button className="submit-btn" onClick={() => invite(email)}>
-                Send
+                Join the list
               </button>
+
             </div>
           </div>
         </div>
       )}
-      {}
+
       <section className="banner">
         <div className="banner-heading">
           <div className="banner-text">
             <h1>
               The <span className="future">future</span> of{" "}
-              <img className="img1" src={Telescope} alt="telescope" />
+              {/* <img className="img1" src={Telescope} alt="telescope" /> */}
             </h1>
             <h1>
-              <img className="ml-1" src={Target} alt="target" /> designer-vendor
+              {/* <img className="ml-1" src={Target} alt="target" /> */}
+               designer-vendor
             </h1>
             <h1>
               collaboration is{" "}
-              <img className="img2" src={Collaboration} alt="collaboration" />
+              {/* <img className="img2" src={Collaboration} alt="collaboration" /> */}
               here
             </h1>
           </div>
           <img src={bg1} alt="bg" className="bg" />
-          {/* <img src={Ellipse} alt="bg" className="Ellipse" /> */}
         </div>
       </section>
       <Modal
@@ -561,7 +552,7 @@ export default function Home() {
             <div className="aboutcolumn">
               <div className="requestsitemhead">
                 <img src={StoreIcon} alt="img" />
-                <h1>Trusted by Industry Professionals</h1>
+                <h1>Vendor Direct Sample Ordering</h1>
               </div>
               <p>
                 For a personalized experience, where you can specify with
@@ -572,7 +563,7 @@ export default function Home() {
             <div className="aboutcolumn">
               <div className="requestsitemhead">
                 <img src={ToolsIcon} alt="img" />
-                <h1>Effective Communication Tools</h1>
+                <h1>User-Friendly Interface</h1>
               </div>
               <p>All your projects and rep communications, in one place.</p>
             </div>
@@ -580,7 +571,7 @@ export default function Home() {
             <div className="aboutcolumn">
               <div className="requestsitemhead">
                 <img src={AdvanceSearchIcon} alt="img" />
-                <h1>Advanced Search Capabilities</h1>
+                <h1>Relationship Building Features</h1>
               </div>
               <p>
                 Tools to enable library updates, lunch and learns, event
@@ -599,7 +590,7 @@ export default function Home() {
             >
               <div className="requestsitemhead lastitem">
                 <img src={GraphIcon} alt="img" />
-                <h1>Trusted by Industry Professionals</h1>
+                <h1>Increased Efficiancy</h1>
               </div>
               <p className="lastitem">
                 Organization tools make your project workflow faster, with less
@@ -639,7 +630,7 @@ export default function Home() {
       </section>
 
       <section className="collaborators">
-        <h2 className="heading">In Collaboration With</h2>
+        <h2 className="heading">In Collaboration With designers from</h2>
         <div className="companies">
           <img src={Gettys} alt="gettys-logo" />
           <img src={IAInteriors} alt="ia-interiors" />

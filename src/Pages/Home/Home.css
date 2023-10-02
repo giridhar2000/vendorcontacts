@@ -764,7 +764,6 @@ hr {
     font-size: larger;
     width: fit-content;
   }
-
   .aboutrow {
     justify-content: flex-start;
     flex-direction: column;
@@ -805,7 +804,6 @@ hr {
     height: 100vh;
     padding-block: 5vh;
   }
-
   .buttons button {
     width: 170px;
     height: 60px;
