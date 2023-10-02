@@ -543,7 +543,7 @@ hr {
     }
 
     .firststep {
-        top: -25vh;
+        top: -28vh;
     }
 
     .aboutcolumn {
@@ -687,7 +687,7 @@ hr {
     }
 
     .firststep {
-        top: -5vh;
+        top: -8vh;
     }
 
     .join-block {
@@ -734,10 +734,6 @@ hr {
     .mission {
         margin-inline: 15px !important;
         margin-top: 3vh !important;
-    }
-
-    .faq {
-        margin-top: 2vh !important;
     }
 
     .collaborators {
@@ -861,8 +857,8 @@ hr {
     .companies {
         animation: none;
         flex-direction: row;
-        height: 40vh;
-        padding: 5vh;
+        height: 20vh;
+        padding: 3vh;
         display: flex;
         flex-wrap: wrap;
     }
