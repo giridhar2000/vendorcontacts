@@ -1,4 +1,13 @@
-0rem 4rem auto;
+.home {
+    background: white;
+    padding-bottom: 5vh;
+    display: flex;
+    flex-direction: column;
+    gap: 3vh;
+  }
+  
+  .banner {
+    margin: 0rem 4rem auto;
   }
   
   .banner-text {
