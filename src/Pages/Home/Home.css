@@ -667,6 +667,10 @@ hr {
         text-align: left;
     }
 
+    .lastitem{
+        padding-left: 0;
+    }
+
     .banner-text h1 img {
         height: 35px;
     }
