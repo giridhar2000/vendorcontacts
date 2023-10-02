@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./Home.css";
-import Gettys from "../../Assets/images/gettys-group.svg";
+import Gettys from "../../Assets/images/PW.svg";
 import IAInteriors from "../../Assets/images/ia_interior_architects.svg";
 import Gensler from "../../Assets/images/Gensler_logo.svg";
 import Stantec from "../../Assets/images/stantec.svg";
-import OKK from "../../Assets/images/OKK.svg";
+import OKK from "../../Assets/images/PerkinsEastman.jpg";
 import HPA from "../../Assets/images/hpa.svg";
 // import Collaboration from "../../Assets/images/handshake.svg";
 // import Telescope from "../../Assets/images/telescope.svg";
@@ -336,11 +336,13 @@ export default function Home() {
 
       <section className="faq">
         <div className="faq-block">
+            <div className="faq-text">
           ALL YOUR QUESTIONS, AND <br />
           REPS ON ONE PLATFORM. <br />
           NO MORE LONG EMAIL
           <br />
           THREADS.
+          </div>
         </div>
 
         <div className="tilt">
@@ -632,11 +634,11 @@ export default function Home() {
       <section className="collaborators">
         <h2 className="heading">In Collaboration With designers from</h2>
         <div className="companies">
-          <img src={Gettys} alt="gettys-logo" />
+          <img src={Gettys} alt="gettys-logo" className="collab-img"/>
           <img src={IAInteriors} alt="ia-interiors" />
           <img src={Gensler} alt="gensler-logo" />
           <img src={Stantec} alt="stantec-logo" />
-          <img src={OKK} alt="okk-logo" />
+          <img src={OKK} alt="okk-logo" className="collab-img"/>
           <img src={HPA} alt="hpa-logo" />
         </div>
       </section>

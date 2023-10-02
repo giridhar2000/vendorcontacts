@@ -6,12 +6,13 @@
   border-bottom: 1px solid #000;
   margin-left: 5%;
   padding-right: 2%;
+  padding-block: 3vh;
 }
 
 .headerlogo {
   display: flex;
   gap: 2vh;
-  width: 15%;
+  width: 20%;
   cursor: pointer;
   align-items: center;
 }
