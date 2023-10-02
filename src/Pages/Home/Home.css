@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,200&family=Mulish:wght@200&family=Work+Sans:wght@100&display=swap");
 .home {
     background: white;
     padding-bottom: 5vh;
@@ -103,7 +104,6 @@
   }
   
   .faq {
-    border: 2px solid black;
     height: 354px;
     margin: 3rem 4rem auto;
     display: flex;
@@ -122,6 +122,8 @@
     width: 100%;
     font-size: 41px;
     margin: 5rem;
+    border: 2px solid black;
+
   }
   
   .mission {
@@ -240,8 +242,9 @@
   }
   
   .collaborators {
-    margin: 2rem 2rem 2rem 2rem;
+    margin: 2rem;
     overflow-x: hidden;
+    margin-bottom: 4rem;
   }
   
   .heading {
@@ -564,9 +567,14 @@
   }
   
   @media (max-width: 1100px) {
-    /* * {
-      font-family: "Quicksand", sans-serif !important;
-    } */
+    .tilt{
+        transform: translateY(0) !important;
+        gap: 2vh;
+        margin-bottom: 3vh !important;
+    }
+    * {
+      font-family: "Mulish"
+    }
   
     .banner-text h1 {
       font-weight: 600;
@@ -632,9 +640,9 @@
       padding-bottom: 2vh;
     }
   
-    .ant-drawer-title {
+    /* .ant-drawer-title {
       font-family: "Quicksand", sans-serif;
-    }
+    } */
   
     .requestsitemhead h1 {
       text-align: left;
@@ -695,12 +703,11 @@
 
 
     .faq-block {
-      width: auto;
-      font-size: 25px;
-      font-weight: 600;
-      justify-content: center;
-      margin: 0rem auto !important;
-      padding-block: 2vh;
+        width: auto;
+        font-size: 23px;
+        font-weight: 600;
+        justify-content: center;
+        padding: 2vh;
     }
   
     .faq,
@@ -759,12 +766,9 @@
       padding-right: 3vh;
     }
   
-    .tilt {
-      display: none;
-    }
-  
     .tiltedChild {
       width: 60%;
+      transform: translateX(0) !important;
       /* height: 3vh !important;
       padding: 0 !important;
       padding-inline: 0 !important;

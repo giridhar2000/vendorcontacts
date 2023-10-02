@@ -62,14 +62,12 @@
 
     .fs-56 {
         font-size: xx-large;
+        font-weight: 700;
+        padding-inline: 4vh;
     }
 
     .footerButton button {
         font-weight: 600;
-    }
-
-    .footer-text{
-        color: #a58451;
     }
 
     .text-light {

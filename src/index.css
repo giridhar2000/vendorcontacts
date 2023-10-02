@@ -1,4 +1,9 @@
+/* @font-face {
+  font-family: 'Futura';
+  src: url('../src/Assets/FuturaBookBT.ttf') format('ttf'),
+} */
 body {
+
   margin: 0;
   font-family: 'Poppins', 'Helvetica Neue', 'San Francisco', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
