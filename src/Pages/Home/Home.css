@@ -103,10 +103,10 @@
 }
 
 .faq {
-  border: 2px solid black;
-  height: 354px;
-  margin: 3rem 4rem auto;
-  display: flex;
+    border: 2px solid rgba(0, 0, 0, 0.7);
+    height: 354px;
+    margin: 3rem 4rem auto;
+    display: flex;
 }
 
 .firststep {
@@ -495,7 +495,7 @@ hr {
 }
 
 .lastrow {
-  padding-left: 0 !important;
+/*   padding-left: 0 !important;
 }
 
 .lastitem {
@@ -504,7 +504,17 @@ hr {
 
 .lastcolumn {
   padding-left: 7vh;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid black; */
+    padding-left: 0 !important;
+}
+
+.lastitem {
+    padding-left: 3vh;
+}
+
+.lastcolumn {
+    padding-left: 7vh;
+    border-bottom: 1px solid black;
 }
 
 .aboutbody {
@@ -514,9 +524,13 @@ hr {
 }
 
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
-  .tilt {
-    transform: translateY(-2vh);
-  }
+    .tilt {
+        transform: translateY(-2vh);
+    }
+
+    .bg {
+        width: 50%;
+    }
 
   .bg {
     width: 50%;
@@ -537,6 +551,9 @@ hr {
   .aboutcolumn {
     padding: 6vh;
   }
+    .lastcolumn {
+        padding-left: 7.5vh !important;
+    }
 
   .lastcolumn {
     padding-left: 7.5vh !important;
@@ -563,291 +580,298 @@ hr {
   display: none;
 }
 
-@media (max-width: 1100px) {
-  * {
-    font-family: "Quicksand", sans-serif !important;
-  }
+@media(max-width:1100px) {
 
-  .banner-text h1 {
-    font-weight: 600;
-  }
+    .mailinput {
+        width: 85% !important;
+    }
 
-  .faq-block {
-    font-family: "Quicksand", sans-serif;
-  }
+    * {
+        font-family: 'Quicksand', sans-serif !important;
+    }
 
-  .header {
-    margin-left: 4vh !important;
-    padding-left: 0;
-  }
+    .banner-text h1 {
+        font-weight: 600;
 
-  .container {
-    overflow-x: hidden;
-  }
+    }
 
-  .headerlogo {
-    gap: 1vh;
-  }
+    .faq-block {
+        font-family: 'Quicksand', sans-serif;
+    }
 
-  .headerlogo img {
-    width: 40%;
-  }
+    .header {
+        margin-left: 4vh !important;
+        padding-left: 0;
+    }
 
-  .headerlogo h1 {
-    font-size: large;
-  }
+    .container {
+        overflow-x: hidden;
+    }
 
-  .right {
-    display: none;
-  }
+    .headerlogo {
+        gap: 1vh;
+    }
 
-  .menu {
-    display: block;
-  }
+    .headerlogo img {
+        width: 40%;
+    }
 
-  .bg,
-  .Ellipse {
-    width: 100%;
-    left: 0;
-    mask-image: linear-gradient(50deg, transparent 75%, #0f0f0f 100%);
-    top: 0;
-    pointer-events: none;
-  }
+    .headerlogo h1 {
+        font-size: large;
+    }
 
-  .banner-heading {
-    position: relative;
-  }
+    .right {
+        display: none;
+    }
 
-  .banner-text {
-    font-size: 17px;
-    align-items: center;
-    padding-left: 1vh;
-    margin-block: 2rem !important;
-    z-index: 9;
-  }
+    .menu {
+        display: block;
+    }
 
-  .requestsitemhead {
-    text-align: left;
-    padding-bottom: 2vh;
-  }
+    .bg,
+    .Ellipse {
+        width: 100%;
+        left: 0;
+        mask-image: linear-gradient(50deg, transparent 75%, #0f0f0f 100%);
+        top: 0;
+        pointer-events: none;
+    }
 
-  .ant-drawer-title {
-    font-family: "Quicksand", sans-serif;
-  }
+    .banner-heading {
+        position: relative;
+        justify-content: center;
+    }
 
-  .requestsitemhead h1 {
-    text-align: left;
-  }
+    .banner-text {
+        font-size: 17px;
+        align-items: center;
+        padding-left: 1vh;
+        margin-block: 2rem !important;
+        z-index: 9;
+    }
 
-  .aboutcolumn p {
-    text-align: left;
-  }
+    .requestsitemhead {
+        text-align: left;
+        padding-bottom: 2vh;
+    }
 
-  .banner-text h1 img {
-    height: 35px;
-  }
+    .requestsitemhead img {
+        padding-bottom: 1vh;
+    }
 
-  .team {
-    height: 15vh;
-  }
+    .lastitem {
+        padding-left: 0;
+    }
 
-  .steps {
-    /* position: absolute; */
-    height: auto;
-    text-align: center;
-    top: -5vh;
-  }
-  .firststep {
-    top: -5vh;
-  }
+    .ant-drawer-title {
+        font-family: 'Quicksand', sans-serif;
+    }
 
-  .join-block {
-    margin-left: 3vh !important;
-    width: 700px !important;
-    margin-bottom: 9vh !important;
-  }
+    .requestsitemhead h1 {
+        text-align: left;
+    }
 
-  .join-block svg {
-    width: 25%;
-    height: 25%;
-  }
+    .aboutcolumn p {
+        text-align: left;
+    }
 
-  .arrow {
-    position: absolute;
-    left: 50vh;
-  }
+    .banner-text h1 img {
+        height: 35px;
+    }
 
-  .faq {
-    height: auto;
-    text-align: center;
-  }
+    .team {
+        height: 15vh;
+    }
 
-  .faq-block {
-    width: auto;
-    font-size: 25px;
-    font-weight: 600;
-    justify-content: center;
-    margin: 0rem auto !important;
-    padding-block: 2vh;
-  }
+    .steps {
+        height: auto;
+        text-align: center;
+        top: -5vh;
 
-  .faq,
-  .mission {
-    margin-inline: 15px !important;
-    margin-top: 3vh !important;
-  }
-  .faq {
-    margin-top: 23vh !important;
-  }
+    }
 
-  .collaborators {
-    padding-top: 10vh;
-  }
 
-  .collaborators .heading {
-    font-family: "Quicksand", sans-serif;
-  }
+    .join-block {
+        margin-left: 14vh !important;
+        width: 700px !important;
+        margin-bottom: 9vh !important;
 
-  * {
-    margin: 0 !important;
-  }
+    }
 
-  .Loginform {
-    width: 100%;
-  }
+    .join-block svg {
+        width: 25%;
+        height: 25%;
+    }
 
-  .button label {
-    line-height: 6vh;
-  }
+    .arrow {
+        position: absolute;
+        left: 50vh;
+    }
 
-  .header {
-    padding-block: 2vh;
-  }
+    .faq {
+        height: auto;
+        text-align: center;
 
-  .buttons {
-    display: flex;
-    gap: 2vh;
-  }
+    }
 
-  .mission-block {
-    flex-direction: column;
-    padding: 2vh;
-    gap: 4vh;
-  }
+    .faq-block {
+        width: auto;
+        font-size: 25px;
+        font-weight: 600;
+        justify-content: center;
+        margin: 0rem auto !important;
+        padding-block: 2vh;
 
-  .mission-right h4 {
-    font-size: larger;
-    width: fit-content;
-  }
+    }
 
-  .mission-right p {
-    font-size: medium;
-    padding-top: 2vh;
-    width: fit-content;
-    padding-right: 3vh;
-  }
+    .faq,
+    .mission {
+        margin-inline: 15px !important;
+        margin-top: 3vh !important;
+    }
 
-  .tilt {
-    display: none;
-  }
+    .faq {
+        margin-top: 23vh !important;
+    }
 
-  .tiltedChild {
-    width: 60%;
-    /* height: 3vh !important;
-    padding: 0 !important;
-    padding-inline: 0 !important;
-    font-size: 8px !important; */
-  }
+    .collaborators {
+        padding-top: 10vh;
+    }
 
-  .mission {
-    padding: 0;
-    width: initial;
-    margin-block: 5vh !important;
-    border-bottom-right-radius: 100px;
-  }
+    .collaborators .heading {
+        font-family: 'Quicksand', sans-serif;
+    }
 
-  .mission-left h4 {
-    font-size: larger;
-    width: fit-content;
-  }
-  .aboutrow {
-    justify-content: flex-start;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-inline: 15px !important;
-    padding-left: 0;
-    /* margin-top: 10rem; */
-  }
-  .aboutbody {
-    margin-top: 3rem !important;
-  }
-  .aboutcolumn {
-    text-align: center;
-    border: 1px solid gray !important;
-    border-inline: none;
-    padding-left: 2vh;
-    width: 90%;
-    padding-right: 2vh;
-  }
 
-  .aboutcolumn p {
-    width: 100%;
-  }
 
-  .requestsitemhead h1 {
-    width: 100%;
-  }
+    * {
+        margin: 0 !important;
+    }
 
-  hr {
-    display: none;
-  }
-  .ribbon {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-  }
-  .ribbon svg {
-    width: 60%;
-    height: auto;
-  }
+    .Loginform {
+        width: 100%;
+    }
 
-  .companies {
-    animation: none;
-    flex-direction: row;
-    height: 40vh;
-    padding: 5vh;
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .companies img {
-    width: 82px;
-    margin-inline: 10px !important;
-  }
-  .buttons button {
-    width: 170px;
-    height: 60px;
-    font-size: larger;
-  }
+    .button label {
+        line-height: 6vh;
+    }
 
-  .modalform form {
-    margin: 1vh !important;
-    gap: 0vh;
-  }
+    .header {
+        padding-block: 2vh;
+    }
 
-  .modalform h4 {
-    padding: 0;
-    font-size: 24px !important;
-  }
+    .buttons {
+        display: flex;
+        gap: 2vh;
+    }
 
-  .modalform p {
-    font-size: 13px !important;
-    margin-block: 1vh !important;
-    width: auto;
-  }
+    .mission-block {
+        flex-direction: column;
+        padding: 2vh;
+        gap: 4vh;
+    }
 
-  .modal-content {
-    width: auto !important;
-  }
+    .mission-right h4 {
+        font-size: larger;
+        width: fit-content;
+    }
+
+    .mission-right p {
+        font-size: medium;
+        padding-top: 2vh;
+        width: fit-content;
+        padding-right: 3vh;
+    }
+
+    .tilt {
+        display: none;
+    }
+
+    .tiltedChild {
+        width: 75%;
+    }
+
+    .mission {
+        padding: 0;
+        width: initial;
+        margin-block: 5vh !important;
+        border-bottom-right-radius: 100px;
+    }
+
+    .mission-left h4 {
+        font-size: larger;
+        width: fit-content;
+    }
+
+    .aboutrow {
+        justify-content: flex-start;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-inline: 15px !important;
+        padding-left: 0;
+        border-bottom: none;
+    }
+
+    .aboutcolumn {
+        text-align: center;
+        border: 1px solid gray !important;
+        border-inline: none;
+        padding-left: 2vh;
+        width: 90%;
+        padding-right: 2vh;
+        border-bottom: none;
+    }
+
+    .aboutcolumn p {
+        width: 100%;
+    }
+
+    .requestsitemhead h1 {
+        width: 100%;
+    }
+
+    hr {
+        display: none;
+    }
+
+
+    .ribbon svg {
+        width: 100%;
+        height: 75%;
+    }
+
+    .companies {
+        animation: none;
+        flex-direction: column;
+        height: 100vh;
+        padding-block: 5vh;
+    }
+
+    .buttons button {
+        width: 170px;
+        height: 60px;
+        font-size: larger;
+    }
+
+    .modalform form {
+        margin: 1vh !important;
+        gap: 0vh;
+    }
+
+    .modalform h4 {
+        padding: 0;
+        font-size: 24px !important;
+    }
+
+    .modalform p {
+        font-size: 9px !important;
+        margin-block: 1vh !important;
+        width: auto;
+    }
+
+    .modal-content {
+        width: auto !important;
+    }
 }
 
 .initial-child-container {
@@ -859,32 +883,37 @@ hr {
 }
 
 .modal {
-  position: fixed;
-  z-index: 10;
-  padding-top: 100px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background: rgba(217, 225, 103, 0.3);
-  backdrop-filter: blur(7px);
+    position: fixed;
+    z-index: 10;
+    padding-top: 100px;
+    left: 0;
+    top: -25px;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: rgba(217, 225, 103, 0.30);
+    backdrop-filter: blur(7px);
 }
 
+
+
 .modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 2px solid #000;
-  width: 50%;
-  border-radius: 3vh;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 2px solid #000;
+    width: 50%;
+    border-radius: 3vh;
+    position: relative;
 }
 
 .close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 5%;
 }
 
 .close:hover,
@@ -908,24 +937,25 @@ hr {
 }
 
 .modalform p {
-  color: #565656a3;
-  font-size: 24px;
-  margin: 1vh;
-  width: auto;
+    color: #565656a3;
+    font-size: 14px;
+    margin: 1vh;
+    width: auto;
 }
 
 .mailinput {
-  padding: 2vh;
-  width: 80%;
-  border-radius: 2vh;
-  border: 1px solid black;
+    padding: 2vh;
+    width: 95%;
+    border-radius: 2vh;
+    border: 1px solid black;
 }
 
 .modalform form {
-  margin: 5vh;
-  display: flex;
-  flex-direction: column;
-  gap: 1vh;
+    margin: 5vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    margin-bottom: 0;
 }
 
 .checklabel {
