@@ -592,7 +592,7 @@ export default function Home() {
             >
               <div className="requestsitemhead lastitem">
                 <img src={GraphIcon} alt="img" />
-                <h1>Increased Efficiancy</h1>
+                <h1>Increased Efficiency</h1>
               </div>
               <p className="lastitem">
                 Organization tools make your project workflow faster, with less
@@ -632,13 +632,11 @@ export default function Home() {
       </section>
 
       <section className="collaborators">
-        <h2 className="heading">In Collaboration With designers from</h2>
+        <h2 className="heading">In Collaboration With Designers From</h2>
         <div className="companies">
-          <img src={Gettys} alt="gettys-logo" className="collab-img"/>
           <img src={IAInteriors} alt="ia-interiors" />
           <img src={Gensler} alt="gensler-logo" />
           <img src={Stantec} alt="stantec-logo" />
-          <img src={OKK} alt="okk-logo" className="collab-img"/>
           <img src={HPA} alt="hpa-logo" />
         </div>
       </section>

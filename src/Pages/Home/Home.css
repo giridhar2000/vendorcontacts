@@ -741,7 +741,7 @@ hr {
     }
 
     .collaborators .heading {
-        font-family: "Quicksand", sans-serif;
+        font-weight: 900;
     }
 
     * {
@@ -864,7 +864,7 @@ hr {
     }
 
     .companies img {
-        width: 82px;
+        width: 19%;
         margin-inline: 10px !important;
     }
 
