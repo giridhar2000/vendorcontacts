@@ -589,6 +589,7 @@ hr {
         transform: translateY(0) !important;
         gap: 2vh;
         margin-bottom: 3vh !important;
+        margin-top: 3vh !important;
     }
 
     * {
@@ -683,11 +684,18 @@ hr {
         /* position: absolute; */
         height: auto;
         text-align: center;
-        top: -5vh;
+        /* top: -10vh; */
     }
 
     .firststep {
-        top: -8vh;
+        top: -20vh;
+        /* bottom: 5vh; */
+    }
+
+    .firststep svg{
+        width: 110%;
+        height: 50%;
+        left: 20vh;
     }
 
     .join-block {
