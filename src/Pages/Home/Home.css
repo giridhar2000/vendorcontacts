@@ -111,9 +111,10 @@
 }
 
 .firststep {
-    position: relative;
-    top: -22vh;
+    position: absolute;
+    top: 0;
     pointer-events: none;
+    width: 100%;
 }
 
 .faq-block {
@@ -278,6 +279,12 @@
 
 .ribbon {
     margin: 0 auto;
+    width: 33%;
+}
+
+.ribbon img {
+    width: 100%;
+    margin-top: -5px !important;
 }
 
 .tilt {
@@ -680,18 +687,6 @@ hr {
         height: 15vh;
     }
 
-    .steps {
-        /* position: absolute; */
-        height: auto;
-        text-align: center;
-        /* top: -10vh; */
-    }
-
-    .firststep {
-        top: -20vh;
-        /* bottom: 5vh; */
-    }
-
     .firststep svg{
         width: 110%;
         height: 50%;
@@ -741,7 +736,6 @@ hr {
     .faq,
     .mission {
         margin-inline: 15px !important;
-        margin-top: 3vh !important;
     }
 
     .collaborators {
@@ -857,9 +851,9 @@ hr {
         justify-content: center;
     }
 
-    .ribbon svg {
-        width: 85%;
-        height: auto;
+    .ribbon img {
+        width: 100%;
+        margin-top: -3px !important;
     }
 
     .companies {
