@@ -23,8 +23,10 @@ import Footer from "../../Components/Footer/Footer";
 import pdf from "../../Assets/TNC.pdf";
 import supabase from "../../utils/supabase.config";
 import { message, Modal } from "antd";
-import ribbon2 from "../../Assets/images/ribbon2.png"
+import ribbon2 from "../../Assets/images/strip 2.svg"
 import { GiPartyPopper } from "react-icons/gi";
+import ribbon1 from "../../Assets/images/strip.svg"
+import ribbon3 from "../../Assets/images/strip3.svg"
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -310,25 +312,7 @@ export default function Home() {
         </div>
 
         <div className="steps firststep">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1440 348"
-            fill="none"
-          >
-            <path
-              id="p1"
-              d="M0 305H570.5V43L1443.5 43"
-              stroke="#D9E167"
-              stroke-width="85"
-              stroke-linejoin="round"
-            />
-            <text dominant-baseline="middle" fill="black" font-size="32px">
-              <textPath href="#p1">
-                Uniting Visionaries and makers .Uniting Visionaries and makers .
-                Uniting Visionaries and makers .Uniting Visionaries and makers .
-              </textPath>
-            </text>
-          </svg>
+            <img src={ribbon1} alt="ribbon-2" />
 
         </div>
       </section>
@@ -383,29 +367,7 @@ export default function Home() {
 
       <section className="services">
         <div className="steps">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1440 264"
-            fill="none"
-          >
-            <path
-              id="p2"
-              d="M-208 43H-47.6758V221L1348.07 221V43H1489"
-              stroke="#D9E167"
-              stroke-width="85"
-              stroke-linejoin="round"
-            />
-            <text dominant-baseline="middle" fill="black" font-size="32px">
-              <textPath href="#p2">
-                Uniting Visionaries and makers .Uniting Visionaries and makers .
-                Uniting Visionaries and makers .Uniting Visionaries and makers .
-                Uniting Visionaries and makers .Uniting Visionaries and makers .
-                {/* <animate
-                                    attributeName="startOffset" from="-100%" to="100%"
-                                    dur="10s" begin="3s" repeatCount="indefinite" /> */}
-              </textPath>
-            </text>
-          </svg>
+          <img src={ribbon3} alt="ribbon" style={{width: "100%"}}/>
         </div>
 
         {/* <div className="service-container">
