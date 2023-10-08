@@ -261,7 +261,7 @@
 
 .companies {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     /* animation: marquee 25s linear infinite; */
     overflow-x: hidden;
@@ -291,7 +291,7 @@
     flex-direction: column;
     width: 100%;
     align-items: center;
-    transform: translateY(-15vh);
+    transform: translateY(-33vh);
 }
 
 .tiltedChild {
@@ -302,35 +302,36 @@
     border-radius: 5vh;
     text-align: center;
     cursor: pointer;
+    width: 30%;
 }
 
 .tiltedChild:nth-child(1) {
     animation-delay: 1000ms;
-    transform: rotate(-38.351deg);
+    transform: rotate(-38.351deg) translateY(6vh);
     animation: bounceInDown1 3s;
 }
 
 .tiltedChild:nth-child(2) {
     animation-delay: 800ms;
-    transform: rotate(9.803deg) translateX(17vh);
+    transform: rotate(9.803deg) translateX(17vh) translateY(9vh);
     animation: bounceInDown2 2.5s;
 }
 
 .tiltedChild:nth-child(3) {
     animation-delay: 600ms;
-    transform: rotate(-12.953deg) translateY(6vh);
+    transform: rotate(-12.953deg) translateY(16vh);
     animation: bounceInDown3 2s;
 }
 
 .tiltedChild:nth-child(4) {
     animation-delay: 400ms;
-    transform: rotate(21.934deg) translateY(4vh) translateX(22vh);
+    transform: rotate(21.934deg) translateY(15vh) translateX(22vh);
     animation: bounceInDown4 1.5s;
 }
 
 .tiltedChild:nth-child(5) {
     animation-delay: 200ms;
-    transform: rotate(-18.28deg) translateX(-6vh) translateY(12vh);
+    transform: rotate(-18.28deg) translateX(-6vh) translateY(28vh);
     animation: bounceInDown5 1s;
 }
 
@@ -350,7 +351,7 @@
     }
 
     100% {
-        transform: translateY(0) rotate(-38.351deg);
+        transform: translateY(6vh) rotate(-38.351deg);
     }
 }
 
@@ -370,7 +371,7 @@
     }
 
     100% {
-        transform: translateY(0) translateX(17vh) rotate(9.803deg);
+        transform: translateY(9vh) translateX(17vh) rotate(9.803deg);
     }
 }
 
@@ -390,7 +391,7 @@
     }
 
     100% {
-        transform: translateY(7vh) rotate(-12.953deg);
+        transform: translateY(16vh) rotate(-12.953deg);
     }
 }
 
@@ -410,7 +411,7 @@
     }
 
     100% {
-        transform: translateY(4vh) translateX(22vh) rotate(21.934deg);
+        transform: translateY(15vh) translateX(22vh) rotate(21.934deg);
     }
 }
 
@@ -430,7 +431,7 @@
     }
 
     100% {
-        transform: translateX(-6vh) translateY(15vh) rotate(-18.28deg);
+        transform: translateX(-6vh) translateY(28vh) rotate(-18.28deg);
     }
 }
 
