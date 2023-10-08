@@ -1,16 +1,16 @@
 @font-face {
   font-family: 'Futura';
-  src: url('../src/Assets/FUTURA_BK_BT_BOOK.TTF') format('ttf'),
+  src: url('../src/Assets/FUTURA_BK_BT_BOOK.TTF') format('truetype'),
 }
 body {
 
   margin: 0;
-  font-family: 'Poppins', 'Helvetica Neue', 'San Francisco', Arial, sans-serif;
+  font-family: 'Futura';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: white;
 }
 
 code {
-  font-family: 'Poppins', 'Helvetica Neue', 'San Francisco', Arial, sans-serif;
+  font-family: 'Futura';
 }
