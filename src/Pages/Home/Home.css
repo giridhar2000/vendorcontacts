@@ -668,7 +668,7 @@ hr {
   }
 
   .join-block svg {
-    width: 25%;
+    width: 20%;
     height: 25%;
   }
 
@@ -748,11 +748,14 @@ hr {
   }
 
   .tilt {
-    display: none;
+    /* display: none; */
   }
 
   .tiltedChild {
     width: 60%;
+    animation: none !important;
+    transform: none !important;
+    margin-top: .6rem !important;
     /* height: 3vh !important;
     padding: 0 !important;
     padding-inline: 0 !important;
@@ -807,7 +810,7 @@ hr {
     justify-content: center;
   }
   .ribbon svg {
-    width: 60%;
+    width: 85%;
     height: auto;
   }
 
