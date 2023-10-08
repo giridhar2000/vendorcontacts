@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./Home.css";
-import Gettys from "../../Assets/images/gettys-group.svg";
+import Gettys from "../../Assets/images/PW.svg";
 import IAInteriors from "../../Assets/images/ia_interior_architects.svg";
 import Gensler from "../../Assets/images/Gensler_logo.svg";
 import Stantec from "../../Assets/images/stantec.svg";
-import OKK from "../../Assets/images/OKK.svg";
+import OKK from "../../Assets/images/PerkinsEastman.jpg";
 import HPA from "../../Assets/images/hpa.svg";
-import Collaboration from "../../Assets/images/handshake.svg";
-import Telescope from "../../Assets/images/telescope.svg";
-import Target from "../../Assets/images/target.svg";
+// import Collaboration from "../../Assets/images/handshake.svg";
+// import Telescope from "../../Assets/images/telescope.svg";
+// import Target from "../../Assets/images/target.svg";
 import TrustIcon from "../../Assets/images/professional-trust.svg";
 import CommunicationIcon from "../../Assets/images/communication.svg";
 import SearchIcon from "../../Assets/images/search.svg";
@@ -23,7 +23,10 @@ import Footer from "../../Components/Footer/Footer";
 import pdf from "../../Assets/TNC.pdf";
 import supabase from "../../utils/supabase.config";
 import { message, Modal } from "antd";
+import ribbon2 from "../../Assets/images/strip 2.svg"
 import { GiPartyPopper } from "react-icons/gi";
+import ribbon1 from "../../Assets/images/strip.svg"
+import ribbon3 from "../../Assets/images/strip3.svg"
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -33,18 +36,6 @@ export default function Home() {
 
   useEffect(() => {
     animator();
-    // const observer = new IntersectionObserver((entries) => {
-    //     entries.forEach((entry) => {
-    //         if (entry.isIntersecting) {
-    //             entry.target.classList.add('showcontent')
-    //         } else {
-    //             entry.target.classList.remove('showcontent')
-    //         }
-    //     });
-    // });
-
-    // const hiddenElements = document.querySelectorAll('.hidden');
-    // hiddenElements.forEach((el) => observer.observe(el));
   });
 
   async function invite(email) {
@@ -65,6 +56,8 @@ export default function Home() {
     } else {
       message.error("please enter your email id and click on the checkbox");
     }
+    setEmail("")
+    setCheckbox(false)
   }
 
   function animator() {
@@ -127,14 +120,14 @@ export default function Home() {
 
             <div className="modalform">
               <h4>
-                One step away from the future of designer-vendor collaboration.
+                Join the list
               </h4>
 
-              <p>Please provide your email to join this ecosystem.</p>
+              <p>You're one step away from easy communication with your reps :)</p>
 
               <form>
                 <div>
-                 
+                 {/* <label style={{color: 'rgba(0,0,0,0.5)'}}>Email</label><br /> */}
                   <input
                     className="mailinput"
                     type="text"
@@ -164,31 +157,32 @@ export default function Home() {
                 <br />
               </form>
               <button className="submit-btn" onClick={() => invite(email)}>
-                Send
+                Join the list
               </button>
+
             </div>
           </div>
         </div>
       )}
-      {}
+
       <section className="banner">
         <div className="banner-heading">
           <div className="banner-text">
             <h1>
               The <span className="future">future</span> of{" "}
-              <img className="img1" src={Telescope} alt="telescope" />
+              {/* <img className="img1" src={Telescope} alt="telescope" /> */}
             </h1>
             <h1>
-              <img className="ml-1" src={Target} alt="target" /> designer-vendor
+              {/* <img className="ml-1" src={Target} alt="target" /> */}
+               designer-vendor
             </h1>
             <h1>
               collaboration is{" "}
-              <img className="img2" src={Collaboration} alt="collaboration" />
+              {/* <img className="img2" src={Collaboration} alt="collaboration" /> */}
               here
             </h1>
           </div>
           <img src={bg1} alt="bg" className="bg" />
-          {/* <img src={Ellipse} alt="bg" className="Ellipse" /> */}
         </div>
       </section>
       <Modal
@@ -318,38 +312,20 @@ export default function Home() {
         </div>
 
         <div className="steps firststep">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1440 348"
-            fill="none"
-          >
-            <path
-              id="p1"
-              d="M0 305H570.5V43L1443.5 43"
-              stroke="#D9E167"
-              stroke-width="85"
-              stroke-linejoin="round"
-            />
-            <text dominant-baseline="middle" fill="black" font-size="32px">
-              <textPath href="#p1">
-                Uniting Visionaries and makers .Uniting Visionaries and makers .
-                Uniting Visionaries and makers .Uniting Visionaries and makers .
-                {/* <animate
-                                    attributeName="startOffset" from="-100%" to="100%"
-                                    dur="10s" begin="1s" repeatCount="indefinite" /> */}
-              </textPath>
-            </text>
-          </svg>
+            <img src={ribbon1} alt="ribbon-2" />
+
         </div>
       </section>
 
       <section className="faq">
         <div className="faq-block">
+            <div className="faq-text">
           ALL YOUR QUESTIONS, AND <br />
           REPS ON ONE PLATFORM. <br />
           NO MORE LONG EMAIL
           <br />
           THREADS.
+          </div>
         </div>
 
         <div className="tilt">
@@ -391,29 +367,7 @@ export default function Home() {
 
       <section className="services">
         <div className="steps">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1440 264"
-            fill="none"
-          >
-            <path
-              id="p2"
-              d="M-208 43H-47.6758V221L1348.07 221V43H1489"
-              stroke="#D9E167"
-              stroke-width="85"
-              stroke-linejoin="round"
-            />
-            <text dominant-baseline="middle" fill="black" font-size="32px">
-              <textPath href="#p2">
-                Uniting Visionaries and makers .Uniting Visionaries and makers .
-                Uniting Visionaries and makers .Uniting Visionaries and makers .
-                Uniting Visionaries and makers .Uniting Visionaries and makers .
-                {/* <animate
-                                    attributeName="startOffset" from="-100%" to="100%"
-                                    dur="10s" begin="3s" repeatCount="indefinite" /> */}
-              </textPath>
-            </text>
-          </svg>
+          <img src={ribbon3} alt="ribbon" style={{width: "100%"}}/>
         </div>
 
         {/* <div className="service-container">
@@ -561,7 +515,7 @@ export default function Home() {
             <div className="aboutcolumn">
               <div className="requestsitemhead">
                 <img src={StoreIcon} alt="img" />
-                <h1>Trusted by Industry Professionals</h1>
+                <h1>Vendor Direct Sample Ordering</h1>
               </div>
               <p>
                 For a personalized experience, where you can specify with
@@ -572,7 +526,7 @@ export default function Home() {
             <div className="aboutcolumn">
               <div className="requestsitemhead">
                 <img src={ToolsIcon} alt="img" />
-                <h1>Effective Communication Tools</h1>
+                <h1>User-Friendly Interface</h1>
               </div>
               <p>All your projects and rep communications, in one place.</p>
             </div>
@@ -580,7 +534,7 @@ export default function Home() {
             <div className="aboutcolumn">
               <div className="requestsitemhead">
                 <img src={AdvanceSearchIcon} alt="img" />
-                <h1>Advanced Search Capabilities</h1>
+                <h1>Relationship Building Features</h1>
               </div>
               <p>
                 Tools to enable library updates, lunch and learns, event
@@ -599,7 +553,7 @@ export default function Home() {
             >
               <div className="requestsitemhead lastitem">
                 <img src={GraphIcon} alt="img" />
-                <h1>Trusted by Industry Professionals</h1>
+                <h1>Increased Efficiency</h1>
               </div>
               <p className="lastitem">
                 Organization tools make your project workflow faster, with less
@@ -608,7 +562,7 @@ export default function Home() {
             </div>
 
             <div className="ribbon">
-              <svg
+              {/* <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="601"
                 height="390"
@@ -627,25 +581,25 @@ export default function Home() {
                     Uniting Visionaries and makers .Uniting Visionaries and
                     makers . Uniting Visionaries and makers .Uniting Visionaries
                     and makers .
-                    {/* <animate
+                    <animate
                                             attributeName="startOffset" from="-100%" to="100%"
-                                            dur="10s" begin="3s" repeatCount="indefinite" /> */}
+                                            dur="10s" begin="3s" repeatCount="indefinite" />
                   </textPath>
                 </text>
-              </svg>
+              </svg> */}
+              <img src={ribbon2} alt="ribon-img" />
+
             </div>
           </div>
         </div>
       </section>
 
       <section className="collaborators">
-        <h2 className="heading">In Collaboration With</h2>
+        <h2 className="heading">In Collaboration With Designers From</h2>
         <div className="companies">
-          <img src={Gettys} alt="gettys-logo" />
           <img src={IAInteriors} alt="ia-interiors" />
           <img src={Gensler} alt="gensler-logo" />
           <img src={Stantec} alt="stantec-logo" />
-          <img src={OKK} alt="okk-logo" />
           <img src={HPA} alt="hpa-logo" />
         </div>
       </section>

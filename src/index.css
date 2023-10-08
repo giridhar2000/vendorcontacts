@@ -1,6 +1,11 @@
+@font-face {
+  font-family: 'Futura';
+  src: url('./Assets/FUTURA_BK_BT_BOOK.TTF') format('truetype'),
+}
 body {
+
   margin: 0;
-  font-family: 'Poppins', 'Helvetica Neue', 'San Francisco', Arial, sans-serif;
+  font-family: Futura !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: white;
