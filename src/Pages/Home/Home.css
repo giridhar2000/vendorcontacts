@@ -9,7 +9,7 @@
 }
 
 .banner {
-    margin: 0rem 4rem auto;
+    margin: 0rem 5% auto;
 }
 
 .banner-text {
@@ -66,7 +66,7 @@
 }
 
 .joinContainer {
-    margin-inline: 5rem;
+    margin-inline: 5%;
     cursor: pointer;
 }
 
@@ -106,7 +106,7 @@
 
 .faq {
     height: 354px;
-    margin: 3rem 4rem auto;
+    margin: 3rem 5% auto;
     display: flex;
 }
 
@@ -136,8 +136,7 @@
     background-color: #d9e167;
     padding: 5rem;
     border-bottom-right-radius: 327px;
-    margin: 4rem;
-    margin-bottom: 0;
+    margin: 5%;
 }
 
 .mission-block {
@@ -248,9 +247,8 @@
 }
 
 .collaborators {
-    margin: 2rem;
+    margin: 3%;
     overflow-x: hidden;
-    margin-bottom: 4rem;
 }
 
 .heading {
@@ -279,7 +277,7 @@
 
 .ribbon {
     margin: 0 auto;
-    width: 33%;
+    width: 40%;
 }
 
 .ribbon img {
@@ -525,7 +523,7 @@ hr {
 .aboutbody {
     display: flex;
     flex-direction: column;
-    margin-top: -8vh;
+    margin-top: -5vh;
 }
 
 .collab-img{
@@ -541,8 +539,12 @@ hr {
 }
 
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
+    .tiltedChild {
+        width: 38%;
+    }
+    
     .tilt {
-        transform: translateY(-2vh);
+        transform: translateY(-36vh);
     }
 
     .bg {
@@ -558,7 +560,7 @@ hr {
     }
 
     .firststep {
-        top: -28vh;
+        top: 0vh;
     }
 
     .aboutcolumn {
