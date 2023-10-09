@@ -5,12 +5,12 @@
 body {
 
   margin: 0;
-  font-family: 'Futura';
+  font-family: 'Poppins', 'Helvetica Neue', 'San Francisco', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: white;
 }
 
 code {
-  font-family: 'Futura';
+  font-family: 'Poppins', 'Helvetica Neue', 'San Francisco', Arial, sans-serif;
 }
