@@ -11,7 +11,7 @@ import { getUserById } from "../../utils/profile_helper";
 import HubspotForm from "react-hubspot-form";
 import { v4 as uuidv4 } from "uuid";
 import Icon from "../../Assets/images/logo-icon.svg";
-import pdf from "../../Assets/TNC.pdf"
+import pdf from "../../Assets/TNC.pdf";
 
 export default function Login() {
   const [signup, setSignUp] = useState(true);
@@ -30,7 +30,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
 
-
   <HubspotForm
     portalId="22384747"
     formId="556eed30-2d51-4224-86f8-ffa83f0bde15"
@@ -39,25 +38,27 @@ export default function Login() {
     loading={<div>Loading...</div>}
   />;
 
-
   const back = () => {
-    navigate("/")
-  }
+    navigate("/");
+  };
 
   const handleSubmit = async () => {
-    var _hsq = window._hsq = window._hsq || [];
+    var _hsq = (window._hsq = window._hsq || []);
     // _hsq.push(['setPath', 'http://localhost:3000/login']);
     //   _hsq.push(['trackPageView']);
     //   _hsq.push(["identify",{
     //     email: email
     // }]);
-    _hsq.push(["trackCustomBehavioralEvent", {
-      name: "Signup",
-      properties: {
-        email: email
-      }
-    }]);
-    console.log(_hsq)
+    _hsq.push([
+      "trackCustomBehavioralEvent",
+      {
+        name: "Signup",
+        properties: {
+          email: email,
+        },
+      },
+    ]);
+    console.log(_hsq);
     // Perform form validation
     if (!firstName || !lastName || !email || !password) {
       toast("Please fill out all fields", { type: "error" });
@@ -113,7 +114,6 @@ export default function Login() {
         setIsAuth(true);
         toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
         navigate("/listing");
-
       }
     } catch (error) {
       setLoading(false);
@@ -122,13 +122,16 @@ export default function Login() {
   };
 
   async function handleLogin() {
-    var _hsq = window._hsq = window._hsq || [];
-    _hsq.push(['setPath', 'http://localhost:3000/login']);
-    _hsq.push(['trackPageView']);
-    _hsq.push(["identify", {
-      email: email
-    }]);
-    console.log(_hsq)
+    var _hsq = (window._hsq = window._hsq || []);
+    _hsq.push(["setPath", "http://localhost:3000/login"]);
+    _hsq.push(["trackPageView"]);
+    _hsq.push([
+      "identify",
+      {
+        email: email,
+      },
+    ]);
+    console.log(_hsq);
 
     if (!email || !password) {
       toast("Please fill out all fields", { type: "error" });
@@ -187,13 +190,15 @@ export default function Login() {
 
   return (
     <div className="login">
-      <div className='navbarheader'>
-        <div className='backbtn' onClick={back}>
+      <div className="navbarheader">
+        <div className="backbtn" onClick={back}>
           <p>&larr;</p>
         </div>
         <div className="headerlogo">
           <img src={Icon} alt="" className="logoIcon" />
-          <h1 className="logo-text" style={{ fontSize: "x-large" }}>VENDORCONTACTS</h1>
+          <h1 className="logo-text" style={{ fontSize: "x-large" }}>
+            VENDORCONTACTS
+          </h1>
         </div>
       </div>
       <div className="loginContainer lg-page">
@@ -536,8 +541,10 @@ export default function Login() {
                     )}
                   </div>
                   <p className="forgotpass">
-                    By Clicking "Sign Up", You Agree to Our <a href={pdf} target="_blank">Terms of Use and
-                    Privacy Policy</a>
+                    By Clicking "Sign Up", You Agree to Our{" "}
+                    <a href={pdf} target="_blank">
+                      Terms of Use and Privacy Policy
+                    </a>
                   </p>
                   <button
                     className="loginbtn"
@@ -613,7 +620,18 @@ export default function Login() {
                         marginTop: "2vh",
                       }}
                     />
-                    <button className="loginbtn" onClick={() => setNext(true)}>
+                    <button
+                      className="loginbtn"
+                      onClick={() => {
+                        if (!userType) {
+                          toast("Select your profession first!", {
+                            type: "warning",
+                          });
+                        } else {
+                          setNext(true);
+                        }
+                      }}
+                    >
                       Next
                     </button>
                   </div>

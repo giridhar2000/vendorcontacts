@@ -531,6 +531,14 @@ hr {
 .collab-img{
     width: 15%;
 }
+.LoginForm-Home{
+    margin: 0 !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+}
 
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
     .tilt {
@@ -572,6 +580,7 @@ hr {
     .modalform {
         padding: 1vh;
     }
+   
 
     #aboutcolumn {
         margin-bottom: 18dvh;
@@ -599,10 +608,6 @@ hr {
         margin-top: 3vh !important;
     }
 
-    * {
-        font-family: "Mulish"
-    }
-
     .banner-text h1 {
         font-weight: 600;
     }
@@ -611,7 +616,9 @@ hr {
         margin-left: 4vh !important;
         padding-left: 0;
     }
-
+    .mt-32{
+        margin-top:32px !important;
+    }
     .container {
         overflow-x: hidden;
     }
