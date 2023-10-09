@@ -38,7 +38,8 @@
 
 .loginbtn {
     border-radius: 24.328px;
-    border: 0.652px solid #000;
+    /* border: 0.652px solid #000; */
+    border:0;
     background: #D6DB63;
     padding: 2vh;
     width: 40vh;

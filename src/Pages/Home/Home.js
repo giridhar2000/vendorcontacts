@@ -23,32 +23,36 @@ import Footer from "../../Components/Footer/Footer";
 import pdf from "../../Assets/TNC.pdf";
 import supabase from "../../utils/supabase.config";
 import { message, Modal } from "antd";
-import ribbon2 from "../../Assets/images/strip 2.svg"
+import ribbon2 from "../../Assets/images/strip 2.svg";
 import { GiPartyPopper } from "react-icons/gi";
-import ribbon1 from "../../Assets/images/strip.svg"
-import ribbon3 from "../../Assets/images/strip3.svg"
-
+import ribbon1 from "../../Assets/images/strip.svg";
+import ribbon3 from "../../Assets/images/strip3.svg";
+import { toast } from "react-toastify";
 export default function Home() {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [checkbox, setCheckbox] = useState(false);
   const [isSent, setIsSent] = useState(false);
+  const [userType, setUserType] = useState(null);
+  const [next, setNext] = useState(false);
 
   useEffect(() => {
     animator();
   });
 
   async function invite(email) {
-    if (email && checkbox) {
+    if (email && checkbox && userType) {
       try {
         const { data, error } = await supabase.from("invite_email").insert([
           {
             email_id: email,
+            type: userType,
           },
         ]);
         if (error) throw new Error(error);
         setIsSent(true);
         setOpen(false);
+        setNext(false);
         return data[0]?.email_id;
       } catch (err) {
         return null;
@@ -56,8 +60,9 @@ export default function Home() {
     } else {
       message.error("please enter your email id and click on the checkbox");
     }
-    setEmail("")
-    setCheckbox(false)
+    setEmail("");
+    setNext(false);
+    setCheckbox(false);
   }
 
   function animator() {
@@ -111,23 +116,105 @@ export default function Home() {
   return (
     <>
       <Header />
-      {open && (
+      {open && !next && (
         <div id="myModal" className="modal">
           <div className="modal-content">
-            <span className="close" onClick={() => setOpen(false)}>
+            <span
+              className="close"
+              onClick={() => {
+                setNext(false);
+                setOpen(false);
+              }}
+            >
               &times;
             </span>
 
             <div className="modalform">
               <h4>
-                Join the list
+                Are you a<br /> Vendor or an Architect ?
               </h4>
 
-              <p>You're one step away from easy communication with your reps :)</p>
+              <div
+                className="Loginform mt-32"
+                style={{ marginLeft: "0", marginTop: "32px" }}
+              >
+                <div className="buttons-select">
+                  <div className="button">
+                    <input
+                      type="radio"
+                      id="Architect"
+                      name="signupBtn"
+                      value="architect"
+                      onChange={(e) => setUserType(e.target.value)}
+                    />
+                    <label className="btn btn-default" for="Architect">
+                      Architect
+                    </label>
+                  </div>
+                  <div className="button">
+                    <input
+                      type="radio"
+                      id="Vendor"
+                      name="signupBtn"
+                      value="vendor"
+                      onChange={(e) => setUserType(e.target.value)}
+                    />
+                    <label className="btn btn-default" for="Vendor">
+                      Vendor
+                    </label>
+                  </div>
+                </div>
+                <hr
+                  style={{
+                    maxWidth: "100%",
+                    margin: "0",
+                    marginTop: "2vh",
+                    backgroundColor: "#f0f0f0",
+                  }}
+                />
+                <button
+                  className="loginbtn"
+                  onClick={() => {
+                    if (!userType) {
+                      toast("Select your profession first!", {
+                        type: "warning",
+                      });
+                    } else {
+                      setNext(true);
+                    }
+                  }}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {open && next && (
+        <div id="myModal" className="modal">
+          <div className="modal-content">
+            <span
+              className="close"
+              onClick={() => {
+                setNext(false);
+                setOpen(false);
+              }}
+            >
+              &times;
+            </span>
+
+            <div className="modalform">
+              <h4>Join the list</h4>
+
+              <p>
+                You're one step away from easy communication with your reps :)
+              </p>
 
               <form>
                 <div>
-                 {/* <label style={{color: 'rgba(0,0,0,0.5)'}}>Email</label><br /> */}
+                  {/* <label style={{color: 'rgba(0,0,0,0.5)'}}>Email</label><br /> */}
                   <input
                     className="mailinput"
                     type="text"
@@ -159,7 +246,6 @@ export default function Home() {
               <button className="submit-btn" onClick={() => invite(email)}>
                 Join the list
               </button>
-
             </div>
           </div>
         </div>
@@ -174,7 +260,7 @@ export default function Home() {
             </h1>
             <h1>
               {/* <img className="ml-1" src={Target} alt="target" /> */}
-               designer-vendor
+              designer-vendor
             </h1>
             <h1>
               collaboration is{" "}
@@ -186,9 +272,9 @@ export default function Home() {
         </div>
       </section>
       <Modal
-      bodyStyle={{
-        fontFamily: " 'Quicksand' sans-serif",
-      }}
+        bodyStyle={{
+          fontFamily: " 'Quicksand' sans-serif",
+        }}
         title={
           <h3
             style={{
@@ -212,9 +298,7 @@ export default function Home() {
         footer={null}
         onCancel={() => setIsSent(false)}
       >
-        <p
-        
-        >
+        <p>
           We are thrilled to have you onboard. Stay tuned for exclusive updates
           and be ready to experience a transformative approach to
           vendor-designer collaboration.
@@ -312,19 +396,18 @@ export default function Home() {
         </div>
 
         <div className="steps firststep">
-            <img src={ribbon1} alt="ribbon-2" />
-
+          <img src={ribbon1} alt="ribbon-2" />
         </div>
       </section>
 
       <section className="faq">
         <div className="faq-block">
-            <div className="faq-text">
-          ALL YOUR QUESTIONS, AND <br />
-          REPS ON ONE PLATFORM. <br />
-          NO MORE LONG EMAIL
-          <br />
-          THREADS.
+          <div className="faq-text">
+            ALL YOUR QUESTIONS, AND <br />
+            REPS ON ONE PLATFORM. <br />
+            NO MORE LONG EMAIL
+            <br />
+            THREADS.
           </div>
         </div>
 
@@ -367,7 +450,7 @@ export default function Home() {
 
       <section className="services">
         <div className="steps">
-          <img src={ribbon3} alt="ribbon" style={{width: "100%"}}/>
+          <img src={ribbon3} alt="ribbon" style={{ width: "100%" }} />
         </div>
 
         {/* <div className="service-container">
@@ -588,7 +671,6 @@ export default function Home() {
                 </text>
               </svg> */}
               <img src={ribbon2} alt="ribon-img" />
-
             </div>
           </div>
         </div>
