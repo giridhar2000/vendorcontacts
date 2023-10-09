@@ -52,7 +52,7 @@ export default function Home() {
         if (error) throw new Error(error);
         setIsSent(true);
         setOpen(false);
-        setNext(false);
+        setUserType(null);
         return data[0]?.email_id;
       } catch (err) {
         return null;
@@ -61,7 +61,7 @@ export default function Home() {
       message.error("please enter your email id and click on the checkbox");
     }
     setEmail("");
-    setNext(false);
+    setUserType(null);
     setCheckbox(false);
   }
 
@@ -116,14 +116,14 @@ export default function Home() {
   return (
     <>
       <Header />
-      {open && !next && (
+      {open && !userType && (
         <div id="myModal" className="modal">
           <div className="modal-content">
             <span
               className="close"
               onClick={() => {
-                setNext(false);
                 setOpen(false);
+                setUserType(null);
               }}
             >
               &times;
@@ -135,10 +135,10 @@ export default function Home() {
               </h4>
 
               <div
-                className="Loginform mt-32"
-                style={{ marginLeft: "0", marginTop: "32px" }}
+                className="Loginform mt-32 w-40"
+                style={{ marginLeft: "0", marginTop: "32px",width:'40%' }}
               >
-                <div className="buttons-select">
+                <div className="buttons-select" style={{width:'100%'}}>
                   <div className="button">
                     <input
                       type="radio"
@@ -164,42 +164,22 @@ export default function Home() {
                     </label>
                   </div>
                 </div>
-                <hr
-                  style={{
-                    maxWidth: "100%",
-                    margin: "0",
-                    marginTop: "2vh",
-                    backgroundColor: "#f0f0f0",
-                  }}
-                />
-                <button
-                  className="loginbtn"
-                  onClick={() => {
-                    if (!userType) {
-                      toast("Select your profession first!", {
-                        type: "warning",
-                      });
-                    } else {
-                      setNext(true);
-                    }
-                  }}
-                >
-                  Next
-                </button>
+                
+               
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {open && next && (
+      {open && userType && (
         <div id="myModal" className="modal">
           <div className="modal-content">
             <span
               className="close"
               onClick={() => {
-                setNext(false);
-                setOpen(false);
+                  setOpen(false);
+                  setUserType(null);
               }}
             >
               &times;
