@@ -133,7 +133,7 @@
     cursor: pointer;
     transition: all 0.3s ease-in;
     text-align: center;
-    line-height: 6vh;
+    line-height: 3rem;
   }
 
   .navbarheader{
