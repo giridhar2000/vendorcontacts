@@ -12,21 +12,23 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../contexts/authContext";
 import UserContext from "../../contexts/userContext";
-import { Popover } from "antd";
+import { Popover, message,Modal } from "antd";
+import { GiPartyPopper } from "react-icons/gi";
 import { toast } from "react-toastify";
 import supabase from "../../utils/supabase.config";
 import { useQuery } from "react-query";
 import { getUser } from "../../utils/profile_helper";
 import pdf from "../../Assets/TNC.pdf";
 
-
 const Header = () => {
   const [isAuth, setIsAuth] = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [checkbox, setCheckbox] = useState(false);
-  const { data: profile, isLoading } = useQuery('profile', getUser, {
-    enabled: isAuth !== undefined
-  })
+  const [userType, setUserType] = useState(null);
+  const [isSent, setIsSent] = useState(false);
+  const { data: profile, isLoading } = useQuery("profile", getUser, {
+    enabled: isAuth !== undefined,
+  });
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const signin = () => {
@@ -39,17 +41,41 @@ const Header = () => {
     setOpen(false);
   };
 
+  async function invite(email) {
+    if (email && checkbox && userType) {
+      try {
+        const { data, error } = await supabase.from("invite_email").insert([
+          {
+            email_id: email,
+            type: userType,
+          },
+        ]);
+        if (error) throw new Error(error);
+        setIsSent(true);
+        setOpen(false);
+        setUserType(null);
+        return data[0]?.email_id;
+      } catch (err) {
+        return null;
+      }
+    } else {
+      message.error("please enter your email id and click on the checkbox");
+    }
+    setEmail("");
+    setUserType(null);
+    setCheckbox(false);
+  }
+
   async function logout() {
     const { error } = await supabase.auth.signOut();
     if (error) {
       toast("Logout failed", { type: "error" });
       return;
     }
-    setIsAuth(false)
+    setIsAuth(false);
     localStorage.removeItem("auth");
     navigate("/");
   }
-
 
   const content = (
     <div>
@@ -70,67 +96,223 @@ const Header = () => {
     </div>
   );
 
-
-
   return (
     <>
-      {open && (
+      {open && !userType && (
         <div id="myModal" className="modal">
           <div className="modal-content">
-            <span className="close" onClick={() => setOpen(false)}>
+            <span
+              className="close"
+              onClick={() => {
+                setOpen(false);
+                setUserType(null);
+              }}
+            >
               &times;
             </span>
 
             <div className="modalform">
               <h4>
-                Request an Invite.
+                Are you a<br /> Vendor or an Architect ?
               </h4>
 
-              <p>We'll contact a partner firm to confirm your credentials and get you on the list :)</p>
-
-              <form>
-                <div>
-                  {/* <label style={{ color: 'rgba(0,0,0,0.5)' }}>Email</label><br /> */}
-                  <input
-                    className="mailinput"
-                    type="text"
-                    placeholder="Enter your email here"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <br />
+              <div
+                className="Loginform mt-32 w-40"
+                style={{ marginLeft: "0", marginTop: "32px", width: "40%" }}
+              >
+                <div className="buttons-select" style={{ width: "100%" }}>
+                  <div className="button">
+                    <input
+                      type="radio"
+                      id="Architect"
+                      name="signupBtn"
+                      value="architect"
+                      onChange={(e) => setUserType(e.target.value)}
+                    />
+                    <label className="btn btn-default" for="Architect">
+                      Architect
+                    </label>
+                  </div>
+                  <div className="button">
+                    <input
+                      type="radio"
+                      id="Vendor"
+                      name="signupBtn"
+                      value="vendor"
+                      onChange={(e) => setUserType(e.target.value)}
+                    />
+                    <label className="btn btn-default" for="Vendor">
+                      Vendor
+                    </label>
+                  </div>
                 </div>
-                <br />
-                <div>
-                  <input
-                    type="checkbox"
-                    name="agreement"
-                    onChange={(e) => setCheckbox(e.target.value)}
-                  />
-                  &nbsp;
-                  <label className="checklabel">
-                    By clicking "Accept," you agree to our{" "}
-                    <a href={pdf} target="_blank">
-                      Terms and Conditions
-                    </a>
-                    .
-                  </label>
-                  <br />
-                </div>
-                <br />
-              </form>
-              <button className="submit-btn">
-                Request invite
-              </button>
-
+              </div>
             </div>
           </div>
         </div>
       )}
+
+      {open &&
+        userType &&
+        (userType === "vendor" ? (
+          <div id="myModal" className="modal">
+            <div className="modal-content">
+              <span
+                className="close"
+                onClick={() => {
+                  setOpen(false);
+                  setUserType(null);
+                }}
+              >
+                &times;
+              </span>
+
+              <div className="modalform">
+                <h4>Request an Invite.</h4>
+
+                <p>
+                  We'll contact a partner firm to confirm your credentials and
+                  get you on the list :)
+                </p>
+
+                <form>
+                  <div>
+                    {/* <label style={{ color: 'rgba(0,0,0,0.5)' }}>Email</label><br /> */}
+                    <input
+                      className="mailinput"
+                      type="text"
+                      placeholder="Enter your email here"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <br />
+                  </div>
+                  <br />
+                  <div>
+                    <input
+                      type="checkbox"
+                      name="agreement"
+                      onChange={(e) => setCheckbox(e.target.value)}
+                    />
+                    &nbsp;
+                    <label className="checklabel">
+                      By clicking "Accept," you agree to our{" "}
+                      <a href={pdf} target="_blank">
+                        Terms and Conditions
+                      </a>
+                      .
+                    </label>
+                    <br />
+                  </div>
+                  <br />
+                </form>
+                <button className="submit-btn">Request invite</button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div id="myModal" className="modal">
+            <div className="modal-content">
+              <span
+                className="close"
+                onClick={() => {
+                  setOpen(false);
+                  setUserType(null);
+                }}
+              >
+                &times;
+              </span>
+
+              <div className="modalform">
+                <h4>Join the list</h4>
+
+                <p>
+                  You're one step away from easy communication with your reps :)
+                </p>
+
+                <form>
+                  <div>
+                    {/* <label style={{color: 'rgba(0,0,0,0.5)'}}>Email</label><br /> */}
+                    <input
+                      className="mailinput"
+                      type="text"
+                      placeholder="Enter your email here"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <br />
+                  </div>
+                  <br />
+                  <div>
+                    <input
+                      type="checkbox"
+                      name="agreement"
+                      onChange={(e) => setCheckbox(e.target.value)}
+                    />
+                    &nbsp;
+                    <label className="checklabel">
+                      By clicking "Accept," you agree to our{" "}
+                      <a href={pdf} target="_blank">
+                        Terms and Conditions
+                      </a>
+                      .
+                    </label>
+                    <br />
+                  </div>
+                  <br />
+                </form>
+                <button className="submit-btn" onClick={() => invite(email)}>
+                  Join the list
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      <Modal
+        bodyStyle={{
+          fontFamily: " 'Quicksand' sans-serif",
+        }}
+        title={
+          <h3
+            style={{
+              display: "flex",
+              alignItems: "center",
+              fontFamily: " 'Quicksand' sans-serif",
+            }}
+          >
+            <GiPartyPopper
+              style={{
+                marginRight: ".8rem",
+                fontSize: "1.7rem",
+                color: "#aeba00",
+              }}
+            />
+            Thank you for Joining Our Waitlist!{" "}
+          </h3>
+        }
+        centered
+        open={isSent}
+        footer={null}
+        onCancel={() => setIsSent(false)}
+      >
+        <p>
+          We are thrilled to have you onboard. Stay tuned for exclusive updates
+          and be ready to experience a transformative approach to
+          vendor-designer collaboration.
+          <br /> <br />
+          Looking forward to building the future together!
+          <br />
+          <br /> Team VendorContacts
+        </p>
+      </Modal>
       <div className="header">
-        <div className="headerlogo" onClick={() => navigate('/')}>
-          <img src={Icon} alt="" className="logoIcon" style={{ width: "100%" }} />
-          
+        <div className="headerlogo" onClick={() => navigate("/")}>
+          <img
+            src={Icon}
+            alt=""
+            className="logoIcon"
+            style={{ width: "100%" }}
+          />
         </div>
 
         {/* {isAuth ? (
@@ -174,13 +356,19 @@ const Header = () => {
               <button className="signin" onClick={signin}>
                 Sign in
               </button>
-              <button className="request" onClick={() => setOpen(true)}>Request Invite</button>
+              <button className="request" onClick={() => setOpen(true)}>
+                Request Invite
+              </button>
             </div>
           ) : (
             <div className="buttons icons">
               <BsChatLeftText onClick={() => navigate("/chats")} />
               {/* <BsBell /> */}
-              <Popover placement="bottomRight" content={content} trigger="click">
+              <Popover
+                placement="bottomRight"
+                content={content}
+                trigger="click"
+              >
                 {isLoading ? (
                   <Skeleton.Avatar active={isLoading} shape={"circle"} />
                 ) : (
@@ -197,12 +385,9 @@ const Header = () => {
               </Popover>
             </div>
           )}
-
         </div>
 
         {
-
-
           //   <div className="menu">
           //   <Button type="secondary" onClick={showDrawer}>
           //     <svg
@@ -258,7 +443,6 @@ const Header = () => {
           //         </form>
           //       </div>
           //     ) : null}
-
           //       {!isAuth ? (
           //         <div className="buttons">
           //           <button className="signin" onClick={signin}>
@@ -285,10 +469,7 @@ const Header = () => {
           //       )}
           //   </Drawer>
           // </div>
-
-
         }
-
       </div>
     </>
   );
