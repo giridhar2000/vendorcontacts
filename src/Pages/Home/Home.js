@@ -131,7 +131,7 @@ export default function Home() {
 
             <div className="modalform">
               <h4>
-                Are you a<br /> Vendor or an Architect ?
+                Are you a<br /> Vendor or a Designer ?
               </h4>
 
               <div
@@ -142,13 +142,13 @@ export default function Home() {
                   <div className="button">
                     <input
                       type="radio"
-                      id="Architect"
+                      id="Designer"
                       name="signupBtn"
-                      value="architect"
+                      value="designer"
                       onChange={(e) => setUserType(e.target.value)}
                     />
-                    <label className="btn btn-default" for="Architect">
-                      Architect
+                    <label className="btn btn-default" for="Designer">
+                      Designer
                     </label>
                   </div>
                   <div className="button">

@@ -207,7 +207,7 @@ export default function Login() {
             <div className="loginText">
               <h1>Welcome Back!</h1>
               <span>
-                Please provide your login details to access the content.
+                Please provide your login details.
               </span>
             </div>
             <div className="Loginform">
