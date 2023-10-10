@@ -40,7 +40,7 @@ export default function Home() {
     animator();
   });
 
-  async function invite(email) {
+   async function invite(email) {
     if (email && checkbox && userType) {
       try {
         const { data, error } = await supabase.from("invite_email").insert([
@@ -136,9 +136,9 @@ export default function Home() {
 
               <div
                 className="Loginform mt-32 w-40"
-                style={{ marginLeft: "0", marginTop: "32px",width:'40%' }}
+                style={{ marginLeft: "0", marginTop: "32px", width: "40%" }}
               >
-                <div className="buttons-select" style={{width:'100%'}}>
+                <div className="buttons-select" style={{ width: "100%" }}>
                   <div className="button">
                     <input
                       type="radio"
@@ -164,72 +164,128 @@ export default function Home() {
                     </label>
                   </div>
                 </div>
-                
-               
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {open && userType && (
-        <div id="myModal" className="modal">
-          <div className="modal-content">
-            <span
-              className="close"
-              onClick={() => {
+      {open &&
+        userType &&
+        (userType === "vendor" ? (
+          <div id="myModal" className="modal">
+            <div className="modal-content">
+              <span
+                className="close"
+                onClick={() => {
                   setOpen(false);
                   setUserType(null);
-              }}
-            >
-              &times;
-            </span>
+                }}
+              >
+                &times;
+              </span>
 
-            <div className="modalform">
-              <h4>Join the list</h4>
+              <div className="modalform">
+                <h4>Request an Invite.</h4>
 
-              <p>
-                You're one step away from easy communication with your reps :)
-              </p>
+                <p>
+                  We'll contact a partner firm to confirm your credentials and
+                  get you on the list :)
+                </p>
 
-              <form>
-                <div>
-                  {/* <label style={{color: 'rgba(0,0,0,0.5)'}}>Email</label><br /> */}
-                  <input
-                    className="mailinput"
-                    type="text"
-                    placeholder="Enter your email here"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
+                <form>
+                  <div>
+                    {/* <label style={{ color: 'rgba(0,0,0,0.5)' }}>Email</label><br /> */}
+                    <input
+                      className="mailinput"
+                      type="text"
+                      placeholder="Enter your email here"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <br />
+                  </div>
                   <br />
-                </div>
-                <br />
-                <div>
-                  <input
-                    type="checkbox"
-                    name="agreement"
-                    onChange={(e) => setCheckbox(e.target.value)}
-                  />
-                  &nbsp;
-                  <label className="checklabel">
-                    By clicking "Accept," you agree to our{" "}
-                    <a href={pdf} target="_blank">
-                      Terms and Conditions
-                    </a>
-                    .
-                  </label>
+                  <div>
+                    <input
+                      type="checkbox"
+                      name="agreement"
+                      onChange={(e) => setCheckbox(e.target.value)}
+                    />
+                    &nbsp;
+                    <label className="checklabel">
+                      By clicking "Accept," you agree to our{" "}
+                      <a href={pdf} target="_blank">
+                        Terms and Conditions
+                      </a>
+                      .
+                    </label>
+                    <br />
+                  </div>
                   <br />
-                </div>
-                <br />
-              </form>
-              <button className="submit-btn" onClick={() => invite(email)}>
-                Join the list
-              </button>
+                </form>
+                <button className="submit-btn">Request invite</button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <div id="myModal" className="modal">
+            <div className="modal-content">
+              <span
+                className="close"
+                onClick={() => {
+                  setOpen(false);
+                  setUserType(null);
+                }}
+              >
+                &times;
+              </span>
+
+              <div className="modalform">
+                <h4>Join the list</h4>
+
+                <p>
+                  You're one step away from easy communication with your reps :)
+                </p>
+
+                <form>
+                  <div>
+                    {/* <label style={{color: 'rgba(0,0,0,0.5)'}}>Email</label><br /> */}
+                    <input
+                      className="mailinput"
+                      type="text"
+                      placeholder="Enter your email here"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <br />
+                  </div>
+                  <br />
+                  <div>
+                    <input
+                      type="checkbox"
+                      name="agreement"
+                      onChange={(e) => setCheckbox(e.target.value)}
+                    />
+                    &nbsp;
+                    <label className="checklabel">
+                      By clicking "Accept," you agree to our{" "}
+                      <a href={pdf} target="_blank">
+                        Terms and Conditions
+                      </a>
+                      .
+                    </label>
+                    <br />
+                  </div>
+                  <br />
+                </form>
+                <button className="submit-btn" onClick={() => invite(email)}>
+                  Join the list
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
 
       <section className="banner">
         <div className="banner-heading">
