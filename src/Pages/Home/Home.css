@@ -24,6 +24,12 @@
     display: flex;
 }
 
+.bannerimg{
+    position: absolute;
+    right: 0;
+    z-index: 1;
+}
+
 .bg {
     position: absolute;
     right: 0;
@@ -134,6 +140,20 @@
 .faq-text {
     font-size: 42px;
     width: 100%;
+}
+
+.faq-img{
+    position: absolute;
+    left: -20rem;
+    top: 95%;
+    margin-bottom: 20px;
+}
+
+.faq-img2{
+    position: absolute;
+    right: -5rem;
+    top: 121%;
+    margin-bottom: 20px;
 }
 
 .mission {
