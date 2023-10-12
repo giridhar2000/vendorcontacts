@@ -105,9 +105,9 @@
 }
 
 .faq {
-    height: 354px;
     margin: 3rem 5% auto;
     display: flex;
+    border: 2px solid black;
 }
 
 .firststep {
@@ -117,11 +117,15 @@
     width: 100%;
 }
 
+
+.firststep img{
+    width: 100%;
+}
+
 .faq-block {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    border: 2px solid black;
     text-align: center;
     width: 100%;
 
@@ -247,8 +251,7 @@
 }
 
 .collaborators {
-    margin: 3%;
-    overflow-x: hidden;
+    margin: 5%;
 }
 
 .heading {
@@ -277,11 +280,6 @@
 
 .ribbon {
     margin: 0 auto;
-    width: 40%;
-}
-
-.ribbon img {
-    width: 100%;
 }
 
 .tilt {
@@ -289,7 +287,7 @@
     flex-direction: column;
     width: 100%;
     align-items: center;
-    transform: translateY(-33vh);
+    transform: translateY(-37vh) translateX(-15vh);
 }
 
 .tiltedChild {
@@ -317,19 +315,19 @@
 
 .tiltedChild:nth-child(3) {
     animation-delay: 600ms;
-    transform: rotate(-12.953deg) translateY(16vh);
+    transform: rotate(-12.953deg) translateY(15vh) translateX(-3vh);
     animation: bounceInDown3 2s;
 }
 
 .tiltedChild:nth-child(4) {
     animation-delay: 400ms;
-    transform: rotate(21.934deg) translateY(15vh) translateX(22vh);
+    transform: rotate(24.934deg) translateY(13vh) translateX(24vh);
     animation: bounceInDown4 1.5s;
 }
 
 .tiltedChild:nth-child(5) {
     animation-delay: 200ms;
-    transform: rotate(-18.28deg) translateX(-6vh) translateY(28vh);
+    transform: rotate(-18.28deg) translateX(14vh) translateY(37vh);
     animation: bounceInDown5 1s;
 }
 
@@ -523,7 +521,6 @@ hr {
 .aboutbody {
     display: flex;
     flex-direction: column;
-    margin-top: -5vh;
 }
 
 .collab-img{
@@ -544,7 +541,7 @@ hr {
     }
     
     .tilt {
-        transform: translateY(-36vh);
+        transform: translateY(-36vh) translateX(-15vh);
     }
 
     .bg {
@@ -730,14 +727,27 @@ hr {
         height: auto;
         text-align: center;
         flex-direction: column-reverse;
+        border: none;
     }
 
     .tiltedChild:nth-child(1) {
-        transform: rotate(-38.351deg) translateY(-6vh);
+        transform: rotate(-38.351deg) translateY(-6vh) translateX(-3vh);
     }
 
     .tiltedChild:nth-child(2) {
-        transform: rotate(9.803deg) translateX(0vh);
+        transform: rotate(9.803deg) translateX(5vh) translateY(-5vh);
+    }
+
+    .tiltedChild:nth-child(3) {
+        transform: rotate(-12.953deg) translateY(-4vh) translateX(-1vh);
+    }
+
+    .tiltedChild:nth-child(4) {
+        transform: rotate(21.934deg) translateY(-4vh) translateX(4vh);
+    }
+
+    .tiltedChild:nth-child(5) {
+        transform: rotate(-18.28deg) translateX(-4vh) translateY(-3vh);
     }
 
 
@@ -748,6 +758,7 @@ hr {
         font-weight: 600;
         justify-content: center;
         padding: 2vh;
+        border: 2px solid black;
     }
 
     .faq,
@@ -803,19 +814,15 @@ hr {
     }
 
     .tiltedChild {
-        width: 60%;
-        transform: translateX(0) !important;
-        /* height: 3vh !important;
-      padding: 0 !important;
-      padding-inline: 0 !important;
-      font-size: 8px !important; */
+        width: 35%;
+        font-size: x-small;
     }
 
     .mission {
         padding: 0;
         width: initial;
-        margin-block: 5vh !important;
         border-bottom-right-radius: 100px;
+        margin-top: 2vh !important;
     }
 
     .mission-left h4 {
@@ -831,10 +838,6 @@ hr {
         padding-left: 0;
         /* margin-top: 10rem; */
         border-bottom: none;
-    }
-
-    .aboutbody {
-        margin-top: 3rem !important;
     }
 
     .aboutcolumn {
@@ -876,10 +879,9 @@ hr {
     .companies {
         animation: none;
         flex-direction: row;
-        height: 20vh;
+        height: 10vh;
         padding: 3vh;
         display: flex;
-        flex-wrap: wrap;
     }
 
     .companies img {

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./Home.css";
-import Gettys from "../../Assets/images/PW.svg";
 import IAInteriors from "../../Assets/images/ia_interior_architects.svg";
 import Gensler from "../../Assets/images/Gensler_logo.svg";
 import Stantec from "../../Assets/images/stantec.svg";
-import OKK from "../../Assets/images/PerkinsEastman.jpg";
 import HPA from "../../Assets/images/hpa.svg";
 // import Collaboration from "../../Assets/images/handshake.svg";
 // import Telescope from "../../Assets/images/telescope.svg";
@@ -23,24 +21,23 @@ import Footer from "../../Components/Footer/Footer";
 import pdf from "../../Assets/TNC.pdf";
 import supabase from "../../utils/supabase.config";
 import { message, Modal } from "antd";
-import ribbon2 from "../../Assets/images/strip 2.svg";
+import ribbon2 from "../../Assets/images/svg2.svg";
 import { GiPartyPopper } from "react-icons/gi";
-import ribbon1 from "../../Assets/images/strip.svg";
-import ribbon3 from "../../Assets/images/strip3.svg";
-import { toast } from "react-toastify";
+import ribbon1 from "../../Assets/images/svg1.svg";
+import ribbon3 from "../../Assets/images/svg3.svg";
+
 export default function Home() {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [checkbox, setCheckbox] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [userType, setUserType] = useState(null);
-  const [next, setNext] = useState(false);
 
   useEffect(() => {
     animator();
   });
 
-   async function invite(email) {
+  async function invite(email) {
     if (email && checkbox && userType) {
       try {
         const { data, error } = await supabase.from("invite_email").insert([
@@ -190,12 +187,11 @@ export default function Home() {
 
                 <p>
                   We'll contact a partner firm to confirm your credentials and
-                  get you on the list :)
+                  get you on the list :&#41;
                 </p>
 
                 <form>
                   <div>
-                    {/* <label style={{ color: 'rgba(0,0,0,0.5)' }}>Email</label><br /> */}
                     <input
                       className="mailinput"
                       type="text"
@@ -215,7 +211,7 @@ export default function Home() {
                     &nbsp;
                     <label className="checklabel">
                       By clicking "Accept," you agree to our{" "}
-                      <a href={pdf} target="_blank">
+                      <a href={pdf} target="_blank" rel="noreferrer">
                         Terms and Conditions
                       </a>
                       .
@@ -270,7 +266,7 @@ export default function Home() {
                     &nbsp;
                     <label className="checklabel">
                       By clicking "Accept," you agree to our{" "}
-                      <a href={pdf} target="_blank">
+                      <a href={pdf} target="_blank" rel="noreferrer">
                         Terms and Conditions
                       </a>
                       .
@@ -341,7 +337,7 @@ export default function Home() {
           <br /> <br />
           Looking forward to building the future together!
           <br />
-          <br /> Team VendorContacts
+          <br /> Team VendorContacts
         </p>
       </Modal>
       <section className="team">
@@ -486,118 +482,8 @@ export default function Home() {
 
       <section className="services">
         <div className="steps">
-          <img src={ribbon3} alt="ribbon" style={{ width: "100%" }} />
+          <img src={ribbon2} alt="ribbon" style={{ width: "100%" }} />
         </div>
-
-        {/* <div className="service-container">
-                    <div className="card">
-                        <div className="animate card-head">
-                            <img src={TrustIcon} alt="icon" className="animate" />
-                        </div>
-                        <div className="card-body">
-                            <h5 className="card-title">
-                                Trusted by Industry Professionals
-                            </h5>
-                            <p className="card-text">
-                                Created and vetted by the best in the industry.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="card">
-                        <div className="card-head">
-                            <img src={CommunicationIcon} alt="icon" className="animate" />
-                        </div>
-                        <div className="card-body">
-                            <h5 className="card-title">Effective Communication Tools</h5>
-                            <p className="card-text">
-                                No more email threads. Streamlined, Al assisted communication
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="card">
-                        <div className="card-head">
-                            <img src={SearchIcon} alt="icon" className="animate" />
-                        </div>
-                        <div className="card-body">
-                            <h5 className="card-title">Advanced Search Capabilities</h5>
-                            <p className="card-text">
-                                Increased exposure through detailed and data-rich filtering
-                                tools.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="card">
-                        <div className="card-head">
-                            <img src={StoreIcon} alt="icon" className="animate" />
-                        </div>
-                        <div className="card-body">
-                            <h5 className="card-title">
-                                Trusted by Industry Professionals
-                            </h5>
-                            <p className="card-text">
-                                For a personalized experience, where you can specify with
-                                certainty.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="card">
-                        <div className="card-head">
-                            <img src={ToolsIcon} alt="icon" className="animate" />
-                        </div>
-                        <div className="card-body">
-                            <h5 className="card-title">Effective Communication Tools</h5>
-                            <p className="card-text">
-                                All your projects and rep communications, in one place.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="card">
-                        <div className="card-head">
-                            <img src={AdvanceSearchIcon} alt="icon" className="animate" />
-                        </div>
-                        <div className="card-body">
-                            <h5 className="card-title">Advanced Search Capabilities</h5>
-                            <p className="card-text">
-                                Tools to enable library updates, lunch and learns, event
-                                invites, and more.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="card">
-                        <div className="card-head">
-                            <img src={GraphIcon} alt="icon" className="animate" />
-                        </div>
-                        <div className="card-body">
-                            <h5 className="card-title">
-                                Trusted by Industry Professionals
-                            </h5>
-                            <p className="card-text">
-                                Organization tools make your project workflow faster, with
-                                less hassle.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="ribbon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="601" height="390" viewBox="0 0 601 390" fill="none">
-                            <path id="p3" d="M43 0V347H558V0" stroke="#D9E167" stroke-width="85" stroke-linejoin="round" />
-                            <text dominant-baseline="middle" fill="black" font-size="32px">
-                                <textPath href="#p3" startOffset="100%">
-                                    Uniting Visionaries and makers .Uniting Visionaries and makers .
-                                    <animate
-                                        attributeName="startOffset" from="-100%" to="100%"
-                                        dur="10s" begin="3s" repeatCount="indefinite" />
-                                </textPath>
-                            </text>
-                        </svg>
-                    </div>
-                </div> */}
 
         <div className="aboutbody">
           <div className="aboutrow">
@@ -681,33 +567,9 @@ export default function Home() {
             </div>
 
             <div className="ribbon">
-              {/* <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="601"
-                height="390"
-                viewBox="0 0 601 390"
-                fill="none"
-              >
-                <path
-                  id="p3"
-                  d="M43 0V347H558V0"
-                  stroke="#D9E167"
-                  stroke-width="85"
-                  stroke-linejoin="round"
-                />
-                <text dominant-baseline="middle" fill="black" font-size="32px">
-                  <textPath href="#p3">
-                    Uniting Visionaries and makers .Uniting Visionaries and
-                    makers . Uniting Visionaries and makers .Uniting Visionaries
-                    and makers .
-                    <animate
-                                            attributeName="startOffset" from="-100%" to="100%"
-                                            dur="10s" begin="3s" repeatCount="indefinite" />
-                  </textPath>
-                </text>
-              </svg> */}
-              <img src={ribbon2} alt="ribon-img" />
+              <img src={ribbon3} alt="ribon-img" />
             </div>
+
           </div>
         </div>
       </section>
