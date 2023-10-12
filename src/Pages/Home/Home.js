@@ -23,10 +23,10 @@ import Footer from "../../Components/Footer/Footer";
 import pdf from "../../Assets/TNC.pdf";
 import supabase from "../../utils/supabase.config";
 import { message, Modal } from "antd";
-import ribbon2 from "../../Assets/images/strip 2.svg";
+import ribbon2 from "../../Assets/images/svg2.svg";
 import { GiPartyPopper } from "react-icons/gi";
-import ribbon1 from "../../Assets/images/strip.svg";
-import ribbon3 from "../../Assets/images/strip3.svg";
+import ribbon1 from "../../Assets/images/svg1.svg";
+import ribbon3 from "../../Assets/images/svg3.svg";
 import { toast } from "react-toastify";
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -486,7 +486,7 @@ export default function Home() {
 
       <section className="services">
         <div className="steps">
-          <img src={ribbon3} alt="ribbon" style={{ width: "100%" }} />
+          <img src={ribbon2} alt="ribbon" style={{ width: "100%" }} />
         </div>
 
         {/* <div className="service-container">
@@ -706,7 +706,7 @@ export default function Home() {
                   </textPath>
                 </text>
               </svg> */}
-              <img src={ribbon2} alt="ribon-img" />
+              <img src={ribbon3} alt="ribon-img" />
             </div>
           </div>
         </div>
