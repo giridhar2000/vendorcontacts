@@ -16,7 +16,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-size: 40px;
+    font-size: 50px;
     margin-top: 4rem;
 }
 
@@ -24,7 +24,7 @@
     display: flex;
 }
 
-.bannerimg{
+.bannerimg {
     position: absolute;
     right: 0;
     z-index: 1;
@@ -34,6 +34,26 @@
     position: absolute;
     right: 0;
     mask-image: linear-gradient(40deg, transparent 50%, #0f0f0f 80%);
+}
+
+.abstract {
+    position: absolute;
+    right: -10vh;
+    z-index: 99;
+}
+
+.abs3 {
+    width: 25%;
+    position: relative;
+    left: -8%;
+    top: -6vh;
+}
+
+.abs2 {
+    width: 20%;
+    position: absolute;
+    right: -8%;
+    top: 58vh;
 }
 
 .Ellipse {
@@ -111,7 +131,7 @@
 }
 
 .faq {
-    margin: 3rem 5% auto;
+    margin: 0rem 5% auto;
     display: flex;
     border: 2px solid black;
 }
@@ -124,7 +144,7 @@
 }
 
 
-.firststep img{
+.firststep img {
     width: 100%;
 }
 
@@ -139,17 +159,18 @@
 
 .faq-text {
     font-size: 42px;
-    width: 100%;
+    width: 50%;
+    padding-block: 5vh;
 }
 
-.faq-img{
+.faq-img {
     position: absolute;
     left: -20rem;
     top: 95%;
     margin-bottom: 20px;
 }
 
-.faq-img2{
+.faq-img2 {
     position: absolute;
     right: -5rem;
     top: 121%;
@@ -305,49 +326,53 @@
 .tilt {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 50%;
     align-items: center;
-    transform: translateY(-37vh) translateX(-15vh);
+    position: absolute;
+    right: 25vh;
+    top: 30vh;
+    /* transform: translateY(-37vh) translateX(-15vh); */
 }
 
 .tiltedChild {
     background-color: #000;
     color: white;
-    padding: 2vh;
+    padding: 4vh;
     padding-inline: 5vh;
     border-radius: 5vh;
     text-align: center;
     cursor: pointer;
     width: 35%;
+    font-size: larger;
 }
 
 .tiltedChild:nth-child(1) {
     animation-delay: 1000ms;
-    transform: rotate(-38.351deg) translateY(6vh);
+    transform: rotate(-38.351deg) translateY(0vh) translateX(-7vh);
     animation: bounceInDown1 3s;
 }
 
 .tiltedChild:nth-child(2) {
     animation-delay: 800ms;
-    transform: rotate(9.803deg) translateX(17vh) translateY(9vh);
+    transform: rotate(9.803deg) translateX(13vh) translateY(6vh);
     animation: bounceInDown2 2.5s;
 }
 
 .tiltedChild:nth-child(3) {
     animation-delay: 600ms;
-    transform: rotate(-12.953deg) translateY(15vh) translateX(-3vh);
+    transform: rotate(-12.953deg) translateY(13vh) translateX(0vh);
     animation: bounceInDown3 2s;
 }
 
 .tiltedChild:nth-child(4) {
     animation-delay: 400ms;
-    transform: rotate(24.934deg) translateY(13vh) translateX(24vh);
+    transform: rotate(24.934deg) translateY(13vh) translateX(20vh);
     animation: bounceInDown4 1.5s;
 }
 
 .tiltedChild:nth-child(5) {
     animation-delay: 200ms;
-    transform: rotate(-18.28deg) translateX(14vh) translateY(37vh);
+    transform: rotate(-18.28deg) translateX(14vh) translateY(35vh);
     animation: bounceInDown5 1s;
 }
 
@@ -543,10 +568,11 @@ hr {
     flex-direction: column;
 }
 
-.collab-img{
+.collab-img {
     width: 15%;
 }
-.LoginForm-Home{
+
+.LoginForm-Home {
     margin: 0 !important;
     display: flex;
     flex-direction: column;
@@ -555,13 +581,19 @@ hr {
     width: 80%;
 }
 
+.mobile {
+    display: none;
+}
+
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
     .tiltedChild {
-        width: 40%;
+        width: 45%;
     }
-    
+
     .tilt {
         transform: translateY(-36vh) translateX(-15vh);
+        right: 0vh;
+        top: 60vh;
     }
 
     .bg {
@@ -599,7 +631,7 @@ hr {
     .modalform {
         padding: 1vh;
     }
-   
+
 
     #aboutcolumn {
         margin-bottom: 18dvh;
@@ -612,16 +644,49 @@ hr {
 
 @media (max-width: 1100px) {
 
-    *{
+    * {
         font-family: "Mulish";
     }
 
-    .collab-img{
+    .abstract {
+        width: 40%;
+        right: -5vh;
+        top: 23vh;
+    }
+
+    .abs2 {
+        width: 30%;
+        right: -12%;
+        top: 33vh;
+    }
+
+    .abs3 {
+        position: absolute;
+        width: 35%;
+        left: -10%;
+        top: 67vh;
+    }
+
+    .mobile {
+        display: flex !important;
+        width: 100%;
+        position: relative;
+        top: 0;
+        right: 0;
+    }
+
+    .desktop {
+        display: none;
+    }
+
+    .collab-img {
         width: 25%;
     }
 
     .faq-text {
         font-size: 23px !important;
+        width: 100%;
+        padding-block: 1vh;
     }
 
     .tilt {
@@ -639,13 +704,16 @@ hr {
         margin-left: 4vh !important;
         padding-left: 0;
     }
-    .mt-32{
-        margin-top:32px !important;
+
+    .mt-32 {
+        margin-top: 32px !important;
         width: 40%;
     }
-    .w-40{
+
+    .w-40 {
         width: 40% !important;
     }
+
     .container {
         overflow-x: hidden;
     }
@@ -709,7 +777,7 @@ hr {
         text-align: left;
     }
 
-    .lastitem{
+    .lastitem {
         padding-left: 0;
     }
 
@@ -721,7 +789,7 @@ hr {
         height: 15vh;
     }
 
-    .firststep svg{
+    .firststep svg {
         width: 110%;
         height: 50%;
         left: 20vh;
@@ -834,8 +902,9 @@ hr {
     }
 
     .tiltedChild {
-        width: 35%;
+        width: 50%;
         font-size: x-small;
+        padding: 2vh;
     }
 
     .mission {
