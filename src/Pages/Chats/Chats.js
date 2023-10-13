@@ -505,7 +505,7 @@ const Chats = () => {
                   className="projects-body"
                   onScroll={handleDebouncedScrollProjects}
                 >
-                  {!projects || projects?.pages.length === 0 ? (
+                  {!projects || projects?.pages?.length === 0 ? (
                     <Empty
                       image={Empty.PRESENTED_IMAGE_SIMPLE}
                       description={"No projects"}
@@ -1252,8 +1252,8 @@ const Messeges = memo(
     const ref = useRef(null);
 
     useEffect(() => {
-      console.log('pages',messages?.pages)
-      if (messages?.pages[messages?.pages?.length-1].length) {
+      // console.log('pages',messages?.pages)
+      if (messages?.pages[messages?.pages?.length - 1]?.length) {
         ref?.current?.scrollIntoView({
           behavior: "smooth",
           block: "end",
@@ -1262,7 +1262,6 @@ const Messeges = memo(
     }, [messages?.pages]);
 
     async function handleScroll(e) {
-
       if (e.target.scrollTop === 0) {
         if (hasNextPageMessages) {
           await fetchNextPageMessages();
@@ -1286,16 +1285,13 @@ const Messeges = memo(
           </p>
         ) : (
           <div>
-            {messages?.pages
-              ?.reverse()
-              ?.map((page) => {
+            {messages?.pages?.reverse()?.map((page) => {
               return (
                 <div>
                   {page
                     ?.sort(
                       (a, b) =>
-                        Date.parse(a.created_at) -
-                        Date.parse(b.created_at)
+                        Date.parse(a.created_at) - Date.parse(b.created_at)
                     )
                     // ?.reverse()
                     ?.map((message) => {

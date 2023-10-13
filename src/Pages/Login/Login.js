@@ -82,39 +82,35 @@ export default function Login() {
       });
 
       if (error) {
-        setLoading(false);
-        toast(error.message, { type: "error" });
-        return;
+        throw new Error(error);
       }
       toast("Profile created", { type: "success" });
       let profile = await getUserById(user?.id);
-      if (profile.status === false) {
-        localStorage.setItem("auth", JSON.stringify(true));
-        setIsAuth(true);
-        toast(
-          <p>
-            Welcome {profile.display_name} <br />
-            Please update your profile !!
-          </p>,
-          { type: "warning" }
-        );
-        console.log(profile?.status);
-        navigate("/edit");
-      }
+      localStorage.setItem("auth", JSON.stringify(true));
+      setIsAuth(true);
+      toast(
+        <p>
+          Welcome {firstName + " " + lastName} <br />
+          Please update your profile !!
+        </p>,
+        { type: "warning" }
+      );
+      console.log(profile?.status);
+      navigate("/edit");
 
       // localStorage.setItem("auth", JSON.stringify(user));
       // setIsAuth(true);
-      else if (profile?.type === "vendor") {
-        localStorage.setItem("auth", JSON.stringify(true));
-        setIsAuth(true);
-        toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
-        navigate("/profile");
-      } else {
-        localStorage.setItem("auth", JSON.stringify(true));
-        setIsAuth(true);
-        toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
-        navigate("/listing");
-      }
+      // else if (profile?.type === "vendor") {
+      //   localStorage.setItem("auth", JSON.stringify(true));
+      //   setIsAuth(true);
+      //   toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
+      //   navigate("/profile");
+      // } else {
+      //   localStorage.setItem("auth", JSON.stringify(true));
+      //   setIsAuth(true);
+      //   toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
+      //   navigate("/listing");
+      // }
     } catch (error) {
       setLoading(false);
       toast(error.message, { type: "error" });
@@ -206,9 +202,7 @@ export default function Login() {
           <>
             <div className="loginText">
               <h1>Welcome Back!</h1>
-              <span>
-                Please provide your login details.
-              </span>
+              <span>Please provide your login details.</span>
             </div>
             <div className="Loginform">
               <div className="emailip">
