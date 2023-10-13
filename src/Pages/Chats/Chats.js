@@ -90,6 +90,25 @@ const Chats = () => {
     }
   );
 
+
+  // Fetching all messages from a group
+  let {
+    fetchNextPage: fetchNextPageMessagesGroup,
+    hasNextPage: hasNextPageMessagesGroup,
+    isFetchingNextPage: isFetchingNextPageMessagesGroup,
+    data: messagesOfGroup,
+  } = useInfiniteQuery(
+    ["messaagelist", selectedGroup?.group_id],
+    ({ pageParam = 0 }) => getMessagesFromGroup(selectedGroup?.group_id, pageParam),
+    {
+      enabled: selectedGroup?.group_id != null,
+      getNextPageParam: (lastPage, allPages) => {
+        return allPages?.length;
+      },
+    }
+  );
+
+  
   useEffect(() => {
     if (input === "") {
       setFilteredProfiles([]);
@@ -184,14 +203,7 @@ const Chats = () => {
     }
   );
 
-  // Fetching all messages from a chat
-  let { data: messagesOfGroup } = useQuery(
-    ["messaagelist", selectedGroup?.group_id],
-    () => getMessagesFromGroup(selectedGroup?.group_id),
-    {
-      enabled: selectedGroup?.group_id != null,
-    }
-  );
+ 
   // Fetching all messages from a chat
   let { data: groupMembers } = useQuery(
     ["memberList", profile?.id],
@@ -798,6 +810,7 @@ const Chats = () => {
                           key={group?.id}
                           selectedGroup={selectedGroup}
                           setSelectedGroup={setSelectedGroup}
+                          setSelectedChat={setSelectedChat}
                         />
                       );
                     })}
@@ -907,8 +920,10 @@ const Chats = () => {
                     <Messeges
                       messages={messagesOfGroup}
                       profile={profile}
-                      groupMode={true}
                       hide={!selectedChat && !selectedGroup}
+                      fetchNextPageMessages={fetchNextPageMessagesGroup}
+                      hasNextPageMessages={hasNextPageMessagesGroup}
+                      isFetchingNextPageMessages={isFetchingNextPageMessagesGroup}
                     />
                     <div className="chat-input">
                       <div
@@ -1253,7 +1268,7 @@ const Messeges = memo(
 
     useEffect(() => {
       // console.log('pages',messages?.pages)
-      if (messages?.pages[messages?.pages?.length - 1]?.length) {
+      if ( messages?.pages[messages?.pages?.length - 1]?.length) {
         ref?.current?.scrollIntoView({
           behavior: "smooth",
           block: "end",
@@ -1384,13 +1399,17 @@ function Group({
   user_id,
   selectedGroup,
   setSelectedGroup,
+  setSelectedChat,
 }) {
   return (
     <div
       className={`projects-chat ${
         selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
       } ${last === index ? "" : "border-bottom"}`}
-      onClick={() => setSelectedGroup(group)}
+      onClick={() => {
+        setSelectedChat(null);
+        setSelectedGroup(group);
+      }}
     >
       <div className="chat-pic">
         <Avatar>{group?.name?.substring(0, 1)}</Avatar>

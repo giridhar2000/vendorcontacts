@@ -334,16 +334,29 @@ export async function getMessages(chat_id, page = 0) {
 
 // getting all messages from group id  ------------------>        returns [ < messages of group > ] || []
 
-export async function getMessagesFromGroup(group_id) {
+export async function getMessagesFromGroup(group_id,page=0) {
   try {
+    let from, to;
+    const loadMoreData = () => {
+      var ITEM_PER_PAGE = 15;
+      from = page * ITEM_PER_PAGE;
+      to = from + ITEM_PER_PAGE;
+      if (page > 0) {
+        from += 1;
+      }
+    };
+    loadMoreData();
     const { data, error } = await supabase
       .from("messages")
       .select(
         "id,created_at,text,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image"
       )
-      .eq("group_id", group_id);
+      .eq("group_id", group_id)
+      .order("created_at", { ascending: false })
+      // .order("created_at", { ascending: true })
+      .range(from, to)
     if (error) throw error;
-    return data;
+    return data.reverse();
   } catch (err) {
     // console.log(err);
     return [];
