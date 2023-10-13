@@ -371,31 +371,36 @@ const Edit = () => {
               value={profile?.bio && bio === null ? profile?.bio : bio}
               onChange={(e) => setBio(e.target.value)}
             ></textarea>
-            <div className="bio">Attachment</div>
-            <div className="attachment">
-              {/* <input
-                type="file"
-                accept="application/pdf"
-                onChange={handleDocUpload}
-              />
-              {docUrls?.map((doc, i) => {
-                return (
-                  <div key={i} style={{ width: "40px", height: "40px" }}>
-                    <TiTick />
-                  </div>
-                );
-              })} */}
-              <Upload
-                {...props}
-                accept=".pdf"
-                customRequest={handleDocUpload}
-                onRemove={handleRemove}
-                multiple
-                maxCount={5}
-              >
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-              </Upload>
-            </div>
+            {profile?.type === "architect" ? null : (
+              <>
+                <div className="bio">Attachment</div>
+                <div className="attachment">
+                  {/* <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={handleDocUpload}
+                />
+                {docUrls?.map((doc, i) => {
+                  return (
+                    <div key={i} style={{ width: "40px", height: "40px" }}>
+                      <TiTick />
+                    </div>
+                  );
+                })} */}
+                  <Upload
+                    {...props}
+                    accept=".pdf"
+                    customRequest={handleDocUpload}
+                    onRemove={handleRemove}
+                    multiple
+                    maxCount={5}
+                  >
+                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                  </Upload>
+                </div>
+              </>
+            )}
+
             <script
               src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"
               type="text/javascript"

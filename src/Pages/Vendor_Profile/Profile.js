@@ -128,15 +128,17 @@ const Profile = () => {
             </p>
           )}
         </div>
-        <div className="profile-downloads">
-          <p>Downloads</p>
-          <hr />
-          <div className="pdf-cards">
-            {docs?.map((doc) => {
-              return <PdfCard doc={doc} key={doc.id} />;
-            })}
+        {profile?.type === "architect" ? null : (
+          <div className="profile-downloads">
+            <p>Downloads</p>
+            <hr />
+            <div className="pdf-cards">
+              {docs?.map((doc) => {
+                return <PdfCard doc={doc} key={doc.id} />;
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <Footer />
