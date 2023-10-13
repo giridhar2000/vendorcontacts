@@ -88,33 +88,26 @@ export default function Login() {
       }
       toast("Profile created", { type: "success" });
       let profile = await getUserById(user?.id);
-      if (profile.status === false) {
+      // if (profile.status === false) {
         localStorage.setItem("auth", JSON.stringify(true));
         setIsAuth(true);
-        toast(
-          <p>
-            Welcome {profile.display_name} <br />
-            Please update your profile !!
-          </p>,
-          { type: "warning" }
-        );
         console.log(profile?.status);
         navigate("/edit");
-      }
+      // }
 
       // localStorage.setItem("auth", JSON.stringify(user));
       // setIsAuth(true);
-      else if (profile?.type === "vendor") {
-        localStorage.setItem("auth", JSON.stringify(true));
-        setIsAuth(true);
-        toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
-        navigate("/profile");
-      } else {
-        localStorage.setItem("auth", JSON.stringify(true));
-        setIsAuth(true);
-        toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
-        navigate("/listing");
-      }
+      // else if (profile?.type === "vendor") {
+      //   localStorage.setItem("auth", JSON.stringify(true));
+      //   setIsAuth(true);
+      //   toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
+      //   navigate("/profile");
+      // } else {
+      //   localStorage.setItem("auth", JSON.stringify(true));
+      //   setIsAuth(true);
+      //   toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
+      //   navigate("/listing");
+      // }
     } catch (error) {
       setLoading(false);
       toast(error.message, { type: "error" });
