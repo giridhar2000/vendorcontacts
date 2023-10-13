@@ -30,6 +30,8 @@ import {
   sendMessageToGroup,
   getMessagesFromGroup,
   formatSupabaseTimestampToTime,
+  getSenderDetails,
+  getReciverDetails,
 } from "../../utils/chat_helper";
 import {
   useQuery,
@@ -87,9 +89,9 @@ const Chats = () => {
       getNextPageParam: (lastPage, allPages) => {
         return allPages?.length;
       },
+      staleTime: Infinity,
     }
   );
-
 
   // Fetching all messages from a group
   let {
@@ -99,16 +101,17 @@ const Chats = () => {
     data: messagesOfGroup,
   } = useInfiniteQuery(
     ["messaagelist", selectedGroup?.group_id],
-    ({ pageParam = 0 }) => getMessagesFromGroup(selectedGroup?.group_id, pageParam),
+    ({ pageParam = 0 }) =>
+      getMessagesFromGroup(selectedGroup?.group_id, pageParam),
     {
       enabled: selectedGroup?.group_id != null,
       getNextPageParam: (lastPage, allPages) => {
         return allPages?.length;
       },
+      staleTime: Infinity,
     }
   );
 
-  
   useEffect(() => {
     if (input === "") {
       setFilteredProfiles([]);
@@ -203,7 +206,6 @@ const Chats = () => {
     }
   );
 
- 
   // Fetching all messages from a chat
   let { data: groupMembers } = useQuery(
     ["memberList", profile?.id],
@@ -215,14 +217,107 @@ const Chats = () => {
 
   // Mutation for sending message
   const send_message_mutation = useMutation(sendMessage, {
-    onSuccess: () => {
-      setText("");
+    onMutate: async () => {
+      if (!text) return;
+      try {
+        await queryClient.cancelQueries([
+          "messaagelist",
+          selectedChat?.chat_id,
+        ]);
+        const prevMsg = queryClient.getQueryData([
+          "messaagelist",
+          selectedChat?.chat_id,
+        ]);
+
+        // getting sender details
+        const { sender_id, sender_name, sender_image } = getSenderDetails(
+          selectedChat.sender_id,
+          selectedChat,
+          profile?.id
+        );
+
+        // getting reciver details
+        const { reciver_id, reciver_name, reciver_image } = getReciverDetails(
+          selectedChat.sender_id,
+          selectedChat,
+          profile?.id
+        );
+        let newMsg = {
+          created_at: new Date().toISOString().toLocaleString("zh-TW"),
+          chat_id: selectedChat?.chat_id,
+          reciver_id,
+          reciver_name,
+          reciver_image,
+          sender_id,
+          sender_name,
+          sender_image,
+          text,
+        };
+        let newData = [[...prevMsg?.pages[prevMsg?.pages?.length - 1], newMsg]];
+        queryClient.setQueryData(
+          ["messaagelist", selectedChat?.chat_id],
+          (oldData) => ({
+            pages: [...newData],
+            pageParams: [...oldData.pageParams, prevMsg.pageParams[0] + 1],
+          })
+        );
+        setText("");
+        return { prevMsg };
+      } catch (err) {
+        // console.log(err);
+      }
+    },
+    onError: (_, __, context) => {
+      queryClient.setQueryData(
+        ["messaagelist", selectedChat?.chat_id],
+        () => context?.prevMsg
+      );
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["messaagelist", selectedChat?.chat_id]);
     },
   });
-  // Mutation for sending message
+
+
+
+  // Mutation for sending message to group
   const send_message_to_group_mutation = useMutation(sendMessageToGroup, {
-    onSuccess: () => {
-      setText("");
+    onMutate: async () => {
+      if (!text) return;
+      try {
+        await queryClient.cancelQueries(["messaagelist", selectedGroup?.group_id]);
+        const prevMsg = queryClient.getQueryData(["messaagelist", selectedGroup?.group_id]);
+
+        let newMsg = {
+          created_at: new Date().toISOString().toLocaleString("zh-TW"),
+          group_id: selectedGroup?.group_id,
+          sender_id: profile?.id,
+          sender_name: profile?.display_name,
+          sender_image: profile?.profile_pic,
+          text,
+        };
+        let newData = [[...prevMsg?.pages[prevMsg?.pages?.length - 1], newMsg]];
+        queryClient.setQueryData(
+          ["messaagelist", selectedGroup?.group_id],
+          (oldData) => ({
+            pages: [...newData],
+            pageParams: [...oldData.pageParams, prevMsg.pageParams[0] + 1],
+          })
+        );
+        setText("");
+        return { prevMsg };
+      } catch (err) {
+        // console.log(err);
+      }
+    },
+    onError: (_, __, context) => {
+      queryClient.setQueryData(
+        ["messaagelist", selectedGroup?.group_id],
+        () => context?.prevMsg
+      );
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["messaagelist", selectedGroup?.group_id]);
     },
   });
 
@@ -923,7 +1018,9 @@ const Chats = () => {
                       hide={!selectedChat && !selectedGroup}
                       fetchNextPageMessages={fetchNextPageMessagesGroup}
                       hasNextPageMessages={hasNextPageMessagesGroup}
-                      isFetchingNextPageMessages={isFetchingNextPageMessagesGroup}
+                      isFetchingNextPageMessages={
+                        isFetchingNextPageMessagesGroup
+                      }
                     />
                     <div className="chat-input">
                       <div
@@ -1268,7 +1365,7 @@ const Messeges = memo(
 
     useEffect(() => {
       // console.log('pages',messages?.pages)
-      if ( messages?.pages[messages?.pages?.length - 1]?.length) {
+      if (messages?.pages[messages?.pages?.length - 1]?.length) {
         ref?.current?.scrollIntoView({
           behavior: "smooth",
           block: "end",
@@ -1308,7 +1405,7 @@ const Messeges = memo(
                       (a, b) =>
                         Date.parse(a.created_at) - Date.parse(b.created_at)
                     )
-                    // ?.reverse()
+                    // // ?.reverse()
                     ?.map((message) => {
                       return (
                         <div
