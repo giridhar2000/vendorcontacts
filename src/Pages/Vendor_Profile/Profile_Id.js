@@ -8,7 +8,7 @@ import "./Profile.css";
 import PdfCard from "../../Components/PdfCard/PdfCard";
 import { Empty, Skeleton } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
-import { getUserById, getUser } from "../../utils/profile_helper";
+import { getUserById, getUser, getAllDocs } from "../../utils/profile_helper";
 import { useQuery, useMutation } from "react-query";
 import { createChat } from "../../utils/chat_helper";
 
@@ -25,6 +25,13 @@ const Profile = () => {
     }
   );
 
+  const { data: docs, isLoading: isLoading3 } = useQuery(
+    ["docs", id],
+    async () => {
+      const res = await getAllDocs(id);
+      return res;
+    }
+  );
   const { data: user, isLoading: isLoading2 } = useQuery("profile", getUser);
 
   // Mutation for sending message
@@ -91,10 +98,12 @@ const Profile = () => {
     <>
       <Header />
       <div className="cover-pic">
-      {
-        profile?.cover_pic ?  <img src={profile?.cover_pic} alt="bg" />: <img src={bg1} alt="bg" />
-      }
-       
+        {profile?.cover_pic ? (
+          <img src={profile?.cover_pic} alt="bg" />
+        ) : (
+          <img src={bg1} alt="bg" />
+        )}
+
         {profile.profile_pic ? (
           <div className="profile-pic">
             <img src={profile?.profile_pic} alt="profile" />
@@ -165,10 +174,9 @@ const Profile = () => {
           <p>Downloads</p>
           <hr />
           <div className="pdf-cards">
-            <PdfCard />
-            <PdfCard />
-            <PdfCard />
-            <PdfCard />
+            {docs?.map((doc) => {
+              return <PdfCard doc={doc} key={doc.id} />;
+            })}
           </div>
         </div>
       </div>
