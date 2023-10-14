@@ -95,7 +95,7 @@ const Profile = () => {
   }
   return (
     <>
-
+    <Header/>
       <div className="cover-pic">
         {profile?.cover_pic ? (
           <img src={profile?.cover_pic} alt="bg" />
@@ -180,7 +180,7 @@ const Profile = () => {
         </div>
       </div>
 
-      
+    <Footer/>  
     </>
   );
 };

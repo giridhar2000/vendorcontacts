@@ -115,7 +115,7 @@ export default function Home() {
 
   return (
     <>
-  
+      <Header/>
       {open && !userType && (
         <div id="myModal" className="modal">
           <div className="modal-content">
@@ -603,7 +603,7 @@ export default function Home() {
           <img src={HPA} alt="hpa-logo" />
         </div>
       </section>
-      
+      <Footer/>
     </>
   );
 }

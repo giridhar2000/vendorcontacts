@@ -1,4 +1,4 @@
-import React, { useContext,useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 import bg1 from "../../Assets/img/img1.jpg";
@@ -13,7 +13,7 @@ import { useQuery, useQueryClient } from "react-query";
 import supabase from "../../utils/supabase.config";
 const Profile = () => {
   const navigate = useNavigate();
-  const queryClient=useQueryClient();
+  const queryClient = useQueryClient();
   let { id } = useParams();
   const [profile, isLoading] = useContext(UserContext);
   const { data: docs, isLoading: isLoading2 } = useQuery(
@@ -92,7 +92,7 @@ const Profile = () => {
   }
   return (
     <>
-
+      <Header />
       <div className="cover-pic">
         {profile?.cover_pic ? (
           <img src={profile?.cover_pic} alt="bg" />
@@ -155,14 +155,16 @@ const Profile = () => {
             <hr />
             <div className="pdf-cards">
               {docs?.map((doc) => {
-                return <PdfCard doc={doc} key={doc.id} showDelete id={profile?.id}/>;
+                return (
+                  <PdfCard doc={doc} key={doc.id} showDelete id={profile?.id} />
+                );
               })}
             </div>
           </div>
         )}
       </div>
 
-  
+      <Footer />
     </>
   );
 };
