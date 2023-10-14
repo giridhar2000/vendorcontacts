@@ -61,7 +61,7 @@ const Listing = () => {
   return (
     <>
       {/* {isLoading? <div className="spin"><Spin /></div> : ""} */}
-
+      <Header/>
       <div className="filter">
         <button>
           <CgOptions /> Filter
@@ -124,7 +124,7 @@ const Listing = () => {
         )}
       </div>
       <br />
-      
+      <Footer/>
     </>
   );
 };

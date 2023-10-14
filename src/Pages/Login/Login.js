@@ -94,7 +94,7 @@ export default function Login() {
       });
 
       if (error) {
-        throw new Error(error);
+        throw new Error(error)
       }
       toast("Profile created", { type: "success" });
       let profile = await getUserById(user?.id);
@@ -202,6 +202,7 @@ export default function Login() {
         <div className="backbtn" onClick={back}>
           <p>&larr;</p>
         </div>
+
         <div className="loginheader headerlogo">
         <img
             src={Icon}
@@ -209,6 +210,7 @@ export default function Login() {
             className="logoIcon"
             style={{ width: "100%" }}
           />
+
         </div>
       </div>
       <div className="loginContainer lg-page">

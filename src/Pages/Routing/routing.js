@@ -54,7 +54,9 @@ const Routing = () => {
       path: "/chats",
       element: (
         <ProtectedRoute>
+          <Header />
           <Chats />
+          <Footer />
         </ProtectedRoute>
       ),
     },
@@ -78,7 +80,9 @@ const Routing = () => {
       path: "/edit",
       element: (
         <ProtectedRoute>
+          <Header />
           <Edit />
+          <Footer />
         </ProtectedRoute>
       ),
     },
@@ -89,7 +93,7 @@ const Routing = () => {
       {!isLoading &&
         routes.map((route, i) => {
           return (
-            <Route key={i} exact path={route.path} element={<><Header/>{route.element}<Footer/></>} />
+            <Route key={i} exact path={route.path} element={route.element} />
           );
         })}
     </Routes>
