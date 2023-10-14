@@ -281,9 +281,9 @@ const Edit = () => {
           &nbsp; Change Photo
         </label>
       </div>
-      <div className="login">
-        <div className="loginContainer">
-          <div className="loginform">
+      <div className="edit">
+        <div className="editContainer">
+          <div className="editform">
             <div className="photo">
               <input
                 type="file"
@@ -302,8 +302,8 @@ const Edit = () => {
               </label>
               <p>{url ? "Uploaded" : "Upload your logo here"}</p>
             </div>
-            <div className="names">
-              <div className="nameip">
+            <div className="editnames">
+              <div className="editnameip">
                 <input
                   placeholder="First name"
                   value={
@@ -314,7 +314,7 @@ const Edit = () => {
                   onChange={(e) => setFirstName(e.target.value)}
                 />
               </div>
-              <div className="nameip">
+              <div className="editnameip">
                 <input
                   placeholder="Last name"
                   value={
@@ -330,7 +330,7 @@ const Edit = () => {
                 &nbsp; Edit Profile
               </button>
             </div>
-            <div className="emailip">
+            <div className="editemailip">
               <input
                 placeholder="Buisness Email"
                 value={
@@ -339,7 +339,7 @@ const Edit = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="emailip">
+            <div className="editemailip">
               <input
                 placeholder="Location"
                 value={
@@ -350,7 +350,7 @@ const Edit = () => {
                 onChange={(e) => setLocation(e.target.value)}
               />
             </div>
-            <div className="passip">
+            <div className="editpassip">
               <input
                 placeholder="Profile Quote"
                 value={
@@ -359,10 +359,7 @@ const Edit = () => {
                 onChange={(e) => setQuote(e.target.value)}
               />
             </div>
-            {/* <div className='passip'>
-              <input placeholder='Bio' type={cip} />
-            </div> */}
-            <div className="bio">Bio</div>
+            <div className="editbio">Bio</div>
             <textarea
               class="textarea"
               id="txtInput"
@@ -374,18 +371,6 @@ const Edit = () => {
               <>
                 <div className="bio">Attachment</div>
                 <div className="attachment">
-                  {/* <input
-                  type="file"
-                  accept="application/pdf"
-                  onChange={handleDocUpload}
-                />
-                {docUrls?.map((doc, i) => {
-                  return (
-                    <div key={i} style={{ width: "40px", height: "40px" }}>
-                      <TiTick />
-                    </div>
-                  );
-                })} */}
                   <Upload
                     {...props}
                     accept=".pdf"

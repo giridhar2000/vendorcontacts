@@ -163,8 +163,8 @@ const Profile = () => {
           </div>
         )}
       </div>
+    <Footer />
 
-      <Footer />
     </>
   );
 };
