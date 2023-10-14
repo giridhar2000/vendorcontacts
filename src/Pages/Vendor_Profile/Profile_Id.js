@@ -21,7 +21,7 @@ const Profile = () => {
       return getUserById(id);
     },
     {
-      active: id,
+      enabled: id !== null,
     }
   );
 
@@ -50,7 +50,6 @@ const Profile = () => {
   if (isLoading || isLoading2) {
     return (
       <>
-        <Header />
         <div className="cover-pic center">
           <Skeleton.Image active={isLoading} />
           <div className="profile-pic center">
@@ -96,7 +95,7 @@ const Profile = () => {
   }
   return (
     <>
-      <Header />
+
       <div className="cover-pic">
         {profile?.cover_pic ? (
           <img src={profile?.cover_pic} alt="bg" />
@@ -175,13 +174,13 @@ const Profile = () => {
           <hr />
           <div className="pdf-cards">
             {docs?.map((doc) => {
-              return <PdfCard doc={doc} key={doc.id} />;
+              return <PdfCard doc={doc} key={doc.id} showDelete={false}/>;
             })}
           </div>
         </div>
       </div>
 
-      <Footer />
+      
     </>
   );
 };

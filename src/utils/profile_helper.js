@@ -32,7 +32,7 @@ export async function getUserById(id) {
       )
       .eq("id", id)
       .single();
-    console.log(profile)
+    console.log(profile);
     if (error) throw new Error(error);
     return profile;
   } catch (err) {
@@ -65,7 +65,7 @@ export async function updateUserProfile(
         quote,
         email,
         display_name: name,
-        cover_pic:cover
+        cover_pic: cover,
       })
       .eq("id", id);
     if (error) throw new Error(error);
@@ -82,12 +82,14 @@ export async function getVendors(start, end) {
   try {
     const { data, count, error } = await supabase
       .from("profiles")
-      .select("id,profile_pic,display_name,location,bio,cover_pic", { count: "exact" })
+      .select("id,profile_pic,display_name,location,bio,cover_pic", {
+        count: "exact",
+      })
       .range(start, end)
       .eq("type", "vendor");
 
     if (error) throw new Error(error);
-   
+
     return data;
   } catch (err) {
     // console.log(err);
@@ -118,12 +120,34 @@ export async function getAllDocs(id) {
   try {
     const { data, error } = await supabase
       .from("files")
-      .select("created_at,file,user_id,name")
+      .select("id,created_at,file,user_id,name")
       .eq("user_id", id);
     if (error) throw new Error(error);
     return data;
   } catch (err) {
     // console.log(err);
     return null;
+  }
+}
+
+// Deleting  document of a user by doc id --------------->          returns true || false
+
+export async function removeDoc(id, name) {
+  try {
+    const { data, error } = await supabase.storage
+      .from("profile_docs")
+      .remove([`public/${name}`]);
+    if (error) throw new Error(error);
+
+    const { error: error2 } = await supabase
+      .from("files")
+      .delete()
+      .eq("id", id);
+
+    if (error2) throw new Error(error);
+    return true;
+  } catch (err) {
+    // console.log(err);
+    return false;
   }
 }

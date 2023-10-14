@@ -258,7 +258,6 @@ const Edit = () => {
 
   return (
     <>
-      <Header />
       <div className="cover-pic">
         {cover ? (
           <img src={cover} alt="cover" />
@@ -409,7 +408,7 @@ const Edit = () => {
           </div>
         </div>
       </div>
-      <Footer />
+    
     </>
   );
 };

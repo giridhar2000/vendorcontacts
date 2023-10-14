@@ -186,17 +186,6 @@ export default function Login() {
 
   return (
     <div className="login">
-      <div className="navbarheader">
-        <div className="backbtn" onClick={back}>
-          <p>&larr;</p>
-        </div>
-        <div className="headerlogo">
-          <img src={Icon} alt="" className="logoIcon" />
-          <h1 className="logo-text" style={{ fontSize: "x-large" }}>
-            VENDORCONTACTS
-          </h1>
-        </div>
-      </div>
       <div className="loginContainer lg-page">
         {signup ? (
           <>
