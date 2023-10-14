@@ -643,6 +643,10 @@ hr {
 
 @media (max-width: 1100px) {
 
+    .modal{
+       z-index: 9999 !important; 
+    }
+
     * {
         font-family: "Mulish";
     }
@@ -722,7 +726,7 @@ hr {
     }
 
     .headerlogo {
-        width: 40% !important;
+        width: 50% !important;
     }
 
     .headerlogo h1 {
