@@ -78,7 +78,7 @@ export default function Home() {
           {
             innerHTML: arr2.join(""),
             color: "#000",
-            background: "#bada55",
+            background: "#d9e167",
           },
           {
             duration: arr1.length / 20, //duration based on text length

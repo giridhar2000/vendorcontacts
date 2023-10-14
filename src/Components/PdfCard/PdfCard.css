@@ -12,9 +12,13 @@
 .pdf-card-row1 {
     width: 90%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     font-size: .9rem;
+}
+
+.pdf-card-row1 .delIcon{
+    color: rgb(255, 99, 71);
 }
 
 .pdf {
