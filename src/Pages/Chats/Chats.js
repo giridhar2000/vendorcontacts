@@ -595,7 +595,6 @@ const Chats = () => {
 
   return (
     <>
-      <Header />
       <div className="messages-container">
         {!selectedChat && !selectedProject ? (
           <div className="messages-box-container">

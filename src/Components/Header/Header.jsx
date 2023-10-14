@@ -8,11 +8,11 @@ import {
   AiOutlineLogout,
 } from "react-icons/ai";
 import { BsChatLeftText, BsBell } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../contexts/authContext";
 import UserContext from "../../contexts/userContext";
-import { Popover, message,Modal } from "antd";
+import { Popover, message, Modal } from "antd";
 import { GiPartyPopper } from "react-icons/gi";
 import { toast } from "react-toastify";
 import supabase from "../../utils/supabase.config";
@@ -26,6 +26,7 @@ const Header = () => {
   const [checkbox, setCheckbox] = useState(false);
   const [userType, setUserType] = useState(null);
   const [isSent, setIsSent] = useState(false);
+  const location = useLocation();
   const { data: profile, isLoading } = useQuery("profile", getUser, {
     enabled: isAuth !== undefined,
   });

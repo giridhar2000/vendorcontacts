@@ -12,6 +12,8 @@ import AuthContext from "../../contexts/authContext";
 import { getUser } from "../../utils/profile_helper";
 import { useQuery } from "react-query";
 import ProtectedLoginRoute from "../Protected/LoginProtect";
+import Header from "../../Components/Header/Header";
+import Footer from "../../Components/Footer/Footer";
 
 const Routing = () => {
   const [isAuth, setIsAuth] = useContext(AuthContext);
@@ -27,7 +29,9 @@ const Routing = () => {
         ) : isAuth && profile && profile?.type === "architect" ? (
           <Listing />
         ) : (
-          <Home />
+          <>
+            <Home />
+          </>
         ),
     },
     {
@@ -85,7 +89,7 @@ const Routing = () => {
       {!isLoading &&
         routes.map((route, i) => {
           return (
-            <Route key={i} exact path={route.path} element={route.element} />
+            <Route key={i} exact path={route.path} element={<><Header/>{route.element}<Footer/></>} />
           );
         })}
     </Routes>
