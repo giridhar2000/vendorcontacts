@@ -10,8 +10,9 @@ import { Spin } from "antd";
 import { getUserById } from "../../utils/profile_helper";
 import HubspotForm from "react-hubspot-form";
 import { v4 as uuidv4 } from "uuid";
-import Icon from "../../Assets/images/logo-icon.svg";
+import Icon from "../../Assets/images/vc.svg";
 import pdf from "../../Assets/TNC.pdf";
+import { useEffect } from "react";
 
 export default function Login() {
   const [signup, setSignUp] = useState(true);
@@ -30,17 +31,23 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
 
-  <HubspotForm
-    portalId="22384747"
-    formId="556eed30-2d51-4224-86f8-ffa83f0bde15"
-    onSubmit={() => console.log("Submit!")}
-    onReady={(form) => console.log("Form ready!", form)}
-    loading={<div>Loading...</div>}
-  />;
+  // <HubspotForm
+  //   portalId="22384747"
+  //   formId="556eed30-2d51-4224-86f8-ffa83f0bde15"
+  //   onSubmit={() => console.log("Submit!")}
+  //   onReady={(form) => console.log("Form ready!", form)}
+  //   loading={<div>Loading...</div>}
+  // />;
 
   const back = () => {
     navigate("/");
   };
+
+  useEffect(()=>{
+    if(userType && next){
+      document.getElementById("loginimg").style.visibility="hidden"
+    }
+  })
 
   const handleSubmit = async () => {
     var _hsq = (window._hsq = window._hsq || []);
@@ -60,6 +67,11 @@ export default function Login() {
     ]);
     console.log(_hsq);
     // Perform form validation
+    if (!/^([\w.-]+)@(\[(\d{1,3}\.){3}|(?!hotmail|gmail|yahoo)(([a-zA-Z\d-]+\.)+))([a-zA-Z]{2,4}|\d{1,3})(\]?)$/.test(email)){
+      toast("Please use your company mail", { type: "error" });
+      return;
+    }
+
     if (!firstName || !lastName || !email || !password) {
       toast("Please fill out all fields", { type: "error" });
       return;
@@ -190,11 +202,13 @@ export default function Login() {
         <div className="backbtn" onClick={back}>
           <p>&larr;</p>
         </div>
-        <div className="headerlogo">
-          <img src={Icon} alt="" className="logoIcon" />
-          <h1 className="logo-text" style={{ fontSize: "x-large" }}>
-            VENDORCONTACTS
-          </h1>
+        <div className="loginheader headerlogo">
+        <img
+            src={Icon}
+            alt=""
+            className="logoIcon"
+            style={{ width: "100%" }}
+          />
         </div>
       </div>
       <div className="loginContainer lg-page">
@@ -558,7 +572,8 @@ export default function Login() {
                     <span
                       className="loginsignup"
                       onClick={() => {
-                        setSignUp(true);
+                        // setSignUp(true);
+                        window.location.reload()
                       }}
                     >
                       <b>Login</b>
@@ -572,7 +587,7 @@ export default function Login() {
                   className="loginContainer lg-page"
                   style={{ justifyContent: "space-evenly" }}
                 >
-                  <div className="loginText">
+                  <div className="loginText lgs">
                     <h1 style={{ margin: 0 }}>Let's get started!</h1>
                     <span>
                       Free membership is open to professionals in the
@@ -615,7 +630,7 @@ export default function Login() {
                       }}
                     />
                     <button
-                      className="loginbtn"
+                      className="loginbtn nextbtn"
                       onClick={() => {
                         if (!userType) {
                           toast("Select your profession first!", {
@@ -635,7 +650,7 @@ export default function Login() {
           </>
         )}
       </div>
-      <img src={loginbg} alt="login" className="loginimg" />
+      <img src={loginbg} alt="login" className="loginimg" id="loginimg"/>
     </div>
   );
 }

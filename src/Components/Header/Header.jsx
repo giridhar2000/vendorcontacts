@@ -302,7 +302,7 @@ const Header = () => {
           <br /> <br />
           Looking forward to building the future together!
           <br />
-          <br /> Team VendorContacts
+          <br /> Team VendorContacts
         </p>
       </Modal>
       <div className="header">
