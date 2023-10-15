@@ -46,11 +46,9 @@
     margin-top: 5vh;
 }
 
-
-
 .loginContainer.lg-page {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: flex-start;
     margin-top: 3vh !important;
     padding: 0;
@@ -64,6 +62,7 @@
 .login .loginimg {
     position: absolute;
     bottom: 0;
+    left: 0;
 }
 
 .loginsignup {
@@ -72,11 +71,6 @@
 
 .ant-spin-dot-item {
     background-color: #000 !important;
-}
-
-.loginimg {
-    position: absolute;
-    bottom: 0;
 }
 
 .signupBtn {
@@ -92,10 +86,6 @@
     text-transform: capitalize;
     cursor: pointer;
     transition: all 0.3s ease-in;
-}
-
-.Loginform {
-    margin-left: 5rem;
 }
 
 .button {
@@ -166,10 +156,31 @@
     cursor: pointer;
 }
 
-@media(max-width:1100px) {
-    .loginimg {
-        display: none;
-    }
+.signup {
+    width: 100%;
+}
+
+.lgs {
+    width: 25%;
+}
+
+.abs-2{
+    position: absolute;
+    left: -5%;
+}
+
+.abs-3{
+    position: absolute;
+    top: -18%;
+    right: 0;
+}
+
+.abs-1{
+    position: fixed;
+    bottom: -25%;
+    right: 15%;
+    transform: scaleX(-1);
+    pointer-events: none;
 }
 
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
@@ -192,13 +203,24 @@
 }
 
 @media(max-width:1100px) {
+    .abs-1, .abs-2, .abs-3{
+        display: none;
+    }
+
+    .mobLofinForm {
+        margin: 4rem auto !important;
+    }
+
+    .singup-img {
+        display: none !important;
+    }
+
     .loginheader {
         width: 60% !important;
     }
 
     .lgs {
-        padding-bottom: 4vh;
-        padding-top: 0 !important;
+        padding-top: 2vh !important;
     }
 
     .navbarheader {
@@ -208,7 +230,7 @@
 
     .Loginform {
         width: 80% !important;
-        margin: 1rem auto !important;
+        margin: 1rem auto;
     }
 
     .login {
@@ -220,7 +242,7 @@
     }
 
     .login .loginimg {
-        display: block !important;
+        display: block;
         bottom: 0;
         left: 0;
         width: 55%;

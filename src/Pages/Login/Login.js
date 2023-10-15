@@ -12,7 +12,9 @@ import HubspotForm from "react-hubspot-form";
 import { v4 as uuidv4 } from "uuid";
 import Icon from "../../Assets/images/vc.svg";
 import pdf from "../../Assets/TNC.pdf";
-import { useEffect } from "react";
+import abstract1 from "../../Assets/images/abstract1.svg"
+import abstract2 from "../../Assets/images/abstract2.svg"
+import abstract3 from "../../Assets/images/abstract3.svg"
 
 export default function Login() {
   const [signup, setSignUp] = useState(true);
@@ -43,11 +45,6 @@ export default function Login() {
     navigate("/");
   };
 
-  useEffect(()=>{
-    if(userType && next){
-      document.getElementById("loginimg").style.visibility="hidden"
-    }
-  })
 
   const handleSubmit = async () => {
     var _hsq = (window._hsq = window._hsq || []);
@@ -67,7 +64,7 @@ export default function Login() {
     ]);
     console.log(_hsq);
     // Perform form validation
-    if (!/^([\w.-]+)@(\[(\d{1,3}\.){3}|(?!hotmail|gmail|yahoo)(([a-zA-Z\d-]+\.)+))([a-zA-Z]{2,4}|\d{1,3})(\]?)$/.test(email)){
+    if (!/^([\w.-]+)@(\[(\d{1,3}\.){3}|(?!hotmail|gmail|yahoo)(([a-zA-Z\d-]+\.)+))([a-zA-Z]{2,4}|\d{1,3})(\]?)$/.test(email)) {
       toast("Please use your company mail", { type: "error" });
       return;
     }
@@ -204,7 +201,7 @@ export default function Login() {
         </div>
 
         <div className="loginheader headerlogo">
-        <img
+          <img
             src={Icon}
             alt=""
             className="logoIcon"
@@ -213,7 +210,9 @@ export default function Login() {
 
         </div>
       </div>
+      <img src={abstract3} alt="abs-3" className="abs-3"/>
       <div className="loginContainer lg-page">
+        <img src={abstract2} alt="abs-2" className="abs-2"/>
         {signup ? (
           <>
             <div className="loginText">
@@ -337,13 +336,15 @@ export default function Login() {
                 </span>
               </p>
             </div>
+            <img src={loginbg} alt="login" className="loginimg" id="loginimg" />
+
           </>
         ) : (
           <>
             {userType && next ? (
               <>
                 {" "}
-                <div className="loginText">
+                <div className="loginText lgs">
                   <h1>Let's get started!</h1>
                   <span>
                     Free membership is open to professionals in the architecture
@@ -582,13 +583,11 @@ export default function Login() {
                     </span>
                   </p>
                 </div>
+                <img src={loginbg} alt="login" className="loginimg singup-img" />
               </>
             ) : (
               <div className="signup">
-                <div
-                  className="loginContainer lg-page"
-                  style={{ justifyContent: "space-evenly" }}
-                >
+                <div className="loginContainer lg-page">
                   <div className="loginText lgs">
                     <h1 style={{ margin: 0 }}>Let's get started!</h1>
                     <span>
@@ -596,19 +595,19 @@ export default function Login() {
                       architecture and design industry.
                     </span>
                   </div>
-                  <div className="Loginform">
+                  <div className="Loginform mobLofinForm">
                     <p style={{ color: "#6F6F6F" }}>Select your profession</p>
                     <div className="buttons-select">
                       <div className="button">
                         <input
                           type="radio"
-                          id="Architect"
+                          id="Designers"
                           name="signupBtn"
                           value="architect"
                           onChange={(e) => setUserType(e.target.value)}
                         />
-                        <label className="btn btn-default" for="Architect">
-                          Architect
+                        <label className="btn btn-default" for="Designers">
+                          Designers
                         </label>
                       </div>
                       <div className="button">
@@ -647,12 +646,14 @@ export default function Login() {
                     </button>
                   </div>
                 </div>
+                <img src={loginbg} alt="login" className="loginimg" />
               </div>
             )}
           </>
         )}
       </div>
-      <img src={loginbg} alt="login" className="loginimg" id="loginimg"/>
+      <img src={abstract1} alt="abs-1" className="abs-1"/>
+
     </div>
   );
 }

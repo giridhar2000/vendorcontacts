@@ -458,9 +458,6 @@ const Header = () => {
                 <p onClick={() => navigate("/chats")}>
                   <BsChatLeftText /> Chats
                 </p>
-                <p>
-                  <BsBell /> Notifications
-                </p>
                 <p onClick={() => navigate("/profile")}>
                   <AiOutlineUser /> Profile
                 </p>
