@@ -1,9 +1,254 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Footer.css";
 import LogoIcon from "../../Assets/images/logo-icon-2.svg";
+import pdf from "../../Assets/TNC.pdf";
+import { Popover, message, Modal } from "antd";
+import { GiPartyPopper } from "react-icons/gi";
+import supabase from "../../utils/supabase.config";
 
 const Footer = () => {
+  const [open, setOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
+  const [userType, setUserType] = useState(null);
+  const [email, setEmail] = useState("");
+  const [isSent, setIsSent] = useState(false);
+  const [checkbox, setCheckbox] = useState(false);
+
+  async function invite(email) {
+    if (email && checkbox && userType) {
+      try {
+        const { data, error } = await supabase.from("invite_email").insert([
+          {
+            email_id: email,
+            type: userType,
+          },
+        ]);
+        if (error) throw new Error(error);
+        setIsSent(true);
+        setOpen(false);
+        setUserType(null);
+        return data[0]?.email_id;
+      } catch (err) {
+        return null;
+      }
+    } else {
+      message.error("please enter your email id and click on the checkbox");
+    }
+    setEmail("");
+    setUserType(null);
+    setCheckbox(false);
+  }
+
   return (
+    <>
+     {open && !userType && (
+        <div id="myModal" className="modal">
+          <div className="modal-content">
+            <span
+              className="close"
+              onClick={() => {
+                setOpen(false);
+                setUserType(null);
+              }}
+            >
+              &times;
+            </span>
+
+            <div className="modalform">
+              <h4>
+                Are you a<br /> Vendor or a Designer ?
+              </h4>
+
+              <div
+                className="Loginform mt-32 w-40"
+                style={{ marginLeft: "0", marginTop: "32px", width: "40%" }}
+              >
+                <div className="buttons-select" style={{ width: "100%" }}>
+                  <div className="button">
+                    <input
+                      type="radio"
+                      id="Designer"
+                      name="signupBtn"
+                      value="designer"
+                      onChange={(e) => setUserType(e.target.value)}
+                    />
+                    <label className="btn btn-default" for="Designer">
+                      Designer
+                    </label>
+                  </div>
+                  <div className="button">
+                    <input
+                      type="radio"
+                      id="Vendor"
+                      name="signupBtn"
+                      value="vendor"
+                      onChange={(e) => setUserType(e.target.value)}
+                    />
+                    <label className="btn btn-default" for="Vendor">
+                      Vendor
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {open &&
+        userType &&
+        (userType === "vendor" ? (
+          <div id="myModal" className="modal">
+            <div className="modal-content">
+              <span
+                className="close"
+                onClick={() => {
+                  setOpen(false);
+                  setUserType(null);
+                }}
+              >
+                &times;
+              </span>
+
+              <div className="modalform">
+                <h4>Request an Invite.</h4>
+
+                <p>
+                  We'll contact a partner firm to confirm your credentials and
+                  get you on the list :)
+                </p>
+
+                <form>
+                  <div>
+                    {/* <label style={{ color: 'rgba(0,0,0,0.5)' }}>Email</label><br /> */}
+                    <input
+                      className="mailinput"
+                      type="text"
+                      placeholder="Enter your email here"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <br />
+                  </div>
+                  <br />
+                  <div>
+                    <input
+                      type="checkbox"
+                      name="agreement"
+                      onChange={(e) => setCheckbox(e.target.value)}
+                    />
+                    &nbsp;
+                    <label className="checklabel">
+                      By clicking "Accept," you agree to our{" "}
+                      <a href={pdf} target="_blank">
+                        Terms and Conditions
+                      </a>
+                      .
+                    </label>
+                    <br />
+                  </div>
+                  <br />
+                </form>
+                <button className="submit-btn">Request invite</button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div id="myModal" className="modal">
+            <div className="modal-content">
+              <span
+                className="close"
+                onClick={() => {
+                  setOpen(false);
+                  setUserType(null);
+                }}
+              >
+                &times;
+              </span>
+
+              <div className="modalform">
+                <h4>Join the list</h4>
+
+                <p>
+                  You're one step away from easy communication with your reps :)
+                </p>
+
+                <form>
+                  <div>
+                    {/* <label style={{color: 'rgba(0,0,0,0.5)'}}>Email</label><br /> */}
+                    <input
+                      className="mailinput"
+                      type="text"
+                      placeholder="Enter your email here"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <br />
+                  </div>
+                  <br />
+                  <div>
+                    <input
+                      type="checkbox"
+                      name="agreement"
+                      onChange={(e) => setCheckbox(e.target.value)}
+                    />
+                    &nbsp;
+                    <label className="checklabel">
+                      By clicking "Accept," you agree to our{" "}
+                      <a href={pdf} target="_blank">
+                        Terms and Conditions
+                      </a>
+                      .
+                    </label>
+                    <br />
+                  </div>
+                  <br />
+                </form>
+                <button className="submit-btn" onClick={() => invite(email)}>
+                  Join the list
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      <Modal
+        bodyStyle={{
+          fontFamily: " 'Quicksand' sans-serif",
+        }}
+        title={
+          <h3
+            style={{
+              display: "flex",
+              alignItems: "center",
+              fontFamily: " 'Quicksand' sans-serif",
+            }}
+          >
+            <GiPartyPopper
+              style={{
+                marginRight: ".8rem",
+                fontSize: "1.7rem",
+                color: "#aeba00",
+              }}
+            />
+            Thank you for Joining Our Waitlist!{" "}
+          </h3>
+        }
+        centered
+        open={isSent}
+        footer={null}
+        onCancel={() => setIsSent(false)}
+      >
+        <p>
+          We are thrilled to have you onboard. Stay tuned for exclusive updates
+          and be ready to experience a transformative approach to
+          vendor-designer collaboration.
+          <br /> <br />
+          Looking forward to building the future together!
+          <br />
+          <br /> Team VendorContacts
+        </p>
+      </Modal>
+
     <div className="footer">
       <div className="logo">
         <img src={LogoIcon} alt="logo" />
@@ -15,7 +260,7 @@ const Footer = () => {
         </p>
       </div>
       <div className="footerButton">
-        <button>Request Invite</button>
+        <button onClick={()=>setOpen(true)}>Request Invite</button>
       </div>
       <div className="copyright">
         <p className="text-light">
@@ -23,6 +268,7 @@ const Footer = () => {
         </p>
       </div>
     </div>
+    </>
   );
 };
 
