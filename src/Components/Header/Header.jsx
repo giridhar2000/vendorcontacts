@@ -116,7 +116,7 @@ const Header = () => {
 
             <div className="modalform">
               <h4>
-                Are you a<br /> Vendor or an Architect ?
+                Are you a<br /> Vendor or a Designer ?
               </h4>
 
               <div
@@ -127,13 +127,13 @@ const Header = () => {
                   <div className="button">
                     <input
                       type="radio"
-                      id="Architect"
+                      id="Designer"
                       name="signupBtn"
-                      value="architect"
+                      value="designer"
                       onChange={(e) => setUserType(e.target.value)}
                     />
-                    <label className="btn btn-default" for="Architect">
-                      Architect
+                    <label className="btn btn-default" for="Designer">
+                      Designer
                     </label>
                   </div>
                   <div className="button">
@@ -451,7 +451,7 @@ const Header = () => {
                 <button className="signin" onClick={signin}>
                   Sign in
                 </button>
-                <button className="request" onClick={()=>setOpen(true)}>Request Invite</button>
+                <button className="request" onClick={() => setOpen(true)}>Request Invite</button>
               </div>
             ) : (
               <div className="buttons icons">
