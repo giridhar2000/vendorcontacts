@@ -28,6 +28,7 @@ const Edit = () => {
   const [bio, setBio] = useState(null);
   const [cover, setCover] = useState(null);
   const [docUrls, setDocUrls] = useState([]);
+  const [company, setCompany] = useState(null);
 
   useEffect(() => {
     let fName = profile?.display_name.split(" ")[0];
@@ -152,7 +153,8 @@ const Edit = () => {
         location || profile?.location,
         quote || profile?.quote,
         bio || profile?.bio,
-        cover || profile?.cover_pic
+        cover || profile?.cover_pic,
+        company || profile?.company
       );
       docUrls.forEach(async (doc) => {
         const { data, error } = await supabase
@@ -337,6 +339,15 @@ const Edit = () => {
                   profile?.email && email === null ? profile?.email : email
                 }
                 onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="editemailip">
+              <input
+                placeholder="Company"
+                value={
+                  profile?.company && company === null? profile?.company:email
+                }
+                onChange={(e) => setCompany(e.target.value)}
               />
             </div>
             <div className="editemailip">

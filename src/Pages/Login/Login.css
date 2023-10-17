@@ -173,6 +173,7 @@
     position: absolute;
     top: -18%;
     right: 0;
+    pointer-events: none;
 }
 
 .abs-1{

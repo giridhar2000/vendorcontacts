@@ -58,20 +58,27 @@
 .profile-name p:first-child {
   font-size: 2rem;
   font-weight: bolder;
+  margin-block: 2vh;
 }
+
 .profile-name p:nth-child(2) {
+  margin: 0;
+  font-size: larger;
+}
+
+.profile-name p:nth-child(3) {
   font-size: 1rem;
   font-weight: 300;
-  margin-top: -30px;
+  margin-block: 1vh;
 }
-.profile-name p:nth-child(3),.profile-name p:nth-child(4) {
+.profile-name p:nth-child(4),.profile-name p:nth-child(5) {
   font-size: 1rem;
   display: flex;
   align-items: center;
   font-weight: bolder;
   cursor: pointer;
 }
-.profile-name p:nth-child(3) button ,.profile-name p:nth-child(4) button{
+.profile-name p:nth-child(4) button ,.profile-name p:nth-child(5) button{
   background-color: #000;
   border-radius: 30px;
   outline: none;

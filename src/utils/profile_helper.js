@@ -9,7 +9,7 @@ export async function getUser() {
     let { data: profile, error } = await supabase
       .from("profiles")
       .select(
-        "id,email,display_name,profile_pic,bio,type,location,quote,status,type,cover_pic"
+        "id,email,display_name,profile_pic,bio,type,location,quote,status,type,cover_pic,company"
       )
       .eq("id", user?.id)
       .single();
@@ -28,7 +28,7 @@ export async function getUserById(id) {
     let { data: profile, error } = await supabase
       .from("profiles")
       .select(
-        "id,email,display_name,profile_pic,bio,location,quote,type,status,cover_pic"
+        "id,email,display_name,profile_pic,bio,location,quote,type,status,cover_pic, company"
       )
       .eq("id", id)
       .single();
@@ -50,7 +50,8 @@ export async function updateUserProfile(
   location,
   quote,
   bio,
-  cover
+  cover,
+  company
 ) {
   try {
     let { data: user } = await supabase.auth.getUser();
@@ -66,6 +67,7 @@ export async function updateUserProfile(
         email,
         display_name: name,
         cover_pic: cover,
+        company: company
       })
       .eq("id", id);
     if (error) throw new Error(error);
@@ -82,7 +84,7 @@ export async function getVendors(start, end) {
   try {
     const { data, count, error } = await supabase
       .from("profiles")
-      .select("id,profile_pic,display_name,location,bio,cover_pic", {
+      .select("id,profile_pic,display_name,location,bio,cover_picc,company", {
         count: "exact",
       })
       .range(start, end)
@@ -103,7 +105,7 @@ export async function getAllUsers(id, type) {
   try {
     const { data, error } = await supabase
       .from("profiles")
-      .select("id,profile_pic,display_name,bio")
+      .select("id,profile_pic,display_name,bio,company")
       .neq("id", id)
       .neq("type", type);
     if (error) throw new Error(error);

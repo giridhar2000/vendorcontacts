@@ -114,6 +114,7 @@ const Profile = () => {
         <div className="profile-info">
           <div className="profile-name">
             <p>{profile?.display_name}</p>
+            <p>{profile?.company}</p>
             <p>{profile?.location}</p>
             <p onClick={() => navigate("/edit")}>
               Edit profile{" "}

@@ -32,6 +32,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
+  const [company, setCompany] = useState("");
 
   // <HubspotForm
   //   portalId="22384747"
@@ -368,6 +369,13 @@ export default function Login() {
                       />
                     </div>
                   </div>
+                  <div className="emailip">
+                      <input
+                        placeholder="Company"
+                        value={company}
+                        onChange={(e) => setCompany(e.target.value)}
+                      />
+                    </div>
                   <div className="emailip">
                     <input
                       placeholder="Buisness Email"
