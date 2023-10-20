@@ -84,17 +84,17 @@ export async function getVendors(start, end) {
   try {
     const { data, count, error } = await supabase
       .from("profiles")
-      .select("id,profile_pic,display_name,location,bio,cover_picc,company", {
+      .select("id,profile_pic,display_name,location,bio,cover_pic,company", {
         count: "exact",
       })
       .range(start, end)
       .eq("type", "vendor");
 
     if (error) throw new Error(error);
-
+    console.log(data)
     return data;
   } catch (err) {
-    // console.log(err);
+    console.log(err);
     return [];
   }
 }
