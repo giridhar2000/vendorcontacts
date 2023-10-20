@@ -320,8 +320,8 @@ export async function getMessages(chat_id, page = 0) {
       .eq("chat_id", chat_id)
       .order("created_at", { ascending: false })
       // .order("created_at", { ascending: true })
-      .range(from, to)
-      // .limit(50)
+      .range(from, to);
+    // .limit(50)
 
     if (error) throw new Error(error);
     // const  d= data?.reverse()
@@ -334,7 +334,7 @@ export async function getMessages(chat_id, page = 0) {
 
 // getting all messages from group id  ------------------>        returns [ < messages of group > ] || []
 
-export async function getMessagesFromGroup(group_id,page=0) {
+export async function getMessagesFromGroup(group_id, page = 0) {
   try {
     let from, to;
     const loadMoreData = () => {
@@ -354,11 +354,34 @@ export async function getMessagesFromGroup(group_id,page=0) {
       .eq("group_id", group_id)
       .order("created_at", { ascending: false })
       // .order("created_at", { ascending: true })
-      .range(from, to)
+      .range(from, to);
     if (error) throw error;
     return data.reverse();
   } catch (err) {
     // console.log(err);
     return [];
+  }
+}
+
+// Sneding chat request function ------------------------->
+
+export async function sendChatRequest({ reciver, sender }) {
+  try {
+    const { error } = await supabase.from("notifications").insert([
+      {
+        reciver_id: reciver?.id,
+        sender_id: sender?.id,
+        reciver_name: reciver?.display_name,
+        sender_name: sender?.display_name,
+        reciver_image: reciver?.profile_pic,
+        sender_image: sender?.profile_pic,
+        type: "chat_request",
+      },
+    ]);
+    if (error) throw new Error(error);
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
   }
 }

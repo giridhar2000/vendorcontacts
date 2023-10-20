@@ -142,7 +142,8 @@ const Profile = () => {
             <div className="line"></div>
             <p>{profile?.quote ? profile?.quote : "**Update your quote**"}</p>
           </div>
-          {id !== user?.id ? (
+          {
+            /* id !== user?.id ? (
             <div
               className="chat-icon"
               onClick={() => {
@@ -156,7 +157,8 @@ const Profile = () => {
             >
               <BsFillChatDotsFill />
             </div>
-          ) : null}
+          ) : null */
+        }
         </div>
 
         <div className="profile-desc">

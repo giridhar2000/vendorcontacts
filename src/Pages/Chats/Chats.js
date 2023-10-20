@@ -32,6 +32,7 @@ import {
   formatSupabaseTimestampToTime,
   getSenderDetails,
   getReciverDetails,
+  sendChatRequest,
 } from "../../utils/chat_helper";
 import {
   useQuery,
@@ -50,6 +51,7 @@ import {
   updateStatus,
   getMembers,
 } from "../../utils/project_helper";
+import { toast } from "react-toastify";
 
 const Chats = () => {
   const location = useLocation();
@@ -89,7 +91,6 @@ const Chats = () => {
       getNextPageParam: (lastPage, allPages) => {
         return allPages?.length;
       },
-      staleTime: Infinity,
     }
   );
 
@@ -108,7 +109,6 @@ const Chats = () => {
       getNextPageParam: (lastPage, allPages) => {
         return allPages?.length;
       },
-      staleTime: Infinity,
     }
   );
 
@@ -278,15 +278,19 @@ const Chats = () => {
     },
   });
 
-
-
   // Mutation for sending message to group
   const send_message_to_group_mutation = useMutation(sendMessageToGroup, {
     onMutate: async () => {
       if (!text) return;
       try {
-        await queryClient.cancelQueries(["messaagelist", selectedGroup?.group_id]);
-        const prevMsg = queryClient.getQueryData(["messaagelist", selectedGroup?.group_id]);
+        await queryClient.cancelQueries([
+          "messaagelist",
+          selectedGroup?.group_id,
+        ]);
+        const prevMsg = queryClient.getQueryData([
+          "messaagelist",
+          selectedGroup?.group_id,
+        ]);
 
         let newMsg = {
           created_at: new Date().toISOString().toLocaleString("zh-TW"),
@@ -390,6 +394,18 @@ const Chats = () => {
     },
   });
 
+  // Mutation for sending chat request to a user
+  const send_chat_request_mutation = useMutation(sendChatRequest, {
+    onSuccess: (data) => {
+      if (data) {
+        toast("Chat request sent!", { type: "success" });
+      } else {
+        toast("Chat request failed", { type: "error" });
+      }
+      setAddChat(false);
+    },
+  });
+
   // Fetching chats and messages info in real time
   useEffect(() => {
     const chats = supabase
@@ -404,7 +420,7 @@ const Chats = () => {
           ]);
           queryClient.invalidateQueries([
             "messaagelist",
-            payload?.new?.chat_id,
+            payload?.new?.group_id,
           ]);
         }
       )
@@ -423,6 +439,10 @@ const Chats = () => {
         "postgres_changes",
         { event: "*", schema: "public", table: "chats" },
         (payload) => {
+          queryClient.invalidateQueries([
+            "messaagelist",
+            selectedChat?.chat_id,
+          ]);
           queryClient.invalidateQueries(["chats", profile?.id]);
           queryClient.invalidateQueries([
             "chatsOfProject",
@@ -493,7 +513,7 @@ const Chats = () => {
   function handleAddChatToProject(project_id) {
     if (!input) return;
     setProjectAdding(true);
-    console.log(project_id);
+    // console.log(project_id);
     const pr = new Promise((resolve, reject) => {
       selectedChats.forEach((chat, index, array) => {
         create_chats_mutation.mutateAsync({
@@ -611,7 +631,7 @@ const Chats = () => {
                   className="projects-body"
                   onScroll={handleDebouncedScrollProjects}
                 >
-                  {!projects || projects?.pages?.length === 0 ? (
+                  {!projects || projects?.pages[0]?.length === 0 ? (
                     <Empty
                       image={Empty.PRESENTED_IMAGE_SIMPLE}
                       description={"No projects"}
@@ -629,6 +649,7 @@ const Chats = () => {
                             ?.map((project, i) => {
                               return (
                                 <Project
+                                  key={i}
                                   index={i}
                                   last={
                                     projects?.pages[projects?.length - 1]
@@ -636,7 +657,6 @@ const Chats = () => {
                                   }
                                   project={project}
                                   user_id={profile?.id}
-                                  key={project?.id}
                                   setSelectedProject={setSelectedProject}
                                 />
                               );
@@ -661,13 +681,15 @@ const Chats = () => {
               </div>
               <div className="vendors">
                 <div className="vendors-header">
-                  <p>{profile?.type === "vendor" ? "Architects" : "Vendors"}</p>
-                  <div className="header-icons">
-                    <AiOutlinePlusCircle onClick={() => setAddChat(true)} />
-                  </div>
+                  <p>{profile?.type === "vendor" ? "Designers" : "Vendors"}</p>
+                  {profile?.type === "vendor" && (
+                    <div className="header-icons">
+                      <AiOutlinePlusCircle onClick={() => setAddChat(true)} />
+                    </div>
+                  )}
                 </div>
                 <div className="vendors-body" onScroll={handleDebouncedScroll}>
-                  {chats && chats?.pages?.length === 0 ? (
+                  {chats?.pages[0]?.length === 0 ? (
                     <Empty
                       image={Empty.PRESENTED_IMAGE_SIMPLE}
                       description={"No chats"}
@@ -716,7 +738,7 @@ const Chats = () => {
               </div>
             </div>
           </div>
-        ) : selectedProject === null ? (
+        ) : selectedProject === null && selectedChat ? (
           <div className="messages-box-container message-box-container-sc">
             <p
               style={{
@@ -1069,8 +1091,8 @@ const Chats = () => {
         <Modal
           title={
             profile?.type === "vendor"
-              ? "Select Architect to chat"
-              : "Select Vendor to chat"
+              ? "Select Designer to send chat request"
+              : "Select Vendor to send chat request"
           }
           footer={null}
           open={addChat}
@@ -1096,9 +1118,9 @@ const Chats = () => {
                 className={`projects-chat`}
                 onClick={() => {
                   if (profile) {
-                    create_chat_mutation.mutateAsync({
+                    send_chat_request_mutation.mutateAsync({
                       reciver,
-                      user: profile,
+                      sender: profile,
                     });
                   }
                 }}

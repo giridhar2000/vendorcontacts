@@ -366,7 +366,7 @@ const Header = () => {
           ) : (
             <div className="buttons icons">
               <BsChatLeftText onClick={() => navigate("/chats")} />
-              {/* <BsBell /> */}
+              <BsBell onClick={() => navigate("/notifications")}/> 
               <Popover
                 placement="bottomRight"
                 content={content}
@@ -457,6 +457,9 @@ const Header = () => {
               <div className="buttons icons">
                 <p onClick={() => navigate("/chats")}>
                   <BsChatLeftText /> Chats
+                </p>
+                <p onClick={() => navigate("/notifications")}>
+                  <BsBell /> Chats
                 </p>
                 <p onClick={() => navigate("/profile")}>
                   <AiOutlineUser /> Profile

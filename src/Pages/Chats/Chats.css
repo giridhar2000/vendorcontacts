@@ -93,13 +93,13 @@
 .mine p:first-child {
   background-color: #d6db63;
   padding: 4px 8px;
-  border-radius: 10px;
+  border-radius: 6px;
   border-top-right-radius: 0;
 }
 .others p:first-child {
   background-color: #f0f0f0;
   padding: 4px 8px;
-  border-radius: 10px;
+  border-radius: 6px;
   border-top-left-radius: 0;
 }
 .mine p:nth-child(2),

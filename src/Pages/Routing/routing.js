@@ -14,6 +14,7 @@ import { useQuery } from "react-query";
 import ProtectedLoginRoute from "../Protected/LoginProtect";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
+import Notifications from "../Notifications/Notifications";
 
 const Routing = () => {
   const [isAuth, setIsAuth] = useContext(AuthContext);
@@ -82,6 +83,16 @@ const Routing = () => {
         <ProtectedRoute>
           <Header />
           <Edit />
+          <Footer />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/notifications",
+      element: (
+        <ProtectedRoute>
+          <Header />
+          <Notifications />
           <Footer />
         </ProtectedRoute>
       ),
