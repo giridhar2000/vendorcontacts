@@ -59,7 +59,7 @@ export async function createChat({ reciver, user, project_id = false }) {
       // updating chat's project id column
       const { error } = await supabase
         .from("chats")
-        .update({ project_id: project_id || "NA" })
+        .update({ project_id: project_id || 'NA' })
         .eq("chat_id", data[0].chat_id);
 
       if (error) throw new Error(error);
@@ -84,7 +84,7 @@ export async function createChat({ reciver, user, project_id = false }) {
             reciver_id: reciver?.id,
             reciver_name: reciver?.display_name,
             reciver_image: reciver?.profile_pic,
-            project_id: project_id || "NA",
+            project_id: project_id || 'NA',
           },
         ])
         .select();
@@ -118,8 +118,8 @@ export async function getAllChats(user_id, project_id = null, page = 0) {
       .from("chats")
       .select(
         "id,chat_id,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image,recent_message,updated_at"
-      )
-      .eq("project_id", project_id || "NA")
+        )
+      .eq("project_id", project_id || 'NA')
       .or(`sender_id.eq.${user_id},reciver_id.eq.${user_id}`)
       .order("updated_at", { ascending: false })
       // .limit(5)
@@ -128,7 +128,7 @@ export async function getAllChats(user_id, project_id = null, page = 0) {
     if (error) throw new Error(error);
     return data;
   } catch (err) {
-    // console.log(err);
+    console.log(err);
     return [];
   }
 }

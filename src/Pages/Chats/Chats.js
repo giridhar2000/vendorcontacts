@@ -42,7 +42,10 @@ import {
 } from "react-query";
 import UserContext from "../../contexts/userContext";
 // import ScrollToBottom from "react-scroll-to-bottom";
-import { getAllUsers } from "../../utils/profile_helper";
+import {
+  getAllUsers,
+  getAllUsersOfSameCompany,
+} from "../../utils/profile_helper";
 import {
   createProject,
   createGroupToProject,
@@ -50,6 +53,8 @@ import {
   getGroups,
   updateStatus,
   getMembers,
+  getMembersOfProject,
+  getGroupInfo
 } from "../../utils/project_helper";
 import { toast } from "react-toastify";
 
@@ -70,9 +75,11 @@ const Chats = () => {
   const [projectName, setProjectName] = useState("");
   const [groupName, setGroupName] = useState("");
   const [selectedChatIds, setSelectedChatIds] = useState([]);
+  const [selectedChatTypes, setSelectedChatTypes] = useState([]);
   const [selectedChats, setSelectedChats] = useState([]);
   const [filteredProfiles, setFilteredProfiles] = useState([]);
   const [input, setInput] = useState("");
+  const [inputSameCompany, setInputSameCompany] = useState("");
   // const [chats, setChats] = useState([]);
   const [isChatLoading, setIsChatLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -124,11 +131,50 @@ const Chats = () => {
     });
   }, [input]);
 
+  useEffect(() => {
+    if (inputSameCompany === "") {
+      setFilteredProfiles([]);
+      return;
+    }
+    setFilteredProfiles((old) => {
+      return profilesOfSameCompanny?.filter((value) =>
+        value?.display_name
+          ?.toLowerCase()
+          ?.includes(inputSameCompany?.toLowerCase())
+      );
+    });
+  }, [inputSameCompany]);
+
   //Fetching chats of a particular user
   const { data: profiles, isLoading: isLoading4 } = useQuery(
     ["users", profile?.id],
     async () => {
       let data = await getAllUsers(profile?.id, profile?.type);
+      return data;
+    }
+  );
+
+  //Fetching chats of a particular user
+  const { data: projectMembers, isLoading: isLoading6 } = useQuery(
+    ["projectMembers", selectedProject?.project_id],
+    async () => {
+      let data = await getMembersOfProject(selectedProject?.project_id);
+      return data;
+    },
+    {
+      enabled: selectedProject != null,
+    }
+  );
+
+  //Fetching profiles of a particular user with same company name
+  const { data: profilesOfSameCompanny, isLoading: isLoading5 } = useQuery(
+    ["usersSameCompany", profile?.id],
+    async () => {
+      let data = await getAllUsersOfSameCompany(
+        profile?.id,
+        profile?.type,
+        profile?.company
+      );
       return data;
     }
   );
@@ -206,14 +252,23 @@ const Chats = () => {
     }
   );
 
-  // Fetching all messages from a chat
+  // Fetching all members from a group
   let { data: groupMembers } = useQuery(
+    ["memberList", selectedGroup?.group_id],
+    () => getMembers(selectedGroup?.group_id),
+    {
+      enabled: selectedGroup !== null,
+    }
+  );
+
+  // Fetching all messages from a chat
+  let { data: groupData } = useQuery(
     ["memberList", profile?.id],
-    () => getMembers(profile?.id),
+    () => getGroupInfo(profile?.id),
     {
       enabled: profile?.id != null,
     }
-  );
+  )
 
   // Mutation for sending message
   const send_message_mutation = useMutation(sendMessage, {
@@ -350,8 +405,10 @@ const Chats = () => {
         setProjectAdding(false);
         setSelectedChats([]);
         setSelectedChatIds([]);
+        setSelectedChatTypes([]);
         setProjectName("");
         setAddProject(false);
+        setInputSameCompany('')
       }
     },
   });
@@ -376,12 +433,13 @@ const Chats = () => {
             group_id: data,
           });
         });
-        setGroupAdding(false);
         setSelectedChats([]);
         setSelectedChatIds([]);
+        setSelectedChatTypes([]);
         setGroupName("");
         setCreateGroup(false);
-        setInput("");
+        setInputSameCompany("");
+        setGroupAdding(false);
       }
     },
   });
@@ -468,6 +526,7 @@ const Chats = () => {
 
   //Handling selection of chats in creating a new project
   function handleSelectChats(profile) {
+    let bool = false;
     if (selectedChatIds.includes(profile?.id)) {
       setSelectedChats((old) => {
         return old?.filter((item) => item.id !== profile.id);
@@ -475,14 +534,46 @@ const Chats = () => {
       setSelectedChatIds((old) => {
         return old?.filter((item) => item !== profile?.id);
       });
+      setSelectedChatTypes((old) => {
+        return old?.filter((item) => item !== profile?.type);
+      });
       return;
     }
-    setSelectedChatIds((old) => {
-      return [...old, profile?.id];
-    });
-    setSelectedChats((old) => {
-      return [...old, profile];
-    });
+
+    if (profile?.type === "vendor") {
+      if (projectMembers  && !createGroup) {
+        projectMembers.forEach((val) => {
+          if (val.type === "vendor") {
+            toast("Can't add more than 1 vendor", { type: "warning" });
+            return;
+          }
+        });
+      } else {
+        setSelectedChatTypes((old) => {
+          return [...old, profile?.type];
+        });
+        setSelectedChatTypes((old) => {
+          if (old.length <= 1) {
+            setSelectedChatIds((old) => {
+              return [...old, profile?.id];
+            });
+            setSelectedChats((old) => {
+              return [...old, profile];
+            });
+          } else {
+            toast("Can't add more than 1 vendor", { type: "warning" });
+          }
+          return old;
+        });
+      }
+    } else {
+      setSelectedChatIds((old) => {
+        return [...old, profile?.id];
+      });
+      setSelectedChats((old) => {
+        return [...old, profile];
+      });
+    }
   }
 
   async function handleAddProject() {
@@ -507,11 +598,11 @@ const Chats = () => {
       });
     } else {
       setGroupAdding(false);
-      message.error("provide project name");
+      message.error("provide group name");
     }
   }
   function handleAddChatToProject(project_id) {
-    if (!input) return;
+    if (!inputSameCompany) return;
     setProjectAdding(true);
     // console.log(project_id);
     const pr = new Promise((resolve, reject) => {
@@ -533,19 +624,18 @@ const Chats = () => {
       setProjectAdding(false);
       setSelectedChats([]);
       setSelectedChatIds([]);
+      setSelectedChatTypes([]);
       setAddChatToProject(false);
     });
   }
 
   const content = (
-    <div>
-      <p
-        style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-        onClick={() => setCreateGroup(true)}
-      >
-        Create group
-      </p>
-    </div>
+    <p
+      style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+      onClick={() => setCreateGroup(true)}
+    >
+      Create group
+    </p>
   );
 
   // Infinite scrolling logic ---------------------->
@@ -623,9 +713,13 @@ const Chats = () => {
               <div className="projects">
                 <div className="projects-header">
                   <p>Projects</p>
-                  <div className="header-icons">
-                    <AiOutlinePlusCircle onClick={() => setAddProject(true)} />
-                  </div>
+                  {profile?.type === "architect" ? (
+                    <div className="header-icons">
+                      <AiOutlinePlusCircle
+                        onClick={() => setAddProject(true)}
+                      />
+                    </div>
+                  ) : null}
                 </div>
                 <div
                   className="projects-body"
@@ -682,11 +776,11 @@ const Chats = () => {
               <div className="vendors">
                 <div className="vendors-header">
                   <p>{profile?.type === "vendor" ? "Designers" : "Vendors"}</p>
-                  {profile?.type === "vendor" && (
+                  {profile?.type === "vendor" ? (
                     <div className="header-icons">
                       <AiOutlinePlusCircle onClick={() => setAddChat(true)} />
                     </div>
-                  )}
+                  ) : null}
                 </div>
                 <div className="vendors-body" onScroll={handleDebouncedScroll}>
                   {chats?.pages[0]?.length === 0 ? (
@@ -738,7 +832,7 @@ const Chats = () => {
               </div>
             </div>
           </div>
-        ) : selectedProject === null && selectedChat ? (
+        ) : selectedProject === null ? (
           <div className="messages-box-container message-box-container-sc">
             <p
               style={{
@@ -876,24 +970,26 @@ const Chats = () => {
               <div className="projects projects-sc">
                 <div className="projects-header">
                   <p>{selectedProject?.name}</p>
-                  <div className="header-icons">
-                    <AiOutlinePlusCircle
-                      onClick={() => setAddChatToProject(true)}
-                    />
-                    <Popover
-                      placement="bottomRight"
-                      content={content}
-                      trigger="click"
-                    >
-                      <BsThreeDotsVertical />
-                    </Popover>
-                  </div>
+                  {profile?.type === "architect" ? (
+                    <div className="header-icons">
+                      <AiOutlinePlusCircle
+                        onClick={() => setAddChatToProject(true)}
+                      />
+                      <Popover
+                        placement="bottomRight"
+                        content={content}
+                        trigger="click"
+                      >
+                        <BsThreeDotsVertical />
+                      </Popover>
+                    </div>
+                  ) : null}
                 </div>
                 <div
                   className="projects-body"
                   onScroll={handleDebouncedScrollChatsOfProject}
                 >
-                  {groups && groups?.length >= 0 ? (
+                  {groups?.length != 0 ? (
                     <p
                       style={{
                         borderBottom: "1px solid #000",
@@ -913,7 +1009,7 @@ const Chats = () => {
                     )
                     ?.filter((group) => {
                       let isSee = group?.created_by === profile?.id;
-                      groupMembers?.forEach((member) => {
+                      groupData?.forEach((member) => {
                         if (member?.group_id === group?.group_id) isSee = true;
                       });
                       return isSee;
@@ -1042,6 +1138,9 @@ const Chats = () => {
                       isFetchingNextPageMessages={
                         isFetchingNextPageMessagesGroup
                       }
+                      groupMembers={groupMembers}
+                      createdBy={selectedGroup?.profiles?.display_name}
+                      groupMode
                     />
                     <div className="chat-input">
                       <div
@@ -1174,7 +1273,7 @@ const Chats = () => {
             <input
               type="text"
               placeholder="Search here"
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => setInputSameCompany(e.target.value)}
             />
           </div>
           {filteredProfiles
@@ -1258,13 +1357,17 @@ const Chats = () => {
             />
           </div>
 
-          <h3>Select Members</h3>
+          <h3 style={{ margin: "0" }}>Select Members</h3>
+          <p style={{ margin: "0", fontSize: ".6rem", color: "red" }}>
+            ** You can select max of 1 vendor and multiple designers from your
+            company
+          </p>
           <div className="search-chat-input">
             <AiOutlineSearch />
             <input
               type="text"
               placeholder="Search here"
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => setInputSameCompany(e.target.value)}
             />
           </div>
           {filteredProfiles?.map((reciver, i) => {
@@ -1338,7 +1441,7 @@ const Chats = () => {
             <input
               type="text"
               placeholder="Search here"
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => setInputSameCompany(e.target.value)}
             />
           </div>
           {filteredProfiles?.map((reciver, i) => {
@@ -1377,6 +1480,8 @@ const Messeges = memo(
     messages,
     profile,
     groupMode = false,
+    groupMembers=null,
+    createdBy=null,
     hide = true,
     fetchNextPageMessages,
     hasNextPageMessages,
@@ -1418,6 +1523,13 @@ const Messeges = memo(
           </p>
         ) : (
           <div>
+          {
+            groupMode ? <p style={{textAlign:'center',fontSize:".6rem"}}>{createdBy} created this group with {
+              groupMembers?.map((mem,i)=>{
+                return <span>{mem.user_name+`${i!==groupMembers?.length-1?", ":""}`}</span>
+              })
+            }</p>:null
+          }
             {messages?.pages?.reverse()?.map((page) => {
               return (
                 <div>
@@ -1445,6 +1557,7 @@ const Messeges = memo(
                                 <br />
                               </span>
                             ) : null}
+                            
                             {formatSupabaseTimestampToTime(message?.created_at)}
                           </p>
                         </div>
@@ -1556,7 +1669,7 @@ function Project({ index, last, project, user_id, setSelectedProject }) {
   return (
     <div className={`projects-chat ${last === index ? "" : "border-bottom"}`}>
       <div className="chat-pic" onClick={() => setSelectedProject(project)}>
-        {pic ? <img src={pic} /> : <AiOutlineUser />}
+        {pic ? <img src={pic} /> : <Avatar>P</Avatar>}
       </div>
       <div className="chat-info" onClick={() => setSelectedProject(project)}>
         <p>{name}</p>

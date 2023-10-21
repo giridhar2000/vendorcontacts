@@ -91,7 +91,7 @@ export async function getVendors(start, end) {
       .eq("type", "vendor");
 
     if (error) throw new Error(error);
-    console.log(data)
+    // console.log(data)
     return data;
   } catch (err) {
     console.log(err);
@@ -115,6 +115,28 @@ export async function getAllUsers(id, type) {
     return null;
   }
 }
+
+
+
+// Getting all the users from same company ------------->       returns [ < users with same company > ] || null
+
+export async function getAllUsersOfSameCompany(id, type,company) {
+  if(!company) return null;
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id,profile_pic,display_name,bio,type,company")
+      .neq("id", id)
+      .eq("company", company);
+    if (error) throw new Error(error);
+    return data;
+  } catch (err) {
+    // console.log(err);
+    return null;
+  }
+}
+
+
 
 // Getting all documents of a user by user id --------------->          returns [ < docs of a user > ] || null
 
