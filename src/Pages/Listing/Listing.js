@@ -40,9 +40,6 @@ const Listing = () => {
     async () => {
       const { from, to } = loadMoreData();
       return await getVendors(from, to); // Adjust your API call based on currentPage
-    },
-    {
-      enabled: profile?.id !== null,
     }
   );
 
@@ -52,6 +49,7 @@ const Listing = () => {
   }
 
   useEffect(() => {
+    console.log(vendors)
     if (vendors) {
       setData((currentData) => [...currentData, ...vendors]);
       setIsLoading(false);

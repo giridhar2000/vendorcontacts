@@ -28,7 +28,7 @@ export async function getUserById(id) {
     let { data: profile, error } = await supabase
       .from("profiles")
       .select(
-        "id,email,display_name,profile_pic,bio,location,quote,type,status,cover_pic, company"
+        "id,email,display_name,profile_pic,bio,location,quote,type,status,cover_pic,company"
       )
       .eq("id", id)
       .single();
@@ -84,17 +84,17 @@ export async function getVendors(start, end) {
   try {
     const { data, count, error } = await supabase
       .from("profiles")
-      .select("id,profile_pic,display_name,location,bio,cover_picc,company", {
+      .select("id,profile_pic,display_name,location,bio,cover_pic,company", {
         count: "exact",
       })
       .range(start, end)
       .eq("type", "vendor");
 
     if (error) throw new Error(error);
-
+    // console.log(data)
     return data;
   } catch (err) {
-    // console.log(err);
+    console.log(err);
     return [];
   }
 }
@@ -115,6 +115,28 @@ export async function getAllUsers(id, type) {
     return null;
   }
 }
+
+
+
+// Getting all the users from same company ------------->       returns [ < users with same company > ] || null
+
+export async function getAllUsersOfSameCompany(id, type,company) {
+  if(!company) return null;
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id,profile_pic,display_name,bio,type,company")
+      .neq("id", id)
+      .eq("company", company);
+    if (error) throw new Error(error);
+    return data;
+  } catch (err) {
+    // console.log(err);
+    return null;
+  }
+}
+
+
 
 // Getting all documents of a user by user id --------------->          returns [ < docs of a user > ] || null
 

@@ -1,0 +1,45 @@
+.notifications-container{
+    width: 100%;
+   min-height: 70vh;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    padding: 1rem 0;
+    flex-direction: column;
+}
+.notification-box{
+    min-width: 500px;
+    max-width: 600px;
+    height: 80px !important;
+    background-color:#e7fbabe0 !important;
+    padding: 0 1rem !important;
+    border-radius: 20px !important;
+    cursor:default !important;
+    margin-top: .3rem !important;
+}
+.notification-buttons{
+    display: flex;
+    margin-top: .3rem !important;
+}
+.notification-buttons button{
+  border: 0;
+  outline: none;
+  margin-inline: .3rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color:#fff;
+  padding: .3rem .4rem;
+  border-radius: 8px;
+  font-size: .7rem;
+}
+.notification-buttons button svg{
+    margin-right: .2rem;
+}
+
+@media (max-width: 1100px){
+    .notification-box{
+        min-width: 380px !important;
+    }   
+}

@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import "./Footer.css";
 import LogoIcon from "../../Assets/images/logo-icon-2.svg";
 import pdf from "../../Assets/TNC.pdf";
 import { Popover, message, Modal } from "antd";
 import { GiPartyPopper } from "react-icons/gi";
+import AuthContext from "../../contexts/authContext";
 import supabase from "../../utils/supabase.config";
 
+
 const Footer = () => {
+  const [isAuth, setIsAuth] = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const [userType, setUserType] = useState(null);
@@ -259,9 +262,12 @@ const Footer = () => {
           clients</span>
         </p>
       </div>
-      <div className="footerButton">
+      {
+        !isAuth &&  <div className="footerButton">
         <button onClick={()=>setOpen(true)}>Request Invite</button>
       </div>
+      }
+    
       <div className="copyright">
         <p className="text-light">
           &copy; 2023 Vendorcontacts. All rights reserved.
