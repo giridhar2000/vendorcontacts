@@ -38,18 +38,18 @@ const Edit = () => {
   }, [profile]);
 
   const checkFileExists = async (bucketName, filePath) => {
-    console.log(bucketName, filePath);
+    // console.log(bucketName, filePath);
     try {
       const { data, error } = await supabase.storage
         .from(bucketName)
         .list("public", {
           search: filePath,
         });
-      console.log(data);
+      // console.log(data);
       if (error) throw new Error(error);
       return data.length > 0;
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       return false;
     }
   };
@@ -157,13 +157,13 @@ const Edit = () => {
         cover || profile?.cover_pic,
         company || profile?.company
       );
-      console.log(docUrls);
+      // console.log(docUrls);
       let pr = new Promise((resolve, reject) => {
         docUrls.forEach(async (doc, index, array) => {
           const { error } = await supabase
             .from("files")
             .insert([{ file: doc, user_id: profile?.id, name: doc?.name }]);
-            if(error) console.log(error)
+          if (error) reject(error);
           if (index === array.length - 1) resolve();
         });
       });
@@ -175,6 +175,8 @@ const Edit = () => {
         } else {
           toast("Profile not updated", { type: "error" });
         }
+      }).catch((err) => {
+        throw new Error(err);
       });
     } catch (err) {
       toast("Profile not updated", { type: "error" });
@@ -182,7 +184,7 @@ const Edit = () => {
   }
 
   async function handleDocUpload(info) {
-    console.log(info);
+    // console.log(info);
     let onSuccess = info?.onSuccess;
     let file = info.file;
     try {
