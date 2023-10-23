@@ -36,18 +36,22 @@ const Edit = () => {
     setFirstName(fName);
     setLastName(lName);
   }, [profile]);
-  const checkFileExists = async (bucketName, filePath) => {
-    const { data, error } = await supabase.storage
-      .from(bucketName)
-      .list(filePath);
 
-    if (error) {
-      console.error(error);
+  const checkFileExists = async (bucketName, filePath) => {
+    console.log(bucketName, filePath);
+    try {
+      const { data, error } = await supabase.storage
+        .from(bucketName)
+        .list("public", {
+          search: filePath,
+        });
+      console.log(data);
+      if (error) throw new Error(error);
+      return data.length > 0;
+    } catch (err) {
+      console.log(err);
       return false;
     }
-
-    const files = data.filter((item) => item.name === filePath);
-    return files.length > 0;
   };
 
   // async function handleFileUpload(e) {
@@ -83,10 +87,7 @@ const Edit = () => {
       file = e.target.files[0];
     }
 
-    const fileExists = await checkFileExists(
-      "profile_pics",
-      `public/${file.name}`
-    );
+    const fileExists = await checkFileExists("profile_pics", file.name);
     if (fileExists) {
       const { data, error } = await supabase.storage
         .from("profile_pics")
@@ -156,18 +157,25 @@ const Edit = () => {
         cover || profile?.cover_pic,
         company || profile?.company
       );
-      docUrls.forEach(async (doc) => {
-        const { data, error } = await supabase
-          .from("files")
-          .insert([{ file: doc, user_id: profile?.id, name: doc?.name }])
-          .select();
+      console.log(docUrls);
+      let pr = new Promise((resolve, reject) => {
+        docUrls.forEach(async (doc, index, array) => {
+          const { error } = await supabase
+            .from("files")
+            .insert([{ file: doc, user_id: profile?.id, name: doc?.name }]);
+            if(error) console.log(error)
+          if (index === array.length - 1) resolve();
+        });
       });
-      if (res) {
-        toast("Profile updated", { type: "success" });
-        navigate("/profile");
-      } else {
-        toast("Profile not updated", { type: "error" });
-      }
+
+      pr.then(() => {
+        if (res) {
+          toast("Profile updated", { type: "success" });
+          navigate("/profile");
+        } else {
+          toast("Profile not updated", { type: "error" });
+        }
+      });
     } catch (err) {
       toast("Profile not updated", { type: "error" });
     }
@@ -175,24 +183,31 @@ const Edit = () => {
 
   async function handleDocUpload(info) {
     console.log(info);
-    let onSuccess = info.onSuccess;
+    let onSuccess = info?.onSuccess;
     let file = info.file;
     try {
-      const fileExists = await checkFileExists(
-        "profile_docs",
-        `public/${file.name}`
-      );
+      const fileExists = await checkFileExists("profile_docs", file.name);
+      console.log(fileExists);
       if (fileExists) {
-        const { data, error } = await supabase.storage
+        const { error } = await supabase.storage
           .from("profile_docs")
           .update("public/" + file?.name, file, {
             cacheControl: "3600",
             upsert: true,
           });
-
+        setDocUrls([
+          ...docUrls,
+          {
+            file: `https://kzthdyjkhdwyqztvlvmp.supabase.co/storage/v1/object/public/profile_pics/public/${file.name}`,
+            name: file?.name,
+          },
+        ]);
+        if (error) throw new Error(error);
+        console.log(info);
         // return;
+        if (onSuccess) onSuccess(file);
       } else {
-        const { data, error } = await supabase.storage
+        const { error } = await supabase.storage
           .from("profile_docs")
           .upload("public/" + file?.name, file);
         setDocUrls([
@@ -202,7 +217,9 @@ const Edit = () => {
             name: file?.name,
           },
         ]);
-        onSuccess(file);
+
+        if (error) throw new Error(error);
+        if (onSuccess) onSuccess(file);
       }
     } catch (err) {
       console.log(err);
@@ -223,10 +240,6 @@ const Edit = () => {
       console.log(err);
       return false;
     }
-  }
-
-  if (isLoading) {
-    return <p>Loading....</p>;
   }
 
   const props = {
@@ -258,6 +271,9 @@ const Edit = () => {
     },
   };
 
+  if (isLoading) {
+    return <p>Loading....</p>;
+  }
   return (
     <>
       <div className="cover-pic">
@@ -345,7 +361,9 @@ const Edit = () => {
               <input
                 placeholder="Company"
                 value={
-                  profile?.company && company === null? profile?.company:email
+                  profile?.company && company === null
+                    ? profile?.company
+                    : email
                 }
                 onChange={(e) => setCompany(e.target.value)}
               />
@@ -404,7 +422,6 @@ const Edit = () => {
           </div>
         </div>
       </div>
-    
     </>
   );
 };
