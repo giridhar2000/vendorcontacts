@@ -183,6 +183,9 @@
   .profile-body{
     align-items: flex-start;
   }
+  .profile-box-container{
+    width: 100% !important;
+  }
   .profile-info {
     padding: 0;
     margin: 0;
@@ -217,6 +220,7 @@
   .profile-desc{
     width: 90% !important;
     align-self: center;
+    padding: 2rem !important;
   }
   .profile-desc p {
     font-size: 0.8rem;

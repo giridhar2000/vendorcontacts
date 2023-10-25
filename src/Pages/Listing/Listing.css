@@ -169,7 +169,7 @@ hr{
   }
   .listingcard {
     flex-direction: column;
-    width: auto;
+    width: 95%;
     padding: 1vh;
   }
   .listingcard svg{
