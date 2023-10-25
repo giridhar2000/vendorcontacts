@@ -411,7 +411,8 @@ const Header = () => {
             onClose={onClose}
             open={openMenu}
           >
-            {isAuth ? (
+            {
+              /*isAuth ? (
               <div>
                 <form className="header-form">
                   <button>
@@ -445,7 +446,9 @@ const Header = () => {
                   </button>
                 </form>
               </div>
-            ) : null}
+            ) : null*/
+          
+          }
             {!isAuth ? (
               <div className="buttons">
                 <button className="signin" onClick={signin}>
@@ -459,7 +462,7 @@ const Header = () => {
                   <BsChatLeftText /> Chats
                 </p>
                 <p onClick={() => navigate("/notifications")}>
-                  <BsBell /> Chats
+                  <BsBell /> Notifications
                 </p>
                 <p onClick={() => navigate("/profile")}>
                   <AiOutlineUser /> Profile

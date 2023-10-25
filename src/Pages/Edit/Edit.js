@@ -159,6 +159,7 @@ const Edit = () => {
       );
       // console.log(docUrls);
       let pr = new Promise((resolve, reject) => {
+        if(docUrls.length===0) resolve();
         docUrls.forEach(async (doc, index, array) => {
           const { error } = await supabase
             .from("files")
@@ -168,16 +169,18 @@ const Edit = () => {
         });
       });
 
-      pr.then(() => {
-        if (res) {
-          toast("Profile updated", { type: "success" });
-          navigate("/profile");
-        } else {
-          toast("Profile not updated", { type: "error" });
-        }
-      }).catch((err) => {
-        throw new Error(err);
-      });
+      
+        pr.then(() => {
+          if (res) {
+            toast("Profile updated", { type: "success" });
+            navigate("/profile");
+          } else {
+            toast("Profile not updated", { type: "error" });
+          }
+        }).catch((err) => {
+          throw new Error(err);
+        });
+      
     } catch (err) {
       toast("Profile not updated", { type: "error" });
     }
