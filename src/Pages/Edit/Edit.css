@@ -235,7 +235,9 @@ input[type="file" i] {
   .editText {
     margin-block: 2vh !important;
   }
-
+  .editform {
+    padding-left: 0%;
+  }
   .editpassip,
   .editemailip,
   .editnameip {
