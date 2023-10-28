@@ -269,9 +269,9 @@ const Chats = () => {
     }
   );
 
-  // Fetching all messages from a chat
+  // 
   let { data: groupData } = useQuery(
-    ["memberList", profile?.id],
+    ["grpData", profile?.id],
     () => getGroupInfo(profile?.id),
     {
       enabled: profile?.id != null,
@@ -478,6 +478,21 @@ const Chats = () => {
       .channel("custom-all-channel")
       .on(
         "postgres_changes",
+        { event: "*", schema: "public", table: "groups" },
+        (payload) => {
+          console.log(payload);
+          queryClient.invalidateQueries([
+            "groups",
+            selectedProject?.project_id,
+          ]);
+          queryClient.invalidateQueries( ["memberList", payload?.new?.group_id]);
+          queryClient.invalidateQueries(["grpData", profile?.id]);
+        }
+      )
+
+
+      .on(
+        "postgres_changes",
         { event: "*", schema: "public", table: "messages" },
         (payload) => {
           queryClient.invalidateQueries([
@@ -490,17 +505,7 @@ const Chats = () => {
           ]);
         }
       )
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "groups" },
-        (payload) => {
-          console.log(payload);
-          queryClient.invalidateQueries([
-            "groups",
-            selectedProject?.project_id,
-          ]);
-        }
-      )
+     
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "chats" },
@@ -548,10 +553,10 @@ const Chats = () => {
       return;
     }
 
-    if (profile?.type === "vendor") {
+    if (profile?.type === "vendor" && !createGroup) {
       if (projectMembers && !createGroup) {
         projectMembers.forEach((val) => {
-          if (val.type === "vendor") {
+          if (val.type === "vendor" ) {
             toast("Can't add more than 1 vendor", { type: "warning" });
             return;
           }
@@ -1201,6 +1206,14 @@ const Chats = () => {
               ? "Select Designer to send chat request"
               : "Select Vendor to send chat request"
           }
+          afterClose={()=>{
+            setSelectedChats([]);
+            setSelectedChatIds([]);
+            setSelectedChatTypes([]);
+            setInput("")
+            setInputSameCompany("")
+            setFilteredProfiles([]);
+          }}
           footer={null}
           open={addChat}
           onCancel={() => setAddChat(false)}
@@ -1274,6 +1287,14 @@ const Chats = () => {
             </button>,
           ]}
           open={addChatToProject}
+          afterClose={()=>{
+            setSelectedChats([]);
+            setSelectedChatIds([]);
+            setSelectedChatTypes([]);
+            setInput("")
+            setInputSameCompany("")
+            setFilteredProfiles([]);
+          }}
           onCancel={() => setAddChatToProject(false)}
           bodyStyle={{
             maxHeight: "500px",
@@ -1365,6 +1386,14 @@ const Chats = () => {
               )}
             </button>,
           ]}
+          afterClose={()=>{
+            setSelectedChats([]);
+            setSelectedChatIds([]);
+            setSelectedChatTypes([]);
+            setInput("")
+            setInputSameCompany("")
+            setFilteredProfiles([]);
+          }}
           open={addProject}
           onCancel={() => setAddProject(false)}
           bodyStyle={{
@@ -1452,6 +1481,14 @@ const Chats = () => {
               )}
             </button>,
           ]}
+           afterClose={()=>{
+            setSelectedChats([]);
+            setSelectedChatIds([]);
+            setSelectedChatTypes([]);
+            setInput("")
+            setInputSameCompany("")
+            setFilteredProfiles([]);
+          }}
           open={createGroup}
           onCancel={() => setCreateGroup(false)}
           bodyStyle={{
