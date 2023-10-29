@@ -6,6 +6,7 @@ import {
   AiOutlineArrowRight,
   AiOutlineUser,
   AiOutlineLogout,
+  AiFillBell,
 } from "react-icons/ai";
 import { BsChatLeftText, BsBell } from "react-icons/bs";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -79,6 +80,18 @@ const Header = () => {
     localStorage.removeItem("auth");
     navigate("/");
   }
+
+  const notificationcontent = (
+    <div>
+      <p
+        style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+        onClick={() => navigate("/notifications")}
+      >
+        <AiFillBell style={{ marginRight: ".5rem" }} />
+        View your notifications
+      </p>
+    </div>
+  );
 
   const content = (
     <div>
@@ -366,7 +379,14 @@ const Header = () => {
           ) : (
             <div className="buttons icons">
               <BsChatLeftText onClick={() => navigate("/chats")} />
-              <BsBell onClick={() => navigate("/notifications")}/> 
+              {/* <BsBell onClick={() => navigate("/notifications")}/> */}
+              <Popover
+                placement="bottomRight"
+                content={notificationcontent}
+                trigger="click"
+              >
+                <BsBell />
+              </Popover> 
               <Popover
                 placement="bottomRight"
                 content={content}
