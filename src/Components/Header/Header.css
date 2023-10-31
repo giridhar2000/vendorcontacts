@@ -18,13 +18,14 @@
 }
 
 .search-bar{
-  border: 0.7px solid rgb(70, 69, 69);
+  border: 0.6px solid rgb(70, 69, 69);
   width: 700px;
   height: 50px;
   border-radius: 50px;
   display: flex;
   justify-content: space-between;
   font-weight: lighter;
+  font-size: small;
 }
 
 .left{
