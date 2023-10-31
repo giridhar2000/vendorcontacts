@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import "./Header.css";
 import { Button, Drawer, Skeleton } from "antd";
 import Icon from "../../Assets/images/vc.svg";
+import Footer from "../../Components/Footer/Footer";
+
 import {
   AiOutlineArrowRight,
   AiOutlineUser,
   AiOutlineLogout,
   AiFillBell,
+  AiOutlineSearch,
+  AiFillRightCircle
 } from "react-icons/ai";
 import { BsChatLeftText, BsBell } from "react-icons/bs";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -331,6 +335,19 @@ const Header = () => {
           />
         </div>
 
+        <div className="search-bar">
+          <div className="left ">
+          <AiOutlineSearch className="ico"/>
+          <h8>Search your favourite Vendor</h8>
+          </div>
+
+          <div className="right">
+          <AiFillRightCircle  size={50}/>
+          </div>
+
+
+        </div>
+
         {/* {isAuth ? (
         <div className="right">
           <form className="header-form">
@@ -386,7 +403,7 @@ const Header = () => {
                 trigger="click"
               >
                 <BsBell />
-              </Popover> 
+              </Popover>
               <Popover
                 placement="bottomRight"
                 content={content}
@@ -410,7 +427,6 @@ const Header = () => {
           )}
         </div>
 
-
         <div className="menu">
           <Button type="secondary" onClick={showDrawer}>
             <svg
@@ -431,8 +447,7 @@ const Header = () => {
             onClose={onClose}
             open={openMenu}
           >
-            {
-              /*isAuth ? (
+            {/*isAuth ? (
               <div>
                 <form className="header-form">
                   <button>
@@ -466,15 +481,15 @@ const Header = () => {
                   </button>
                 </form>
               </div>
-            ) : null*/
-          
-          }
+            ) : null*/}
             {!isAuth ? (
               <div className="buttons">
                 <button className="signin" onClick={signin}>
                   Sign in
                 </button>
-                <button className="request" onClick={() => setOpen(true)}>Request Invite</button>
+                <button className="request" onClick={() => setOpen(true)}>
+                  Request Invite
+                </button>
               </div>
             ) : (
               <div className="buttons icons">
@@ -495,7 +510,6 @@ const Header = () => {
             )}
           </Drawer>
         </div>
-
       </div>
     </>
   );

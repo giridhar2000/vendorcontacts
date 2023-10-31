@@ -17,6 +17,38 @@
   align-items: center;
 }
 
+.search-bar{
+  border: 0.7px solid rgb(70, 69, 69);
+  width: 700px;
+  height: 50px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: lighter;
+}
+
+.left{
+  display: flex;
+  gap: 60px;
+}
+h8{
+  margin-top: 11px;
+
+}
+.ico{
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: larger;
+  margin-left: 10px;
+
+}
+.right-icon{
+ height: 40px;
+
+
+}
+
+
 .signin {
   margin-right: 1rem;
   width: 114px;
