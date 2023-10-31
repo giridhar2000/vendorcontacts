@@ -1,10 +1,10 @@
-hr{
+hr {
   max-width: 68.7%;
   margin-left: 15.2%;
   background-color: lightgrey;
 }
 
-.filter{
+.filter {
   max-width: 68.7%;
   height: auto;
   display: flex;
@@ -14,7 +14,7 @@ hr{
   justify-content: space-between;
 }
 
-.filter button{
+.filter button {
   background-color: #fff;
   outline: none;
   border: 0;
@@ -26,7 +26,7 @@ hr{
   font-size: medium;
 }
 
-.Dropdown-control{
+.Dropdown-control {
   background-color: #fff;
   border-radius: 30px;
   border: 2px solid #000;
@@ -41,24 +41,23 @@ hr{
   padding-block: 1vh; */
 }
 
-.Dropdown-menu{
+.Dropdown-menu {
   border-radius: 5px;
   max-width: 70%;
   margin-left: 12px;
 }
 
-.Dropdown-placeholder{
+.Dropdown-placeholder {
   margin-right: 35px;
   /* font-size: small; */
 }
 
-.Dropdown-arrow{
+.Dropdown-arrow {
   margin-top: 4px !important;
   margin-right: 5px !important;
 }
 
-
-.cardcontainer{
+.cardcontainer {
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -72,8 +71,11 @@ hr{
   width: 40%;
   height: 250px;
   display: flex;
-  border: 2px solid black;
-  border-right: 2px solid #000;
+  background-color: whitesmoke;
+  border-radius: 8px;
+  border: 2px;
+  padding: 8px;
+  border-right: 2px;
   margin: 10px;
   cursor: pointer;
 }
@@ -83,6 +85,7 @@ hr{
   width: 44%;
   height: 92%;
   object-fit: cover;
+  border-radius: 10px;
 }
 
 .listingname {
@@ -109,10 +112,11 @@ hr{
 }
 
 .listingname p:nth-child(3) {
-  font-size: 60%;
-  font-weight: bold;
+  font-size: 68%;
+  font-weight: normal;
   margin-top: 25px;
   max-height: 50% !important;
+  /* max-width: 350px; */
 }
 
 /* .spin{
@@ -123,13 +127,13 @@ hr{
   background-color: aliceblue;
 } */
 
-.load{
+.load {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.load button{
+.load button {
   background-color: #fff;
   outline: none;
   border: 2px solid #000;
@@ -161,8 +165,8 @@ hr{
   width: 100%;
 } */
 
-@media(max-width:1100px) {
-  .cardcontainer{
+@media (max-width: 1100px) {
+  .cardcontainer {
     flex-direction: column;
     padding: 3vh;
     gap: 5vh;
@@ -172,13 +176,12 @@ hr{
     width: 95%;
     padding: 1vh;
   }
-  .listingcard svg{
+  .listingcard svg {
     margin: 1px 1px 1px auto !important;
   }
-  .filter{
+  .filter {
     margin-inline: 3vh !important;
     margin-top: 2vh !important;
     max-width: none;
   }
 }
-
