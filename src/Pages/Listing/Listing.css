@@ -75,7 +75,8 @@ hr{
   border: 2px solid black;
   border-right: 2px solid #000;
   margin: 10px;
-  cursor: pointer;
+ 
+  border-radius: 9px;
 }
 
 .listingcard img {
@@ -83,6 +84,7 @@ hr{
   width: 44%;
   height: 92%;
   object-fit: cover;
+  border-radius: 9px;
 }
 
 .listingname {
