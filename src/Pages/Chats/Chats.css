@@ -171,6 +171,19 @@
   background: #f6f6f6;
   margin-inline: 0.5rem;
 }
+.badge {
+  margin-left: 0.2rem;
+  padding-inline:.3rem;
+  padding-block:.01rem;
+  border-radius:8px;
+  font-size:.6rem;
+}
+.bg-vendor{
+  background:#d6db63; 
+}
+.bg-designer{
+ background:#6ae739; 
+}
 .border-bottom {
   border-bottom: 0.5px solid #a2a2a294;
 }
@@ -208,7 +221,7 @@
   font-size: 0.7rem;
   color: #000;
 }
-.chat-info p:nth-child(2){
+.chat-info p:nth-child(2) {
   color: #434343 !important;
 }
 .chat-time {

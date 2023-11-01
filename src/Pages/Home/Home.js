@@ -25,9 +25,9 @@ import ribbon2 from "../../Assets/images/svg2.svg";
 import { GiPartyPopper } from "react-icons/gi";
 import ribbon1 from "../../Assets/images/svg1.svg";
 import ribbon3 from "../../Assets/images/svg3.svg";
-import abstract1 from "../../Assets/images/abstract1.svg"
-import abstract2 from "../../Assets/images/abstract2.svg"
-import abstract3 from "../../Assets/images/abstract3.svg"
+import abstract1 from "../../Assets/images/abstract1.svg";
+import abstract2 from "../../Assets/images/abstract2.svg";
+import abstract3 from "../../Assets/images/abstract3.svg";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -40,29 +40,35 @@ export default function Home() {
     animator();
   });
 
-  async function invite(email) {
-    if (email && checkbox && userType) {
+  async function invite() {
+    
+    if (email && checkbox) {
       try {
-        const { data, error } = await supabase.from("invite_email").insert([
+        const { count, error } = await supabase.from("invite_email").select("email_id", { count: "exact", head: true }).eq('email_id',email);
+        if (error) throw new Error(error);
+        if(count>0){
+          message.warning("Email id already in invite list");
+          return;
+        }
+        const { data, error:error2 } = await supabase.from("invite_email").insert([
           {
             email_id: email,
             type: userType,
           },
         ]);
-        if (error) throw new Error(error);
+        if(error2) throw new Error(error2);
+        
         setIsSent(true);
-        setOpen(false);
+        setEmail("");
         setUserType(null);
         return data[0]?.email_id;
       } catch (err) {
+        console.log();
         return null;
       }
     } else {
       message.error("please enter your email id and click on the checkbox");
     }
-    setEmail("");
-    setUserType(null);
-    setCheckbox(false);
   }
 
   function animator() {
@@ -115,7 +121,7 @@ export default function Home() {
 
   return (
     <>
-      <Header/>
+      <Header />
       {open && !userType && (
         <div id="myModal" className="modal">
           <div className="modal-content">
@@ -223,7 +229,7 @@ export default function Home() {
                   </div>
                   <br />
                 </form>
-                <button className="submit-btn">Request invite</button>
+                <button className="submit-btn" onClick={invite}>Request invite</button>
               </div>
             </div>
           </div>
@@ -278,7 +284,7 @@ export default function Home() {
                   </div>
                   <br />
                 </form>
-                <button className="submit-btn" onClick={() => invite(email)}>
+                <button className="submit-btn" onClick={invite}>
                   Join the list
                 </button>
               </div>
@@ -303,7 +309,6 @@ export default function Home() {
               here
             </h1>
           </div>
-
 
           <img src={bg1} alt="bg" className="bg" />
 
@@ -435,9 +440,15 @@ export default function Home() {
 
           <div className="tilt desktop">
             <div className="tiltedChild codedText">Who's my rep?</div>
-            <div className="tiltedChild codedText">What's the cost on this?</div>
-            <div className="tiltedChild codedText">Is this bleach cleanable?</div>
-            <div className="tiltedChild codedText">Can this be made custom?</div>
+            <div className="tiltedChild codedText">
+              What's the cost on this?
+            </div>
+            <div className="tiltedChild codedText">
+              Is this bleach cleanable?
+            </div>
+            <div className="tiltedChild codedText">
+              Can this be made custom?
+            </div>
             <div className="tiltedChild codedText">
               Digital or standard vinyl?
             </div>
@@ -463,15 +474,14 @@ export default function Home() {
           </div>
         </div>
         <div className="tilt mobile">
-            <div className="tiltedChild codedText">Who's my rep?</div>
-            <div className="tiltedChild codedText">What's the cost on this?</div>
-            <div className="tiltedChild codedText">Is this bleach cleanable?</div>
-            <div className="tiltedChild codedText">Can this be made custom?</div>
-            <div className="tiltedChild codedText">
-              Digital or standard vinyl?
-            </div>
+          <div className="tiltedChild codedText">Who's my rep?</div>
+          <div className="tiltedChild codedText">What's the cost on this?</div>
+          <div className="tiltedChild codedText">Is this bleach cleanable?</div>
+          <div className="tiltedChild codedText">Can this be made custom?</div>
+          <div className="tiltedChild codedText">
+            Digital or standard vinyl?
           </div>
-
+        </div>
       </section>
 
       <section className="mission">
@@ -589,7 +599,6 @@ export default function Home() {
             <div className="ribbon">
               <img src={ribbon3} alt="ribon-img" />
             </div>
-
           </div>
         </div>
       </section>
@@ -603,7 +612,7 @@ export default function Home() {
           <img src={HPA} alt="hpa-logo" />
         </div>
       </section>
-      <Footer/>
+      <Footer />
     </>
   );
 }
