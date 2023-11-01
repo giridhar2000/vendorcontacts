@@ -72,10 +72,12 @@ hr{
   width: 40%;
   height: 250px;
   display: flex;
-  border: 2px solid black;
-  border-right: 2px solid #000;
+  background-color: #f4f4f4;
+  /* border: 2px solid black;
+  border-right: 2px solid #000; */
   margin: 10px;
   cursor: pointer;
+  border-radius: 10px;
 }
 
 .listingcard img {
@@ -83,6 +85,7 @@ hr{
   width: 44%;
   height: 92%;
   object-fit: cover;
+  border-radius: 10px;
 }
 
 .listingname {
@@ -110,7 +113,7 @@ hr{
 
 .listingname p:nth-child(3) {
   font-size: 60%;
-  font-weight: bold;
+  font-weight: 400;
   margin-top: 25px;
   max-height: 50% !important;
 }
@@ -132,13 +135,16 @@ hr{
 .load button{
   background-color: #fff;
   outline: none;
-  border: 2px solid #000;
+  border: 1px solid #C7C7C7;
+  border-radius: 5px;
   color: black;
   align-items: center;
-  padding-block: 5px;
+  padding-block: 10px;
+  padding-inline: 20px;
   cursor: pointer;
   font-family: "Poppins";
-  font-size: medium;
+  font-size: small;
+  font-weight: 400;
 }
 
 /* .items .item{

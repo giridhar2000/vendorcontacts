@@ -1,5 +1,10 @@
-.loginText {
-    font-weight: 300;
+.loginText h1{
+    font-size: 37.152px;
+    font-weight: 400;
+}
+
+.loginText span{
+    color: #8F8F8F;
 }
 
 .passip,

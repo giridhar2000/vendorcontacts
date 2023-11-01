@@ -118,7 +118,7 @@ const Listing = () => {
         {isLoading ? (
           <Spin />
         ) : (
-          <button onClick={increasePage}>Load More</button>
+          <button onClick={increasePage}>Load more</button>
         )}
       </div>
       <br />
