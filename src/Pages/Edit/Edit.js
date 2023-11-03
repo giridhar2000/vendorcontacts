@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/userContext";
 import { UploadOutlined } from "@ant-design/icons";
 import { useQuery } from "react-query";
-import { Button, message, Upload, Select } from "antd";
+import { Button, message, Upload, Select, Spin } from "antd";
 import usePlacesAutocomplete from "use-places-autocomplete";
 
 const Edit = () => {
@@ -34,13 +34,15 @@ const Edit = () => {
   const {
     ready,
     value,
-    suggestions: { status, data },
+    suggestions: { status, data, loading },
     setValue,
     init,
     clearSuggestions,
   } = usePlacesAutocomplete({
     initOnMount: true,
-    requestOptions: {},
+    requestOptions: {
+      types: ["locality"],
+    },
     debounce: 500,
   });
 
@@ -61,7 +63,7 @@ const Edit = () => {
 
   // Function for handling suggestions places worked in
   const handlePlacesWorkedInChange2 = (e) => {
-    console.log("on key down", e.target.value);
+    console.log("on key down", data);
     setTimeout(() => {
       setValue(e.target.value);
     }, 1000);
@@ -408,7 +410,7 @@ const Edit = () => {
                 onChange={(e) => setCompany(e.target.value)}
               />
             </div>
-            <div className="editemailip mt-1" >
+            <div className="editemailip mt-1">
               {/*
               <input
               placeholder="Location"
@@ -427,21 +429,28 @@ const Edit = () => {
                   width: "100%",
                 }}
                 size="large"
-                options={data?.map((suggestion) => {
-                  const {
-                    place_id,
-                    structured_formatting: { main_text, secondary_text },
-                  } = suggestion;
+                notFoundContent={!loading ?<div className={{padding:'4rem',display:'grid',placeItems:'center'}}><p>No data</p></div>:<Spin/>}
+                options={data
+                  ?.filter((d) => {
+                    return d?.types?.includes("locality");
+                  })
+                  ?.map((suggestion) => {
+                    const {
+                      place_id,
+                      structured_formatting: { main_text, secondary_text },
+                    } = suggestion;
 
-                  return {
-                    label: main_text,
-                    value: main_text + ", " + secondary_text,
-                  };
-                })}
+                    return {
+                      label: main_text,
+                      value: main_text + ", " + secondary_text,
+                    };
+                  })}
                 onInputKeyDown={handlePlacesWorkedInChange2}
-                placeholder={ profile?.location && location === null
-                  ? profile?.location
-                  : "Location"}
+                placeholder={
+                  profile?.location && location === null
+                    ? profile?.location
+                    : "Location"
+                }
                 onChange={handleAddressChange}
               />
             </div>
