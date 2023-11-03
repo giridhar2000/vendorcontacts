@@ -80,7 +80,8 @@ export async function updateUserProfile(
 
 // Getting vendors by range ------------------>      returns [ < vendors > ] || []
 
-export async function getVendors(page=0) {
+export async function getVendors(page=0,recent=true) {
+  console.log(recent);
   try {
     let from, to;
     const loadMoreData = () => {
@@ -97,6 +98,7 @@ export async function getVendors(page=0) {
       .select("id,profile_pic,display_name,location,bio,cover_pic,company", {
         count: "exact",
       })
+      .order('created_at',{ascending:recent})
       .range(from, to)
       .eq("type", "vendor");
 
