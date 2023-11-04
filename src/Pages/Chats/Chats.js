@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, memo } from "react";
 import "./Chats.css";
-import Header from "../../Components/Header/Header";
 import { debounce } from "lodash";
 import {
   AiOutlinePlusCircle,
@@ -15,7 +14,16 @@ import {
   BsSkipBackwardCircleFill,
 } from "react-icons/bs";
 import { MdOutlineNavigateNext } from "react-icons/md";
-import { Switch, Empty, Modal, Spin, message, Avatar, Popover } from "antd";
+import {
+  Switch,
+  Empty,
+  Modal,
+  Spin,
+  message,
+  Avatar,
+  Popover,
+  Badge,
+} from "antd";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import supabase from "../../utils/supabase.config";
@@ -54,7 +62,7 @@ import {
   updateStatus,
   getMembers,
   getMembersOfProject,
-  getGroupInfo
+  getGroupInfo,
 } from "../../utils/project_helper";
 import { toast } from "react-toastify";
 
@@ -261,14 +269,14 @@ const Chats = () => {
     }
   );
 
-  // Fetching all messages from a chat
+  // 
   let { data: groupData } = useQuery(
-    ["memberList", profile?.id],
+    ["grpData", profile?.id],
     () => getGroupInfo(profile?.id),
     {
       enabled: profile?.id != null,
     }
-  )
+  );
 
   // Mutation for sending message
   const send_message_mutation = useMutation(sendMessage, {
@@ -408,7 +416,7 @@ const Chats = () => {
         setSelectedChatTypes([]);
         setProjectName("");
         setAddProject(false);
-        setInputSameCompany('')
+        setInputSameCompany("");
       }
     },
   });
@@ -470,6 +478,21 @@ const Chats = () => {
       .channel("custom-all-channel")
       .on(
         "postgres_changes",
+        { event: "*", schema: "public", table: "groups" },
+        (payload) => {
+          console.log(payload);
+          queryClient.invalidateQueries([
+            "groups",
+            selectedProject?.project_id,
+          ]);
+          queryClient.invalidateQueries( ["memberList", payload?.new?.group_id]);
+          queryClient.invalidateQueries(["grpData", profile?.id]);
+        }
+      )
+
+
+      .on(
+        "postgres_changes",
         { event: "*", schema: "public", table: "messages" },
         (payload) => {
           queryClient.invalidateQueries([
@@ -482,17 +505,7 @@ const Chats = () => {
           ]);
         }
       )
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "groups" },
-        (payload) => {
-          console.log(payload);
-          queryClient.invalidateQueries([
-            "groups",
-            selectedProject?.project_id,
-          ]);
-        }
-      )
+     
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "chats" },
@@ -540,10 +553,10 @@ const Chats = () => {
       return;
     }
 
-    if (profile?.type === "vendor") {
-      if (projectMembers  && !createGroup) {
+    if (profile?.type === "vendor" && !createGroup) {
+      if (projectMembers && !createGroup) {
         projectMembers.forEach((val) => {
-          if (val.type === "vendor") {
+          if (val.type === "vendor" ) {
             toast("Can't add more than 1 vendor", { type: "warning" });
             return;
           }
@@ -602,7 +615,7 @@ const Chats = () => {
     }
   }
   function handleAddChatToProject(project_id) {
-    if (!inputSameCompany) return;
+    if (!inputSameCompany || selectedChats?.length === 0) return;
     setProjectAdding(true);
     // console.log(project_id);
     const pr = new Promise((resolve, reject) => {
@@ -1193,6 +1206,14 @@ const Chats = () => {
               ? "Select Designer to send chat request"
               : "Select Vendor to send chat request"
           }
+          afterClose={()=>{
+            setSelectedChats([]);
+            setSelectedChatIds([]);
+            setSelectedChatTypes([]);
+            setInput("")
+            setInputSameCompany("")
+            setFilteredProfiles([]);
+          }}
           footer={null}
           open={addChat}
           onCancel={() => setAddChat(false)}
@@ -1210,34 +1231,38 @@ const Chats = () => {
             />
           </div>
 
-          {filteredProfiles?.map((reciver, i) => {
-            return (
-              <div
-                key={reciver?.id}
-                className={`projects-chat`}
-                onClick={() => {
-                  if (profile) {
-                    send_chat_request_mutation.mutateAsync({
-                      reciver,
-                      sender: profile,
-                    });
-                  }
-                }}
-              >
-                <div className="chat-pic">
-                  {reciver?.profile_pic ? (
-                    <img src={reciver?.profile_pic} />
-                  ) : (
-                    <AiOutlineUser />
-                  )}
+          {filteredProfiles
+            ?.filter((reciver) => reciver?.type !== profile?.type)
+            ?.map((reciver, i) => {
+              return (
+                <div
+                  key={reciver?.id}
+                  className={`projects-chat`}
+                  onClick={() => {
+                    if (profile) {
+                      send_chat_request_mutation.mutateAsync({
+                        reciver,
+                        sender: profile,
+                      });
+                    }
+                  }}
+                >
+                  <div className="chat-pic">
+                    {reciver?.profile_pic ? (
+                      <img src={reciver?.profile_pic} />
+                    ) : (
+                      <AiOutlineUser />
+                    )}
+                  </div>
+                  <div className="chat-info">
+                    <p>{reciver?.display_name}</p>
+                    <p>
+                      {reciver?.bio ? reciver?.bio?.substring(0, 52) : null}
+                    </p>
+                  </div>
                 </div>
-                <div className="chat-info">
-                  <p>{reciver?.display_name}</p>
-                  <p>{reciver?.bio ? reciver?.bio?.substring(0, 52) : null}</p>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </Modal>
 
         <Modal
@@ -1262,6 +1287,14 @@ const Chats = () => {
             </button>,
           ]}
           open={addChatToProject}
+          afterClose={()=>{
+            setSelectedChats([]);
+            setSelectedChatIds([]);
+            setSelectedChatTypes([]);
+            setInput("")
+            setInputSameCompany("")
+            setFilteredProfiles([]);
+          }}
           onCancel={() => setAddChatToProject(false)}
           bodyStyle={{
             maxHeight: "500px",
@@ -1307,8 +1340,20 @@ const Chats = () => {
                       <AiOutlineUser />
                     )}
                   </div>
+
                   <div className="chat-info">
-                    <p>{reciver?.display_name}</p>
+                    <p>
+                      {reciver?.display_name}{" "}
+                      <span
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
+                      >
+                        {reciver?.type}
+                      </span>
+                    </p>
                     <p>
                       {reciver?.bio ? reciver?.bio?.substring(0, 52) : null}
                     </p>
@@ -1341,6 +1386,14 @@ const Chats = () => {
               )}
             </button>,
           ]}
+          afterClose={()=>{
+            setSelectedChats([]);
+            setSelectedChatIds([]);
+            setSelectedChatTypes([]);
+            setInput("")
+            setInputSameCompany("")
+            setFilteredProfiles([]);
+          }}
           open={addProject}
           onCancel={() => setAddProject(false)}
           bodyStyle={{
@@ -1389,7 +1442,16 @@ const Chats = () => {
                   )}
                 </div>
                 <div className="chat-info">
-                  <p>{reciver?.display_name}</p>
+                  <p>
+                    {reciver?.display_name}
+                    <span
+                      className={`badge ${
+                        reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
+                      }`}
+                    >
+                      {reciver?.type}
+                    </span>
+                  </p>
                   <p>{reciver?.bio ? reciver?.bio?.substring(0, 52) : null}</p>
                 </div>
               </div>
@@ -1419,6 +1481,14 @@ const Chats = () => {
               )}
             </button>,
           ]}
+           afterClose={()=>{
+            setSelectedChats([]);
+            setSelectedChatIds([]);
+            setSelectedChatTypes([]);
+            setInput("")
+            setInputSameCompany("")
+            setFilteredProfiles([]);
+          }}
           open={createGroup}
           onCancel={() => setCreateGroup(false)}
           bodyStyle={{
@@ -1441,7 +1511,7 @@ const Chats = () => {
             <input
               type="text"
               placeholder="Search here"
-              onChange={(e) => setInputSameCompany(e.target.value)}
+              onChange={(e) => setInput(e.target.value)}
             />
           </div>
           {filteredProfiles?.map((reciver, i) => {
@@ -1463,7 +1533,16 @@ const Chats = () => {
                   )}
                 </div>
                 <div className="chat-info">
-                  <p>{reciver?.display_name}</p>
+                  <p>
+                    {reciver?.display_name}
+                    <span
+                      className={`badge ${
+                        reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
+                      }`}
+                    >
+                      {reciver?.type}
+                    </span>
+                  </p>
                   <p>{reciver?.bio ? reciver?.bio?.substring(0, 52) : null}</p>
                 </div>
               </div>
@@ -1480,8 +1559,8 @@ const Messeges = memo(
     messages,
     profile,
     groupMode = false,
-    groupMembers=null,
-    createdBy=null,
+    groupMembers = null,
+    createdBy = null,
     hide = true,
     fetchNextPageMessages,
     hasNextPageMessages,
@@ -1523,13 +1602,19 @@ const Messeges = memo(
           </p>
         ) : (
           <div>
-          {
-            groupMode ? <p style={{textAlign:'center',fontSize:".6rem"}}>{createdBy} created this group with {
-              groupMembers?.map((mem,i)=>{
-                return <span>{mem.user_name+`${i!==groupMembers?.length-1?", ":""}`}</span>
-              })
-            }</p>:null
-          }
+            {groupMode ? (
+              <p style={{ textAlign: "center", fontSize: ".6rem" }}>
+                {createdBy} created this group with{" "}
+                {groupMembers?.map((mem, i) => {
+                  return (
+                    <span>
+                      {mem.user_name +
+                        `${i !== groupMembers?.length - 1 ? ", " : ""}`}
+                    </span>
+                  );
+                })}
+              </p>
+            ) : null}
             {messages?.pages?.reverse()?.map((page) => {
               return (
                 <div>
@@ -1557,7 +1642,7 @@ const Messeges = memo(
                                 <br />
                               </span>
                             ) : null}
-                            
+
                             {formatSupabaseTimestampToTime(message?.created_at)}
                           </p>
                         </div>

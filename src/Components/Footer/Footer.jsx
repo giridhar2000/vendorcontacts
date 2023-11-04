@@ -17,30 +17,37 @@ const Footer = () => {
   const [isSent, setIsSent] = useState(false);
   const [checkbox, setCheckbox] = useState(false);
 
-  async function invite(email) {
-    if (email && checkbox && userType) {
+  async function invite() {
+    
+    if (email && checkbox) {
       try {
-        const { data, error } = await supabase.from("invite_email").insert([
+        const { count, error } = await supabase.from("invite_email").select("email_id", { count: "exact", head: true }).eq('email_id',email);
+        if (error) throw new Error(error);
+        if(count>0){
+          message.warning("Email id already in invite list");
+          return;
+        }
+        const { data, error:error2 } = await supabase.from("invite_email").insert([
           {
             email_id: email,
             type: userType,
           },
         ]);
-        if (error) throw new Error(error);
+        if(error2) throw new Error(error2);
+        
         setIsSent(true);
-        setOpen(false);
+        setEmail("");
         setUserType(null);
         return data[0]?.email_id;
       } catch (err) {
+        console.log();
         return null;
       }
     } else {
       message.error("please enter your email id and click on the checkbox");
     }
-    setEmail("");
-    setUserType(null);
-    setCheckbox(false);
   }
+
 
   return (
     <>
@@ -152,7 +159,7 @@ const Footer = () => {
                   </div>
                   <br />
                 </form>
-                <button className="submit-btn">Request invite</button>
+                <button className="submit-btn" onClick={invite}>Request invite</button>
               </div>
             </div>
           </div>
@@ -207,7 +214,7 @@ const Footer = () => {
                   </div>
                   <br />
                 </form>
-                <button className="submit-btn" onClick={() => invite(email)}>
+                <button className="submit-btn" onClick={invite}>
                   Join the list
                 </button>
               </div>

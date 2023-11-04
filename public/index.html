@@ -1,28 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      charset="UTF-8"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap"
+      rel="stylesheet"
+    />
 
-<head>
-  <meta charset="utf-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Web site created using create-react-app" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap" rel="stylesheet">
-  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-  <link rel="stylesheet" type="text/css" charset="UTF-8"
-    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
-  <link rel="stylesheet" type="text/css"
-    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
-
-  <!--
+    <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  <!--
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -31,38 +46,55 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-  <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/43813551.js"></script>
-  <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
-  <script>
-    hbspt.forms.create({
-      region: "na1",
-      portalId: "43813551",
-      formId: "b8f5a4cf-72de-42e7-902e-3a1c01dae80b"
-    });
-  </script>
-  <title>Vendor Contacts</title>
-</head>
+    <script
+      type="text/javascript"
+      id="hs-script-loader"
+      async
+      defer
+      src="//js.hs-scripts.com/43813551.js"
+    ></script>
+    <script
+      charset="utf-8"
+      type="text/javascript"
+      src="//js.hsforms.net/forms/embed/v2.js"
+    ></script>
+    <script
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRPiL9AzsXQECPjIMxJd_k_2K_nqZptBg&libraries=places"
+    ></script>
+    <script>
+      hbspt.forms.create({
+        region: "na1",
+        portalId: "43813551",
+        formId: "b8f5a4cf-72de-42e7-902e-3a1c01dae80b",
+      });
+    </script>
+    <title>Vendor Contacts</title>
+  </head>
 
-<body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <style type="text/css">
-    @font-face {
-      font-family: "futura-bk-bt-book";
-      src: url("https://candyfonts.com/wp-data/2019/04/06/51567/FutuBk.ttf") format("woff"),
-        url("https://candyfonts.com/wp-data/2019/04/06/51567/FutuBk.ttf") format("opentype"),
-        url("https://candyfonts.com/wp-data/2019/04/06/51567/FutuBk.ttf") format("truetype");
-    }
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <style type="text/css">
+      @font-face {
+        font-family: "futura-bk-bt-book";
+        src: url("https://candyfonts.com/wp-data/2019/04/06/51567/FutuBk.ttf")
+            format("woff"),
+          url("https://candyfonts.com/wp-data/2019/04/06/51567/FutuBk.ttf")
+            format("opentype"),
+          url("https://candyfonts.com/wp-data/2019/04/06/51567/FutuBk.ttf")
+            format("truetype");
+      }
 
-    htm_tag {
-      font-family: "futura-bk-bt-book";
-      font-size: 55px;
-      text-transform: none;
-      color: #F32951
-    }
-  </style>
-  <!-- <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/43881169.js"></script> -->
-  <div id="root"></div>
-  <!--
+      htm_tag {
+        font-family: "futura-bk-bt-book";
+        font-size: 55px;
+        text-transform: none;
+        color: #f32951;
+      }
+    </style>
+    <!-- <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/43881169.js"></script> -->
+    <div id="root"></div>
+    <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -72,6 +104,5 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-</body>
-
+  </body>
 </html>
