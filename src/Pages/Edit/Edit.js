@@ -14,7 +14,8 @@ import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/userContext";
 import { UploadOutlined } from "@ant-design/icons";
 import { useQuery } from "react-query";
-import { Button, message, Upload } from "antd";
+import { Button, message, Upload, Select, Spin } from "antd";
+import usePlacesAutocomplete from "use-places-autocomplete";
 
 const Edit = () => {
   const { data: profile, isLoading } = useQuery("profile", getUser);
@@ -30,12 +31,50 @@ const Edit = () => {
   const [docUrls, setDocUrls] = useState([]);
   const [company, setCompany] = useState(null);
 
+  const {
+    ready,
+    value,
+    suggestions: { status, data, loading },
+    setValue,
+    init,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    initOnMount: true,
+    requestOptions: {
+      types: ["locality"],
+    },
+    debounce: 500,
+  });
+
   useEffect(() => {
     let fName = profile?.display_name.split(" ")[0];
     let lName = profile?.display_name.split(" ")[1];
     setFirstName(fName);
     setLastName(lName);
   }, [profile]);
+
+  // Functions for suggestion in places
+  useEffect(() => {
+    if (window?.google && window?.google?.maps) {
+      console.log("maps", window?.google?.maps);
+      init();
+    }
+  }, [window?.google?.maps]);
+
+  // Function for handling suggestions places worked in
+  const handlePlacesWorkedInChange2 = (e) => {
+    console.log("on key down", data);
+    setTimeout(() => {
+      setValue(e.target.value);
+    }, 1000);
+  };
+
+  // Function for address worked in
+  const handleAddressChange = (value) => {
+    // console.log("value", value);
+    clearSuggestions();
+    setLocation(value);
+  };
 
   const checkFileExists = async (bucketName, filePath) => {
     // console.log(bucketName, filePath);
@@ -159,7 +198,7 @@ const Edit = () => {
       );
       // console.log(docUrls);
       let pr = new Promise((resolve, reject) => {
-        if(docUrls.length===0) resolve();
+        if (docUrls.length === 0) resolve();
         docUrls.forEach(async (doc, index, array) => {
           const { error } = await supabase
             .from("files")
@@ -169,18 +208,16 @@ const Edit = () => {
         });
       });
 
-      
-        pr.then(() => {
-          if (res) {
-            toast("Profile updated", { type: "success" });
-            navigate("/profile");
-          } else {
-            toast("Profile not updated", { type: "error" });
-          }
-        }).catch((err) => {
-          throw new Error(err);
-        });
-      
+      pr.then(() => {
+        if (res) {
+          toast("Profile updated", { type: "success" });
+          navigate("/profile");
+        } else {
+          toast("Profile not updated", { type: "error" });
+        }
+      }).catch((err) => {
+        throw new Error(err);
+      });
     } catch (err) {
       toast("Profile not updated", { type: "error" });
     }
@@ -350,7 +387,7 @@ const Edit = () => {
               </div>
               <button className="editbtn" onClick={updateProfile}>
                 <ImPencil />
-                &nbsp; Edit Profile
+                &nbsp; Save changes
               </button>
             </div>
             <div className="editemailip">
@@ -373,15 +410,48 @@ const Edit = () => {
                 onChange={(e) => setCompany(e.target.value)}
               />
             </div>
-            <div className="editemailip">
+            <div className="editemailip mt-1">
+              {/*
               <input
-                placeholder="Location"
-                value={
+              placeholder="Location"
+              value={
+                profile?.location && location === null
+                  ? profile?.location
+                  : location
+              }
+              onChange={(e) => setLocation(e.target.value)}
+            />
+
+              */}
+              <Select
+                showSearch
+                style={{
+                  width: "100%",
+                }}
+                size="large"
+                notFoundContent={!loading ?<div className={{padding:'4rem',display:'grid',placeItems:'center'}}><p>No data</p></div>:<Spin/>}
+                options={data
+                  ?.filter((d) => {
+                    return d?.types?.includes("locality");
+                  })
+                  ?.map((suggestion) => {
+                    const {
+                      place_id,
+                      structured_formatting: { main_text, secondary_text },
+                    } = suggestion;
+
+                    return {
+                      label: main_text,
+                      value: main_text + ", " + secondary_text,
+                    };
+                  })}
+                onInputKeyDown={handlePlacesWorkedInChange2}
+                placeholder={
                   profile?.location && location === null
                     ? profile?.location
-                    : location
+                    : "Location"
                 }
-                onChange={(e) => setLocation(e.target.value)}
+                onChange={handleAddressChange}
               />
             </div>
             <div className="editpassip">
