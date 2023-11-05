@@ -89,7 +89,6 @@ const Listing = () => {
           placeholder="Recent"
           onChange={(e) =>
             {
-              
               setRecent(e.value === "Recent" ? true : false)
             }
           }

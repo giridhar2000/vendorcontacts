@@ -333,7 +333,7 @@ const Header = () => {
             src={Icon}
             alt=""
             className="logoIcon"
-            style={{ width: "100%" }}
+            style={{ width: "80%" }}
           />
         </div>
 
