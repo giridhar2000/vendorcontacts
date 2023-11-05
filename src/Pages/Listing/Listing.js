@@ -15,6 +15,7 @@ import supabase from "../../utils/supabase.config";
 import { useEffect } from "react";
 
 const options = ["Recent", "Oldest"];
+const filters = ["Sort by A-Z", "Sort by Z-A", "Sort by location"];
 const defaultOption = options[0];
 
 const Listing = () => {
@@ -22,6 +23,7 @@ const Listing = () => {
   const { data: profile, isLoadin: isLoading3 } = useQuery("profile", getUser);
   const [isLoading, setIsLoading] = useState(false);
   const [recent, setRecent] = useState(true);
+  const [sortBy, setSortBy] = useState("created_at");
   // const [page, setPage] = useState(0);
   // const [data, setData] = useState([]);
   // let from, to;
@@ -51,7 +53,7 @@ const Listing = () => {
     data: vendors,
   } = useInfiniteQuery(
     ["vendors", profile?.id, recent],
-    ({ pageParam = 0 }) => getVendors(pageParam, recent),
+    ({ pageParam = 0 }) => getVendors(pageParam, recent, sortBy),
     {
       getNextPageParam: (lastPage, allPages) => {
         return allPages?.length;
@@ -80,19 +82,30 @@ const Listing = () => {
       {/* {isLoading? <div className="spin"><Spin /></div> : ""} */}
       <Header />
       <div className="filter">
-        <button>
-          <CgOptions /> Filter
-        </button>
+        <Dropdown
+          options={filters}
+          value={"Filter"}
+          placeholder={"Filter"}
+          onChange={(e) => {
+            if (e.value === "Sort by A-Z") {
+              setSortBy("display_name");
+              setRecent(true);
+            } else if (e.value === "Sort by Z-A") {
+              setSortBy("display_name");
+              setRecent(false);
+            } else if (e.value === "Sort by location") {
+              setSortBy("location");
+              setRecent(true);
+            }
+          }}
+        />
         <Dropdown
           options={options}
           value={defaultOption}
           placeholder="Recent"
-          onChange={(e) =>
-            {
-              
-              setRecent(e.value === "Recent" ? true : false)
-            }
-          }
+          onChange={(e) => {
+            setRecent(e.value === "Recent" ? true : false);
+          }}
         />
       </div>
       <hr />
