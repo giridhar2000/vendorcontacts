@@ -5,7 +5,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
     const { data: profile, isLoading,remove } = useQuery("profile", getUser);
-
+	console.log('profile',profile)
 	return (
 		<UserContext.Provider value={[profile,isLoading,remove]}>
 			{ children}

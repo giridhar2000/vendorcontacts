@@ -196,7 +196,21 @@ input[type=file]::file-selector-button {
 input[type="file" i] {
   font-family: "Poppins";
 }
-
+.ant-select-selector{
+  border: 0 !important;
+  height: 30px !important;
+  padding: 0 !important;
+}
+.ant-select-selection-placeholder{
+font-size: 14px;
+}
+.ant-select-focused:where(.css-dev-only-do-not-override-17a39f8).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
+  box-shadow:none !important;
+  outline: 0;
+}
+.mt-1{
+  margin-top: 1vh !important;
+}
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
 .editText{
   width: 35%;

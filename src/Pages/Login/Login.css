@@ -1,3 +1,5 @@
+
+
 .loginText h1{
     font-size: 37.152px;
     font-weight: 400;
@@ -49,6 +51,7 @@
     width: 40vh;
     cursor: pointer;
     margin-top: 5vh;
+   
 }
 
 .loginContainer.lg-page {
@@ -290,7 +293,9 @@
     }
 
     .nextbtn {
+        position: relative;
         margin-top: 1vh !important;
+        z-index: 111 ;
     }
 
     .p {

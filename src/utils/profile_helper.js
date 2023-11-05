@@ -80,14 +80,26 @@ export async function updateUserProfile(
 
 // Getting vendors by range ------------------>      returns [ < vendors > ] || []
 
-export async function getVendors(start, end) {
+export async function getVendors(page=0,recent=true) {
+  console.log(recent);
   try {
+    let from, to;
+    const loadMoreData = () => {
+      var ITEM_PER_PAGE = 2;
+      from = page * ITEM_PER_PAGE;
+      to = from + ITEM_PER_PAGE;
+      if (page > 0) {
+        from += 1;
+      }
+    };
+    loadMoreData();
     const { data, count, error } = await supabase
       .from("profiles")
       .select("id,profile_pic,display_name,location,bio,cover_pic,company", {
         count: "exact",
       })
-      .range(start, end)
+      .order('created_at',{ascending:recent})
+      .range(from, to)
       .eq("type", "vendor");
 
     if (error) throw new Error(error);
@@ -105,9 +117,9 @@ export async function getAllUsers(id, type) {
   try {
     const { data, error } = await supabase
       .from("profiles")
-      .select("id,profile_pic,display_name,bio,company")
+      .select("id,profile_pic,display_name,bio,company,type")
       .neq("id", id)
-      .neq("type", type);
+      // .neq("type", type);
     if (error) throw new Error(error);
     return data;
   } catch (err) {
