@@ -123,15 +123,6 @@ const Profile = () => {
               </button>
             </p>
           </div>
-          <div className="profile-about">
-            {profile?.bio ? (
-              <p>{profile?.bio}</p>
-            ) : (
-              <p>
-                <Empty description={"Update your Bio"} />
-              </p>
-            )}
-          </div>
         </div>
         <div className="profile-box-container">
           <div className="profile-box">

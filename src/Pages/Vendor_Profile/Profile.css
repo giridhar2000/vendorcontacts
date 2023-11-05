@@ -93,13 +93,7 @@
   cursor: pointer;
   
 }
-.profile-about {
-  width: 40%;
-}
-.profile-about p {
-  opacity: 0.8;
-  font-size: 0.9rem;
-}
+
 .profile-box-container{
   width: 67%;
   display: flex;

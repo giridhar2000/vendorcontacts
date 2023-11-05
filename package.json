@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
+    "@mui/material": "^5.14.16",
     "@react-three/drei": "^9.80.2",
     "@sentry/react": "^7.74.0",
     "@supabase/supabase-js": "^2.33.1",

@@ -325,6 +325,10 @@ const Edit = () => {
               </label>
               <p>{url ? "Uploaded" : "Upload your logo here"}</p>
             </div>
+            <button className="editbtn" onClick={updateProfile}>
+                <ImPencil />
+                &nbsp; Edit Profile
+            </button>
             <div className="editnames">
               <div className="editnameip">
                 <input
@@ -348,11 +352,8 @@ const Edit = () => {
                   onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
-              <button className="editbtn" onClick={updateProfile}>
-                <ImPencil />
-                &nbsp; Edit Profile
-              </button>
             </div>
+            <div className="editbio">Business Email</div>
             <div className="editemailip">
               <input
                 placeholder="Buisness Email"
@@ -362,6 +363,7 @@ const Edit = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
+            <div className="editbio">Company</div>
             <div className="editemailip">
               <input
                 placeholder="Company"
@@ -373,6 +375,7 @@ const Edit = () => {
                 onChange={(e) => setCompany(e.target.value)}
               />
             </div>
+            <div className="editbio">Location</div>
             <div className="editemailip">
               <input
                 placeholder="Location"
@@ -384,7 +387,8 @@ const Edit = () => {
                 onChange={(e) => setLocation(e.target.value)}
               />
             </div>
-            <div className="editpassip">
+            <div className="editbio">Profile Quote</div>
+            <div className="editemailip">
               <input
                 placeholder="Profile Quote"
                 value={
@@ -403,7 +407,7 @@ const Edit = () => {
             ></textarea>
             {profile?.type === "architect" ? null : (
               <>
-                <div className="bio">Attachment</div>
+                <div className="editbio">Attachment</div>
                 <div className="attachment">
                   <Upload
                     {...props}
@@ -413,12 +417,11 @@ const Edit = () => {
                     multiple
                     maxCount={5}
                   >
-                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                    <Button icon={<UploadOutlined />}>Upload</Button>
                   </Upload>
                 </div>
               </>
             )}
-
             <script
               src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"
               type="text/javascript"
