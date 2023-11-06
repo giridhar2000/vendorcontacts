@@ -14,7 +14,7 @@ import UserContext from "../../contexts/userContext";
 import supabase from "../../utils/supabase.config";
 import { useEffect } from "react";
 
-const options = ["Recent", "Oldest"];
+const options = ["All","Recent", "Oldest"];
 const filters = ["Sort by A-Z", "Sort by Z-A", "Sort by location"];
 const defaultOption = options[0];
 
@@ -22,8 +22,11 @@ const Listing = () => {
   const navigate = useNavigate();
   const { data: profile, isLoadin: isLoading3 } = useQuery("profile", getUser);
   const [isLoading, setIsLoading] = useState(false);
-  const [recent, setRecent] = useState(true);
-  const [sortBy, setSortBy] = useState("created_at");
+  const [sortBy, setSortBy] = useState({
+    id: 0,
+    column: "created_at",
+    ascending: true,
+  });
   // const [page, setPage] = useState(0);
   // const [data, setData] = useState([]);
   // let from, to;
@@ -52,8 +55,8 @@ const Listing = () => {
     isFetchingNextPage,
     data: vendors,
   } = useInfiniteQuery(
-    ["vendors", profile?.id, recent],
-    ({ pageParam = 0 }) => getVendors(pageParam, recent, sortBy),
+    ["vendors", profile?.id, sortBy?.id],
+    ({ pageParam = 0 }) => getVendors(pageParam, sortBy),
     {
       getNextPageParam: (lastPage, allPages) => {
         return allPages?.length;
@@ -88,14 +91,23 @@ const Listing = () => {
           placeholder={"Filter"}
           onChange={(e) => {
             if (e.value === "Sort by A-Z") {
-              setSortBy("display_name");
-              setRecent(true);
+              setSortBy({
+                id: 2,
+                column: "display_name",
+                ascending: true,
+              });
             } else if (e.value === "Sort by Z-A") {
-              setSortBy("display_name");
-              setRecent(false);
+              setSortBy({
+                id: 3,
+                column: "display_name",
+                ascending: false,
+              });
             } else if (e.value === "Sort by location") {
-              setSortBy("location");
-              setRecent(true);
+              setSortBy({
+                id: 4,
+                column: "location",
+                ascending: true,
+              });
             }
           }}
         />
@@ -104,7 +116,19 @@ const Listing = () => {
           value={defaultOption}
           placeholder="Recent"
           onChange={(e) => {
-            setRecent(e.value === "Recent" ? true : false);
+            if (e.value === "Recent") {
+              setSortBy({
+                id: 1,
+                column: "created_at",
+                ascending: false,
+              });
+            } else {
+              setSortBy({
+                id: 0,
+                column: "created_at",
+                ascending: true,
+              });
+            }
           }}
         />
       </div>

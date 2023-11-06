@@ -26,6 +26,7 @@ export default function Login() {
   const [isAuth, setIsAuth] = useContext(UserContext);
   const navigate = useNavigate();
 
+
   // States for sign ups................
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -43,7 +44,9 @@ export default function Login() {
   // />;
 
   const back = () => {
-    navigate("/");
+    if (next) setNext(false)
+    else if(!signup) setSignUp(true)
+    else navigate(-1)
   };
 
 
@@ -201,7 +204,7 @@ export default function Login() {
           <p>&larr;</p>
         </div>
 
-        <div className="loginheader headerlogo">
+        <div className="loginheader headerlogo" onClick={()=>navigate('/')}>
           <img
             src={Icon}
             alt=""

@@ -80,8 +80,8 @@ export async function updateUserProfile(
 
 // Getting vendors by range ------------------>      returns [ < vendors > ] || []
 
-export async function getVendors(page = 0, recent = true, sortBy = true) {
-  console.log(recent);
+export async function getVendors(page = 0, sortBy) {
+  console.log(sortBy);
   try {
     let from, to;
     const loadMoreData = () => {
@@ -95,17 +95,17 @@ export async function getVendors(page = 0, recent = true, sortBy = true) {
     loadMoreData();
     const { data, count, error } = await supabase
       .from("profiles")
-      .select("id,profile_pic,display_name,location,bio,cover_pic,company", {
+      .select("*", {
         count: "exact",
       })
-      .order("created_at", { ascending: recent })
-      // .order(sortBy, { ascending: recent })
-      // .order("location", { ascending: recent })
       .range(from, to)
+      .order( sortBy.column, {
+        ascending:sortBy.ascending,
+      })
       .eq("type", "vendor");
 
     if (error) throw new Error(error);
-    // console.log(data)
+
     return data;
   } catch (err) {
     console.log(err);
