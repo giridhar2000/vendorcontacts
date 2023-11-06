@@ -67,7 +67,7 @@ export async function updateUserProfile(
         email,
         display_name: name,
         cover_pic: cover,
-        company: company
+        company: company,
       })
       .eq("id", id);
     if (error) throw new Error(error);
@@ -80,7 +80,7 @@ export async function updateUserProfile(
 
 // Getting vendors by range ------------------>      returns [ < vendors > ] || []
 
-export async function getVendors(page=0,recent=true) {
+export async function getVendors(page = 0, recent = true, sortBy = true) {
   console.log(recent);
   try {
     let from, to;
@@ -98,7 +98,9 @@ export async function getVendors(page=0,recent=true) {
       .select("id,profile_pic,display_name,location,bio,cover_pic,company", {
         count: "exact",
       })
-      .order('created_at',{ascending:recent})
+      .order("created_at", { ascending: recent })
+      // .order(sortBy, { ascending: recent })
+      // .order("location", { ascending: recent })
       .range(from, to)
       .eq("type", "vendor");
 
@@ -118,8 +120,8 @@ export async function getAllUsers(id, type) {
     const { data, error } = await supabase
       .from("profiles")
       .select("id,profile_pic,display_name,bio,company,type")
-      .neq("id", id)
-      // .neq("type", type);
+      .neq("id", id);
+    // .neq("type", type);
     if (error) throw new Error(error);
     return data;
   } catch (err) {
@@ -128,12 +130,10 @@ export async function getAllUsers(id, type) {
   }
 }
 
-
-
 // Getting all the users from same company ------------->       returns [ < users with same company > ] || null
 
-export async function getAllUsersOfSameCompany(id, type,company) {
-  if(!company) return null;
+export async function getAllUsersOfSameCompany(id, type, company) {
+  if (!company) return null;
   try {
     const { data, error } = await supabase
       .from("profiles")
@@ -147,8 +147,6 @@ export async function getAllUsersOfSameCompany(id, type,company) {
     return null;
   }
 }
-
-
 
 // Getting all documents of a user by user id --------------->          returns [ < docs of a user > ] || null
 
