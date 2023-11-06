@@ -248,6 +248,7 @@
   padding: 0.6rem 0.7rem;
   border-radius: 10px;
   cursor: pointer;
+  margin-inline: 2vh;
 }
 .create-project svg {
   font-size: 0.6rem;
@@ -269,6 +270,20 @@
   outline: none;
   margin-left: 0.3rem;
 }
+
+.invite-ip{
+  display: flex;
+  gap: 2vh;
+  padding-block: 2vh;
+  flex-direction: column;
+}
+
+.invite-ip input{
+  padding: 2vh;
+  border: none;
+  border-bottom: 1px solid #d6db63;
+}
+
 @media (max-width: 1100px) {
   .messages-box-container > p {
     display: none;
