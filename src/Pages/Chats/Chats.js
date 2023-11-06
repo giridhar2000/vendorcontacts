@@ -1394,10 +1394,11 @@ const Chats = () => {
             <button className="create-project" onClick={() => sendInvite()}>Send Invite</button>
           ]}
           afterClose={() => {
-            setVendorDetails("")
+            setVendorDetails({});
+            
           }}
           open={openInvite}
-          onCancel={() => setOpenInvite(false)}
+          onCancel={() => setOpenInvite(false) }
         >
           <form className="invite-ip" >
             <input type={"text"} value={selectedProject?.name} disabled />
