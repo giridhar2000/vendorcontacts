@@ -8,6 +8,7 @@ import {
   AiOutlineSearch,
   AiOutlinePlus,
 } from "react-icons/ai";
+import { UserAddOutlined } from '@ant-design/icons';
 import {
   BsThreeDotsVertical,
   BsMicFill,
@@ -65,6 +66,8 @@ import {
   getGroupInfo,
 } from "../../utils/project_helper";
 import { toast } from "react-toastify";
+import { IconProvider } from "@ant-design/icons";
+import { icons } from "react-icons/lib";
 
 const Chats = () => {
   const location = useLocation();
@@ -91,7 +94,12 @@ const Chats = () => {
   // const [chats, setChats] = useState([]);
   const [isChatLoading, setIsChatLoading] = useState(true);
   const [page, setPage] = useState(0);
+
   const [openPopOver,setOpenPopOver] = useState(false)
+
+  const [openInvite, setOpenInvite] = useState(false);
+  const [vendorDetails, setVendorDetails] = useState({})
+
 
   // Fetching all messages from a chat
   let {
@@ -127,6 +135,14 @@ const Chats = () => {
       },
     }
   );
+
+  const onVendorDetailsChange = (e) => {
+    setVendorDetails({...vendorDetails, [e.target.name]: e.target.value })
+  }
+
+  const sendInvite = () => {
+    console.log(vendorDetails)
+  }
 
   useEffect(() => {
     if (input === "") {
@@ -1322,6 +1338,20 @@ const Chats = () => {
                 </>
               )}
             </button>,
+            <button className="create-project" onClick={() => {
+              setOpenInvite(true)
+            }}>
+              {projectAdding ? (
+                <>
+                  Sending... <Spin />
+                </>
+              ) : (
+                <>
+                  <UserAddOutlined /> Invite
+                </>
+              )}
+
+            </button>
           ]}
           open={addChatToProject}
           afterClose={() => {
@@ -1363,9 +1393,8 @@ const Chats = () => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${
-                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                  }`}
+                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                    }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1382,11 +1411,10 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}{" "}
                       <span
-                        className={`badge ${
-                          reciver.type === "vendor"
-                            ? "bg-vendor"
-                            : "bg-designer"
-                        }`}
+                        className={`badge ${reciver.type === "vendor"
+                          ? "bg-vendor"
+                          : "bg-designer"
+                          }`}
                       >
                         {reciver?.type}
                       </span>
@@ -1398,6 +1426,26 @@ const Chats = () => {
                 </div>
               );
             })}
+        </Modal>
+
+        <Modal
+          title={"Invite a vendor to " + selectedProject?.name}
+          footer={[
+            <button className="create-project" onClick={() => sendInvite()}>Send Invite</button>
+          ]}
+          afterClose={() => {
+            setVendorDetails({});
+            
+          }}
+          open={openInvite}
+          onCancel={() => setOpenInvite(false) }
+        >
+          <form className="invite-ip" >
+            <input type={"text"} value={selectedProject?.name} disabled />
+            <input type={"text"} placeholder="Vendor Name" onChange={(e) => onVendorDetailsChange(e)} name="VendorName" />
+            <input type={"text"} placeholder="Vendor Email" onChange={(e) => onVendorDetailsChange(e)} name="VendorEmail" />
+            <input type={"text"} placeholder="Project Location" onChange={(e) => onVendorDetailsChange(e)} name="ProjectLoc" />
+          </form>
         </Modal>
 
         <Modal
@@ -1464,9 +1512,8 @@ const Chats = () => {
             return (
               <div
                 key={reciver?.id}
-                className={`projects-chat ${
-                  selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                }`}
+                className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
                 onClick={() => {
                   handleSelectChats(reciver);
                 }}
@@ -1482,9 +1529,8 @@ const Chats = () => {
                   <p>
                     {reciver?.display_name}
                     <span
-                      className={`badge ${
-                        reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
-                      }`}
+                      className={`badge ${reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
+                        }`}
                     >
                       {reciver?.type}
                     </span>
@@ -1555,9 +1601,8 @@ const Chats = () => {
             return (
               <div
                 key={reciver?.id}
-                className={`projects-chat ${
-                  selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                }`}
+                className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
                 onClick={() => {
                   handleSelectChats(reciver);
                 }}
@@ -1573,9 +1618,8 @@ const Chats = () => {
                   <p>
                     {reciver?.display_name}
                     <span
-                      className={`badge ${
-                        reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
-                      }`}
+                      className={`badge ${reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
+                        }`}
                     >
                       {reciver?.type}
                     </span>
@@ -1665,11 +1709,10 @@ const Messeges = memo(
                       return (
                         <div
                           key={message.id}
-                          className={`${
-                            message?.sender_id === profile?.id
-                              ? "mine"
-                              : "others"
-                          }`}
+                          className={`${message?.sender_id === profile?.id
+                            ? "mine"
+                            : "others"
+                            }`}
                         >
                           <p>{message?.text}</p>
                           <p>
@@ -1716,9 +1759,8 @@ function Chat({
 
   return (
     <div
-      className={`projects-chat ${
-        selectedChat?.id === chat?.id ? "bg-dark" : ""
-      } ${last === index ? "" : "border-bottom"}`}
+      className={`projects-chat ${selectedChat?.id === chat?.id ? "bg-dark" : ""
+        } ${last === index ? "" : "border-bottom"}`}
       onClick={() => {
         setSelectedGroup(null);
         setSelectedChat(chat);
@@ -1758,9 +1800,8 @@ function Group({
 }) {
   return (
     <div
-      className={`projects-chat ${
-        selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
-      } ${last === index ? "" : "border-bottom"}`}
+      className={`projects-chat ${selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
+        } ${last === index ? "" : "border-bottom"}`}
       onClick={() => {
         setSelectedChat(null);
         setSelectedGroup(group);
