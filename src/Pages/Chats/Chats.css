@@ -10,9 +10,13 @@
   text-align: left;
 }
 .messages-box-container {
-  width: 900px;
+  width: 1000px;
   display: flex;
   flex-direction: column;
+  margin-top: 3rem;
+}
+.mt-1{
+  margin-top:1.3rem !important;
 }
 
 .messages-box {
@@ -41,13 +45,23 @@
 }
 
 .projects-sc {
-  flex: 0.3;
+  flex: 0.2;
 }
 .vendors-sc {
-  flex: 0.7;
+  flex: 0.8;
   position: relative;
   display: flex;
   flex-direction: column;
+}
+.ant-tabs-tab-btn:hover{
+  color: #000 !important;
+}
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
+  color: #000 !important;
+}
+.ant-tabs-ink-bar-animated{
+  width:50% !important;
+  background: #000 !important;
 }
 .vendors-body-sc {
   overflow-y: auto;
@@ -132,7 +146,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #d6db63;
+  /* background: #d6db63; */
   border-bottom: 0.5px solid #4f4f4fad;
 }
 .projects-header p,
@@ -188,18 +202,18 @@
   border-bottom: 0.5px solid #a2a2a294;
 }
 .chat-pic {
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   padding: 0rem;
   display: grid;
   place-items: center;
   border: 0.2px solid #848484aa;
-  margin-left: 0.3rem;
+  margin-left: 0.2rem;
   overflow: hidden;
 }
 .chat-pic svg {
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 .chat-pic img {
   width: 100%;
@@ -213,7 +227,7 @@
   flex: 0.9;
 }
 .chat-info p {
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   margin: 0 !important;
   color: #8f8f8f;
 }
@@ -232,7 +246,7 @@
   margin: 0 !important;
   font-size: 0.4rem;
   color: #8f8f8f;
-  margin-top: 0.3rem !important;
+  margin-top: .4rem !important;
 }
 .ant-switch-checked {
   background-color: #d6db63 !important;
