@@ -1,13 +1,14 @@
 import supabase from "./supabase.config";
 
-export async function getNotifications(id) {
+export async function getNotifications(id,email) {
   try {
     let { data, error } = await supabase
       .from("notifications")
       .select(
-        "id,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image,type"
+        "id,sender_id,sender_name,sender_image,reciver_id,reciver_name,reciver_image,type,project_id,project_name"
       )
-      .eq("reciver_id", id);
+      .or(`reciver_id.eq.${id},reciver_email.eq.${email}`);
+      
 
     if (error) throw new Error(error);
 

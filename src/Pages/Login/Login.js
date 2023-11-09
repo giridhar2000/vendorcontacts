@@ -26,6 +26,7 @@ export default function Login() {
   const [isAuth, setIsAuth] = useContext(UserContext);
   const navigate = useNavigate();
 
+
   // States for sign ups................
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -43,7 +44,9 @@ export default function Login() {
   // />;
 
   const back = () => {
-    navigate("/");
+    if (next) {setNext(false); setUserType(null);}
+    else if(!signup) setSignUp(true)
+    else navigate(-1)
   };
 
 
@@ -201,7 +204,7 @@ export default function Login() {
           <p>&larr;</p>
         </div>
 
-        <div className="loginheader headerlogo">
+        <div className="loginheader headerlogo" onClick={()=>navigate('/')}>
           <img
             src={Icon}
             alt=""
@@ -583,8 +586,10 @@ export default function Login() {
                     <span
                       className="loginsignup"
                       onClick={() => {
-                        // setSignUp(true);
-                        window.location.reload()
+                        setSignUp(true);
+                        setUserType(null);
+                        setNext(false)
+                       
                       }}
                     >
                       <b>Login</b>
@@ -606,25 +611,29 @@ export default function Login() {
                   <div className="Loginform mobLofinForm">
                     <p style={{ color: "#6F6F6F" }}>Select your profession</p>
                     <div className="buttons-select">
-                      <div className="button">
+                      <div className="button"
+                      onClick={() => {setNext(true)}}>
                         <input
                           type="radio"
-                          id="Designers"
+                          id="Designer"
                           name="signupBtn"
                           value="architect"
                           onChange={(e) => setUserType(e.target.value)}
                         />
-                        <label className="btn btn-default" for="Designers">
-                          Designers
+                        <label className="btn btn-default" for="Designer">
+                          Designer
                         </label>
                       </div>
-                      <div className="button">
+                      <div className="button"
+                      onClick={() => {setNext(true)}}
+                      >
                         <input
                           type="radio"
                           id="Vendor"
                           name="signupBtn"
                           value="vendor"
                           onChange={(e) => setUserType(e.target.value)}
+
                         />
                         <label className="btn btn-default" for="Vendor">
                           Vendor
@@ -638,20 +647,12 @@ export default function Login() {
                         marginTop: "2vh",
                       }}
                     />
-                    <button
+                    {/* <button
                       className="loginbtn nextbtn"
-                      onClick={() => {
-                        if (!userType) {
-                          toast("Select your profession first!", {
-                            type: "warning",
-                          });
-                        } else {
-                          setNext(true);
-                        }
-                      }}
+                      
                     >
                       Next
-                    </button>
+                    </button> */}
                   </div>
                 </div>
                 <img src={loginbg} alt="login" className="loginimg" />

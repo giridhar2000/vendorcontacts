@@ -8,6 +8,7 @@ import {
   AiOutlineSearch,
   AiOutlinePlus,
 } from "react-icons/ai";
+import { UserAddOutlined } from "@ant-design/icons";
 import {
   BsThreeDotsVertical,
   BsMicFill,
@@ -22,7 +23,7 @@ import {
   message,
   Avatar,
   Popover,
-  Badge,
+  Tabs,
 } from "antd";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -41,6 +42,7 @@ import {
   getSenderDetails,
   getReciverDetails,
   sendChatRequest,
+  sendProjectRequest,
 } from "../../utils/chat_helper";
 import {
   useQuery,
@@ -92,6 +94,11 @@ const Chats = () => {
   const [isChatLoading, setIsChatLoading] = useState(true);
   const [page, setPage] = useState(0);
 
+  const [openPopOver, setOpenPopOver] = useState(false);
+
+  const [openInvite, setOpenInvite] = useState(false);
+  const [vendorDetails, setVendorDetails] = useState({});
+
   // Fetching all messages from a chat
   let {
     fetchNextPage: fetchNextPageMessages,
@@ -127,13 +134,17 @@ const Chats = () => {
     }
   );
 
+  const onVendorDetailsChange = (e) => {
+    setVendorDetails({ ...vendorDetails, [e.target.name]: e.target.value });
+  };
+
   useEffect(() => {
     if (input === "") {
       setFilteredProfiles([]);
       return;
     }
     setFilteredProfiles((old) => {
-      return profiles?.filter((value) =>
+      return profiles?.filter((value, i) =>
         value?.display_name?.toLowerCase()?.includes(input?.toLowerCase())
       );
     });
@@ -153,7 +164,7 @@ const Chats = () => {
     });
   }, [inputSameCompany]);
 
-  //Fetching chats of a particular user
+  //Fetching all profiles
   const { data: profiles, isLoading: isLoading4 } = useQuery(
     ["users", profile?.id],
     async () => {
@@ -162,7 +173,7 @@ const Chats = () => {
     }
   );
 
-  //Fetching chats of a particular user
+  //Fetching all members of a particular project
   const { data: projectMembers, isLoading: isLoading6 } = useQuery(
     ["projectMembers", selectedProject?.project_id],
     async () => {
@@ -188,18 +199,6 @@ const Chats = () => {
   );
 
   // //Fetching chats of a particular user
-  // const { data: chats, isLoading: isLoading2 } = useQuery(
-  //   ["chats", profile?.id, page],
-  //   async () => {
-  //     const { from, to } = loadMoreData();
-  //     console.log(from, to);
-  //     let data = await getAllChats(profile?.id, null, from, to);
-  //     // setChats((old) => [...data, ...old]);
-  //     setIsChatLoading(false);
-  //     return data;
-  //   }
-  // );
-
   const {
     fetchNextPage,
     hasNextPage,
@@ -269,7 +268,7 @@ const Chats = () => {
     }
   );
 
-  // 
+  // Fetching group information
   let { data: groupData } = useQuery(
     ["grpData", profile?.id],
     () => getGroupInfo(profile?.id),
@@ -388,16 +387,16 @@ const Chats = () => {
     },
   });
 
-  // Mutation for Creating chat
-  const create_chat_mutation = useMutation(createChat, {
-    onSuccess: (data) => {
-      if (data) {
-        queryClient.invalidateQueries(["chats", profile?.id]);
-        setSelectedChat(data);
-        setAddChat(false);
-      }
-    },
-  });
+  // // Mutation for Creating chat
+  // const create_chat_mutation = useMutation(createChat, {
+  //   onSuccess: (data) => {
+  //     if (data) {
+  //       queryClient.invalidateQueries(["chats", profile?.id]);
+  //       setSelectedChat(data);
+  //       setAddChat(false);
+  //     }
+  //   },
+  // });
 
   // Mutation for Creating a project
   const create_project_mutation = useMutation(createProject, {
@@ -471,25 +470,46 @@ const Chats = () => {
       setAddChat(false);
     },
   });
+  // Mutation for sending project request to a user
+  const send_project_request_mutation = useMutation(sendProjectRequest, {
+    onSuccess: (data) => {
+      if (data) {
+        toast("Project request sent!", { type: "success" });
+      } else {
+        toast("Project request failed", { type: "error" });
+      }
+      setVendorDetails({
+        VendorName: "",
+        VendorEmail: "",
+        ProjectLoc: "",
+      });
+      setOpenInvite(false);
+    },
+  });
+
+  const sendInvite = async () => {
+    if (vendorDetails?.VendorEmail === "" || vendorDetails?.VendorName === "") {
+      toast("Please fill all the details", { type: "error" });
+      return;
+    }
+    send_project_request_mutation.mutateAsync({
+      reciver: {
+        display_name: vendorDetails?.VendorName,
+        email: vendorDetails?.VendorEmail,
+      },
+      sender: profile,
+      project: {
+        project_name: selectedProject?.name,
+        project_id: selectedProject?.project_id,
+        project_location: vendorDetails?.ProjectLoc,
+      },
+    });
+  };
 
   // Fetching chats and messages info in real time
   useEffect(() => {
     const chats = supabase
       .channel("custom-all-channel")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "groups" },
-        (payload) => {
-          console.log(payload);
-          queryClient.invalidateQueries([
-            "groups",
-            selectedProject?.project_id,
-          ]);
-          queryClient.invalidateQueries( ["memberList", payload?.new?.group_id]);
-          queryClient.invalidateQueries(["grpData", profile?.id]);
-        }
-      )
-
 
       .on(
         "postgres_changes",
@@ -505,7 +525,7 @@ const Chats = () => {
           ]);
         }
       )
-     
+
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "chats" },
@@ -527,6 +547,20 @@ const Chats = () => {
         { event: "*", schema: "public", table: "projects" },
         (payload) => {
           queryClient.invalidateQueries(["projects", profile?.id]);
+        }
+      )
+
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "groups" },
+        (payload) => {
+          console.log(payload);
+          queryClient.invalidateQueries([
+            "groups",
+            selectedProject?.project_id,
+          ]);
+          queryClient.invalidateQueries(["memberList", payload?.new?.group_id]);
+          queryClient.invalidateQueries(["grpData", profile?.id]);
         }
       )
 
@@ -554,13 +588,28 @@ const Chats = () => {
     }
 
     if (profile?.type === "vendor" && !createGroup) {
-      if (projectMembers && !createGroup) {
-        projectMembers.forEach((val) => {
-          if (val.type === "vendor" ) {
-            toast("Can't add more than 1 vendor", { type: "warning" });
-            return;
-          }
-        });
+      if (projectMembers) {
+        if (projectMembers?.some((val) => val.type === "vendor")) {
+          toast("Can't add more than 1 vendor", { type: "warning" });
+          return;
+        } else {
+          setSelectedChatTypes((old) => {
+            return [...old, profile?.type];
+          });
+          setSelectedChatTypes((old) => {
+            if (old.length <= 1) {
+              setSelectedChatIds((old) => {
+                return [...old, profile?.id];
+              });
+              setSelectedChats((old) => {
+                return [...old, profile];
+              });
+            } else {
+              toast("Can't add more than 1 vendor", { type: "warning" });
+            }
+            return old;
+          });
+        }
       } else {
         setSelectedChatTypes((old) => {
           return [...old, profile?.type];
@@ -636,6 +685,8 @@ const Chats = () => {
       ]);
       setProjectAdding(false);
       setSelectedChats([]);
+      setInput("");
+      setInputSameCompany("");
       setSelectedChatIds([]);
       setSelectedChatTypes([]);
       setAddChatToProject(false);
@@ -649,6 +700,31 @@ const Chats = () => {
     >
       Create group
     </p>
+  );
+  const content2 = (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      {profile?.type === "vendor" ? (
+        <p
+          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+          onClick={() => {
+            setOpenPopOver(false);
+            setAddChat(true);
+          }}
+        >
+          Invite people
+        </p>
+      ) : (
+        <p
+          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+          onClick={() => {
+            setOpenPopOver(false);
+            setAddProject(true);
+          }}
+        >
+          Create project
+        </p>
+      )}
+    </div>
   );
 
   // Infinite scrolling logic ---------------------->
@@ -711,6 +787,122 @@ const Chats = () => {
     2000
   );
 
+  const Projects = () => {
+    return (
+      <div className="projects-body" onScroll={handleDebouncedScrollProjects}>
+        {!projects || projects?.pages[0]?.length === 0 ? (
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={"No projects"}
+          />
+        ) : (
+          projects?.pages?.map((page) => {
+            return (
+              <>
+                {page
+                  ?.sort(
+                    (a, b) =>
+                      Date.parse(b.created_at) - Date.parse(a.created_at)
+                  )
+                  ?.map((project, i) => {
+                    return (
+                      <Project
+                        key={i}
+                        index={i}
+                        last={projects?.pages[projects?.length - 1]?.length - 1}
+                        project={project}
+                        user_id={profile?.id}
+                        setSelectedProject={setSelectedProject}
+                      />
+                    );
+                  })}
+              </>
+            );
+          })
+        )}
+        {isFetchingNextPageProjects ? (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Spin />
+          </div>
+        ) : null}
+      </div>
+    );
+  };
+
+  const People = () => {
+    return (
+      <div className="projects-body" onScroll={handleDebouncedScroll}>
+        {!chats || chats?.pages[0]?.length === 0 ? (
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={"No chats"}
+          />
+        ) : (
+          chats?.pages?.map((page) => {
+            return (
+              <>
+                {page
+                  ?.sort(
+                    (a, b) =>
+                      Date.parse(b.updated_at) - Date.parse(a.updated_at)
+                  )
+                  ?.map((chat) => {
+                    return (
+                      <Chat
+                        chat={chat}
+                        user_id={profile?.id}
+                        key={chat?.id}
+                        selectedChat={selectedChat}
+                        setSelectedChat={setSelectedChat}
+                        setSelectedGroup={setSelectedGroup}
+                      />
+                    );
+                  })}
+              </>
+            );
+          })
+        )}
+        {isFetchingNextPage ? (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Spin />
+          </div>
+        ) : null}
+      </div>
+    );
+  };
+
+  const items = [
+    {
+      key: "1",
+      label: "People",
+      children: <People />,
+    },
+    {
+      key: "2",
+      label: "Projects",
+      children: <Projects />,
+    },
+  ];
+
+  const tabStyle = {
+    padding: "0 10px",
+    width: "100%",
+  };
+
   //Returning loading indicator
   if (isLoading || isLoading3 || isLoading4) {
     return <p>Loading....</p>;
@@ -719,196 +911,99 @@ const Chats = () => {
   return (
     <>
       <div className="messages-container">
-        {!selectedChat && !selectedProject ? (
-          <div className="messages-box-container">
-            <p>Messages</p>
-            <div className="messages-box">
-              <div className="projects">
-                <div className="projects-header">
-                  <p>Projects</p>
-                  {profile?.type === "architect" ? (
-                    <div className="header-icons">
-                      <AiOutlinePlusCircle
-                        onClick={() => setAddProject(true)}
-                      />
-                    </div>
-                  ) : null}
-                </div>
-                <div
-                  className="projects-body"
-                  onScroll={handleDebouncedScrollProjects}
-                >
-                  {!projects || projects?.pages[0]?.length === 0 ? (
-                    <Empty
-                      image={Empty.PRESENTED_IMAGE_SIMPLE}
-                      description={"No projects"}
-                    />
-                  ) : (
-                    projects?.pages?.map((page) => {
-                      return (
-                        <>
-                          {page
-                            ?.sort(
-                              (a, b) =>
-                                Date.parse(b.created_at) -
-                                Date.parse(a.created_at)
-                            )
-                            ?.map((project, i) => {
-                              return (
-                                <Project
-                                  key={i}
-                                  index={i}
-                                  last={
-                                    projects?.pages[projects?.length - 1]
-                                      ?.length - 1
-                                  }
-                                  project={project}
-                                  user_id={profile?.id}
-                                  setSelectedProject={setSelectedProject}
-                                />
-                              );
-                            })}
-                        </>
-                      );
-                    })
-                  )}
-                  {isFetchingNextPageProjects ? (
-                    <div
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Spin />
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-              <div className="vendors">
-                <div className="vendors-header">
-                  <p>{profile?.type === "vendor" ? "Designers" : "Vendors"}</p>
-                  {profile?.type === "vendor" ? (
-                    <div className="header-icons">
-                      <AiOutlinePlusCircle onClick={() => setAddChat(true)} />
-                    </div>
-                  ) : null}
-                </div>
-                <div className="vendors-body" onScroll={handleDebouncedScroll}>
-                  {chats?.pages[0]?.length === 0 ? (
-                    <Empty
-                      image={Empty.PRESENTED_IMAGE_SIMPLE}
-                      description={"No chats"}
-                    />
-                  ) : (
-                    chats?.pages?.map((page) => {
-                      return (
-                        <>
-                          {page
-                            ?.sort(
-                              (a, b) =>
-                                Date.parse(b.updated_at) -
-                                Date.parse(a.updated_at)
-                            )
-                            ?.map((chat, i) => {
-                              return (
-                                <Chat
-                                  index={i}
-                                  last={chats?.length - 1}
-                                  chat={chat}
-                                  user_id={profile?.id}
-                                  key={chat?.id}
-                                  selectedChat={selectedChat}
-                                  setSelectedChat={setSelectedChat}
-                                  setSelectedGroup={setSelectedGroup}
-                                />
-                              );
-                            })}
-                        </>
-                      );
-                    })
-                  )}
-                  {isFetchingNextPage ? (
-                    <div
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Spin />
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : selectedProject === null ? (
+        {!selectedProject ? (
           <div className="messages-box-container message-box-container-sc">
+            {/*
             <p
-              style={{
-                display: "flex",
-                alignItems: "center",
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <BsSkipBackwardCircleFill
+              onClick={() => {
+                setSelectedChat(false);
+                setSelectedGroup(null);
+                setSelectedProject(null);
               }}
-            >
-              <BsSkipBackwardCircleFill
-                onClick={() => {
-                  setSelectedChat(false);
-                  setSelectedGroup(null);
-                  setSelectedProject(null);
-                }}
-                style={{ marginRight: ".4rem", cursor: "pointer" }}
-              />{" "}
-              Messages
-            </p>
+              style={{ marginRight: ".4rem", cursor: "pointer" }}
+            />{" "}
+            Messages
+          </p>
+            */}
+
             <div className="messages-box messages-box-sc">
               <div className="projects projects-sc">
-                <div className="projects-header">
-                  <p>Chats</p>
-                  <div className="header-icons">
-                    <AiOutlinePlusCircle onClick={() => setAddChat(true)} />
-                  </div>
-                </div>
-                <div className="projects-body" onScroll={handleDebouncedScroll}>
-                  {chats?.pages?.map((page) => {
-                    return (
-                      <>
-                        {page
-                          ?.sort(
-                            (a, b) =>
-                              Date.parse(b.updated_at) -
-                              Date.parse(a.updated_at)
-                          )
-                          ?.map((chat) => {
-                            return (
-                              <Chat
-                                chat={chat}
-                                user_id={profile?.id}
-                                key={chat?.id}
-                                selectedChat={selectedChat}
-                                setSelectedChat={setSelectedChat}
-                                setSelectedGroup={setSelectedGroup}
-                              />
-                            );
-                          })}
-                      </>
-                    );
-                  })}
-                  {isFetchingNextPage ? (
-                    <div
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
+                <Tabs
+                  defaultActiveKey="1"
+                  tabBarGutter={40}
+                  tabBarStyle={tabStyle}
+                  items={items}
+                  onChange={() => {
+                    setSelectedProject(null);
+                    setSelectedGroup(null);
+                    setSelectedChat(null);
+                  }}
+                  tabBarExtraContent={
+                    <Popover
+                      placement="bottomRight"
+                      content={content2}
+                      open={openPopOver}
+                      trigger="click"
+                      onOpenChange={() => {
+                        setOpenPopOver(!openPopOver);
                       }}
                     >
-                      <Spin />
-                    </div>
-                  ) : null}
+                      <BsThreeDotsVertical />
+                    </Popover>
+                  }
+                />
+                {/*
+                <div className="projects-header">
+                <p>Chats</p>
+                <div className="header-icons">
+                  <AiOutlinePlusCircle onClick={() => setAddChat(true)} />
                 </div>
+              </div>
+              <div className="projects-body" onScroll={handleDebouncedScroll}>
+                {chats?.pages?.map((page) => {
+                  return (
+                    <>
+                      {page
+                        ?.sort(
+                          (a, b) =>
+                            Date.parse(b.updated_at) -
+                            Date.parse(a.updated_at)
+                        )
+                        ?.map((chat) => {
+                          return (
+                            <Chat
+                              chat={chat}
+                              user_id={profile?.id}
+                              key={chat?.id}
+                              selectedChat={selectedChat}
+                              setSelectedChat={setSelectedChat}
+                              setSelectedGroup={setSelectedGroup}
+                            />
+                          );
+                        })}
+                    </>
+                  );
+                })}
+                {isFetchingNextPage ? (
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Spin />
+                  </div>
+                ) : null}
+              </div>
+                */}
               </div>
               <div className="vendors vendors-sc">
                 <Messeges
@@ -919,50 +1014,52 @@ const Chats = () => {
                   hasNextPageMessages={hasNextPageMessages}
                   isFetchingNextPageMessages={isFetchingNextPageMessages}
                 />
-                <div className="chat-input">
-                  <div
-                    className="header-form"
-                    onKeyDown={(e) => {
-                      if (e.key == "Enter") {
-                        send_message_mutation.mutate({
-                          chatData: selectedChat,
-                          text,
-                          user_id: profile?.id,
-                        });
-                      }
-                    }}
-                  >
-                    <button>
-                      <BsMicFill />
-                    </button>
-                    <input
-                      value={text}
-                      className="header-input"
-                      placeholder="Write your message..."
-                      required
-                      type="text"
-                      onChange={(e) => setText(e.target.value)}
-                    />
-                    <button
-                      onClick={() => {
-                        send_message_mutation.mutate({
-                          chatData: selectedChat,
-                          text,
-                          user_id: profile?.id,
-                        });
+                {!selectedChat && !selectedGroup ? null : (
+                  <div className="chat-input">
+                    <div
+                      className="header-form"
+                      onKeyDown={(e) => {
+                        if (e.key == "Enter") {
+                          send_message_mutation.mutate({
+                            chatData: selectedChat,
+                            text,
+                            user_id: profile?.id,
+                          });
+                        }
                       }}
                     >
-                      <div className="form-button">
-                        <AiOutlineSend />
-                      </div>
-                    </button>
+                      <button>
+                        <BsMicFill />
+                      </button>
+                      <input
+                        value={text}
+                        className="header-input"
+                        placeholder="Write your message..."
+                        required
+                        type="text"
+                        onChange={(e) => setText(e.target.value)}
+                      />
+                      <button
+                        onClick={() => {
+                          send_message_mutation.mutate({
+                            chatData: selectedChat,
+                            text,
+                            user_id: profile?.id,
+                          });
+                        }}
+                      >
+                        <div className="form-button">
+                          <AiOutlineSend />
+                        </div>
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
         ) : (
-          <div className="messages-box-container message-box-container-sc">
+          <div className="messages-box-container message-box-container-sc mt-1">
             <p
               style={{
                 display: "flex",
@@ -1100,45 +1197,47 @@ const Chats = () => {
                       hasNextPageMessages={hasNextPageMessages}
                       isFetchingNextPageMessages={isFetchingNextPageMessages}
                     />
-                    <div className="chat-input">
-                      <div
-                        className="header-form"
-                        onKeyDown={(e) => {
-                          if (e.key == "Enter") {
-                            send_message_mutation.mutate({
-                              chatData: selectedChat,
-                              text,
-                              user_id: profile?.id,
-                            });
-                          }
-                        }}
-                      >
-                        <button>
-                          <BsMicFill />
-                        </button>
-                        <input
-                          value={text}
-                          className="header-input"
-                          placeholder="Write your message..."
-                          required
-                          type="text"
-                          onChange={(e) => setText(e.target.value)}
-                        />
-                        <button
-                          onClick={() => {
-                            send_message_mutation.mutate({
-                              chatData: selectedChat,
-                              text,
-                              user_id: profile?.id,
-                            });
+                    {!selectedChat && !selectedGroup ? null : (
+                      <div className="chat-input">
+                        <div
+                          className="header-form"
+                          onKeyDown={(e) => {
+                            if (e.key == "Enter") {
+                              send_message_mutation.mutate({
+                                chatData: selectedChat,
+                                text,
+                                user_id: profile?.id,
+                              });
+                            }
                           }}
                         >
-                          <div className="form-button">
-                            <AiOutlineSend />
-                          </div>
-                        </button>
+                          <button>
+                            <BsMicFill />
+                          </button>
+                          <input
+                            value={text}
+                            className="header-input"
+                            placeholder="Write your message..."
+                            required
+                            type="text"
+                            onChange={(e) => setText(e.target.value)}
+                          />
+                          <button
+                            onClick={() => {
+                              send_message_mutation.mutate({
+                                chatData: selectedChat,
+                                text,
+                                user_id: profile?.id,
+                              });
+                            }}
+                          >
+                            <div className="form-button">
+                              <AiOutlineSend />
+                            </div>
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </>
                 ) : (
                   <>
@@ -1206,12 +1305,12 @@ const Chats = () => {
               ? "Select Designer to send chat request"
               : "Select Vendor to send chat request"
           }
-          afterClose={()=>{
+          afterClose={() => {
             setSelectedChats([]);
             setSelectedChatIds([]);
             setSelectedChatTypes([]);
-            setInput("")
-            setInputSameCompany("")
+            setInput("");
+            setInputSameCompany("");
             setFilteredProfiles([]);
           }}
           footer={null}
@@ -1233,6 +1332,7 @@ const Chats = () => {
 
           {filteredProfiles
             ?.filter((reciver) => reciver?.type !== profile?.type)
+            ?.filter((_, i) => i < 5)
             ?.map((reciver, i) => {
               return (
                 <div
@@ -1285,14 +1385,36 @@ const Chats = () => {
                 </>
               )}
             </button>,
+            <button
+              className="create-project"
+              onClick={() => {
+                if (
+                  projectMembers?.some((val, i, arr) => val.type === "vendor")
+                ) {
+                  toast("Already have 1 vendor", { type: "warning" });
+                } else {
+                  setOpenInvite(true);
+                }
+              }}
+            >
+              {projectAdding ? (
+                <>
+                  Sending... <Spin />
+                </>
+              ) : (
+                <>
+                  <UserAddOutlined /> Invite
+                </>
+              )}
+            </button>,
           ]}
           open={addChatToProject}
-          afterClose={()=>{
+          afterClose={() => {
             setSelectedChats([]);
             setSelectedChatIds([]);
             setSelectedChatTypes([]);
-            setInput("")
-            setInputSameCompany("")
+            setInput("");
+            setInputSameCompany("");
             setFilteredProfiles([]);
           }}
           onCancel={() => setAddChatToProject(false)}
@@ -1322,6 +1444,7 @@ const Chats = () => {
 
               if (!bool) return value;
             })
+            ?.filter((_, i) => i < 5)
             ?.map((reciver, i) => {
               return (
                 <div
@@ -1364,6 +1487,49 @@ const Chats = () => {
         </Modal>
 
         <Modal
+          title={"Invite a vendor to " + selectedProject?.name}
+          footer={[
+            <button className="create-project" onClick={() => sendInvite()}>
+              Send Invite
+            </button>,
+          ]}
+          afterClose={() => {
+            setVendorDetails({
+              VendorName: "",
+              VendorEmail: "",
+              ProjectLoc: "",
+            });
+          }}
+          open={openInvite}
+          onCancel={() => setOpenInvite(false)}
+        >
+          <form className="invite-ip">
+            <input type={"text"} value={selectedProject?.name} disabled />
+            <input
+              type={"text"}
+              value={vendorDetails?.VendorName}
+              placeholder="Vendor Name"
+              onChange={(e) => onVendorDetailsChange(e)}
+              name="VendorName"
+            />
+            <input
+              type={"text"}
+              value={vendorDetails?.VendorEmail}
+              placeholder="Vendor Email"
+              onChange={(e) => onVendorDetailsChange(e)}
+              name="VendorEmail"
+            />
+            <input
+              type={"text"}
+              value={vendorDetails?.ProjectLoc}
+              placeholder="Project Location"
+              onChange={(e) => onVendorDetailsChange(e)}
+              name="ProjectLoc"
+            />
+          </form>
+        </Modal>
+
+        <Modal
           title={
             profile?.type === "vendor"
               ? "Select Architects in Project " + projectName
@@ -1386,12 +1552,12 @@ const Chats = () => {
               )}
             </button>,
           ]}
-          afterClose={()=>{
+          afterClose={() => {
             setSelectedChats([]);
             setSelectedChatIds([]);
             setSelectedChatTypes([]);
-            setInput("")
-            setInputSameCompany("")
+            setInput("");
+            setInputSameCompany("");
             setFilteredProfiles([]);
           }}
           open={addProject}
@@ -1423,40 +1589,46 @@ const Chats = () => {
               onChange={(e) => setInputSameCompany(e.target.value)}
             />
           </div>
-          {filteredProfiles?.map((reciver, i) => {
-            return (
-              <div
-                key={reciver?.id}
-                className={`projects-chat ${
-                  selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                }`}
-                onClick={() => {
-                  handleSelectChats(reciver);
-                }}
-              >
-                <div className="chat-pic">
-                  {reciver?.profile_pic ? (
-                    <img src={reciver?.profile_pic} />
-                  ) : (
-                    <AiOutlineUser />
-                  )}
+          {filteredProfiles
+            ?.filter((_, i) => i < 5)
+            ?.map((reciver, i) => {
+              return (
+                <div
+                  key={reciver?.id}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
+                  onClick={() => {
+                    handleSelectChats(reciver);
+                  }}
+                >
+                  <div className="chat-pic">
+                    {reciver?.profile_pic ? (
+                      <img src={reciver?.profile_pic} />
+                    ) : (
+                      <AiOutlineUser />
+                    )}
+                  </div>
+                  <div className="chat-info">
+                    <p>
+                      {reciver?.display_name}
+                      <span
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
+                      >
+                        {reciver?.type}
+                      </span>
+                    </p>
+                    <p>
+                      {reciver?.bio ? reciver?.bio?.substring(0, 52) : null}
+                    </p>
+                  </div>
                 </div>
-                <div className="chat-info">
-                  <p>
-                    {reciver?.display_name}
-                    <span
-                      className={`badge ${
-                        reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
-                      }`}
-                    >
-                      {reciver?.type}
-                    </span>
-                  </p>
-                  <p>{reciver?.bio ? reciver?.bio?.substring(0, 52) : null}</p>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </Modal>
         <Modal
           title={
@@ -1481,12 +1653,12 @@ const Chats = () => {
               )}
             </button>,
           ]}
-           afterClose={()=>{
+          afterClose={() => {
             setSelectedChats([]);
             setSelectedChatIds([]);
             setSelectedChatTypes([]);
-            setInput("")
-            setInputSameCompany("")
+            setInput("");
+            setInputSameCompany("");
             setFilteredProfiles([]);
           }}
           open={createGroup}
@@ -1514,40 +1686,46 @@ const Chats = () => {
               onChange={(e) => setInput(e.target.value)}
             />
           </div>
-          {filteredProfiles?.map((reciver, i) => {
-            return (
-              <div
-                key={reciver?.id}
-                className={`projects-chat ${
-                  selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                }`}
-                onClick={() => {
-                  handleSelectChats(reciver);
-                }}
-              >
-                <div className="chat-pic">
-                  {reciver?.profile_pic ? (
-                    <img src={reciver?.profile_pic} />
-                  ) : (
-                    <AiOutlineUser />
-                  )}
+          {filteredProfiles
+            ?.filter((_, i) => i < 5)
+            ?.map((reciver, i) => {
+              return (
+                <div
+                  key={reciver?.id}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
+                  onClick={() => {
+                    handleSelectChats(reciver);
+                  }}
+                >
+                  <div className="chat-pic">
+                    {reciver?.profile_pic ? (
+                      <img src={reciver?.profile_pic} />
+                    ) : (
+                      <AiOutlineUser />
+                    )}
+                  </div>
+                  <div className="chat-info">
+                    <p>
+                      {reciver?.display_name}
+                      <span
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
+                      >
+                        {reciver?.type}
+                      </span>
+                    </p>
+                    <p>
+                      {reciver?.bio ? reciver?.bio?.substring(0, 52) : null}
+                    </p>
+                  </div>
                 </div>
-                <div className="chat-info">
-                  <p>
-                    {reciver?.display_name}
-                    <span
-                      className={`badge ${
-                        reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
-                      }`}
-                    >
-                      {reciver?.type}
-                    </span>
-                  </p>
-                  <p>{reciver?.bio ? reciver?.bio?.substring(0, 52) : null}</p>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </Modal>
       </div>
     </>
@@ -1699,7 +1877,9 @@ function Chat({
       <div className="chat-info">
         <p>{printName(sender_id, sender_name, reciver_name, user_id)}</p>
         <p>
-          {chat?.recent_message ? chat?.recent_message?.substring(0, 10) : ""}
+          {chat?.recent_message
+            ? chat?.recent_message?.substring(0, 7) + " ...."
+            : ""}
         </p>
       </div>
       <div className="chat-time">
