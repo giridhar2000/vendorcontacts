@@ -8,7 +8,7 @@ import {
   AiOutlineSearch,
   AiOutlinePlus,
 } from "react-icons/ai";
-import { UserAddOutlined } from '@ant-design/icons';
+import { UserAddOutlined } from "@ant-design/icons";
 import {
   BsThreeDotsVertical,
   BsMicFill,
@@ -42,6 +42,7 @@ import {
   getSenderDetails,
   getReciverDetails,
   sendChatRequest,
+  sendProjectRequest,
 } from "../../utils/chat_helper";
 import {
   useQuery,
@@ -66,8 +67,6 @@ import {
   getGroupInfo,
 } from "../../utils/project_helper";
 import { toast } from "react-toastify";
-import { IconProvider } from "@ant-design/icons";
-import { icons } from "react-icons/lib";
 
 const Chats = () => {
   const location = useLocation();
@@ -95,11 +94,10 @@ const Chats = () => {
   const [isChatLoading, setIsChatLoading] = useState(true);
   const [page, setPage] = useState(0);
 
-  const [openPopOver,setOpenPopOver] = useState(false)
+  const [openPopOver, setOpenPopOver] = useState(false);
 
   const [openInvite, setOpenInvite] = useState(false);
-  const [vendorDetails, setVendorDetails] = useState({})
-
+  const [vendorDetails, setVendorDetails] = useState({});
 
   // Fetching all messages from a chat
   let {
@@ -137,12 +135,8 @@ const Chats = () => {
   );
 
   const onVendorDetailsChange = (e) => {
-    setVendorDetails({...vendorDetails, [e.target.name]: e.target.value })
-  }
-
-  const sendInvite = () => {
-    console.log(vendorDetails)
-  }
+    setVendorDetails({ ...vendorDetails, [e.target.name]: e.target.value });
+  };
 
   useEffect(() => {
     if (input === "") {
@@ -150,7 +144,7 @@ const Chats = () => {
       return;
     }
     setFilteredProfiles((old) => {
-      return profiles?.filter((value) =>
+      return profiles?.filter((value, i) =>
         value?.display_name?.toLowerCase()?.includes(input?.toLowerCase())
       );
     });
@@ -170,7 +164,7 @@ const Chats = () => {
     });
   }, [inputSameCompany]);
 
-  //Fetching chats of a particular user
+  //Fetching all profiles
   const { data: profiles, isLoading: isLoading4 } = useQuery(
     ["users", profile?.id],
     async () => {
@@ -179,7 +173,7 @@ const Chats = () => {
     }
   );
 
-  //Fetching chats of a particular user
+  //Fetching all members of a particular project
   const { data: projectMembers, isLoading: isLoading6 } = useQuery(
     ["projectMembers", selectedProject?.project_id],
     async () => {
@@ -205,18 +199,6 @@ const Chats = () => {
   );
 
   // //Fetching chats of a particular user
-  // const { data: chats, isLoading: isLoading2 } = useQuery(
-  //   ["chats", profile?.id, page],
-  //   async () => {
-  //     const { from, to } = loadMoreData();
-  //     console.log(from, to);
-  //     let data = await getAllChats(profile?.id, null, from, to);
-  //     // setChats((old) => [...data, ...old]);
-  //     setIsChatLoading(false);
-  //     return data;
-  //   }
-  // );
-
   const {
     fetchNextPage,
     hasNextPage,
@@ -286,7 +268,7 @@ const Chats = () => {
     }
   );
 
-  //
+  // Fetching group information
   let { data: groupData } = useQuery(
     ["grpData", profile?.id],
     () => getGroupInfo(profile?.id),
@@ -405,16 +387,16 @@ const Chats = () => {
     },
   });
 
-  // Mutation for Creating chat
-  const create_chat_mutation = useMutation(createChat, {
-    onSuccess: (data) => {
-      if (data) {
-        queryClient.invalidateQueries(["chats", profile?.id]);
-        setSelectedChat(data);
-        setAddChat(false);
-      }
-    },
-  });
+  // // Mutation for Creating chat
+  // const create_chat_mutation = useMutation(createChat, {
+  //   onSuccess: (data) => {
+  //     if (data) {
+  //       queryClient.invalidateQueries(["chats", profile?.id]);
+  //       setSelectedChat(data);
+  //       setAddChat(false);
+  //     }
+  //   },
+  // });
 
   // Mutation for Creating a project
   const create_project_mutation = useMutation(createProject, {
@@ -488,24 +470,47 @@ const Chats = () => {
       setAddChat(false);
     },
   });
+  // Mutation for sending project request to a user
+  const send_project_request_mutation = useMutation(sendProjectRequest, {
+    onSuccess: (data) => {
+      if (data) {
+        toast("Project request sent!", { type: "success" });
+      } else {
+        toast("Project request failed", { type: "error" });
+      }
+      setVendorDetails({
+        VendorName: "",
+        VendorEmail: "",
+        ProjectLoc: "",
+      });
+      setOpenInvite(false);
+    },
+  });
+
+  const sendInvite = async () => {
+    if (vendorDetails?.VendorEmail === "" || vendorDetails?.VendorName === "") {
+      toast("Please fill all the details", { type: "error" });
+      return;
+    }
+    send_project_request_mutation.mutateAsync({
+      reciver: {
+        display_name: vendorDetails?.VendorName,
+        email: vendorDetails?.VendorEmail,
+      },
+      sender: profile,
+      project: {
+        project_name: selectedProject?.name,
+        project_id: selectedProject?.project_id,
+        project_location: vendorDetails?.ProjectLoc,
+      },
+    });
+  };
 
   // Fetching chats and messages info in real time
   useEffect(() => {
     const chats = supabase
       .channel("custom-all-channel")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "groups" },
-        (payload) => {
-          console.log(payload);
-          queryClient.invalidateQueries([
-            "groups",
-            selectedProject?.project_id,
-          ]);
-          queryClient.invalidateQueries(["memberList", payload?.new?.group_id]);
-          queryClient.invalidateQueries(["grpData", profile?.id]);
-        }
-      )
+    
 
       .on(
         "postgres_changes",
@@ -546,6 +551,20 @@ const Chats = () => {
         }
       )
 
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "groups" },
+        (payload) => {
+          console.log(payload);
+          queryClient.invalidateQueries([
+            "groups",
+            selectedProject?.project_id,
+          ]);
+          queryClient.invalidateQueries(["memberList", payload?.new?.group_id]);
+          queryClient.invalidateQueries(["grpData", profile?.id]);
+        }
+      )
+
       .subscribe();
     return () => {
       chats.unsubscribe();
@@ -555,6 +574,7 @@ const Chats = () => {
 
   //Handling selection of chats in creating a new project
   function handleSelectChats(profile) {
+   
     let bool = false;
     if (selectedChatIds.includes(profile?.id)) {
       setSelectedChats((old) => {
@@ -570,13 +590,28 @@ const Chats = () => {
     }
 
     if (profile?.type === "vendor" && !createGroup) {
-      if (projectMembers && !createGroup) {
-        projectMembers.forEach((val) => {
-          if (val.type === "vendor") {
-            toast("Can't add more than 1 vendor", { type: "warning" });
-            return;
-          }
-        });
+      if (projectMembers) {
+        if (projectMembers?.some((val) => val.type === "vendor")) {
+          toast("Can't add more than 1 vendor", { type: "warning" });
+          return;
+        } else {
+          setSelectedChatTypes((old) => {
+            return [...old, profile?.type];
+          });
+          setSelectedChatTypes((old) => {
+            if (old.length <= 1) {
+              setSelectedChatIds((old) => {
+                return [...old, profile?.id];
+              });
+              setSelectedChats((old) => {
+                return [...old, profile];
+              });
+            } else {
+              toast("Can't add more than 1 vendor", { type: "warning" });
+            }
+            return old;
+          });
+        }
       } else {
         setSelectedChatTypes((old) => {
           return [...old, profile?.type];
@@ -652,6 +687,8 @@ const Chats = () => {
       ]);
       setProjectAdding(false);
       setSelectedChats([]);
+      setInput("");
+      setInputSameCompany("");
       setSelectedChatIds([]);
       setSelectedChatTypes([]);
       setAddChatToProject(false);
@@ -667,22 +704,22 @@ const Chats = () => {
     </p>
   );
   const content2 = (
-    <div style={{display:'flex',flexDirection:'column'}}>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <p
         style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
         onClick={() => {
-         setOpenPopOver(false);
-         setAddChat(true)
+          setOpenPopOver(false);
+          setAddChat(true);
         }}
       >
         Invite people
       </p>
       <p
         style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-        onClick={() =>{
+        onClick={() => {
           setOpenPopOver(false);
-          setAddProject(true)
-        } }
+          setAddProject(true);
+        }}
       >
         Create project
       </p>
@@ -801,28 +838,36 @@ const Chats = () => {
   const People = () => {
     return (
       <div className="projects-body" onScroll={handleDebouncedScroll}>
-        {chats?.pages?.map((page) => {
-          return (
-            <>
-              {page
-                ?.sort(
-                  (a, b) => Date.parse(b.updated_at) - Date.parse(a.updated_at)
-                )
-                ?.map((chat) => {
-                  return (
-                    <Chat
-                      chat={chat}
-                      user_id={profile?.id}
-                      key={chat?.id}
-                      selectedChat={selectedChat}
-                      setSelectedChat={setSelectedChat}
-                      setSelectedGroup={setSelectedGroup}
-                    />
-                  );
-                })}
-            </>
-          );
-        })}
+        {!chats || chats?.pages[0]?.length === 0 ? (
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={"No chats"}
+          />
+        ) : (
+          chats?.pages?.map((page) => {
+            return (
+              <>
+                {page
+                  ?.sort(
+                    (a, b) =>
+                      Date.parse(b.updated_at) - Date.parse(a.updated_at)
+                  )
+                  ?.map((chat) => {
+                    return (
+                      <Chat
+                        chat={chat}
+                        user_id={profile?.id}
+                        key={chat?.id}
+                        selectedChat={selectedChat}
+                        setSelectedChat={setSelectedChat}
+                        setSelectedGroup={setSelectedGroup}
+                      />
+                    );
+                  })}
+              </>
+            );
+          })
+        )}
         {isFetchingNextPage ? (
           <div
             style={{
@@ -904,8 +949,8 @@ const Chats = () => {
                       content={content2}
                       open={openPopOver}
                       trigger="click"
-                      onOpenChange={()=>{
-                        setOpenPopOver(true)
+                      onOpenChange={() => {
+                        setOpenPopOver(!openPopOver);
                       }}
                     >
                       <BsThreeDotsVertical />
@@ -1286,6 +1331,7 @@ const Chats = () => {
 
           {filteredProfiles
             ?.filter((reciver) => reciver?.type !== profile?.type)
+            ?.filter((_, i) => i < 5)
             ?.map((reciver, i) => {
               return (
                 <div
@@ -1338,9 +1384,18 @@ const Chats = () => {
                 </>
               )}
             </button>,
-            <button className="create-project" onClick={() => {
-              setOpenInvite(true)
-            }}>
+            <button
+              className="create-project"
+              onClick={() => {
+                if (
+                  projectMembers?.some((val, i, arr) => val.type === "vendor")
+                ) {
+                  toast("Already have 1 vendor", { type: "warning" });
+                } else {
+                  setOpenInvite(true);
+                }
+              }}
+            >
               {projectAdding ? (
                 <>
                   Sending... <Spin />
@@ -1350,8 +1405,7 @@ const Chats = () => {
                   <UserAddOutlined /> Invite
                 </>
               )}
-
-            </button>
+            </button>,
           ]}
           open={addChatToProject}
           afterClose={() => {
@@ -1389,12 +1443,14 @@ const Chats = () => {
 
               if (!bool) return value;
             })
+            ?.filter((_,i)=>i<5)
             ?.map((reciver, i) => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                    }`}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1411,10 +1467,11 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}{" "}
                       <span
-                        className={`badge ${reciver.type === "vendor"
-                          ? "bg-vendor"
-                          : "bg-designer"
-                          }`}
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
                       >
                         {reciver?.type}
                       </span>
@@ -1431,20 +1488,43 @@ const Chats = () => {
         <Modal
           title={"Invite a vendor to " + selectedProject?.name}
           footer={[
-            <button className="create-project" onClick={() => sendInvite()}>Send Invite</button>
+            <button className="create-project" onClick={() => sendInvite()}>
+              Send Invite
+            </button>,
           ]}
           afterClose={() => {
-            setVendorDetails({});
-            
+            setVendorDetails({
+              VendorName: "",
+              VendorEmail: "",
+              ProjectLoc: "",
+            });
           }}
           open={openInvite}
-          onCancel={() => setOpenInvite(false) }
+          onCancel={() => setOpenInvite(false)}
         >
-          <form className="invite-ip" >
+          <form className="invite-ip">
             <input type={"text"} value={selectedProject?.name} disabled />
-            <input type={"text"} placeholder="Vendor Name" onChange={(e) => onVendorDetailsChange(e)} name="VendorName" />
-            <input type={"text"} placeholder="Vendor Email" onChange={(e) => onVendorDetailsChange(e)} name="VendorEmail" />
-            <input type={"text"} placeholder="Project Location" onChange={(e) => onVendorDetailsChange(e)} name="ProjectLoc" />
+            <input
+              type={"text"}
+              value={vendorDetails?.VendorName}
+              placeholder="Vendor Name"
+              onChange={(e) => onVendorDetailsChange(e)}
+              name="VendorName"
+            />
+            <input
+              type={"text"}
+              value={vendorDetails?.VendorEmail}
+              placeholder="Vendor Email"
+              onChange={(e) => onVendorDetailsChange(e)}
+              name="VendorEmail"
+            />
+            <input
+              type={"text"}
+              value={vendorDetails?.ProjectLoc}
+              placeholder="Project Location"
+              onChange={(e) => onVendorDetailsChange(e)}
+              name="ProjectLoc"
+            />
           </form>
         </Modal>
 
@@ -1508,12 +1588,15 @@ const Chats = () => {
               onChange={(e) => setInputSameCompany(e.target.value)}
             />
           </div>
-          {filteredProfiles?.map((reciver, i) => {
+          {filteredProfiles
+            ?.filter((_,i)=>i<5)
+            ?.map((reciver, i) => {
             return (
               <div
                 key={reciver?.id}
-                className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                  }`}
+                className={`projects-chat ${
+                  selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                }`}
                 onClick={() => {
                   handleSelectChats(reciver);
                 }}
@@ -1529,8 +1612,9 @@ const Chats = () => {
                   <p>
                     {reciver?.display_name}
                     <span
-                      className={`badge ${reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
-                        }`}
+                      className={`badge ${
+                        reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
+                      }`}
                     >
                       {reciver?.type}
                     </span>
@@ -1597,12 +1681,15 @@ const Chats = () => {
               onChange={(e) => setInput(e.target.value)}
             />
           </div>
-          {filteredProfiles?.map((reciver, i) => {
+          {filteredProfiles
+            ?.filter((_,i)=>i<5)
+            ?.map((reciver, i) => {
             return (
               <div
                 key={reciver?.id}
-                className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                  }`}
+                className={`projects-chat ${
+                  selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                }`}
                 onClick={() => {
                   handleSelectChats(reciver);
                 }}
@@ -1618,8 +1705,9 @@ const Chats = () => {
                   <p>
                     {reciver?.display_name}
                     <span
-                      className={`badge ${reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
-                        }`}
+                      className={`badge ${
+                        reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
+                      }`}
                     >
                       {reciver?.type}
                     </span>
@@ -1709,10 +1797,11 @@ const Messeges = memo(
                       return (
                         <div
                           key={message.id}
-                          className={`${message?.sender_id === profile?.id
-                            ? "mine"
-                            : "others"
-                            }`}
+                          className={`${
+                            message?.sender_id === profile?.id
+                              ? "mine"
+                              : "others"
+                          }`}
                         >
                           <p>{message?.text}</p>
                           <p>
@@ -1759,8 +1848,9 @@ function Chat({
 
   return (
     <div
-      className={`projects-chat ${selectedChat?.id === chat?.id ? "bg-dark" : ""
-        } ${last === index ? "" : "border-bottom"}`}
+      className={`projects-chat ${
+        selectedChat?.id === chat?.id ? "bg-dark" : ""
+      } ${last === index ? "" : "border-bottom"}`}
       onClick={() => {
         setSelectedGroup(null);
         setSelectedChat(chat);
@@ -1800,8 +1890,9 @@ function Group({
 }) {
   return (
     <div
-      className={`projects-chat ${selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
-        } ${last === index ? "" : "border-bottom"}`}
+      className={`projects-chat ${
+        selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
+      } ${last === index ? "" : "border-bottom"}`}
       onClick={() => {
         setSelectedChat(null);
         setSelectedGroup(group);
