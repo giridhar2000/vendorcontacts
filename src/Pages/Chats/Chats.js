@@ -510,7 +510,6 @@ const Chats = () => {
   useEffect(() => {
     const chats = supabase
       .channel("custom-all-channel")
-    
 
       .on(
         "postgres_changes",
@@ -574,7 +573,6 @@ const Chats = () => {
 
   //Handling selection of chats in creating a new project
   function handleSelectChats(profile) {
-   
     let bool = false;
     if (selectedChatIds.includes(profile?.id)) {
       setSelectedChats((old) => {
@@ -705,24 +703,27 @@ const Chats = () => {
   );
   const content2 = (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <p
-        style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-        onClick={() => {
-          setOpenPopOver(false);
-          setAddChat(true);
-        }}
-      >
-        Invite people
-      </p>
-      <p
-        style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-        onClick={() => {
-          setOpenPopOver(false);
-          setAddProject(true);
-        }}
-      >
-        Create project
-      </p>
+      {profile?.type === "vendor" ? (
+        <p
+          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+          onClick={() => {
+            setOpenPopOver(false);
+            setAddChat(true);
+          }}
+        >
+          Invite people
+        </p>
+      ) : (
+        <p
+          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+          onClick={() => {
+            setOpenPopOver(false);
+            setAddProject(true);
+          }}
+        >
+          Create project
+        </p>
+      )}
     </div>
   );
 
@@ -1443,7 +1444,7 @@ const Chats = () => {
 
               if (!bool) return value;
             })
-            ?.filter((_,i)=>i<5)
+            ?.filter((_, i) => i < 5)
             ?.map((reciver, i) => {
               return (
                 <div
@@ -1589,41 +1590,45 @@ const Chats = () => {
             />
           </div>
           {filteredProfiles
-            ?.filter((_,i)=>i<5)
+            ?.filter((_, i) => i < 5)
             ?.map((reciver, i) => {
-            return (
-              <div
-                key={reciver?.id}
-                className={`projects-chat ${
-                  selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                }`}
-                onClick={() => {
-                  handleSelectChats(reciver);
-                }}
-              >
-                <div className="chat-pic">
-                  {reciver?.profile_pic ? (
-                    <img src={reciver?.profile_pic} />
-                  ) : (
-                    <AiOutlineUser />
-                  )}
+              return (
+                <div
+                  key={reciver?.id}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
+                  onClick={() => {
+                    handleSelectChats(reciver);
+                  }}
+                >
+                  <div className="chat-pic">
+                    {reciver?.profile_pic ? (
+                      <img src={reciver?.profile_pic} />
+                    ) : (
+                      <AiOutlineUser />
+                    )}
+                  </div>
+                  <div className="chat-info">
+                    <p>
+                      {reciver?.display_name}
+                      <span
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
+                      >
+                        {reciver?.type}
+                      </span>
+                    </p>
+                    <p>
+                      {reciver?.bio ? reciver?.bio?.substring(0, 52) : null}
+                    </p>
+                  </div>
                 </div>
-                <div className="chat-info">
-                  <p>
-                    {reciver?.display_name}
-                    <span
-                      className={`badge ${
-                        reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
-                      }`}
-                    >
-                      {reciver?.type}
-                    </span>
-                  </p>
-                  <p>{reciver?.bio ? reciver?.bio?.substring(0, 52) : null}</p>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </Modal>
         <Modal
           title={
@@ -1682,41 +1687,45 @@ const Chats = () => {
             />
           </div>
           {filteredProfiles
-            ?.filter((_,i)=>i<5)
+            ?.filter((_, i) => i < 5)
             ?.map((reciver, i) => {
-            return (
-              <div
-                key={reciver?.id}
-                className={`projects-chat ${
-                  selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                }`}
-                onClick={() => {
-                  handleSelectChats(reciver);
-                }}
-              >
-                <div className="chat-pic">
-                  {reciver?.profile_pic ? (
-                    <img src={reciver?.profile_pic} />
-                  ) : (
-                    <AiOutlineUser />
-                  )}
+              return (
+                <div
+                  key={reciver?.id}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
+                  onClick={() => {
+                    handleSelectChats(reciver);
+                  }}
+                >
+                  <div className="chat-pic">
+                    {reciver?.profile_pic ? (
+                      <img src={reciver?.profile_pic} />
+                    ) : (
+                      <AiOutlineUser />
+                    )}
+                  </div>
+                  <div className="chat-info">
+                    <p>
+                      {reciver?.display_name}
+                      <span
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
+                      >
+                        {reciver?.type}
+                      </span>
+                    </p>
+                    <p>
+                      {reciver?.bio ? reciver?.bio?.substring(0, 52) : null}
+                    </p>
+                  </div>
                 </div>
-                <div className="chat-info">
-                  <p>
-                    {reciver?.display_name}
-                    <span
-                      className={`badge ${
-                        reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
-                      }`}
-                    >
-                      {reciver?.type}
-                    </span>
-                  </p>
-                  <p>{reciver?.bio ? reciver?.bio?.substring(0, 52) : null}</p>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </Modal>
       </div>
     </>
