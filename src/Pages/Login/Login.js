@@ -586,8 +586,10 @@ export default function Login() {
                     <span
                       className="loginsignup"
                       onClick={() => {
-                        // setSignUp(true);
-                        window.location.reload()
+                        setSignUp(true);
+                        setUserType(null);
+                        setNext(false)
+                       
                       }}
                     >
                       <b>Login</b>

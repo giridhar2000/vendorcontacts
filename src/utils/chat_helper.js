@@ -363,6 +363,31 @@ export async function getMessagesFromGroup(group_id, page = 0) {
   }
 }
 
+// Sneding project request function ------------------------->
+
+export async function sendProjectRequest({ reciver, sender,project}) {
+  console.log(reciver);
+  try {
+    const { error } = await supabase.from("notifications").insert([
+      {
+        sender_id: sender?.id,
+        sender_name: sender?.display_name,
+        sender_image: sender?.profile_pic,
+        reciver_name: reciver?.display_name,
+        reciver_email: reciver?.email,
+        type: "project_request",
+        project_name:project?.project_name,
+        project_id:project?.project_id,
+        project_location:project?.project_location
+      },
+    ]);
+    if (error) throw new Error(error);
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}
 // Sneding chat request function ------------------------->
 
 export async function sendChatRequest({ reciver, sender }) {

@@ -22,7 +22,7 @@ const Notifications = () => {
   const { data: notifications, isLoading: isLoading2 } = useQuery(
     ["notifications", profile?.id],
     async () => {
-      let data = await getNotifications(profile?.id);
+      let data = await getNotifications(profile?.id, profile?.email);
       return data;
     },
     {
@@ -42,18 +42,33 @@ const Notifications = () => {
     }
   }
 
-  async function createChatByNotification(notification){
-    let not=notification;
-    await deleteNotification(notification?.id)
+  async function createChatByNotification(notification) {
+    let not = notification;
+    await deleteNotification(notification?.id);
     create_chat_mutation.mutateAsync({
-        reciver:profile,
-        user:{
-            id:not?.sender_id,
-            display_name:not?.sender_name,
-            profile_pic:not?.sender_image
-        }
-    })
+      reciver: profile,
+      user: {
+        id: not?.sender_id,
+        display_name: not?.sender_name,
+        profile_pic: not?.sender_image,
+      },
+    });
   }
+  async function acceptProject(notification) {
+    let not = notification;
+    // console.log(not);
+    await deleteNotification(notification?.id);
+    create_chat_mutation.mutateAsync({
+      reciver: profile,
+      user: {
+        id: not?.sender_id,
+        display_name: not?.sender_name,
+        profile_pic: not?.sender_image,
+      },
+      project_id:not?.project_id
+    });
+  }
+  
 
   // Fetching notifications in real time
   useEffect(() => {
@@ -115,16 +130,42 @@ const Notifications = () => {
                     {notification.sender_name}{" "}
                   </span>
                   {printHeading(notification.type)}
+                  {
+                    notification?.type==='project_request' ? <span style={{ fontSize: ".9rem" }}> {notification.project_name}</span> : null
+                  }
                 </p>
                 <div className="notification-buttons">
                   {notification.type === "chat_request" ? (
                     <>
-                      <button onClick={()=>{
-                        if(profile){
-                            createChatByNotification(notification)
-                            
-                        }
-                      }}>
+                      <button
+                        onClick={() => {
+                          if (profile) {
+                            createChatByNotification(notification);
+                          }
+                        }}
+                      >
+                        <TiTick style={{ color: "green" }} />
+                        Accept
+                      </button>
+                      <button
+                        onClick={async () => {
+                          await deleteNotification(notification?.id);
+                        }}
+                      >
+                        <TiTimes style={{ color: "red" }} />
+                        Decline
+                      </button>
+                    </>
+                  ) : null}
+                  {notification.type === "project_request" ? (
+                    <>
+                      <button
+                        onClick={() => {
+                          if (profile) {
+                            acceptProject(notification);
+                          }
+                        }}
+                      >
                         <TiTick style={{ color: "green" }} />
                         Accept
                       </button>
