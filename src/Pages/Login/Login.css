@@ -341,10 +341,21 @@
       flex-direction: column;
       gap: 15px;
     }
+     .login{
+        /* border: 3px solid pink; */
+        position: relative;
+     }
 
+    
     .loginimg{
         top: 580px;
+
+        position: absolute;
+        bottom: 0;
     }
+
+
+
   }
   
 

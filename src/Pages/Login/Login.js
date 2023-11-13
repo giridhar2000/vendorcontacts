@@ -598,9 +598,9 @@ export default function Login() {
                     </span>
                   </p>
                 </div>
-                {/* <div className="y-img"> */}
+                <div className="y-img">
                 <img src={loginbg} alt="login" className="loginimg singup-img" />
-                {/* </div> */}
+                </div>
               </>
             ) : (
               <div className="signup">
