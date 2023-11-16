@@ -340,7 +340,9 @@ export default function Login() {
                 </span>
               </p>
             </div>
+            
             <img src={loginbg} alt="login" className="loginimg" id="loginimg" />
+            
 
           </>
         ) : (
@@ -596,7 +598,9 @@ export default function Login() {
                     </span>
                   </p>
                 </div>
+                <div className="y-img">
                 <img src={loginbg} alt="login" className="loginimg singup-img" />
+                </div>
               </>
             ) : (
               <div className="signup">

@@ -8,7 +8,7 @@
     flex-direction: column;
 }
 .notification-box{
-    min-width: 500px;
+    /* min-width: 499px; */
     max-width: 600px;
     height: 80px !important;
     background-color:#e7fbabe0 !important;
