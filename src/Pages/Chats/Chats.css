@@ -46,12 +46,21 @@
 
 .projects-sc {
   flex: 0.2;
+  background-color: #FDFCFC;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-color: transparent;
+  border-right: 0.5px solid #f0f0f0;
 }
 .vendors-sc {
+  background-color: #FDFCFC;
   flex: 0.8;
   position: relative;
   display: flex;
   flex-direction: column;
+  border-color: transparent;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .ant-tabs-tab-btn:hover{
   color: #000 !important;

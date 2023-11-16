@@ -198,7 +198,7 @@ const Chats = () => {
     }
   );
 
-  // //Fetching chats of a particular user
+  //Fetching chats of a particular user
   const {
     fetchNextPage,
     hasNextPage,
@@ -913,24 +913,23 @@ const Chats = () => {
       <div className="messages-container">
         {!selectedProject ? (
           <div className="messages-box-container message-box-container-sc">
-            {/*
             <p
             style={{
               display: "flex",
               alignItems: "center",
             }}
           >
-            <BsSkipBackwardCircleFill
+            {/* <BsSkipBackwardCircleFill
               onClick={() => {
                 setSelectedChat(false);
                 setSelectedGroup(null);
                 setSelectedProject(null);
               }}
               style={{ marginRight: ".4rem", cursor: "pointer" }}
-            />{" "}
+            />{" "} */}
             Messages
           </p>
-            */}
+           
 
             <div className="messages-box messages-box-sc">
               <div className="projects projects-sc">
