@@ -70,6 +70,8 @@
 .login .loginimg {
     position: absolute;
     bottom: -100px;
+    /* height: 65vh;
+    bottom: 0px; */
     left: 0;
 }
 
@@ -348,9 +350,8 @@
 
     
     .loginimg{
-        top: 580px;
-
         position: absolute;
+        top: 560px;
         bottom: 0;
     }
 
@@ -364,4 +365,14 @@
     .loginimg{
         top: 580px;
     }
+}
+
+
+@media screen and (min-device-width: 0px) and (max-device-width: 380px) {
+    .loginimg{
+        position: absolute;
+        top: 520px;
+        bottom: 0;
+    }
+
 }
