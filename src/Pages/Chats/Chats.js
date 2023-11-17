@@ -8,7 +8,7 @@ import {
   AiOutlineSearch,
   AiOutlinePlus,
 } from "react-icons/ai";
-import { UserAddOutlined } from "@ant-design/icons";
+import { UserAddOutlined, PlusCircleOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import {
   BsThreeDotsVertical,
   BsMicFill,
@@ -693,40 +693,6 @@ const Chats = () => {
     });
   }
 
-  const content = (
-    <p
-      style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-      onClick={() => setCreateGroup(true)}
-    >
-      Create group
-    </p>
-  );
-  const content2 = (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      {profile?.type === "vendor" ? (
-        <p
-          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-          onClick={() => {
-            setOpenPopOver(false);
-            setAddChat(true);
-          }}
-        >
-          Invite people
-        </p>
-      ) : (
-        <p
-          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-          onClick={() => {
-            setOpenPopOver(false);
-            setAddProject(true);
-          }}
-        >
-          Create project
-        </p>
-      )}
-    </div>
-  );
-
   // Infinite scrolling logic ---------------------->
 
   async function handleScroll(e) {
@@ -790,6 +756,15 @@ const Chats = () => {
   const Projects = () => {
     return (
       <div className="projects-body" onScroll={handleDebouncedScrollProjects}>
+        <div className="create-project-btn">
+          <p
+            style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+            onClick={() => setCreateGroup(true)}
+          >
+            <UsergroupAddOutlined /> &nbsp;
+            Create group
+          </p>
+        </div>
         {!projects || projects?.pages[0]?.length === 0 ? (
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -839,6 +814,32 @@ const Chats = () => {
   const People = () => {
     return (
       <div className="projects-body" onScroll={handleDebouncedScroll}>
+        <div className="create-project-btn">
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {profile?.type === "vendor" ? (
+              <p
+                style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+                onClick={() => {
+                  setOpenPopOver(false);
+                  setAddChat(true);
+                }}
+              >
+                <PlusCircleOutlined />&nbsp;
+                Invite people
+              </p>
+            ) : (
+              <p
+                style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+                onClick={() => {
+                  setOpenPopOver(false);
+                  setAddProject(true);
+                }}
+              >
+                Create project
+              </p>
+            )}
+          </div>
+        </div>
         {!chats || chats?.pages[0]?.length === 0 ? (
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -899,7 +900,7 @@ const Chats = () => {
   ];
 
   const tabStyle = {
-    padding: "0 10px",
+    padding: "0 1vh",
     width: "100%",
   };
 
@@ -914,12 +915,12 @@ const Chats = () => {
         {!selectedProject ? (
           <div className="messages-box-container message-box-container-sc">
             <p
-            style={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            {/* <BsSkipBackwardCircleFill
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              {/* <BsSkipBackwardCircleFill
               onClick={() => {
                 setSelectedChat(false);
                 setSelectedGroup(null);
@@ -927,15 +928,14 @@ const Chats = () => {
               }}
               style={{ marginRight: ".4rem", cursor: "pointer" }}
             />{" "} */}
-            Messages
-          </p>
-           
+              Messages
+            </p>
+
 
             <div className="messages-box messages-box-sc">
               <div className="projects projects-sc">
                 <Tabs
                   defaultActiveKey="1"
-                  tabBarGutter={40}
                   tabBarStyle={tabStyle}
                   items={items}
                   onChange={() => {
@@ -943,19 +943,6 @@ const Chats = () => {
                     setSelectedGroup(null);
                     setSelectedChat(null);
                   }}
-                  tabBarExtraContent={
-                    <Popover
-                      placement="bottomRight"
-                      content={content2}
-                      open={openPopOver}
-                      trigger="click"
-                      onOpenChange={() => {
-                        setOpenPopOver(!openPopOver);
-                      }}
-                    >
-                      <BsThreeDotsVertical />
-                    </Popover>
-                  }
                 />
                 {/*
                 <div className="projects-header">
@@ -1084,13 +1071,6 @@ const Chats = () => {
                       <AiOutlinePlusCircle
                         onClick={() => setAddChatToProject(true)}
                       />
-                      <Popover
-                        placement="bottomRight"
-                        content={content}
-                        trigger="click"
-                      >
-                        <BsThreeDotsVertical />
-                      </Popover>
                     </div>
                   ) : null}
                 </div>
@@ -1448,9 +1428,8 @@ const Chats = () => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${
-                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                  }`}
+                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                    }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1467,11 +1446,10 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}{" "}
                       <span
-                        className={`badge ${
-                          reciver.type === "vendor"
-                            ? "bg-vendor"
-                            : "bg-designer"
-                        }`}
+                        className={`badge ${reciver.type === "vendor"
+                          ? "bg-vendor"
+                          : "bg-designer"
+                          }`}
                       >
                         {reciver?.type}
                       </span>
@@ -1588,15 +1566,15 @@ const Chats = () => {
               onChange={(e) => setInputSameCompany(e.target.value)}
             />
           </div>
+
           {filteredProfiles
             ?.filter((_, i) => i < 5)
             ?.map((reciver, i) => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${
-                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                  }`}
+                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                    }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1612,11 +1590,10 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}
                       <span
-                        className={`badge ${
-                          reciver.type === "vendor"
-                            ? "bg-vendor"
-                            : "bg-designer"
-                        }`}
+                        className={`badge ${reciver.type === "vendor"
+                          ? "bg-vendor"
+                          : "bg-designer"
+                          }`}
                       >
                         {reciver?.type}
                       </span>
@@ -1629,6 +1606,7 @@ const Chats = () => {
               );
             })}
         </Modal>
+
         <Modal
           title={
             profile?.type === "vendor"
@@ -1691,9 +1669,8 @@ const Chats = () => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${
-                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                  }`}
+                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                    }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1709,11 +1686,10 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}
                       <span
-                        className={`badge ${
-                          reciver.type === "vendor"
-                            ? "bg-vendor"
-                            : "bg-designer"
-                        }`}
+                        className={`badge ${reciver.type === "vendor"
+                          ? "bg-vendor"
+                          : "bg-designer"
+                          }`}
                       >
                         {reciver?.type}
                       </span>
@@ -1805,11 +1781,10 @@ const Messeges = memo(
                       return (
                         <div
                           key={message.id}
-                          className={`${
-                            message?.sender_id === profile?.id
-                              ? "mine"
-                              : "others"
-                          }`}
+                          className={`${message?.sender_id === profile?.id
+                            ? "mine"
+                            : "others"
+                            }`}
                         >
                           <p>{message?.text}</p>
                           <p>
@@ -1856,9 +1831,8 @@ function Chat({
 
   return (
     <div
-      className={`projects-chat ${
-        selectedChat?.id === chat?.id ? "bg-dark" : ""
-      } ${last === index ? "" : "border-bottom"}`}
+      className={`projects-chat ${selectedChat?.id === chat?.id ? "bg-dark" : ""
+        } ${last === index ? "" : "border-bottom"}`}
       onClick={() => {
         setSelectedGroup(null);
         setSelectedChat(chat);
@@ -1898,9 +1872,8 @@ function Group({
 }) {
   return (
     <div
-      className={`projects-chat ${
-        selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
-      } ${last === index ? "" : "border-bottom"}`}
+      className={`projects-chat ${selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
+        } ${last === index ? "" : "border-bottom"}`}
       onClick={() => {
         setSelectedChat(null);
         setSelectedGroup(group);
