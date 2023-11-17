@@ -306,11 +306,6 @@
   margin-inline: 2vh;
 }
 
-.create-project svg {
-  font-size: 0.6rem;
-  margin-top: 0.5rem !important;
-}
-
 .search-chat-input {
   width: 87%;
   margin: 10px !important;
@@ -319,6 +314,10 @@
   border-bottom: 1px solid #d6db63;
   display: flex;
   align-items: center;
+}
+
+span.anticon.anticon-right {
+  font-size: smaller;
 }
 
 .search-chat-input input {

@@ -8,7 +8,7 @@ import {
   AiOutlineSearch,
   AiOutlinePlus,
 } from "react-icons/ai";
-import { UserAddOutlined, PlusOutlined, PlusCircleOutlined, UsergroupAddOutlined, FolderAddOutlined } from "@ant-design/icons";
+import { UserAddOutlined, PlusOutlined, PlusCircleOutlined, RightOutlined, UsergroupAddOutlined, FolderAddOutlined } from "@ant-design/icons";
 import {
   BsThreeDotsVertical,
   BsMicFill,
@@ -766,7 +766,7 @@ const Chats = () => {
               setAddProject(true);
             }}
           >
-            <FolderAddOutlined /> &nbsp;
+            <FolderAddOutlined />&nbsp;
             Create project
           </p>
         </div>
@@ -1539,7 +1539,7 @@ const Chats = () => {
                 </>
               ) : (
                 <>
-                  Create project <MdOutlineNavigateNext />
+                  Create project <RightOutlined />
                 </>
               )}
             </button>,
