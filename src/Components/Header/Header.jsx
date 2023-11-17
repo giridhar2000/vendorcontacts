@@ -477,14 +477,7 @@ const Header = () => {
           ) : (
             <div className="buttons icons">
               <BsChatLeftText onClick={() => navigate("/chats")} />
-              {/* <BsBell onClick={() => navigate("/notifications")}/> */}
-              <Popover
-                placement="bottomRight"
-                content={notificationcontent}
-                trigger="click"
-              >
-                <BsBell />
-              </Popover>
+              <BsBell onClick={() => navigate("/notifications")}/>
               <Popover
                 placement="bottomRight"
                 content={content}

@@ -8,7 +8,7 @@ import {
   AiOutlineSearch,
   AiOutlinePlus,
 } from "react-icons/ai";
-import { UserAddOutlined, PlusCircleOutlined, UsergroupAddOutlined, FolderAddOutlined } from "@ant-design/icons";
+import { UserAddOutlined, PlusOutlined, PlusCircleOutlined, UsergroupAddOutlined, FolderAddOutlined } from "@ant-design/icons";
 import {
   BsThreeDotsVertical,
   BsMicFill,
@@ -756,6 +756,8 @@ const Chats = () => {
   const Projects = () => {
     return (
       <div className="projects-body" onScroll={handleDebouncedScrollProjects}>
+        {profile?.type === "vendor" ? 
+        null : 
         <div className="create-project-btn">
           <p
             style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
@@ -768,6 +770,8 @@ const Chats = () => {
             Create project
           </p>
         </div>
+        }
+
         {!projects || projects?.pages[0]?.length === 0 ? (
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -820,16 +824,16 @@ const Chats = () => {
         <div className="create-project-btn">
           <div style={{ display: "flex", flexDirection: "column" }}>
             {/* {profile?.type === "vendor" ? ( */}
-              <p
-                style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-                onClick={() => {
-                  setOpenPopOver(false);
-                  setAddChat(true);
-                }}
-              >
-                <PlusCircleOutlined />&nbsp;
-                Invite people
-              </p>
+            <p
+              style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+              onClick={() => {
+                setOpenPopOver(false);
+                setAddChat(true);
+              }}
+            >
+              <PlusCircleOutlined />&nbsp;
+              Invite people
+            </p>
             {/* ) : (
               null
             )} */}
@@ -1087,6 +1091,7 @@ const Chats = () => {
                       >
                         Groups
                       </p>
+                      {profile?.type === "architect" ? (
                       <div className="create-project-btn">
                         <p
                           style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
@@ -1095,7 +1100,7 @@ const Chats = () => {
                           <UsergroupAddOutlined /> &nbsp;
                           Create group
                         </p>
-                      </div>
+                      </div>) : <p style={{textAlign: "center"}}>No groups</p>}
                     </>
                   ) : null
                   }
@@ -1368,7 +1373,8 @@ const Chats = () => {
                 </>
               ) : (
                 <>
-                  <AiOutlinePlus /> Add
+                  <PlusOutlined />&nbsp;
+                  Add
                 </>
               )}
             </button>,
@@ -1390,7 +1396,8 @@ const Chats = () => {
                 </>
               ) : (
                 <>
-                  <UserAddOutlined /> Invite
+                  <UserAddOutlined />&nbsp;
+                  Invite
                 </>
               )}
             </button>,
