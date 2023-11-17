@@ -1,21 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
+
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #C7C7C7;
+  /* align-items: center; */
+  border-bottom: 1px solid #c7c7c7;
   padding-right: 2%;
   padding-left: 2%;
   padding-block: 4vh;
+  width: 96%;
 }
 
 .headerlogo {
+  margin-left: 1vw;
   display: flex;
-  gap: 2vh;
-  width: 20%;
-  cursor: pointer;
   align-items: center;
-  margin-left: 1%;
+  justify-content: center;
+  margin-top: 13px;
 }
 
 .signin {
@@ -50,14 +51,12 @@
   background-color: white;
 }
 
-/* From uiverse.io by @satyamchaudharydev */
-/* removing default style of button */
-
 .header-form button {
   border: none;
   background: none;
   color: #8b8ba7;
 }
+
 /* styling of whole input container */
 .header-form {
   --timing: 0.3s;
@@ -80,6 +79,7 @@
   border: 1px solid rgba(140, 140, 140, 0.398);
   margin-left: 10rem;
 }
+
 /* styling of Input */
 .header-input {
   font-size: 0.9rem;
@@ -90,10 +90,12 @@
   padding-block: 0.7em;
   border: none;
 }
+
 .header-input::placeholder {
   opacity: 0.9;
   font-family: "Poppins", sans-serif;
 }
+
 /* styling of animated border */
 .header-form:before {
   content: "";
@@ -125,11 +127,13 @@ input:focus {
   right: 7px;
   top: 5px;
 }
+
 .form-button svg {
   font-size: 1rem;
   color: #ffff;
   margin-bottom: 0.2rem;
 }
+
 /* styling of close button */
 /* == you can click the close button to remove text == */
 .reset {
@@ -138,15 +142,56 @@ input:focus {
   opacity: 0;
   visibility: hidden;
 }
+
 /* close button shown when typing */
 input:not(:placeholder-shown) ~ .reset {
   opacity: 1;
   visibility: visible;
 }
+
 /* sizing svg icons */
 .header-form svg {
   width: 17px;
   margin-top: 3px;
+}
+
+.search-bar {
+  /* border: 0.6px solid rgb(19, 13, 13); */
+  border: 0.1px solid #c7c7c7;
+  /* width: 800px; */
+  height: 50px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: space-between;
+  /* flex-direction: row; */
+  font-weight: lighter;
+  font-size: small;
+  width: 50vw;
+}
+
+.left {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+h8 {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin-left: 70px;
+  font-weight: 400;
+  font-size: small;
+  color: #8f8f8f;
+}
+.ico {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: larger;
+  margin-left: 18px;
 }
 
 .icons {
@@ -155,41 +200,77 @@ input:not(:placeholder-shown) ~ .reset {
   align-items: center;
   justify-content: flex-end;
 }
-.icons svg,.small-pic {
+
+.icons svg,
+.small-pic {
   font-size: 1.6rem;
   margin-inline: 1rem;
   cursor: pointer;
 }
-.small-pic{
+
+.small-pic {
   width: 33px !important;
   height: 33px !important;
 }
+.prof {
+  display: none;
+}
+.right {
+  margin-right: 2vw;
+}
+.a{
+  display: none;
+}
+.right{
+  /* background-color: red; */
+  display: flex;
+  align-items: center;
+}
 
 @media (max-width: 1100px) {
-    .header-form {
-        width: 95%;
-      } 
-      
-.icons {
-    flex-direction: column;
-    justify-content: center;
-    margin-top: 20px !important;
-    margin-left: 10px !important;
-  }
-  .icons p{
-    width: 100%;
+
+  .header {
     display: flex;
-    justify-content: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .prof {
+    display: flex;
     align-items: center;
-    cursor: pointer;
-    transition: .5s ease;
   }
-  .icons  svg{
-    
-    margin-right: 10px !important;
+  .top {
+    display: flex;
+    justify-content: space-between;
   }
-  .icons p:hover{
-    color:#d6db63;
+  .search-bar {
+    width: 100%;
+    align-items: center;
+    display: flex;
+  }
+  .ico {
+    /* margin-left: 20px; */
+    padding-left: 10px;
+    font-size: 28px;
   }
 
+  h8 {
+    padding-left: 20px;
+  }
+
+  .a{
+    display: flex;
+    height: 85%;
+    width: 85%;
+    object-fit: contain;
+    border-radius: 50%;
+    /* border: 0.1px solid rgb(199, 194, 194); */
+    align-items: center;
+    top: 20px;
+  }
+  .right{
+    display: none;
+  }
+
+
+ 
 }
