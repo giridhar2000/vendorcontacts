@@ -10,8 +10,8 @@ import { removeDoc } from "../../utils/profile_helper";
 import { toast } from "react-toastify";
 import { useQueryClient } from "react-query";
 
-const PdfCard = ({ doc, showDelete,id }) => {
-  const queryClient=useQueryClient();
+const PdfCard = ({ doc, showDelete, id }) => {
+  const queryClient = useQueryClient();
   const [modal, contextHolder] = Modal.useModal();
 
   async function deleteDoc() {
@@ -47,12 +47,34 @@ const PdfCard = ({ doc, showDelete,id }) => {
       console.log(data);
     }
   }
+  const fileName = doc?.name;
+  function truncateMiddleOfLongFileNames(fileName) {
+    let fileNameLength = fileName.length;
+
+    if (fileNameLength < 25) {
+      return fileName;
+    } else {
+      let extensionDelimiterIndex = fileName.lastIndexOf(".");
+      let nameWithoutExtension = fileName.substring(0, extensionDelimiterIndex);
+      let extension = fileName.substring(extensionDelimiterIndex);
+
+      let match = nameWithoutExtension.match(/\((\d+)\)$/);
+      let number = match ? `(${match[1]})` : "";
+
+      let truncatedName = `${nameWithoutExtension.substring(
+        0,
+        3
+      )}..${number}${extension}`;
+      return truncatedName;
+    }
+  }
+  let shortenedFileName = truncateMiddleOfLongFileNames(fileName);
   return (
     <div className="pdf-card">
       <div className="pdf-card-row1">
         <div className="pdf-card-row1">
           <div className="pdf">PDF</div>
-          <p>{doc?.name}</p>
+          <p>{shortenedFileName}</p>
         </div>
         <div className="pdf-card-row1">
           <a

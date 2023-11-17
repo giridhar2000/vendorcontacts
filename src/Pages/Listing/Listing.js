@@ -135,7 +135,7 @@ const Listing = () => {
                 <div className="listingname">
                   <p>{vendor?.display_name}</p>
                   <p>{vendor?.location}</p>
-                  <p>{vendor?.bio}</p>
+                  <p className="bio">{vendor?.bio}</p>
                 </div>
                 {/* <BsFillArrowUpRightSquareFill
                     onClick={() => navigate(`/profile/${vendor?.id}`)}

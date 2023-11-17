@@ -1,10 +1,10 @@
-hr{
+hr {
   max-width: 68.7%;
   margin-left: 15.2%;
   background-color: lightgrey;
 }
 
-.filter{
+.filter {
   max-width: 68.7%;
   height: auto;
   display: flex;
@@ -14,7 +14,7 @@ hr{
   justify-content: space-between;
 }
 
-.filter button{
+.filter button {
   background-color: #fff;
   outline: none;
   border: 0;
@@ -26,7 +26,7 @@ hr{
   font-size: medium;
 }
 
-.Dropdown-control{
+.Dropdown-control {
   background-color: #fff;
   border-radius: 30px;
   border: 2px solid #000;
@@ -41,24 +41,23 @@ hr{
   padding-block: 1vh; */
 }
 
-.Dropdown-menu{
+.Dropdown-menu {
   border-radius: 5px;
   max-width: 70%;
   margin-left: 12px;
 }
 
-.Dropdown-placeholder{
+.Dropdown-placeholder {
   margin-right: 35px;
   /* font-size: small; */
 }
 
-.Dropdown-arrow{
+.Dropdown-arrow {
   margin-top: 4px !important;
   margin-right: 5px !important;
 }
 
-
-.cardcontainer{
+.cardcontainer {
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -126,16 +125,16 @@ hr{
   background-color: aliceblue;
 } */
 
-.load{
+.load {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.load button{
+.load button {
   background-color: #fff;
   outline: none;
-  border: 1px solid #C7C7C7;
+  border: 1px solid #c7c7c7;
   border-radius: 5px;
   color: black;
   align-items: center;
@@ -167,24 +166,41 @@ hr{
   width: 100%;
 } */
 
-@media(max-width:1100px) {
-  .cardcontainer{
+@media (max-width: 1100px) {
+  .cardcontainer {
     flex-direction: column;
     padding: 3vh;
     gap: 5vh;
   }
   .listingcard {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
     width: 95%;
+    gap: 14px;
     padding: 1vh;
   }
-  .listingcard svg{
+  .listingcard img {
+    /* object-fit: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex: 1;
+    border-radius: 10px; */
+    flex: 1;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  .bio {
+    padding-top: 70px;
+  }
+  .listingcard svg {
     margin: 1px 1px 1px auto !important;
   }
-  .filter{
+  .filter {
     margin-inline: 3vh !important;
     margin-top: 2vh !important;
     max-width: none;
   }
 }
-

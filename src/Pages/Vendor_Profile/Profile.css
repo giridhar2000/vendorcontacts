@@ -3,7 +3,7 @@
   height: 400px;
   position: relative;
 }
-.center{
+.center {
   display: grid;
   place-items: center;
 }
@@ -71,14 +71,16 @@
   font-weight: 300;
   margin-block: 1vh;
 }
-.profile-name p:nth-child(4),.profile-name p:nth-child(5) {
+.profile-name p:nth-child(4),
+.profile-name p:nth-child(5) {
   font-size: 1rem;
   display: flex;
   align-items: center;
   font-weight: bolder;
   cursor: pointer;
 }
-.profile-name p:nth-child(4) button ,.profile-name p:nth-child(5) button{
+.profile-name p:nth-child(4) button,
+.profile-name p:nth-child(5) button {
   background-color: #000;
   border-radius: 30px;
   outline: none;
@@ -91,7 +93,6 @@
   padding-inline: 14px;
   padding-block: 5px;
   cursor: pointer;
-  
 }
 .profile-about {
   width: 40%;
@@ -100,7 +101,7 @@
   opacity: 0.8;
   font-size: 0.9rem;
 }
-.profile-box-container{
+.profile-box-container {
   width: 67%;
   display: flex;
   align-items: flex-start;
@@ -115,12 +116,12 @@
   align-items: center;
   border-radius: 10px;
 }
-.no-pic{
+.no-pic {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.no-pic svg{
+.no-pic svg {
   font-size: 4.5rem;
   color: #b1b1b1;
 }
@@ -141,20 +142,20 @@
   margin-top: 40px !important;
 }
 .profile-desc p {
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
-.profile-downloads{
-    width: 67%;
-    margin-top: 40px !important;
-}
-
-.pdf-cards{
-    padding-block: 20px;
-    display: flex;
-    gap: .8rem;
+.profile-downloads {
+  width: 67%;
+  margin-top: 40px !important;
 }
 
-.chat-icon{
+.pdf-cards {
+  padding-block: 20px;
+  display: flex;
+  gap: 0.8rem;
+}
+
+.chat-icon {
   width: 50px;
   height: 50px;
   display: grid;
@@ -164,7 +165,7 @@
   margin-left: 1rem;
   cursor: pointer;
 }
-.chat-icon svg{
+.chat-icon svg {
   font-size: 1.1em;
   color: #fff;
 }
@@ -181,10 +182,10 @@
     bottom: unset;
     transform: translate(-50%, -50%);
   }
-  .profile-body{
+  .profile-body {
     align-items: flex-start;
   }
-  .profile-box-container{
+  .profile-box-container {
     width: 100% !important;
   }
   .profile-info {
@@ -193,8 +194,8 @@
     flex-direction: column;
     margin-top: 50px;
   }
-  .profile-name p:nth-child(3){
-    margin-block: .5rem !important;
+  .profile-name p:nth-child(3) {
+    margin-block: 0.5rem !important;
   }
   .profile-name {
     padding: 30px;
@@ -211,30 +212,31 @@
     opacity: 0.8;
     font-size: 0.8rem;
   }
-  .profile-box{
+  .profile-box {
     width: 100% !important;
   }
   .profile-box p {
     font-size: 1rem;
     margin-left: 30px !important;
   }
-  .profile-desc{
+  .profile-desc {
     width: 90% !important;
     align-self: center;
     padding: 2rem !important;
   }
   .profile-desc p {
     font-size: 0.8rem;
+    padding-top: 14px;
   }
-  .profile-downloads{
+  .profile-downloads {
     width: 90% !important;
     align-self: center;
-   
   }
-  .pdf-cards{
+  .pdf-cards {
     flex-direction: column;
-}
-.profile-name p:nth-child(3) button ,.profile-name p:nth-child(4) button{
-  margin-left: .5rem !important;
-}
+  }
+  .profile-name p:nth-child(3) button,
+  .profile-name p:nth-child(4) button {
+    margin-left: 0.5rem !important;
+  }
 }
