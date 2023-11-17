@@ -8,7 +8,7 @@ import {
   AiOutlineSearch,
   AiOutlinePlus,
 } from "react-icons/ai";
-import { UserAddOutlined, PlusCircleOutlined, UsergroupAddOutlined } from "@ant-design/icons";
+import { UserAddOutlined, PlusCircleOutlined, UsergroupAddOutlined, FolderAddOutlined } from "@ant-design/icons";
 import {
   BsThreeDotsVertical,
   BsMicFill,
@@ -759,10 +759,13 @@ const Chats = () => {
         <div className="create-project-btn">
           <p
             style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-            onClick={() => setCreateGroup(true)}
+            onClick={() => {
+              setOpenPopOver(false);
+              setAddProject(true);
+            }}
           >
-            <UsergroupAddOutlined /> &nbsp;
-            Create group
+            <FolderAddOutlined /> &nbsp;
+            Create project
           </p>
         </div>
         {!projects || projects?.pages[0]?.length === 0 ? (
@@ -816,7 +819,7 @@ const Chats = () => {
       <div className="projects-body" onScroll={handleDebouncedScroll}>
         <div className="create-project-btn">
           <div style={{ display: "flex", flexDirection: "column" }}>
-            {profile?.type === "vendor" ? (
+            {/* {profile?.type === "vendor" ? ( */}
               <p
                 style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
                 onClick={() => {
@@ -827,17 +830,9 @@ const Chats = () => {
                 <PlusCircleOutlined />&nbsp;
                 Invite people
               </p>
-            ) : (
-              <p
-                style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-                onClick={() => {
-                  setOpenPopOver(false);
-                  setAddProject(true);
-                }}
-              >
-                Create project
-              </p>
-            )}
+            {/* ) : (
+              null
+            )} */}
           </div>
         </div>
         {!chats || chats?.pages[0]?.length === 0 ? (
@@ -1078,19 +1073,32 @@ const Chats = () => {
                   className="projects-body"
                   onScroll={handleDebouncedScrollChatsOfProject}
                 >
+
                   {groups?.length != 0 ? (
-                    <p
-                      style={{
-                        borderBottom: "1px solid #000",
-                        margin: "10px",
-                        marginTop: "20px",
-                        paddingBottom: "7px",
-                        fontSize: ".7rem",
-                      }}
-                    >
-                      Groups
-                    </p>
-                  ) : null}
+                    <>
+                      <p
+                        style={{
+                          borderBottom: "1px solid #000",
+                          margin: "10px",
+                          marginTop: "20px",
+                          paddingBottom: "7px",
+                          fontSize: ".7rem",
+                        }}
+                      >
+                        Groups
+                      </p>
+                      <div className="create-project-btn">
+                        <p
+                          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+                          onClick={() => setCreateGroup(true)}
+                        >
+                          <UsergroupAddOutlined /> &nbsp;
+                          Create group
+                        </p>
+                      </div>
+                    </>
+                  ) : null
+                  }
                   {groups
                     ?.sort(
                       (a, b) =>
