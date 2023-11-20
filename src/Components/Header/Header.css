@@ -155,24 +155,17 @@ input:not(:placeholder-shown)~.reset {
 }
 
 .search-bar {
-  /* border: 0.6px solid rgb(19, 13, 13); */
   border: 0.1px solid #c7c7c7;
-  /* width: 800px; */
   height: 50px;
   border-radius: 50px;
   display: flex;
   justify-content: space-between;
-  /* flex-direction: row; */
+  align-items: center;
   font-weight: lighter;
   font-size: small;
   width: 50vw;
-}
+} 
 
-.left {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
 
 h8 {
   margin-top: 14px;
@@ -214,11 +207,6 @@ h8 {
   display: none;
 }
 
-.right {
-  /* display: flex; */
-  /* align-items: center; */
-
-}
 
 .buttons {
   display: flex;
@@ -248,7 +236,6 @@ h8 {
 
 .x {
   display: flex;
-  /* justify-content: center; */
   align-items: center;
   gap: 3px;
 
@@ -295,6 +282,37 @@ h8 {
   justify-content: center;
 }
 
+/* */
+/* new */
+.search-bar input{
+  border: none;
+  
+}
+
+.search-bar svg{
+  font-size: 26px;
+}
+
+.left{
+  display: flex;
+  align-items: center;
+}
+.search-bar input {
+  font-size: large;
+}
+ 
+.search-bar svg{
+  padding-left: 8px;
+}
+.left input{
+  padding-left: 10px;
+}
+.righti svg {
+  display: flex;
+}
+
+
+
 @media (max-width: 1100px) {
 
   .header {
@@ -308,17 +326,16 @@ h8 {
     align-items: center;
   }
 
-  .top {
+ .top {
     display: flex;
     justify-content: space-between;
-  }
+  } 
 
   .search-bar {
-    width: 100%;
+    width: auto;
     height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+
 
   }
 
@@ -359,10 +376,7 @@ h8 {
     align-items: center;
   }
 
-  .righti svg {
-    display: flex;
-  }
 
-
-
+  
 }
+

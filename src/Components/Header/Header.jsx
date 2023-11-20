@@ -24,6 +24,7 @@ import supabase from "../../utils/supabase.config";
 import { useQuery } from "react-query";
 import { getUser } from "../../utils/profile_helper";
 import pdf from "../../Assets/TNC.pdf";
+import {SearchOutlined} from "@ant-design/icons";
 
 const Header = () => {
   const [isAuth, setIsAuth] = useContext(AuthContext);
@@ -409,15 +410,12 @@ const Header = () => {
 
         {isAuth && (
           <div className="search-bar">
-            <div className="left ">
-              <AiOutlineSearch size={50} className="ico" />
-              <div className="searchPlaceholder">
-                <h8 className="search-text">Search your favourite Vendor</h8>
-              </div>
+            <div className="left">
+            <SearchOutlined/>
+            <input type="text" placeholder="Search your Vendor...." />
             </div>
-
             <div className="righti">
-              <AiFillRightCircle size={50} />
+              <AiFillRightCircle size={50}/>
             </div>
           </div>
         )}
