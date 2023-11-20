@@ -185,14 +185,7 @@ h8 {
   color: #8f8f8f;
 }
 
-.ico {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
-  font-weight: bold;
-  font-size: larger;
-  margin-left: 18px;
-}
+
 
 .icons {
   width: 20rem;

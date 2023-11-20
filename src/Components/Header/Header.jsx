@@ -410,7 +410,7 @@ const Header = () => {
         {isAuth && (
           <div className="search-bar">
             <div className="left ">
-              <AiOutlineSearch className="ico" />
+              <AiOutlineSearch size={50} className="ico" />
               <div className="searchPlaceholder">
                 <h8 className="search-text">Search your favourite Vendor</h8>
               </div>
