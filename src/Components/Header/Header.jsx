@@ -1,17 +1,9 @@
 import React, { useState } from "react";
 import "./Header.css";
+import dummi from "../../Assets/images/dummy.png";
 import { Button, Drawer, Skeleton } from "antd";
 import Icon from "../../Assets/images/vc.svg";
-// import Search from 'src\Components\Search';
-// import image1 from "../../Assets/images/arrow_right.png"
-import image1 from "../../Assets/images/arrow_right.png";
 
-// import {
-//   AiOutlineArrowRight,
-//   AiOutlineUser,
-//   AiOutlineLogout,
-//   AiFillBell,
-// } from "react-icons/ai";
 import {
   AiOutlineArrowRight,
   AiOutlineUser,
@@ -345,12 +337,13 @@ const Header = () => {
           <br /> Team VendorContacts
         </p>
       </Modal>
+
       <div className="header">
         <div className="top">
           <div className="menu">
             <Button type="secondary" onClick={showDrawer}>
               <svg
-                height="30px"
+                height="50px"
                 id="Layer_1"
                 style={{ enableBackground: "new 0 0 32 32" }}
                 version="1.1"
@@ -367,41 +360,7 @@ const Header = () => {
               onClose={onClose}
               open={openMenu}
             >
-              {/*isAuth ? (
-              <div>
-                <form className="header-form">
-                  <button>
-                    <svg
-                      width={17}
-                      height={16}
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      role="img"
-                      aria-labelledby="search"
-                    >
-                      <path
-                        d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9"
-                        stroke="currentColor"
-                        strokeWidth="1.333"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
-                  <input
-                    className="header-input"
-                    placeholder="Search your favourite vendor"
-                    required
-                    type="text"
-                  />
-                  <button>
-                    <div className="form-button">
-                      <AiOutlineArrowRight />
-                    </div>
-                  </button>
-                </form>
-              </div>
-            ) : null*/}
+
               {!isAuth ? (
                 <div className="buttons">
                   <button className="signin" onClick={signin}>
@@ -412,19 +371,23 @@ const Header = () => {
                   </button>
                 </div>
               ) : (
-                <div className="buttons icons">
-                  <p onClick={() => navigate("/chats")}>
-                    <BsChatLeftText /> Chats
+                <div className="buttons icons unlogin">
+                  <p className="x" onClick={() => navigate("/chats")}>
+                    <BsChatLeftText />
+                    <p>Chats</p>
                   </p>
-                  <p onClick={() => navigate("/notifications")}>
-                    <BsBell /> Notifications
+
+                  <p className="y" onClick={() => navigate("/notifications")}>
+                    <BsBell />
+                    <p>Notifications</p>
                   </p>
-                  <p onClick={() => navigate("/profile")}>
+                  {/* <p onClick={() => navigate("/profile")}>
                     <AiOutlineUser /> Profile
-                  </p>
-                  <p onClick={logout}>
+                  </p> */}
+                  <p className="z" onClick={logout}>
                     <AiOutlineLogout />
-                    Logout
+                    <p>  Logout
+                    </p>
                   </p>
                 </div>
               )}
@@ -438,31 +401,27 @@ const Header = () => {
               style={{ width: "80%" }}
             />
           </div>
-          {/* <div className="prof">
-            <p onClick={() => navigate("/profile")}>
-              <AiOutlineUser /> Profile
-            </p>
-          </div> */}
-          {/* <div classNam="circle">
-          <img src={profile?.profile_pic} alt="profile" />
-          </div> */}
-          <div >
-            <img className="a" src={profile?.profile_pic} alt="profile" />
+
+          <div className="dummy" >
+            <img  className="a" src={profile?.profile_pic ||  dummi } alt="profile" />
           </div>
         </div>
 
-        <div className="search-bar">
-          <div className="left ">
-            <AiOutlineSearch className="ico" />
-            <div className="searchPlaceholder">
-              <h8 className="search-text">Search your favourite Vendor</h8>
+        {isAuth && (
+          <div className="search-bar">
+            <div className="left ">
+              <AiOutlineSearch className="ico" />
+              <div className="searchPlaceholder">
+                <h8 className="search-text">Search your favourite Vendor</h8>
+              </div>
+            </div>
+
+            <div className="righti">
+              <AiFillRightCircle size={50} />
             </div>
           </div>
+        )}
 
-          <div className="righti">
-            <AiFillRightCircle size={50} />
-          </div>
-        </div>
 
         <div className="right">
           {!isAuth ? (
@@ -477,7 +436,7 @@ const Header = () => {
           ) : (
             <div className="buttons icons">
               <BsChatLeftText onClick={() => navigate("/chats")} />
-              <BsBell onClick={() => navigate("/notifications")}/>
+              <BsBell onClick={() => navigate("/notifications")} />
               <Popover
                 placement="bottomRight"
                 content={content}
@@ -501,6 +460,7 @@ const Header = () => {
           )}
         </div>
       </div>
+
     </>
   );
 };

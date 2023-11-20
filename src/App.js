@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./contexts/authContext";
 import { QueryClient, QueryClientProvider } from "react-query";
-import Routing from "./Pages/Routing/routing";
+import Routing from "./Pages//Routing/routing";
 import { UserProvider } from "./contexts/userContext";
 
 const queryClient = new QueryClient();

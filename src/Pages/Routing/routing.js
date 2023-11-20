@@ -18,6 +18,7 @@ import Notifications from "../Notifications/Notifications";
 
 const Routing = () => {
   const [isAuth, setIsAuth] = useContext(AuthContext);
+
   const { data: profile, isLoading } = useQuery("profile", getUser, {
     enabled: isAuth !== undefined,
   });
