@@ -214,9 +214,7 @@ export default function Login() {
 
         </div>
       </div>
-      {/* <img src={abstract3} alt="abs-3" className="abs-3"/> */}
       <div className="loginContainer lg-page">
-        {/* <img src={abstract2} alt="abs-2" className="abs-2"/> */}
         {signup ? (
           <>
             <div className="loginText">
