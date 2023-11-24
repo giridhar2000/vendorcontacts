@@ -32,8 +32,11 @@ export async function getUserById(id) {
       )
       .eq("id", id)
       .single();
-    console.log(profile);
-    if (error) throw new Error(error);
+      if (error){
+        // console.log(error);
+        throw new Error(error);
+      } 
+    // console.log(profile);
     return profile;
   } catch (err) {
     // console.log(err);

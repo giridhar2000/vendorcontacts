@@ -153,12 +153,11 @@ export default function Login() {
         password: password,
       });
       if (error) {
-        setLoading(false);
-        toast(error.message, { type: "error" });
-        return;
+        throw new Error(error)
       }
+      // console.log(data?.user?.id);
       let profile = await getUserById(data?.user?.id);
-      console.log("profile", profile);
+      // console.log("profile", profile);
       if (profile.status === false) {
         localStorage.setItem("auth", JSON.stringify(data));
         toast(
@@ -168,6 +167,7 @@ export default function Login() {
           </p>,
           { type: "warning" }
         );
+
         console.log(profile?.status);
         localStorage.setItem("auth", JSON.stringify(true));
         setIsAuth(true);
