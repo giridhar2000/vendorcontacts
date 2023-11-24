@@ -290,7 +290,7 @@ h8 {
 }
 
 .search-bar svg{
-  font-size: 26px;
+  font-size: large;
 }
 
 .left{
@@ -302,13 +302,14 @@ h8 {
 }
  
 .search-bar svg{
-  padding-left: 8px;
+  padding-left: 2vh;
 }
 .left input{
-  padding-left: 10px;
+  padding-left: 2vh;
 }
 .righti svg {
   display: flex;
+  cursor: pointer;
 }
 
 

@@ -132,7 +132,7 @@
 
 .profile-desc {
   width: 67%;
-  margin-top: 40px !important;
+  margin-block: 40px !important;
 }
 .profile-desc p {
   font-size: .9rem;

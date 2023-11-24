@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, memo } from "react";
 import "./Chats.css";
 import { debounce } from "lodash";
+import $ from 'jquery';
 import {
   AiOutlinePlusCircle,
   AiOutlineUser,
@@ -503,6 +504,26 @@ const Chats = () => {
         project_id: selectedProject?.project_id,
         project_location: vendorDetails?.ProjectLoc,
       },
+    });
+    var data = {
+      service_id: "service_cpytsjm",
+      template_id: "template_tix5nmp",
+      user_id: "F3rrwZwcav-0a-BOW",
+      template_params: {
+        'name': vendorDetails?.VendorName,
+        'email': vendorDetails?.VendorEmail,
+        'projectName': selectedProject?.name
+      }
+    };
+
+    $.ajax('https://api.emailjs.com/api/v1.0/email/send', {
+      type: 'POST',
+      data: JSON.stringify(data),
+      contentType: 'application/json'
+    }).done(function () {
+      alert('Your mail is sent!');
+    }).fail(function (error) {
+      alert('Oops... ' + JSON.stringify(error));
     });
   };
 
