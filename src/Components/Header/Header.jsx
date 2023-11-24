@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import "./Header.css";
+import dummi from "../../Assets/images/dummy.png";
 import { Button, Drawer, Skeleton } from "antd";
 import Icon from "../../Assets/images/vc.svg";
+
 import {
   AiOutlineArrowRight,
   AiOutlineUser,
   AiOutlineLogout,
   AiFillBell,
+  AiOutlineSearch,
+  AiFillRightCircle,
 } from "react-icons/ai";
 import { BsChatLeftText, BsBell } from "react-icons/bs";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -20,6 +24,7 @@ import supabase from "../../utils/supabase.config";
 import { useQuery } from "react-query";
 import { getUser } from "../../utils/profile_helper";
 import pdf from "../../Assets/TNC.pdf";
+import {SearchOutlined} from "@ant-design/icons";
 
 const Header = () => {
   const [isAuth, setIsAuth] = useContext(AuthContext);
@@ -46,23 +51,27 @@ const Header = () => {
   };
 
   async function invite() {
-    
     if (email && checkbox) {
       try {
-        const { count, error } = await supabase.from("invite_email").select("email_id", { count: "exact", head: true }).eq('email_id',email);
+        const { count, error } = await supabase
+          .from("invite_email")
+          .select("email_id", { count: "exact", head: true })
+          .eq("email_id", email);
         if (error) throw new Error(error);
-        if(count>0){
+        if (count > 0) {
           message.warning("Email id already in invite list");
           return;
         }
-        const { data, error:error2 } = await supabase.from("invite_email").insert([
-          {
-            email_id: email,
-            type: userType,
-          },
-        ]);
-        if(error2) throw new Error(error2);
-        
+        const { data, error: error2 } = await supabase
+          .from("invite_email")
+          .insert([
+            {
+              email_id: email,
+              type: userType,
+            },
+          ]);
+        if (error2) throw new Error(error2);
+
         setIsSent(true);
         setEmail("");
         setUserType(null);
@@ -228,7 +237,9 @@ const Header = () => {
                   </div>
                   <br />
                 </form>
-                <button className="submit-btn" onClick={invite}>Request invite</button>
+                <button className="submit-btn" onClick={invite}>
+                  Request invite
+                </button>
               </div>
             </div>
           </div>
@@ -327,51 +338,89 @@ const Header = () => {
           <br /> Team VendorContacts
         </p>
       </Modal>
+
       <div className="header">
-        <div className="headerlogo" onClick={() => navigate("/")}>
-          <img
-            src={Icon}
-            alt=""
-            className="logoIcon"
-            style={{ width: "100%" }}
-          />
+        <div className="top">
+          <div className="menu">
+            <Button type="secondary" onClick={showDrawer}>
+              <svg
+                height="50px"
+                id="Layer_1"
+                style={{ enableBackground: "new 0 0 32 32" }}
+                version="1.1"
+                viewBox="0 0 32 32"
+                width="25px"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2 s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2 S29.104,22,28,22z" />
+              </svg>
+            </Button>
+            <Drawer
+              title="Vendor Connect"
+              placement="right"
+              onClose={onClose}
+              open={openMenu}
+            >
+
+              {!isAuth ? (
+                <div className="buttons">
+                  <button className="signin" onClick={signin}>
+                    Sign in
+                  </button>
+                  <button className="request" onClick={() => setOpen(true)}>
+                    Request Invite
+                  </button>
+                </div>
+              ) : (
+                <div className="buttons icons unlogin">
+                  <p className="x" onClick={() => navigate("/chats")}>
+                    <BsChatLeftText />
+                    <p>Chats</p>
+                  </p>
+
+                  <p className="y" onClick={() => navigate("/notifications")}>
+                    <BsBell />
+                    <p>Notifications</p>
+                  </p>
+                  {/* <p onClick={() => navigate("/profile")}>
+                    <AiOutlineUser /> Profile
+                  </p> */}
+                  <p className="z" onClick={logout}>
+                    <AiOutlineLogout />
+                    <p>  Logout
+                    </p>
+                  </p>
+                </div>
+              )}
+            </Drawer>
+          </div>
+          <div className="headerlogo" onClick={() => navigate("/")}>
+            <img
+              src={Icon}
+              alt=""
+              className="logoIcon"
+              style={{ width: "80%" }}
+            />
+          </div>
+
+          <div className="dummy" >
+            <img  className="a" src={profile?.profile_pic ||  dummi } alt="profile" />
+          </div>
         </div>
 
-        {/* {isAuth ? (
-        <div className="right">
-          <form className="header-form">
-            <button>
-              <svg
-                width={17}
-                height={16}
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                role="img"
-                aria-labelledby="search"
-              >
-                <path
-                  d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9"
-                  stroke="currentColor"
-                  strokeWidth="1.333"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-            <input
-              className="header-input"
-              placeholder="Search your favourite vendor"
-              required
-              type="text"
-            />
-            <button>
-              <div className="form-button">
-                <AiOutlineArrowRight />
-              </div>
-            </button>
-          </form>
-        </div>
-      ) : null} */}
+        {isAuth && (
+          <div className="search-bar">
+            <div className="left" style={{width: "100%"}}>
+            <SearchOutlined/>
+            <input type="text" placeholder="Search your favourite vendor" style={{width:"100%"}}/>
+            </div>
+            <div className="righti">
+              <AiFillRightCircle size={50}/>
+            </div>
+          </div>
+        )}
+
+
         <div className="right">
           {!isAuth ? (
             <div className="buttons">
@@ -385,14 +434,7 @@ const Header = () => {
           ) : (
             <div className="buttons icons">
               <BsChatLeftText onClick={() => navigate("/chats")} />
-              {/* <BsBell onClick={() => navigate("/notifications")}/> */}
-              <Popover
-                placement="bottomRight"
-                content={notificationcontent}
-                trigger="click"
-              >
-                <BsBell />
-              </Popover> 
+              <BsBell onClick={() => navigate("/notifications")} />
               <Popover
                 placement="bottomRight"
                 content={content}
@@ -415,94 +457,8 @@ const Header = () => {
             </div>
           )}
         </div>
-
-
-        <div className="menu">
-          <Button type="secondary" onClick={showDrawer}>
-            <svg
-              height="32px"
-              id="Layer_1"
-              style={{ enableBackground: "new 0 0 32 32" }}
-              version="1.1"
-              viewBox="0 0 32 32"
-              width="25px"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2 s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2 S29.104,22,28,22z" />
-            </svg>
-          </Button>
-          <Drawer
-            title="Vendor Connect"
-            placement="right"
-            onClose={onClose}
-            open={openMenu}
-          >
-            {
-              /*isAuth ? (
-              <div>
-                <form className="header-form">
-                  <button>
-                    <svg
-                      width={17}
-                      height={16}
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      role="img"
-                      aria-labelledby="search"
-                    >
-                      <path
-                        d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9"
-                        stroke="currentColor"
-                        strokeWidth="1.333"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
-                  <input
-                    className="header-input"
-                    placeholder="Search your favourite vendor"
-                    required
-                    type="text"
-                  />
-                  <button>
-                    <div className="form-button">
-                      <AiOutlineArrowRight />
-                    </div>
-                  </button>
-                </form>
-              </div>
-            ) : null*/
-          
-          }
-            {!isAuth ? (
-              <div className="buttons">
-                <button className="signin" onClick={signin}>
-                  Sign in
-                </button>
-                <button className="request" onClick={() => setOpen(true)}>Request Invite</button>
-              </div>
-            ) : (
-              <div className="buttons icons">
-                <p onClick={() => navigate("/chats")}>
-                  <BsChatLeftText /> Chats
-                </p>
-                <p onClick={() => navigate("/notifications")}>
-                  <BsBell /> Notifications
-                </p>
-                <p onClick={() => navigate("/profile")}>
-                  <AiOutlineUser /> Profile
-                </p>
-                <p onClick={logout}>
-                  <AiOutlineLogout />
-                  Logout
-                </p>
-              </div>
-            )}
-          </Drawer>
-        </div>
-
       </div>
+
     </>
   );
 };

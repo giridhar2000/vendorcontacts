@@ -363,8 +363,8 @@ const Edit = () => {
               <p>{url ? "Uploaded" : "Upload your logo here"}</p>
             </div>
             <button className="editbtn" onClick={updateProfile}>
-                <ImPencil />
-                &nbsp; Edit Profile
+              <ImPencil />
+              &nbsp; Save Profile
             </button>
             <div className="editnames">
               <div className="editnameip">
@@ -389,95 +389,96 @@ const Edit = () => {
                   onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
-              <button className="editbtn" onClick={updateProfile}>
-                <ImPencil />
-                &nbsp; Save changes
-              </button>
             </div>
-            <div className="editbio">Business Email</div>
-            <div className="editemailip">
-              <input
-                placeholder="Buisness Email"
-                value={
-                  profile?.email && email === null ? profile?.email : email
-                }
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="editbio">Company</div>
-            <div className="editemailip">
-              <input
-                placeholder="Company"
-                value={
-                  profile?.company && company === null
-                    ? profile?.company
-                    : email
-                }
-                onChange={(e) => setCompany(e.target.value)}
-              />
-            </div>
-            <div className="editemailip mt-1">
-              {/*
-              <input
-              placeholder="Location"
-              value={
-                profile?.location && location === null
-                  ? profile?.location
-                  : location
-              }
-              onChange={(e) => setLocation(e.target.value)}
-            />
 
-              */}
-              <Select
-                showSearch
-                style={{
-                  width: "100%",
-                }}
-                size="large"
-                notFoundContent={!loading ?<div className={{padding:'4rem',display:'grid',placeItems:'center'}}><p>No data</p></div>:<Spin/>}
-                options={data
-                  ?.filter((d) => {
-                    return d?.types?.includes("locality");
-                  })
-                  ?.map((suggestion) => {
-                    const {
-                      place_id,
-                      structured_formatting: { main_text, secondary_text },
-                    } = suggestion;
+            <div className="email edit-ip">
+              <div className="editbio">Business Email</div>
+              <div className="editemailip">
+                <input
+                  placeholder="Buisness Email"
+                  value={
+                    profile?.email && email === null ? profile?.email : email
+                  }
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+            </div>
 
-                    return {
-                      label: main_text,
-                      value: main_text + ", " + secondary_text,
-                    };
-                  })}
-                onInputKeyDown={handlePlacesWorkedInChange2}
-                placeholder={
-                  profile?.location && location === null
-                    ? profile?.location
-                    : "Location"
-                }
-                onChange={handleAddressChange}
-              />
+            <div className="company edit-ip">
+              <div className="editbio">Company</div>
+              <div className="editemailip">
+                <input
+                  placeholder="Company"
+                  value={
+                    profile?.company && company === null
+                      ? profile?.company
+                      : email
+                  }
+                  onChange={(e) => setCompany(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="editbio">Profile Quote</div>
-            <div className="editemailip">
-              <input
-                placeholder="Profile Quote"
-                value={
-                  profile?.quote && quote === null ? profile?.quote : quote
-                }
-                onChange={(e) => setQuote(e.target.value)}
-              />
+
+            <div className="location edit-ip">
+              <div className="editbio">Location</div>
+              <div className="editemailip mt-1">
+
+                <Select
+                  showSearch
+                  style={{
+                    width: "100%",
+                  }}
+                  size="large"
+                  notFoundContent={!loading ? <div className={{ padding: '4rem', display: 'grid', placeItems: 'center' }}><p>No data</p></div> : <Spin />}
+                  options={data
+                    ?.filter((d) => {
+                      return d?.types?.includes("locality");
+                    })
+                    ?.map((suggestion) => {
+                      const {
+                        place_id,
+                        structured_formatting: { main_text, secondary_text },
+                      } = suggestion;
+
+                      return {
+                        label: main_text,
+                        value: main_text + ", " + secondary_text,
+                      };
+                    })}
+                  onInputKeyDown={handlePlacesWorkedInChange2}
+                  placeholder={
+                    profile?.location && location === null
+                      ? profile?.location
+                      : "Location"
+                  }
+                  onChange={handleAddressChange}
+                />
+              </div>
             </div>
-            <div className="editbio">Bio</div>
-            <textarea
-              class="textarea"
-              id="txtInput"
-              maxLength="500"
-              value={profile?.bio && bio === null ? profile?.bio : bio}
-              onChange={(e) => setBio(e.target.value)}
-            ></textarea>
+
+            <div className="pq edit-ip">
+              <div className="editbio">Profile Quote</div>
+              <div className="editemailip">
+                <input
+                  placeholder="Profile Quote"
+                  value={
+                    profile?.quote && quote === null ? profile?.quote : quote
+                  }
+                  onChange={(e) => setQuote(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="bio edit-ip">
+              <div className="editbio">Bio</div>
+              <textarea
+                class="textarea"
+                id="txtInput"
+                maxLength="500"
+                value={profile?.bio && bio === null ? profile?.bio : bio}
+                onChange={(e) => setBio(e.target.value)}
+              ></textarea>
+            </div>
             {profile?.type === "architect" ? null : (
               <>
                 <div className="editbio">Attachment</div>
@@ -495,6 +496,7 @@ const Edit = () => {
                 </div>
               </>
             )}
+
             <script
               src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"
               type="text/javascript"

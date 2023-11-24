@@ -704,8 +704,8 @@ hr {
     }
 
     .header {
-        margin-left: 4vh !important;
-        padding-left: 0;
+        /* margin-left: 25.320px !important; */
+        padding-left: 25.320PX;
     }
 
     .mt-32 {

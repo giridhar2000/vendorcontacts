@@ -32,7 +32,7 @@
   font-weight: 300;
 }
 
-.editemailip{
+.editemailip {
   display: flex;
   border-bottom: 1px solid #000;
   width: 100%;
@@ -58,6 +58,7 @@
 .editnames {
   display: flex;
   justify-content: space-between;
+  padding-block: 3vh 2vh;
 }
 
 .editnameip {
@@ -106,20 +107,21 @@
   right: 24%;
   margin-top: 3%;
   font-size: .7rem;
- text-align: center;
+  text-align: center;
 }
 
 .editbio {
   margin-top: 5vh;
   color: gray;
-  font-size: .6rem;
+  font-size: small;
+  font-weight: 600;
 }
 
-.custom-file-upload{
+.custom-file-upload {
   cursor: pointer;
 }
 
-input#docpicker{
+input#docpicker {
   cursor: pointer;
 }
 
@@ -130,7 +132,7 @@ textarea#txtInput.textarea {
   border: 0;
   border-radius: 20px;
   margin: 2% 0 0 0;
-  width: 400px !important;
+  width: 100%;
   height: 150px !important;
   max-height: 250px;
   padding: .6rem 1rem;
@@ -175,6 +177,7 @@ textarea#txtInput.textarea {
   background-color: rgb(218, 218, 218);
   overflow: hidden;
   cursor: pointer;
+  border: 1px solid gray;
 }
 
 .profile_pic_label img {
@@ -196,25 +199,30 @@ input[type=file]::file-selector-button {
 input[type="file" i] {
   font-family: "Poppins";
 }
-.ant-select-selector{
+
+.ant-select-selector {
   border: 0 !important;
   height: 30px !important;
   padding: 0 !important;
 }
-.ant-select-selection-placeholder{
-font-size: 14px;
+
+.ant-select-selection-placeholder {
+  font-size: 14px;
 }
+
 .ant-select-focused:where(.css-dev-only-do-not-override-17a39f8).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
-  box-shadow:none !important;
+  box-shadow: none !important;
   outline: 0;
 }
-.mt-1{
+
+.mt-1 {
   margin-top: 1vh !important;
 }
+
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
-.editText{
-  width: 35%;
-}
+  .editText {
+    width: 35%;
+  }
 
   .edit .editimg {
     width: 25%;
@@ -222,17 +230,25 @@ font-size: 14px;
 
   .editContainer {
     margin-top: -1vh;
-  } 
+  }
 
-  .editpassip, .editemailip, .editnameip {
+  .editpassip,
+  .editemailip,
+  .editnameip {
     padding-bottom: 1vh;
   }
 
 }
 
 @media(max-width:1100px) {
-  .editText h1{
+  .editText h1 {
     margin-bottom: 2vh !important;
+  }
+
+  .edit-ip {
+    display: flex;
+    flex-direction: column;
+    padding-block: 3vh;
   }
 
   .edit {
@@ -250,14 +266,14 @@ font-size: 14px;
   .editText {
     margin-block: 2vh !important;
   }
+
   .editform {
     padding-left: 0%;
   }
+
   .editpassip,
   .editemailip,
   .editnameip {
-    width: auto;
-    margin-top: 2vh !important;
     padding: 0vh;
     padding-block: 1vh;
   }
@@ -275,9 +291,11 @@ font-size: 14px;
   .p {
     margin-block: 2vh !important;
   }
-}
 
-@media (max-width: 1100px) {
+  .mt-1 {
+    margin-top: 0 !important;
+  }
+
   .cover-pic {
     height: 150px;
   }

@@ -28,7 +28,7 @@ const PdfCard = ({ doc, showDelete,id }) => {
     modal.confirm({
       title: "Delete the document",
       icon: <ExclamationCircleOutlined />,
-      content: "Are you sure to delete this documnet?",
+      content: "Are you sure to delete this document?",
       okText: "Yes",
       cancelText: "No",
       onOk: deleteDoc,

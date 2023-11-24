@@ -1,11 +1,9 @@
-
-
-.loginText h1{
+.loginText h1 {
     font-size: 37.152px;
     font-weight: 400;
 }
 
-.loginText span{
+.loginText span {
     color: #8F8F8F;
 }
 
@@ -51,7 +49,7 @@
     width: 40vh;
     cursor: pointer;
     margin-top: 5vh;
-   
+
 }
 
 .loginContainer.lg-page {
@@ -69,7 +67,9 @@
 
 .login .loginimg {
     position: absolute;
-    bottom: 0;
+    bottom: 0px;
+    /* height: 65vh;
+    bottom: 0px; */
     left: 0;
 }
 
@@ -172,25 +172,29 @@
     width: 25%;
 }
 
-.abs-2{
+.abs-2 {
     position: absolute;
     left: -5%;
 }
 
-.abs-3{
+.abs-3 {
     position: absolute;
     top: -18%;
     right: 0;
     pointer-events: none;
 }
 
-.abs-1{
+.abs-1 {
     position: fixed;
     bottom: -25%;
     right: 15%;
     transform: scaleX(-1);
     pointer-events: none;
 }
+
+
+
+
 
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
     .navbarheader {
@@ -211,8 +215,13 @@
 
 }
 
+
+
 @media(max-width:1100px) {
-    .abs-1, .abs-2, .abs-3{
+
+    .abs-1,
+    .abs-2,
+    .abs-3 {
         display: none;
     }
 
@@ -250,12 +259,15 @@
         margin-top: 1vh !important;
     }
 
+
     .login .loginimg {
         display: block;
-        bottom: 0;
+        bottom: 0px;
         left: 0;
-        width: 55%;
+        width: 60%;
+
     }
+
 
     .loginContainer.lg-page {
         flex-direction: column;
@@ -295,11 +307,75 @@
     .nextbtn {
         position: relative;
         margin-top: 1vh !important;
-        z-index: 111 ;
+        z-index: 111;
     }
 
     .p {
         margin-block: 2vh !important;
         text-align: center;
     }
+}
+
+
+@media screen and (min-device-width: 0px) and (max-device-width: 610px) {
+    .navbarheader {
+        margin: 1rem 3rem auto !important;
+        margin-left: 100px;
+        display: flex;
+        gap: 40px;
+    }
+
+    .backbtn p {
+        margin: 0;
+        padding: 0.5vh;
+        text-align: center;
+        font-size: larger;
+        margin: 3px;
+    }
+
+    .select {
+        display: flex;
+        justify-content: center;
+        font-size: larger;
+        font-weight: 500;
+    }
+
+    .buttons-select {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .login {
+        /* border: 3px solid pink; */
+        position: relative;
+    }
+
+
+    .loginimg {
+        /* position: absolute; */
+        /* top: 560px; */
+        /* bottom: 0; */
+    }
+
+
+
+}
+
+
+@media screen and (min-device-width: 610px) and (max-device-width: 1100px) {
+
+    .loginimg {
+        top: 580px;
+    }
+}
+
+
+@media screen and (min-device-width: 0px) and (max-device-width: 380px) {
+    .loginimg {
+        position: absolute;
+        top: 520px;
+        bottom: 0;
+    }
+
 }

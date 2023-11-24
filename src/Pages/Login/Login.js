@@ -340,7 +340,9 @@ export default function Login() {
                 </span>
               </p>
             </div>
+            
             <img src={loginbg} alt="login" className="loginimg" id="loginimg" />
+            
 
           </>
         ) : (
@@ -596,7 +598,9 @@ export default function Login() {
                     </span>
                   </p>
                 </div>
+                <div className="y-img">
                 <img src={loginbg} alt="login" className="loginimg singup-img" />
+                </div>
               </>
             ) : (
               <div className="signup">
@@ -647,12 +651,7 @@ export default function Login() {
                         marginTop: "2vh",
                       }}
                     />
-                    {/* <button
-                      className="loginbtn nextbtn"
-                      
-                    >
-                      Next
-                    </button> */}
+                 
                   </div>
                 </div>
                 <img src={loginbg} alt="login" className="loginimg" />
@@ -661,7 +660,6 @@ export default function Login() {
           </>
         )}
       </div>
-      {/* <img src={abstract1} alt="abs-1" className="abs-1"/> */}
     </div>
   );
 }

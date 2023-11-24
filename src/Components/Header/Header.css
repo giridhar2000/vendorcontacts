@@ -1,20 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
+
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #000;
-  margin-left: 5%;
+  /* align-items: center; */
+  border-bottom: 1px solid #c7c7c7;
   padding-right: 2%;
-  padding-block: 3vh;
+  padding-left: 2%;
+  padding-block: 4vh;
+  width: 96%;
 }
 
 .headerlogo {
   display: flex;
-  gap: 2vh;
-  width: 20%;
-  cursor: pointer;
   align-items: center;
+  justify-content: center;
+  /* margin-top: 13px; */
 }
 
 .signin {
@@ -49,14 +50,12 @@
   background-color: white;
 }
 
-/* From uiverse.io by @satyamchaudharydev */
-/* removing default style of button */
-
 .header-form button {
   border: none;
   background: none;
   color: #8b8ba7;
 }
+
 /* styling of whole input container */
 .header-form {
   --timing: 0.3s;
@@ -79,6 +78,7 @@
   border: 1px solid rgba(140, 140, 140, 0.398);
   margin-left: 10rem;
 }
+
 /* styling of Input */
 .header-input {
   font-size: 0.9rem;
@@ -89,10 +89,12 @@
   padding-block: 0.7em;
   border: none;
 }
+
 .header-input::placeholder {
   opacity: 0.9;
   font-family: "Poppins", sans-serif;
 }
+
 /* styling of animated border */
 .header-form:before {
   content: "";
@@ -124,11 +126,13 @@ input:focus {
   right: 7px;
   top: 5px;
 }
+
 .form-button svg {
   font-size: 1rem;
   color: #ffff;
   margin-bottom: 0.2rem;
 }
+
 /* styling of close button */
 /* == you can click the close button to remove text == */
 .reset {
@@ -137,16 +141,44 @@ input:focus {
   opacity: 0;
   visibility: hidden;
 }
+
 /* close button shown when typing */
-input:not(:placeholder-shown) ~ .reset {
+input:not(:placeholder-shown)~.reset {
   opacity: 1;
   visibility: visible;
 }
+
 /* sizing svg icons */
 .header-form svg {
   width: 17px;
   margin-top: 3px;
 }
+
+.search-bar {
+  border: 0.1px solid #c7c7c7;
+  height: 50px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: lighter;
+  font-size: small;
+  width: 50vw;
+} 
+
+
+h8 {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin-left: 70px;
+  font-weight: 400;
+  font-size: small;
+  color: #8f8f8f;
+}
+
+
 
 .icons {
   width: 20rem;
@@ -154,41 +186,198 @@ input:not(:placeholder-shown) ~ .reset {
   align-items: center;
   justify-content: flex-end;
 }
-.icons svg,.small-pic {
+
+.icons svg,
+.small-pic {
   font-size: 1.6rem;
   margin-inline: 1rem;
   cursor: pointer;
 }
-.small-pic{
+
+.small-pic {
   width: 33px !important;
   height: 33px !important;
 }
 
-@media (max-width: 1100px) {
-    .header-form {
-        width: 95%;
-      } 
-      
-.icons {
-    flex-direction: column;
-    justify-content: center;
-    margin-top: 20px !important;
-    margin-left: 10px !important;
-  }
-  .icons p{
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    cursor: pointer;
-    transition: .5s ease;
-  }
-  .icons  svg{
-    
-    margin-right: 10px !important;
-  }
-  .icons p:hover{
-    color:#d6db63;
-  }
+.prof {
+  display: none;
+}
+
+.a {
+  display: none;
+}
+
+
+.buttons {
+  display: flex;
+  align-items: center;
+  font-size: large;
+  justify-content: space-between;
 
 }
+
+.buttons svg {
+  font-size: 4%;
+}
+
+
+
+.buttons.icons p:last-child {
+  margin-right: 0;
+}
+
+.buttons.icons p:hover {
+  color: #000;
+}
+
+.buttons.icons svg {
+  font-size: 18px;
+}
+
+.x {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+
+}
+
+.y {
+  display: flex;
+  align-items: center;
+}
+
+.z {
+  display: flex;
+  align-items: center;
+}
+
+.unlogin{
+  display: flex;
+  justify-content: space-between;
+}
+
+.dummy {
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+
+}
+
+.top {
+  display: flex;
+  align-items: center;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.buttons{
+  display: flex;
+  justify-content: flex-end;
+  justify-content: center;
+}
+
+/* */
+/* new */
+.search-bar input{
+  border: none;
+  
+}
+
+.search-bar svg{
+  font-size: large;
+}
+
+.left{
+  display: flex;
+  align-items: center;
+}
+.search-bar input {
+  font-size: large;
+}
+ 
+.search-bar svg{
+  padding-left: 2vh;
+}
+.left input{
+  padding-left: 2vh;
+}
+.righti svg {
+  display: flex;
+  cursor: pointer;
+}
+
+
+
+@media (max-width: 1100px) {
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .prof {
+    display: flex;
+    align-items: center;
+  }
+
+ .top {
+    display: flex;
+    justify-content: space-between;
+  } 
+
+  .search-bar {
+    width: auto;
+    height: 30px;
+
+
+
+  }
+
+  .search-bar svg {
+    height: 30px;
+    padding-left: 3px;
+    width: auto;
+  }
+
+  .ico {
+    /* margin-left: 20px; */
+    padding-left: 10px;
+    font-size: 28px;
+  }
+
+  h8 {
+    padding-left: 20px;
+  }
+
+  .a {
+    display: flex;
+    height: 85%;
+    width: 85%;
+    object-fit: contain;
+    border-radius: 50%;
+    border: 0.1px solid rgb(199, 194, 194);
+    align-items: center;
+    top: 20px;
+  }
+
+  .right {
+    display: none;
+  }
+
+  .searchPlaceholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  
+}
+

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Home.css";
 import IAInteriors from "../../Assets/images/ia_interior_architects.svg";
 import Gensler from "../../Assets/images/Gensler_logo.svg";
@@ -29,16 +29,24 @@ import abstract1 from "../../Assets/images/abstract1.svg";
 import abstract2 from "../../Assets/images/abstract2.svg";
 import abstract3 from "../../Assets/images/abstract3.svg";
 
+import AuthContext from "../../contexts/authContext";
+
 export default function Home() {
+
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [checkbox, setCheckbox] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [userType, setUserType] = useState(null);
 
+  const [isAuth, setIsAuth] = useContext(AuthContext);
+
+
   useEffect(() => {
     animator();
   });
+
+ 
 
   async function invite() {
     
@@ -121,7 +129,10 @@ export default function Home() {
 
   return (
     <>
-      <Header />
+    
+      <Header  />
+
+
       {open && !userType && (
         <div id="myModal" className="modal">
           <div className="modal-content">

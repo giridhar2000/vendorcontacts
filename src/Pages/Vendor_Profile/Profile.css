@@ -132,7 +132,7 @@
 
 .profile-desc {
   width: 67%;
-  margin-top: 40px !important;
+  margin-block: 40px !important;
 }
 .profile-desc p {
   font-size: .9rem;
@@ -219,6 +219,7 @@
   }
   .profile-desc p {
     font-size: 0.8rem;
+    padding-top: 16px;
   }
   .profile-downloads{
     width: 90% !important;
