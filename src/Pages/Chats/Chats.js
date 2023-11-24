@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useRef, memo } from "react";
+import React, { useContext, useEffect, useRef, memo, useMemo } from "react";
 import "./Chats.css";
 import { debounce } from "lodash";
-import $ from 'jquery';
+import $ from "jquery";
 import {
   AiOutlinePlusCircle,
   AiOutlineUser,
@@ -9,7 +9,14 @@ import {
   AiOutlineSearch,
   AiOutlinePlus,
 } from "react-icons/ai";
-import { UserAddOutlined, PlusOutlined, PlusCircleOutlined, RightOutlined, UsergroupAddOutlined, FolderAddOutlined } from "@ant-design/icons";
+import {
+  UserAddOutlined,
+  PlusOutlined,
+  PlusCircleOutlined,
+  RightOutlined,
+  UsergroupAddOutlined,
+  FolderAddOutlined,
+} from "@ant-design/icons";
 import {
   BsThreeDotsVertical,
   BsMicFill,
@@ -493,6 +500,14 @@ const Chats = () => {
       toast("Please fill all the details", { type: "error" });
       return;
     }
+    if (
+      !/^([\w.-]+)@(\[(\d{1,3}\.){3}|(?!hotmail|gmail|yahoo)(([a-zA-Z\d-]+\.)+))([a-zA-Z]{2,4}|\d{1,3})(\]?)$/.test(
+        vendorDetails?.VendorEmail
+      )
+    ) {
+      toast("Please use your company mail", { type: "error" });
+      return;
+    }
     send_project_request_mutation.mutateAsync({
       reciver: {
         display_name: vendorDetails?.VendorName,
@@ -510,21 +525,23 @@ const Chats = () => {
       template_id: "template_tix5nmp",
       user_id: "F3rrwZwcav-0a-BOW",
       template_params: {
-        'name': vendorDetails?.VendorName,
-        'email': vendorDetails?.VendorEmail,
-        'projectName': selectedProject?.name
-      }
+        name: vendorDetails?.VendorName,
+        email: vendorDetails?.VendorEmail,
+        projectName: selectedProject?.name,
+      },
     };
 
-    $.ajax('https://api.emailjs.com/api/v1.0/email/send', {
-      type: 'POST',
+    $.ajax("https://api.emailjs.com/api/v1.0/email/send", {
+      type: "POST",
       data: JSON.stringify(data),
-      contentType: 'application/json'
-    }).done(function () {
-      alert('Your mail is sent!');
-    }).fail(function (error) {
-      alert('Oops... ' + JSON.stringify(error));
-    });
+      contentType: "application/json",
+    })
+      .done(function () {
+        alert("Your mail is sent!");
+      })
+      .fail(function (error) {
+        alert("Oops... " + JSON.stringify(error));
+      });
   };
 
   // Fetching chats and messages info in real time
@@ -774,24 +791,27 @@ const Chats = () => {
     2000
   );
 
-  const Projects = () => {
+  const Projects = memo(() => {
     return (
       <div className="projects-body" onScroll={handleDebouncedScrollProjects}>
-        {profile?.type === "vendor" ? 
-        null : 
-        <div className="create-project-btn">
-          <p
-            style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-            onClick={() => {
-              setOpenPopOver(false);
-              setAddProject(true);
-            }}
-          >
-            <FolderAddOutlined />&nbsp;
-            Create project
-          </p>
-        </div>
-        }
+        {profile?.type === "vendor" ? null : (
+          <div className="create-project-btn">
+            <p
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setOpenPopOver(false);
+                setAddProject(true);
+              }}
+            >
+              <FolderAddOutlined />
+              &nbsp; Create project
+            </p>
+          </div>
+        )}
 
         {!projects || projects?.pages[0]?.length === 0 ? (
           <Empty
@@ -837,23 +857,27 @@ const Chats = () => {
         ) : null}
       </div>
     );
-  };
+  }, [profile?.id, projects, isFetchingNextPageProjects]);
 
-  const People = () => {
+  const People = memo(() => {
     return (
       <div className="projects-body" onScroll={handleDebouncedScroll}>
         <div className="create-project-btn">
           <div style={{ display: "flex", flexDirection: "column" }}>
             {/* {profile?.type === "vendor" ? ( */}
             <p
-              style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
               onClick={() => {
                 setOpenPopOver(false);
                 setAddChat(true);
               }}
             >
-              <PlusCircleOutlined />&nbsp;
-              Invite people
+              <PlusCircleOutlined />
+              &nbsp; Invite people
             </p>
             {/* ) : (
               null
@@ -904,20 +928,22 @@ const Chats = () => {
         ) : null}
       </div>
     );
-  };
+  });
 
-  const items = [
-    {
-      key: "1",
-      label: "People",
-      children: <People />,
-    },
-    {
-      key: "2",
-      label: "Projects",
-      children: <Projects />,
-    },
-  ];
+  const items = useMemo(() => {
+    return [
+      {
+        key: "1",
+        label: "People",
+        children: <People />,
+      },
+      {
+        key: "2",
+        label: "Projects",
+        children: <Projects />,
+      },
+    ];
+  }, [projects, chats]);
 
   const tabStyle = {
     padding: "0 1vh",
@@ -950,7 +976,6 @@ const Chats = () => {
             />{" "} */}
               Messages
             </p>
-
 
             <div className="messages-box messages-box-sc">
               <div className="projects projects-sc">
@@ -1098,32 +1123,37 @@ const Chats = () => {
                   className="projects-body"
                   onScroll={handleDebouncedScrollChatsOfProject}
                 >
-
                   {/* {groups?.length === 0 ? ( */}
-                    <>
-                      <p
-                        style={{
-                          borderBottom: "1px solid #000",
-                          margin: "10px",
-                          marginTop: "20px",
-                          paddingBottom: "7px",
-                          fontSize: ".7rem",
-                        }}
-                      >
-                        Groups
-                      </p>
-                      {profile?.type === "architect" ? (
+                  <>
+                    <p
+                      style={{
+                        borderBottom: "1px solid #000",
+                        margin: "10px",
+                        marginTop: "20px",
+                        paddingBottom: "7px",
+                        fontSize: ".7rem",
+                      }}
+                    >
+                      Groups
+                    </p>
+                    {profile?.type === "architect" ? (
                       <div className="create-project-btn">
                         <p
-                          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            cursor: "pointer",
+                          }}
                           onClick={() => setCreateGroup(true)}
                         >
-                          <UsergroupAddOutlined /> &nbsp;
-                          Create group
+                          <UsergroupAddOutlined /> &nbsp; Create group
                         </p>
-                      </div>) : <p style={{textAlign: "center"}}>No groups</p>}
-                    </>
-                  
+                      </div>
+                    ) : (
+                      <p style={{ textAlign: "center" }}>No groups</p>
+                    )}
+                  </>
+
                   {groups
                     ?.sort(
                       (a, b) =>
@@ -1393,8 +1423,8 @@ const Chats = () => {
                 </>
               ) : (
                 <>
-                  <PlusOutlined />&nbsp;
-                  Add
+                  <PlusOutlined />
+                  &nbsp; Add
                 </>
               )}
             </button>,
@@ -1416,8 +1446,8 @@ const Chats = () => {
                 </>
               ) : (
                 <>
-                  <UserAddOutlined />&nbsp;
-                  Invite
+                  <UserAddOutlined />
+                  &nbsp; Invite
                 </>
               )}
             </button>,
@@ -1463,8 +1493,9 @@ const Chats = () => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                    }`}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1481,10 +1512,11 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}{" "}
                       <span
-                        className={`badge ${reciver.type === "vendor"
-                          ? "bg-vendor"
-                          : "bg-designer"
-                          }`}
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
                       >
                         {reciver?.type}
                       </span>
@@ -1608,8 +1640,9 @@ const Chats = () => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                    }`}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1625,10 +1658,11 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}
                       <span
-                        className={`badge ${reciver.type === "vendor"
-                          ? "bg-vendor"
-                          : "bg-designer"
-                          }`}
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
                       >
                         {reciver?.type}
                       </span>
@@ -1704,8 +1738,9 @@ const Chats = () => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                    }`}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1721,10 +1756,11 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}
                       <span
-                        className={`badge ${reciver.type === "vendor"
-                          ? "bg-vendor"
-                          : "bg-designer"
-                          }`}
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
                       >
                         {reciver?.type}
                       </span>
@@ -1816,10 +1852,11 @@ const Messeges = memo(
                       return (
                         <div
                           key={message.id}
-                          className={`${message?.sender_id === profile?.id
-                            ? "mine"
-                            : "others"
-                            }`}
+                          className={`${
+                            message?.sender_id === profile?.id
+                              ? "mine"
+                              : "others"
+                          }`}
                         >
                           <p>{message?.text}</p>
                           <p>
@@ -1846,56 +1883,60 @@ const Messeges = memo(
   }
 );
 
-function Chat({
-  index,
-  last,
-  chat,
-  user_id,
-  selectedChat,
-  setSelectedChat,
-  setSelectedGroup = null,
-}) {
-  let {
-    sender_id,
-    reciver_id,
-    sender_name,
-    reciver_name,
-    sender_image,
-    reciver_image,
-  } = chat;
+const Chat = memo(
+  ({
+    index,
+    last,
+    chat,
+    user_id,
+    selectedChat,
+    setSelectedChat,
+    setSelectedGroup = null,
+  }) => {
+    let {
+      sender_id,
+      reciver_id,
+      sender_name,
+      reciver_name,
+      sender_image,
+      reciver_image,
+    } = chat;
 
-  return (
-    <div
-      className={`projects-chat ${selectedChat?.id === chat?.id ? "bg-dark" : ""
+    return (
+      <div
+        className={`projects-chat ${
+          selectedChat?.id === chat?.id ? "bg-dark" : ""
         } ${last === index ? "" : "border-bottom"}`}
-      onClick={() => {
-        setSelectedGroup(null);
-        setSelectedChat(chat);
-      }}
-    >
-      <div className="chat-pic">
-        {printPic(sender_id, sender_image, reciver_image, user_id) ? (
-          <img
-            src={printPic(sender_id, sender_image, reciver_image, user_id)}
-          />
-        ) : (
-          <AiOutlineUser />
-        )}
+        onClick={() => {
+          setSelectedGroup(null);
+          setSelectedChat(chat);
+        }}
+      >
+        <div className="chat-pic">
+          {printPic(sender_id, sender_image, reciver_image, user_id) ? (
+            <img
+              src={printPic(sender_id, sender_image, reciver_image, user_id)}
+            />
+          ) : (
+            <AiOutlineUser />
+          )}
+        </div>
+        <div className="chat-info">
+          <p>{printName(sender_id, sender_name, reciver_name, user_id)}</p>
+          <p>
+            {chat?.recent_message
+              ? chat?.recent_message?.substring(0, 7) + " ...."
+              : ""}
+          </p>
+        </div>
+        <div className="chat-time">
+          <p>08:30 PM</p>
+        </div>
       </div>
-      <div className="chat-info">
-        <p>{printName(sender_id, sender_name, reciver_name, user_id)}</p>
-        <p>
-          {chat?.recent_message
-            ? chat?.recent_message?.substring(0, 7) + " ...."
-            : ""}
-        </p>
-      </div>
-      <div className="chat-time">
-        <p>08:30 PM</p>
-      </div>
-    </div>
-  );
-}
+    );
+  }
+);
+
 function Group({
   index,
   last,
@@ -1907,8 +1948,9 @@ function Group({
 }) {
   return (
     <div
-      className={`projects-chat ${selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
-        } ${last === index ? "" : "border-bottom"}`}
+      className={`projects-chat ${
+        selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
+      } ${last === index ? "" : "border-bottom"}`}
       onClick={() => {
         setSelectedChat(null);
         setSelectedGroup(group);
@@ -1929,34 +1971,38 @@ function Group({
     </div>
   );
 }
-function Project({ index, last, project, user_id, setSelectedProject }) {
-  let { project_id, name, pic, is_active } = project;
-  const onChange = async (id, checked) => {
-    try {
-      await updateStatus(id, checked);
-    } catch (err) {
-      // console.log(err)
-    }
-  };
-  return (
-    <div className={`projects-chat ${last === index ? "" : "border-bottom"}`}>
-      <div className="chat-pic" onClick={() => setSelectedProject(project)}>
-        {pic ? <img src={pic} /> : <Avatar>P</Avatar>}
-      </div>
-      <div className="chat-info" onClick={() => setSelectedProject(project)}>
-        <p>{name}</p>
-      </div>
-      <div className="chat-time">
-        <Switch
-          defaultChecked={is_active}
-          onChange={(c) => onChange(project_id, c)}
-          size="small"
-        />
 
-        <p>08:30 PM</p>
+const Project = memo(
+  ({ index, last, project, user_id, setSelectedProject }) => {
+    let { project_id, name, pic, is_active } = project;
+    const onChange = async (id, checked) => {
+      try {
+        await updateStatus(id, checked);
+      } catch (err) {
+        // console.log(err)
+      }
+    };
+
+    return (
+      <div className={`projects-chat ${last === index ? "" : "border-bottom"}`}>
+        <div className="chat-pic" onClick={() => setSelectedProject(project)}>
+          {pic ? <img src={pic} /> : <Avatar>{name[0]?.toUpperCase()}</Avatar>}
+        </div>
+        <div className="chat-info" onClick={() => setSelectedProject(project)}>
+          <p>{name}</p>
+        </div>
+        <div className="chat-time">
+          <Switch
+            defaultChecked={is_active}
+            onChange={(c) => onChange(project_id, c)}
+            size="small"
+          />
+
+          <p>08:30 PM</p>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+);
 
 export default Chats;

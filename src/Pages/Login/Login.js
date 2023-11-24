@@ -12,9 +12,9 @@ import HubspotForm from "react-hubspot-form";
 import { v4 as uuidv4 } from "uuid";
 import Icon from "../../Assets/images/vc.svg";
 import pdf from "../../Assets/TNC.pdf";
-import abstract1 from "../../Assets/images/abstract1.svg"
-import abstract2 from "../../Assets/images/abstract2.svg"
-import abstract3 from "../../Assets/images/abstract3.svg"
+import abstract1 from "../../Assets/images/abstract1.svg";
+import abstract2 from "../../Assets/images/abstract2.svg";
+import abstract3 from "../../Assets/images/abstract3.svg";
 
 export default function Login() {
   const [signup, setSignUp] = useState(true);
@@ -25,7 +25,6 @@ export default function Login() {
   const [next, setNext] = useState(false);
   const [isAuth, setIsAuth] = useContext(UserContext);
   const navigate = useNavigate();
-
 
   // States for sign ups................
   const [firstName, setFirstName] = useState("");
@@ -44,11 +43,12 @@ export default function Login() {
   // />;
 
   const back = () => {
-    if (next) {setNext(false); setUserType(null);}
-    else if(!signup) setSignUp(true)
-    else navigate(-1)
+    if (next) {
+      setNext(false);
+      setUserType(null);
+    } else if (!signup) setSignUp(true);
+    else navigate(-1);
   };
-
 
   const handleSubmit = async () => {
     var _hsq = (window._hsq = window._hsq || []);
@@ -95,7 +95,7 @@ export default function Login() {
       });
 
       if (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
       toast("Profile created", { type: "success" });
       let profile = await getUserById(user?.id);
@@ -153,7 +153,7 @@ export default function Login() {
         password: password,
       });
       if (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
       // console.log(data?.user?.id);
       let profile = await getUserById(data?.user?.id);
@@ -204,14 +204,13 @@ export default function Login() {
           <p>&larr;</p>
         </div>
 
-        <div className="loginheader headerlogo" onClick={()=>navigate('/')}>
+        <div className="loginheader headerlogo" onClick={() => navigate("/")}>
           <img
             src={Icon}
             alt=""
             className="logoIcon"
             style={{ width: "100%" }}
           />
-
         </div>
       </div>
       {/* <img src={abstract3} alt="abs-3" className="abs-3"/> */}
@@ -221,7 +220,9 @@ export default function Login() {
           <>
             <div className="loginText">
               <h1>Welcome Back!</h1>
-              <span>Please provide your login details to access <br/> the content.</span>
+              <span>
+                Please provide your login details to access <br /> the content.
+              </span>
             </div>
             <div className="Loginform">
               <div className="emailip">
@@ -340,10 +341,8 @@ export default function Login() {
                 </span>
               </p>
             </div>
-            
-            <img src={loginbg} alt="login" className="loginimg" id="loginimg" />
-            
 
+            <img src={loginbg} alt="login" className="loginimg" id="loginimg" />
           </>
         ) : (
           <>
@@ -375,12 +374,12 @@ export default function Login() {
                     </div>
                   </div>
                   <div className="emailip">
-                      <input
-                        placeholder="Company"
-                        value={company}
-                        onChange={(e) => setCompany(e.target.value)}
-                      />
-                    </div>
+                    <input
+                      placeholder="Company"
+                      value={company}
+                      onChange={(e) => setCompany(e.target.value)}
+                    />
+                  </div>
                   <div className="emailip">
                     <input
                       placeholder="Buisness Email"
@@ -590,8 +589,7 @@ export default function Login() {
                       onClick={() => {
                         setSignUp(true);
                         setUserType(null);
-                        setNext(false)
-                       
+                        setNext(false);
                       }}
                     >
                       <b>Login</b>
@@ -599,7 +597,11 @@ export default function Login() {
                   </p>
                 </div>
                 <div className="y-img">
-                <img src={loginbg} alt="login" className="loginimg singup-img" />
+                  <img
+                    src={loginbg}
+                    alt="login"
+                    className="loginimg singup-img"
+                  />
                 </div>
               </>
             ) : (
@@ -615,8 +617,12 @@ export default function Login() {
                   <div className="Loginform mobLofinForm">
                     <p style={{ color: "#6F6F6F" }}>Select your profession</p>
                     <div className="buttons-select">
-                      <div className="button"
-                      onClick={() => {setNext(true)}}>
+                      <div
+                        className="button"
+                        onClick={() => {
+                          setNext(true);
+                        }}
+                      >
                         <input
                           type="radio"
                           id="Designer"
@@ -628,8 +634,11 @@ export default function Login() {
                           Designer
                         </label>
                       </div>
-                      <div className="button"
-                      onClick={() => {setNext(true)}}
+                      <div
+                        className="button"
+                        onClick={() => {
+                          setNext(true);
+                        }}
                       >
                         <input
                           type="radio"
@@ -637,7 +646,6 @@ export default function Login() {
                           name="signupBtn"
                           value="vendor"
                           onChange={(e) => setUserType(e.target.value)}
-
                         />
                         <label className="btn btn-default" for="Vendor">
                           Vendor
@@ -651,7 +659,6 @@ export default function Login() {
                         marginTop: "2vh",
                       }}
                     />
-                 
                   </div>
                 </div>
                 <img src={loginbg} alt="login" className="loginimg" />
