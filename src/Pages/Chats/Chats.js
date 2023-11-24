@@ -1099,7 +1099,7 @@ const Chats = () => {
                   onScroll={handleDebouncedScrollChatsOfProject}
                 >
 
-                  {groups?.length != 0 ? (
+                  {/* {groups?.length === 0 ? ( */}
                     <>
                       <p
                         style={{
@@ -1123,8 +1123,7 @@ const Chats = () => {
                         </p>
                       </div>) : <p style={{textAlign: "center"}}>No groups</p>}
                     </>
-                  ) : null
-                  }
+                  
                   {groups
                     ?.sort(
                       (a, b) =>
