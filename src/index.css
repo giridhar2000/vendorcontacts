@@ -14,3 +14,4 @@ body {
 code {
   font-family: 'Poppins', 'Helvetica Neue', 'San Francisco', Arial, sans-serif;
 }
+html, body {margin: 0; height: 100%; overflow: hidden}
