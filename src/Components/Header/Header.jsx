@@ -410,9 +410,9 @@ const Header = () => {
 
         {isAuth && (
           <div className="search-bar">
-            <div className="left">
+            <div className="left" style={{width: "100%"}}>
             <SearchOutlined/>
-            <input type="text" placeholder="Search your Vendor...." />
+            <input type="text" placeholder="Search your favourite vendor" style={{width:"100%"}}/>
             </div>
             <div className="righti">
               <AiFillRightCircle size={50}/>
