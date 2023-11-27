@@ -337,8 +337,7 @@ const Edit = () => {
         />
 
         <label className="coverbtn" htmlFor={"cover"}>
-          <FiCamera />
-          &nbsp; Change Photo
+          <p><FiCamera />&nbsp;  Change Photo</p>
         </label>
       </div>
       <div className="edit">
@@ -360,7 +359,7 @@ const Edit = () => {
                   <AiOutlineCloudUpload />
                 )}
               </label>
-              <p>{url ? "Uploaded" : "Upload your logo here"}</p>
+              <p>{url ? "Uploaded" : "Upload your image here"}</p>
             </div>
             <button className="editbtn" onClick={updateProfile}>
               <ImPencil />

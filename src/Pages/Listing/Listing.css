@@ -89,7 +89,7 @@ hr{
   flex-direction: column;
   text-align: left;
   flex: 1;
-  margin-left: 5%;
+  padding: 2vh;
 }
 .listingname p {
   display: inline;
@@ -170,10 +170,20 @@ hr{
     gap: 5vh;
   }
   .listingcard {
-    flex-direction: column;
     width: 95%;
     padding: 1vh;
+    height: auto;
   }
+
+  .listingname{
+    padding: 2vh;
+    gap: 1vh;
+  }
+
+  .listingcard img {
+    height: auto;
+  }
+
   .listingcard svg{
     margin: 1px 1px 1px auto !important;
   }

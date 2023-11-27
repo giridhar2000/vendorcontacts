@@ -2,6 +2,7 @@
   font-family: 'Futura';
   src: url('../src/Assets/FUTURA_BK_BT_BOOK.TTF') format('truetype'),
 }
+
 body {
   overflow-x: hidden;
   margin: 0;
@@ -14,4 +15,3 @@ body {
 code {
   font-family: 'Poppins', 'Helvetica Neue', 'San Francisco', Arial, sans-serif;
 }
-html, body {margin: 0; height: 100%; overflow: hidden}

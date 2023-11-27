@@ -61,7 +61,7 @@
 
 .loginContainer.lg-page {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   margin-top: 3vh !important;
   padding: 0;
 }
@@ -474,17 +474,6 @@
   }
 }
 
-@media (min-width: 1101px) {
-  .loginContainer.lg-page {
-    display: flex;
-    justify-content: center;
-  }
-  .loginText {
-    margin-right: 250px;
-  }
-
-}
-
 
 @media (max-width: 400px) and (max-height: 700px) {
   .loginimg {
@@ -513,34 +502,4 @@
   }
 }
 
-@media (min-width:1540px) {
-    .loginContainer.lg-page{
-        gap: 400px;
-    }
-    .loginText h1 {
-        font-size: 2.5rem;
-      }
-      .loginText span{
-        /* background-color: red; */
-        font-size: 1.5rem;
-        
-      }
-      .passip input,
-      .emailip input,
-      .nameip input {
-          font-size: 1.7rem;
-          font-weight: 600;
-        
-      }
-    
-
-}
-
-
-/* final */
-@media (max-width:280px) {
-    .loginimg{
-        display: none;
-    }
-}
 

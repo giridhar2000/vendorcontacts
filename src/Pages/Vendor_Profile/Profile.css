@@ -63,7 +63,9 @@
 
 .profile-name p:nth-child(2) {
   margin: 0;
-  font-size: larger;
+  font-size: 1rem;
+  padding-top: 1vh;
+  font-weight: 600;
 }
 
 .profile-name p:nth-child(3) {

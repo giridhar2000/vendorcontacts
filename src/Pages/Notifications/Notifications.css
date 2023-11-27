@@ -6,6 +6,7 @@
     align-items: center;
     padding: 1rem 0;
     flex-direction: column;
+    gap: 5vh;
 }
 .notification-box{
     /* min-width: 499px; */

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Login/Login.css";
 import loginbg from "../../Assets/img/loginbg.png";
 import { toast } from "react-toastify";
@@ -34,14 +34,6 @@ export default function Login() {
   const [cPassword, setCPassword] = useState("");
   const [company, setCompany] = useState("");
 
-  // <HubspotForm
-  //   portalId="22384747"
-  //   formId="556eed30-2d51-4224-86f8-ffa83f0bde15"
-  //   onSubmit={() => console.log("Submit!")}
-  //   onReady={(form) => console.log("Form ready!", form)}
-  //   loading={<div>Loading...</div>}
-  // />;
-
   const back = () => {
     if (next) {
       setNext(false);
@@ -52,11 +44,6 @@ export default function Login() {
 
   const handleSubmit = async () => {
     var _hsq = (window._hsq = window._hsq || []);
-    // _hsq.push(['setPath', 'http://localhost:3000/login']);
-    //   _hsq.push(['trackPageView']);
-    //   _hsq.push(["identify",{
-    //     email: email
-    // }]);
     _hsq.push([
       "trackCustomBehavioralEvent",
       {
@@ -114,20 +101,6 @@ export default function Login() {
       );
       console.log(profile?.status);
       navigate("/edit");
-
-      // localStorage.setItem("auth", JSON.stringify(user));
-      // setIsAuth(true);
-      // else if (profile?.type === "vendor") {
-      //   localStorage.setItem("auth", JSON.stringify(true));
-      //   setIsAuth(true);
-      //   toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
-      //   navigate("/profile");
-      // } else {
-      //   localStorage.setItem("auth", JSON.stringify(true));
-      //   setIsAuth(true);
-      //   toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
-      //   navigate("/listing");
-      // }
     } catch (error) {
       setLoading(false);
       toast(error.message, { type: "error" });
@@ -793,13 +766,6 @@ export default function Login() {
                         </label>
                       </div>
                     </div>
-                    <hr
-                      style={{
-                        maxWidth: "100%",
-                        margin: "0",
-                        marginTop: "2vh",
-                      }}
-                    />
                   </div>
                 </div>
                 <img src={loginbg} alt="login" className="loginimg" />
