@@ -1,3 +1,14 @@
+.loginText {
+  width: fit-content;
+  height: fit-content;
+  font-size: smaller;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+}
+
 .loginText h1 {
   font-size: 37.152px;
   font-weight: 400;
@@ -6,13 +17,16 @@
 .loginText span {
   color: #8f8f8f;
 }
-.loginheader.headerlogo{
-    cursor: pointer;
-}
-.loginbtn:hover{
 
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-round"><path d="M2 18v3c0 .6.4 1 1 1h4v-3h3v-3h2l1.4-1.4a6.5 6.5 0 1 0-4-4Z"/><circle cx="16.5" cy="7.5" r=".5"/></svg>'),auto;
+.loginheader.headerlogo {
+  cursor: pointer;
 }
+
+.loginbtn:hover {
+
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-key-round"><path d="M2 18v3c0 .6.4 1 1 1h4v-3h3v-3h2l1.4-1.4a6.5 6.5 0 1 0-4-4Z"/><circle cx="16.5" cy="7.5" r=".5"/></svg>'), auto;
+}
+
 /* ('data:image/svg+xml;utf8,paste svg link'),auto */
 
 .passip,
@@ -61,14 +75,13 @@
 
 .loginContainer.lg-page {
   display: flex;
-  justify-content: space-around;
-  margin-top: 3vh !important;
-  padding: 0;
+  justify-content: space-evenly;
+  margin-block: 3vh;
 }
 
 .Loginform {
-  /* align-items: flex-end; */
-  margin-top: 7vh;
+  width: 25%;
+
 }
 
 .forgotpass {
@@ -122,7 +135,7 @@
   z-index: 100;
 }
 
-.button input[type="radio"]:checked + label {
+.button input[type="radio"]:checked+label {
   background: #d6db63;
 }
 
@@ -209,12 +222,13 @@
 .buttons-select {
   width: 315px;
 }
+
 .passip input,
 .emailip input,
 .nameip input {
-    font-size: 1rem;
-    font-weight: 500;
-  
+  font-size: 1rem;
+  font-weight: 500;
+
 }
 
 /* new */
@@ -259,12 +273,14 @@
   .mobLofinForm {
     margin: 3rem auto !important;
   }
+
   .mobLofinForm p {
     display: flex;
     justify-content: center;
     padding-bottom: 15px;
     /* margin-bottom:100px ; */
   }
+
   .singup-img {
     display: none !important;
   }
@@ -304,14 +320,15 @@
     margin-top: 3vh !important;
     padding-right: 1vh;
   }
+
   .passip input,
-.emailip input,
-.nameip input {
+  .emailip input,
+  .nameip input {
     font-size: 1rem;
     font-weight: 600;
-  
-}
-   
+
+  }
+
   .forgotpass {
     margin-block: 2vh !important;
   }
@@ -333,6 +350,7 @@
     margin-block: 2vh !important;
     text-align: center;
   }
+
   .login .loginimg {
     position: absolute;
     bottom: 0px;
@@ -347,6 +365,7 @@
     flex-direction: column;
     /* gap: 20px; */
   }
+
   .loginText h1 {
     font-size: 30.152px;
     font-weight: 900;
@@ -356,6 +375,7 @@
     color: #565353;
     font-weight: 800px;
   }
+
   .navbarheader {
     display: flex;
     align-items: center;
@@ -369,6 +389,7 @@
     justify-content: center;
     /* position: relative; */
   }
+
   .navbarheader {
     position: relative;
   }
@@ -385,14 +406,17 @@
     font-size: 1rem;
     font-weight: 700;
   }
+
   .mobLofinForm p {
     display: flex;
     justify-content: center;
   }
+
   .buttons-select {
     /* display: flex;
     justify-content: center; */
   }
+
   .Loginform.mobLofinForm {
     display: flex;
     flex-direction: column;
@@ -449,16 +473,18 @@
     justify-content: center;
     align-items: center;
   }
+
   .loginheader img {
     font-weight: 50;
     width: 30%;
   }
+
   .passip input,
   .emailip input,
   .nameip input {
-      font-size: 1rem;
-      font-weight: 600;
-    
+    font-size: 1rem;
+    font-weight: 600;
+
   }
 }
 
@@ -489,17 +515,18 @@
   .Loginform {
     padding-top: 30px;
   }
+
   .loginText h1 {
     font-size: 3.5rem;
   }
-  .loginText span{
+
+  .loginText span {
     /* background-color: red; */
     font-size: 1.5rem;
-    
+
   }
+
   .loginContainer.lg-page {
     padding-top: 70px;
   }
 }
-
-
