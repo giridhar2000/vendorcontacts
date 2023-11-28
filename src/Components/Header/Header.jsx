@@ -24,7 +24,7 @@ import supabase from "../../utils/supabase.config";
 import { useQuery } from "react-query";
 import { getUser } from "../../utils/profile_helper";
 import pdf from "../../Assets/TNC.pdf";
-import {SearchOutlined} from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 
 const Header = () => {
   const [isAuth, setIsAuth] = useContext(AuthContext);
@@ -372,23 +372,23 @@ const Header = () => {
                   </button>
                 </div>
               ) : (
-                <div className="buttons icons unlogin">
-                  <p className="x" onClick={() => navigate("/chats")}>
-                    <BsChatLeftText />
+                <div className="menu-icons">
+                  <p onClick={() => navigate("/chats")}>
+                    <BsChatLeftText />&nbsp;
                     <p>Chats</p>
                   </p>
 
-                  <p className="y" onClick={() => navigate("/notifications")}>
-                    <BsBell />
+                  <p onClick={() => navigate("/notifications")}>
+                    <BsBell />&nbsp;
                     <p>Notifications</p>
                   </p>
-                  {/* <p onClick={() => navigate("/profile")}>
-                    <AiOutlineUser /> Profile
-                  </p> */}
-                  <p className="z" onClick={logout}>
-                    <AiOutlineLogout />
-                    <p>  Logout
-                    </p>
+                  <p onClick={() => navigate("/profile")}>
+                    <AiOutlineUser /> &nbsp;
+                    <p>Profile</p>
+                  </p>
+                  <p onClick={logout}>
+                    <AiOutlineLogout />&nbsp;
+                    <p>Logout</p>
                   </p>
                 </div>
               )}
@@ -403,19 +403,19 @@ const Header = () => {
             />
           </div>
 
-          <div className="dummy" >
-            <img  className="a" src={profile?.profile_pic ||  dummi } alt="profile" />
+          <div className="menu-profile-pic" >
+            <img src={profile?.profile_pic || dummi} alt="profile" />
           </div>
         </div>
 
         {isAuth && (
           <div className="search-bar">
-            <div className="left">
-            <SearchOutlined/>
-            <input type="text" placeholder="Search your Vendor...." />
+            <div className="left" style={{ width: "100%" }}>
+              <SearchOutlined />
+              <input type="text" placeholder="Search your favourite vendor" />
             </div>
             <div className="righti">
-              <AiFillRightCircle size={50}/>
+              <AiFillRightCircle size={50} />
             </div>
           </div>
         )}

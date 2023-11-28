@@ -6,7 +6,7 @@ import { Popover, message, Modal } from "antd";
 import { GiPartyPopper } from "react-icons/gi";
 import AuthContext from "../../contexts/authContext";
 import supabase from "../../utils/supabase.config";
-
+import { useLocation } from "react-router-dom";
 
 const Footer = () => {
   const [isAuth, setIsAuth] = useContext(AuthContext);
@@ -16,6 +16,7 @@ const Footer = () => {
   const [email, setEmail] = useState("");
   const [isSent, setIsSent] = useState(false);
   const [checkbox, setCheckbox] = useState(false);
+  const { pathname } = useLocation();
 
   async function invite() {
     
@@ -47,7 +48,8 @@ const Footer = () => {
       message.error("please enter your email id and click on the checkbox");
     }
   }
-
+  // you can check a more conditions here
+  if (pathname === "/login") return null;
 
   return (
     <>

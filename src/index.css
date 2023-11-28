@@ -2,6 +2,7 @@
   font-family: 'Futura';
   src: url('../src/Assets/FUTURA_BK_BT_BOOK.TTF') format('truetype'),
 }
+
 body {
   overflow-x: hidden;
   margin: 0;
