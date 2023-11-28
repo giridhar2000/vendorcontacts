@@ -756,22 +756,22 @@ const Chats = () => {
   const Projects = () => {
     return (
       <div className="projects-body" onScroll={handleDebouncedScrollProjects}>
-        {profile?.type === "vendor" ? 
-        null : 
-        <div className="create-project-btn">
-          <p
-            style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-            onClick={() => {
-              setOpenPopOver(false);
-              setAddProject(true);
-            }}
-          >
-            <FolderAddOutlined />&nbsp;
-            Create project
-          </p>
-        </div>
+        {profile?.type === "vendor" ?
+          null :
+          <div className="create-project-btn">
+            <p
+              style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+              onClick={() => {
+                setOpenPopOver(false);
+                setAddProject(true);
+              }}
+            >
+              <FolderAddOutlined />&nbsp;
+              Create project
+            </p>
+          </div>
         }
-
+        <hr style={{ maxWidth: "100%", margin: 0, background: "#f0f0f0" }} />
         {!projects || projects?.pages[0]?.length === 0 ? (
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -823,7 +823,6 @@ const Chats = () => {
       <div className="projects-body" onScroll={handleDebouncedScroll}>
         <div className="create-project-btn">
           <div style={{ display: "flex", flexDirection: "column" }}>
-            {/* {profile?.type === "vendor" ? ( */}
             <p
               style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
               onClick={() => {
@@ -834,11 +833,9 @@ const Chats = () => {
               <PlusCircleOutlined />&nbsp;
               Invite people
             </p>
-            {/* ) : (
-              null
-            )} */}
           </div>
         </div>
+        <hr style={{ maxWidth: "100%", margin: 0, background: "#f0f0f0" }} />
         {!chats || chats?.pages[0]?.length === 0 ? (
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -1092,15 +1089,15 @@ const Chats = () => {
                         Groups
                       </p>
                       {profile?.type === "architect" ? (
-                      <div className="create-project-btn">
-                        <p
-                          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-                          onClick={() => setCreateGroup(true)}
-                        >
-                          <UsergroupAddOutlined /> &nbsp;
-                          Create group
-                        </p>
-                      </div>) : <p style={{textAlign: "center"}}>No groups</p>}
+                        <div className="create-project-btn">
+                          <p
+                            style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+                            onClick={() => setCreateGroup(true)}
+                          >
+                            <UsergroupAddOutlined /> &nbsp;
+                            Create group
+                          </p>
+                        </div>) : <p style={{ textAlign: "center" }}>No groups</p>}
                     </>
                   ) : null
                   }
@@ -1847,7 +1844,7 @@ function Chat({
   return (
     <div
       className={`projects-chat ${selectedChat?.id === chat?.id ? "bg-dark" : ""
-        } ${last === index ? "" : "border-bottom"}`}
+        } ${last === index ? "" : "border-bottom"} chats`}
       onClick={() => {
         setSelectedGroup(null);
         setSelectedChat(chat);
@@ -1867,7 +1864,7 @@ function Chat({
         <p>
           {chat?.recent_message
             ? chat?.recent_message?.substring(0, 7) + " ...."
-            : ""}
+            : "New chat"}
         </p>
       </div>
       <div className="chat-time">
