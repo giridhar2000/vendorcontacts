@@ -35,6 +35,11 @@
 
 .pdf-card-row1 p {
     padding-inline: 2vh;
+    text-overflow: ellipsis;
+    width: 100px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden !important;
 }
 
 .pdf-card-row1 svg {

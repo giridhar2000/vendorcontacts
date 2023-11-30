@@ -923,7 +923,7 @@ const Chats = () => {
 
   //Returning loading indicator
   if (isLoading || isLoading3 || isLoading4) {
-    return <div className="loading-screen"><p>Loading....</p></div>;
+    return <div className="loading-screen"><p><Spin />&nbsp; Loading....</p></div>;
   }
 
   return (

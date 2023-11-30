@@ -314,7 +314,7 @@ const Edit = () => {
   };
 
   if (isLoading) {
-    return <div className="loading-screen"><p>Loading....</p></div>;
+    return <div className="loading-screen"><p><Spin />&nbsp; Loading....</p></div>;
   }
   return (
     <>

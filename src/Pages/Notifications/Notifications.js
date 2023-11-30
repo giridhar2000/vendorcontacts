@@ -10,7 +10,7 @@ import {
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import UserContext from "../../contexts/userContext";
 import supabase from "../../utils/supabase.config";
-import { Empty } from "antd";
+import { Empty, Spin } from "antd";
 import { createChat } from "../../utils/chat_helper";
 import { useNavigate } from "react-router-dom";
 
@@ -101,7 +101,7 @@ const Notifications = () => {
     },
   });
 
-  if (isLoading || isLoading2) return <div className="loading-screen"><p>Loading....</p></div>;
+  if (isLoading || isLoading2) return <div className="loading-screen"><p><Spin />&nbsp; Loading....</p></div>;
   return (
     <div className="notifications-container">
       <h2>Notifications</h2>
