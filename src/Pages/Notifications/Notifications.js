@@ -101,7 +101,7 @@ const Notifications = () => {
     },
   });
 
-  if (isLoading || isLoading2) return <p>Loading....</p>;
+  if (isLoading || isLoading2) return <div className="loading-screen"><p>Loading....</p></div>;
   return (
     <div className="notifications-container">
       <h2>Notifications</h2>
