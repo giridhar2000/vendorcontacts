@@ -314,6 +314,7 @@ h8 {
   .menu-profile-pic {
     height: 40px;
     width: 40px;  
+    display: block;
   }
 
   .menu-profile-pic img {
