@@ -490,15 +490,15 @@
   }
 }
 
-@media (max-width: 425px) {
+@media (max-width: 426px) {
   .loginimg {
-    top: 73vh;
+    display: none;
   }
 }
 
 @media (max-width: 360px) {
   .loginimg {
-    top: 76vh;
+    display: none;
   }
 }
 
