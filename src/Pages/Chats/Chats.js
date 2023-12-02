@@ -245,7 +245,7 @@ const Chats = () => {
     ({ pageParam = 0 }) =>
       getAllChats(profile?.id, selectedProject?.project_id, pageParam),
     {
-      enabled: selectedProject?.project_id !== null,
+      enabled: selectedProject !== null,
       getNextPageParam: (lastPage, allPages) => {
         return allPages?.length;
       },
@@ -751,7 +751,12 @@ const Chats = () => {
           user: profile,
           project_id,
         });
-        if (index === array.length - 1) resolve();
+        if (index === array.length - 1) {
+          queryClient.invalidateQueries[
+            ("chatsOfProject", profile?.id, selectedProject?.project_id)
+          ];
+          resolve();
+        }
       });
     });
     pr.then(() => {
