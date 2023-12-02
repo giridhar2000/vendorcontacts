@@ -256,6 +256,10 @@ h8 {
   cursor: pointer;
 }
 
+.menu-profile-pic{
+  display: none;
+}
+
 
 
 @media (max-width: 1100px) {
@@ -263,7 +267,7 @@ h8 {
   .header {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    padding-block: 2vh;
   }
 
   .prof {
@@ -273,7 +277,7 @@ h8 {
 
  .top {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
   } 
 
   .search-bar {
@@ -309,9 +313,8 @@ h8 {
 
   .menu-profile-pic {
     height: 40px;
-    width: 40px;
+    width: 40px;  
     display: block;
-  
   }
 
   .menu-profile-pic img {
