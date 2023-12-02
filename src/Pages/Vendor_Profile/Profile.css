@@ -63,7 +63,9 @@
 
 .profile-name p:nth-child(2) {
   margin: 0;
-  font-size: larger;
+  font-size: 1rem;
+  padding-top: 1vh;
+  font-weight: 600;
 }
 
 .profile-name p:nth-child(3) {
@@ -101,13 +103,13 @@
   margin-top: 60px;
 }
 .profile-box {
-  flex: 1;
   height: 200px;
   background-color: #d6db63;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
+  width: 100%;
 }
 .no-pic{
   display: flex;
@@ -132,14 +134,13 @@
 
 .profile-desc {
   width: 67%;
-  margin-block: 40px !important;
+  margin-block: 5vh;
 }
 .profile-desc p {
   font-size: .9rem;
 }
 .profile-downloads{
     width: 67%;
-    margin-top: 40px !important;
 }
 
 .pdf-cards{
@@ -206,7 +207,9 @@
     font-size: 0.8rem;
   }
   .profile-box{
-    width: 100% !important;
+    width: 90% !important;
+    height: 100px;
+    margin: 0px auto !important;
   }
   .profile-box p {
     font-size: 1rem;

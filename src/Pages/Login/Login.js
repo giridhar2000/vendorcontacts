@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Login/Login.css";
 import loginbg from "../../Assets/img/loginbg.png";
 import { toast } from "react-toastify";
@@ -34,14 +34,6 @@ export default function Login() {
   const [cPassword, setCPassword] = useState("");
   const [company, setCompany] = useState("");
 
-  // <HubspotForm
-  //   portalId="22384747"
-  //   formId="556eed30-2d51-4224-86f8-ffa83f0bde15"
-  //   onSubmit={() => console.log("Submit!")}
-  //   onReady={(form) => console.log("Form ready!", form)}
-  //   loading={<div>Loading...</div>}
-  // />;
-
   const back = () => {
     if (next) {
       setNext(false);
@@ -52,11 +44,6 @@ export default function Login() {
 
   const handleSubmit = async () => {
     var _hsq = (window._hsq = window._hsq || []);
-    // _hsq.push(['setPath', 'http://localhost:3000/login']);
-    //   _hsq.push(['trackPageView']);
-    //   _hsq.push(["identify",{
-    //     email: email
-    // }]);
     _hsq.push([
       "trackCustomBehavioralEvent",
       {
@@ -68,7 +55,11 @@ export default function Login() {
     ]);
     console.log(_hsq);
     // Perform form validation
-    if (!/^([\w.-]+)@(\[(\d{1,3}\.){3}|(?!hotmail|gmail|yahoo)(([a-zA-Z\d-]+\.)+))([a-zA-Z]{2,4}|\d{1,3})(\]?)$/.test(email)) {
+    if (
+      !/^([\w.-]+)@(\[(\d{1,3}\.){3}|(?!hotmail|gmail|yahoo)(([a-zA-Z\d-]+\.)+))([a-zA-Z]{2,4}|\d{1,3})(\]?)$/.test(
+        email
+      )
+    ) {
       toast("Please use your company mail", { type: "error" });
       return;
     }
@@ -110,20 +101,6 @@ export default function Login() {
       );
       console.log(profile?.status);
       navigate("/edit");
-
-      // localStorage.setItem("auth", JSON.stringify(user));
-      // setIsAuth(true);
-      // else if (profile?.type === "vendor") {
-      //   localStorage.setItem("auth", JSON.stringify(true));
-      //   setIsAuth(true);
-      //   toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
-      //   navigate("/profile");
-      // } else {
-      //   localStorage.setItem("auth", JSON.stringify(true));
-      //   setIsAuth(true);
-      //   toast(<p>Welcome {profile.display_name}</p>, { type: "success" });
-      //   navigate("/listing");
-      // }
     } catch (error) {
       setLoading(false);
       toast(error.message, { type: "error" });
@@ -213,15 +190,15 @@ export default function Login() {
           />
         </div>
       </div>
-      {/* <img src={abstract3} alt="abs-3" className="abs-3"/> */}
       <div className="loginContainer lg-page">
-        {/* <img src={abstract2} alt="abs-2" className="abs-2"/> */}
         {signup ? (
           <>
             <div className="loginText">
               <h1>Welcome Back!</h1>
               <span>
+
                 Please provide your login details to access <br /> the content.
+
               </span>
             </div>
             <div className="Loginform">
@@ -336,7 +313,10 @@ export default function Login() {
               </button>
               <p className="p">
                 Don't have an account?{" "}
-                <span className="loginsignup" onClick={() => setSignUp(false)}>
+                <span
+                  className="loginsignup"
+                  onClick={() => setSignUp(false)}
+                >
                   <b>Sign Up</b>
                 </span>
               </p>
@@ -596,13 +576,17 @@ export default function Login() {
                     </span>
                   </p>
                 </div>
+
                 <div className="y-img">
+
                   <img
                     src={loginbg}
                     alt="login"
                     className="loginimg singup-img"
                   />
+
                 </div>
+
               </>
             ) : (
               <div className="signup">
@@ -652,6 +636,7 @@ export default function Login() {
                         </label>
                       </div>
                     </div>
+
                     <hr
                       style={{
                         maxWidth: "100%",
@@ -659,6 +644,7 @@ export default function Login() {
                         marginTop: "2vh",
                       }}
                     />
+
                   </div>
                 </div>
                 <img src={loginbg} alt="login" className="loginimg" />
@@ -666,6 +652,14 @@ export default function Login() {
             )}
           </>
         )}
+      </div>
+      <div className="imgi">
+        <img
+          src={loginbg}
+          alt="login"
+          className="loginimg"
+          id="loginimg"
+        />
       </div>
     </div>
   );

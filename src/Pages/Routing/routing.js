@@ -13,7 +13,6 @@ import { getUser } from "../../utils/profile_helper";
 import { useQuery } from "react-query";
 import ProtectedLoginRoute from "../Protected/LoginProtect";
 import Header from "../../Components/Header/Header";
-import Footer from "../../Components/Footer/Footer";
 import Notifications from "../Notifications/Notifications";
 
 const Routing = () => {
@@ -58,7 +57,7 @@ const Routing = () => {
         <ProtectedRoute>
           <Header />
           <Chats />
-          <Footer />
+          
         </ProtectedRoute>
       ),
     },
@@ -84,7 +83,6 @@ const Routing = () => {
         <ProtectedRoute>
           <Header />
           <Edit />
-          <Footer />
         </ProtectedRoute>
       ),
     },
@@ -94,7 +92,6 @@ const Routing = () => {
         <ProtectedRoute>
           <Header />
           <Notifications />
-          <Footer />
         </ProtectedRoute>
       ),
     },

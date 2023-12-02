@@ -7,7 +7,9 @@ export async function createProject({ user_id, name }) {
   try {
     const { data, error } = await supabase
       .from("projects")
-      .insert([{ project_id: uuidv4(), created_by: user_id, name }])
+      .insert([
+        { project_id: uuidv4(), created_by: user_id, name, is_active: true },
+      ])
       .select("project_id");
 
     if (error) throw new Error(error);
@@ -63,7 +65,9 @@ export async function getGroups(project_id) {
   try {
     const { data, error } = await supabase
       .from("groups")
-      .select(`id,project_id,created_at,created_by,group_id,name, profiles(display_name)`)
+      .select(
+        `id,project_id,created_at,created_by,group_id,name, profiles(display_name)`
+      )
       .eq("project_id", project_id);
     if (error) throw new Error(error);
     return data;
@@ -82,7 +86,7 @@ export async function getMembers(group_id) {
       .select("user_id,group_id,user_name,user_pic")
       .eq("group_id", group_id);
     if (error) throw new Error(error);
-    console.log(data)
+    console.log(data);
     return data;
   } catch (err) {
     // console.log(err);
@@ -105,7 +109,6 @@ export async function getGroupInfo(user_id) {
     return [];
   }
 }
-
 
 // Function for updating project status -------------------->   returns true || false
 
@@ -132,7 +135,7 @@ export async function getMembersOfProject(project_id) {
 
       .eq("project_id", project_id);
     if (error) throw new Error(error);
-    let newData=data.map((val)=>val.profiles)
+    let newData = data.map((val) => val.profiles);
     return newData;
   } catch (err) {
     // console.log(err);

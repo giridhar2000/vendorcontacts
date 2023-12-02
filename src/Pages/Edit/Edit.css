@@ -110,6 +110,10 @@
   text-align: center;
 }
 
+.coverbtn p{
+  margin: 0;
+}
+
 .editbio {
   margin-top: 5vh;
   color: gray;
@@ -219,6 +223,10 @@ input[type="file" i] {
   margin-top: 1vh !important;
 }
 
+.editform {
+  width: 35%;
+}
+
 @media only screen and (min-device-width: 720px) and (max-device-width: 1280px) {
   .editText {
     width: 35%;
@@ -269,6 +277,17 @@ input[type="file" i] {
 
   .editform {
     padding-left: 0%;
+    width: 100%;
+  }
+
+  .textarea#txtInput.textarea{
+    padding: 0.6rem 0rem;
+  }
+
+  .coverbtn {
+    bottom: 1vh;
+    right: 1vh;
+    width: 15vh;
   }
 
   .editpassip,

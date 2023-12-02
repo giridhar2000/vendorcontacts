@@ -623,7 +623,6 @@ export default function Home() {
           <img src={HPA} alt="hpa-logo" />
         </div>
       </section>
-      <Footer />
     </>
   );
 }
