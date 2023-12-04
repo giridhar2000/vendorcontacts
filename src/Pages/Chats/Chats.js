@@ -752,9 +752,7 @@ const Chats = () => {
           project_id,
         });
         if (index === array.length - 1) {
-          queryClient.invalidateQueries[
-            ("chatsOfProject", profile?.id, selectedProject?.project_id)
-          ];
+          queryClient.invalidateQueries(["chatsOfProject", profile?.id, selectedProject?.project_id]);
           resolve();
         }
       });
