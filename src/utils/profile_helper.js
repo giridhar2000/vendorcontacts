@@ -32,8 +32,11 @@ export async function getUserById(id) {
       )
       .eq("id", id)
       .single();
-    console.log(profile);
-    if (error) throw new Error(error);
+    if (error) {
+      // console.log(error);
+      throw new Error(error);
+    }
+    // console.log(profile);
     return profile;
   } catch (err) {
     // console.log(err);
@@ -81,7 +84,6 @@ export async function updateUserProfile(
 // Getting vendors by range ------------------>      returns [ < vendors > ] || []
 
 export async function getVendors(page = 0, sortBy) {
-  console.log(sortBy);
   try {
     let from, to;
     const loadMoreData = () => {
@@ -99,8 +101,8 @@ export async function getVendors(page = 0, sortBy) {
         count: "exact",
       })
       .range(from, to)
-      .order( sortBy.column, {
-        ascending:sortBy.ascending,
+      .order(sortBy.column, {
+        ascending: sortBy.ascending,
       })
       .eq("type", "vendor");
 

@@ -109,6 +109,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 10px;
+  width: 100%;
 }
 .no-pic{
   display: flex;

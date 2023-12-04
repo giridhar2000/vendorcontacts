@@ -130,12 +130,11 @@ export default function Login() {
         password: password,
       });
       if (error) {
-        setLoading(false);
-        toast(error.message, { type: "error" });
-        return;
+        throw new Error(error);
       }
+      // console.log(data?.user?.id);
       let profile = await getUserById(data?.user?.id);
-      console.log("profile", profile);
+      // console.log("profile", profile);
       if (profile.status === false) {
         localStorage.setItem("auth", JSON.stringify(data));
         toast(
@@ -145,6 +144,7 @@ export default function Login() {
           </p>,
           { type: "warning" }
         );
+
         console.log(profile?.status);
         localStorage.setItem("auth", JSON.stringify(true));
         setIsAuth(true);
@@ -180,6 +180,7 @@ export default function Login() {
         <div className="backbtn" onClick={back}>
           <p>&larr;</p>
         </div>
+
         <div className="loginheader headerlogo" onClick={() => navigate("/")}>
           <img
             src={Icon}
@@ -195,8 +196,9 @@ export default function Login() {
             <div className="loginText">
               <h1>Welcome Back!</h1>
               <span>
-                Please provide your login details to access <br /> the
-                content.
+
+                Please provide your login details to access <br /> the content.
+
               </span>
             </div>
             <div className="Loginform">
@@ -320,6 +322,7 @@ export default function Login() {
               </p>
             </div>
 
+            <img src={loginbg} alt="login" className="loginimg" id="loginimg" />
           </>
         ) : (
           <>
@@ -573,13 +576,17 @@ export default function Login() {
                     </span>
                   </p>
                 </div>
-                {/* <div className="y-img">
+
+                <div className="y-img">
+
                   <img
                     src={loginbg}
                     alt="login"
                     className="loginimg singup-img"
                   />
-                </div> */}
+
+                </div>
+
               </>
             ) : (
               <div className="signup">
@@ -629,6 +636,15 @@ export default function Login() {
                         </label>
                       </div>
                     </div>
+
+                    <hr
+                      style={{
+                        maxWidth: "100%",
+                        margin: "0",
+                        marginTop: "2vh",
+                      }}
+                    />
+
                   </div>
                 </div>
                 <img src={loginbg} alt="login" className="loginimg" />

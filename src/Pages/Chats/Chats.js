@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useRef, memo } from "react";
+import React, { useContext, useEffect, useRef, memo, useMemo } from "react";
 import "./Chats.css";
 import { debounce } from "lodash";
-import $ from 'jquery';
+import $ from "jquery";
 import {
   AiOutlinePlusCircle,
   AiOutlineUser,
@@ -9,7 +9,14 @@ import {
   AiOutlineSearch,
   AiOutlinePlus,
 } from "react-icons/ai";
-import { UserAddOutlined, PlusOutlined, PlusCircleOutlined, RightOutlined, UsergroupAddOutlined, FolderAddOutlined } from "@ant-design/icons";
+import {
+  UserAddOutlined,
+  PlusOutlined,
+  PlusCircleOutlined,
+  RightOutlined,
+  UsergroupAddOutlined,
+  FolderAddOutlined,
+} from "@ant-design/icons";
 import {
   BsThreeDotsVertical,
   BsMicFill,
@@ -81,6 +88,8 @@ const Chats = () => {
   const [addProject, setAddProject] = useState(false);
   const [addChatToProject, setAddChatToProject] = useState(false);
   const [projectAdding, setProjectAdding] = useState(false);
+  const [addMemberToGroup, setAddMemberToGroup] = useState(false);
+  const [memberAdding, setMemberAdding] = useState(false);
   const [groupAdding, setGroupAdding] = useState(false);
   const [createGroup, setCreateGroup] = useState(false);
   const [projectName, setProjectName] = useState("");
@@ -156,13 +165,23 @@ const Chats = () => {
       setFilteredProfiles([]);
       return;
     }
-    setFilteredProfiles((old) => {
-      return profilesOfSameCompanny?.filter((value) =>
-        value?.display_name
-          ?.toLowerCase()
-          ?.includes(inputSameCompany?.toLowerCase())
-      );
-    });
+    if (createGroup || addMemberToGroup) {
+      setFilteredProfiles((old) => {
+        return projectMembers?.filter((value) =>
+          value?.display_name
+            ?.toLowerCase()
+            ?.includes(inputSameCompany?.toLowerCase())
+        );
+      });
+    } else {
+      setFilteredProfiles((old) => {
+        return profilesOfSameCompanny?.filter((value) =>
+          value?.display_name
+            ?.toLowerCase()
+            ?.includes(inputSameCompany?.toLowerCase())
+        );
+      });
+    }
   }, [inputSameCompany]);
 
   //Fetching all profiles
@@ -226,7 +245,7 @@ const Chats = () => {
     ({ pageParam = 0 }) =>
       getAllChats(profile?.id, selectedProject?.project_id, pageParam),
     {
-      enabled: selectedProject?.project_id !== null,
+      enabled: selectedProject !== null,
       getNextPageParam: (lastPage, allPages) => {
         return allPages?.length;
       },
@@ -441,6 +460,7 @@ const Chats = () => {
             group_id: data,
           });
         });
+        queryClient.invalidateQueries(["groups", selectedProject?.project_id]);
         setSelectedChats([]);
         setSelectedChatIds([]);
         setSelectedChatTypes([]);
@@ -493,6 +513,14 @@ const Chats = () => {
       toast("Please fill all the details", { type: "error" });
       return;
     }
+    if (
+      !/^([\w.-]+)@(\[(\d{1,3}\.){3}|(?!hotmail|gmail|yahoo)(([a-zA-Z\d-]+\.)+))([a-zA-Z]{2,4}|\d{1,3})(\]?)$/.test(
+        vendorDetails?.VendorEmail
+      )
+    ) {
+      toast("Please use your company mail", { type: "error" });
+      return;
+    }
     send_project_request_mutation.mutateAsync({
       reciver: {
         display_name: vendorDetails?.VendorName,
@@ -510,21 +538,23 @@ const Chats = () => {
       template_id: "template_tix5nmp",
       user_id: "F3rrwZwcav-0a-BOW",
       template_params: {
-        'name': vendorDetails?.VendorName,
-        'email': vendorDetails?.VendorEmail,
-        'projectName': selectedProject?.name
-      }
+        name: vendorDetails?.VendorName,
+        email: vendorDetails?.VendorEmail,
+        projectName: selectedProject?.name,
+      },
     };
 
-    $.ajax('https://api.emailjs.com/api/v1.0/email/send', {
-      type: 'POST',
+    $.ajax("https://api.emailjs.com/api/v1.0/email/send", {
+      type: "POST",
       data: JSON.stringify(data),
-      contentType: 'application/json'
-    }).done(function () {
-      alert('Your mail is sent!');
-    }).fail(function (error) {
-      alert('Oops... ' + JSON.stringify(error));
-    });
+      contentType: "application/json",
+    })
+      .done(function () {
+        alert("Your mail is sent!");
+      })
+      .fail(function (error) {
+        alert("Oops... " + JSON.stringify(error));
+      });
   };
 
   // Fetching chats and messages info in real time
@@ -608,7 +638,7 @@ const Chats = () => {
       return;
     }
 
-    if (profile?.type === "vendor" && !createGroup) {
+    if (profile?.type === "vendor" && !createGroup && !addMemberToGroup) {
       if (projectMembers) {
         if (projectMembers?.some((val) => val.type === "vendor")) {
           toast("Can't add more than 1 vendor", { type: "warning" });
@@ -684,8 +714,34 @@ const Chats = () => {
       message.error("provide group name");
     }
   }
+
+  function handleAddMemberToGroup(group_id) {
+    if (selectedChats?.length === 0) return;
+    setMemberAdding(true);
+    // console.log(project_id);
+    const pr = new Promise((resolve, reject) => {
+      selectedChats.forEach((chat, index, array) => {
+        create_members_mutation.mutateAsync({
+          reciver: chat,
+          group_id,
+        });
+        if (index === array.length - 1) resolve();
+      });
+    });
+    pr.then(() => {
+      queryClient.invalidateQueries(["memberList", selectedGroup?.group_id]);
+      setMemberAdding(false);
+      setSelectedChats([]);
+      setInput("");
+      setInputSameCompany("");
+      setSelectedChatIds([]);
+      setSelectedChatTypes([]);
+      setAddMemberToGroup(false);
+    });
+  }
+
   function handleAddChatToProject(project_id) {
-    if (!inputSameCompany || selectedChats?.length === 0) return;
+    if (selectedChats?.length === 0) return;
     setProjectAdding(true);
     // console.log(project_id);
     const pr = new Promise((resolve, reject) => {
@@ -695,7 +751,12 @@ const Chats = () => {
           user: profile,
           project_id,
         });
-        if (index === array.length - 1) resolve();
+        if (index === array.length - 1) {
+          queryClient.invalidateQueries[
+            ("chatsOfProject", profile?.id, selectedProject?.project_id)
+          ];
+          resolve();
+        }
       });
     });
     pr.then(() => {
@@ -774,25 +835,29 @@ const Chats = () => {
     2000
   );
 
-  const Projects = () => {
+  const Projects = memo(() => {
     return (
       <div className="projects-body" onScroll={handleDebouncedScrollProjects}>
-        {profile?.type === "vendor" ?
-          null :
+        {profile?.type === "vendor" ? null : (
           <div className="create-project-btn">
             <p
-              style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
               onClick={() => {
                 setOpenPopOver(false);
                 setAddProject(true);
               }}
             >
-              <FolderAddOutlined />&nbsp;
-              Create project
+              <FolderAddOutlined />
+              &nbsp; Create project
             </p>
           </div>
-        }
+        )}
         <hr style={{ maxWidth: "100%", margin: 0, background: "#f0f0f0" }} />
+
         {!projects || projects?.pages[0]?.length === 0 ? (
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -837,22 +902,26 @@ const Chats = () => {
         ) : null}
       </div>
     );
-  };
+  }, [profile?.id, projects, isFetchingNextPageProjects]);
 
-  const People = () => {
+  const People = memo(() => {
     return (
       <div className="projects-body" onScroll={handleDebouncedScroll}>
         <div className="create-project-btn">
           <div style={{ display: "flex", flexDirection: "column" }}>
             <p
-              style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
               onClick={() => {
                 setOpenPopOver(false);
                 setAddChat(true);
               }}
             >
-              <PlusCircleOutlined />&nbsp;
-              Invite people
+              <PlusCircleOutlined />
+              &nbsp; Invite people
             </p>
           </div>
         </div>
@@ -901,20 +970,22 @@ const Chats = () => {
         ) : null}
       </div>
     );
-  };
+  });
 
-  const items = [
-    {
-      key: "1",
-      label: "People",
-      children: <People />,
-    },
-    {
-      key: "2",
-      label: "Projects",
-      children: <Projects />,
-    },
-  ];
+  const items = useMemo(() => {
+    return [
+      {
+        key: "1",
+        label: "People",
+        children: <People />,
+      },
+      {
+        key: "2",
+        label: "Projects",
+        children: <Projects />,
+      },
+    ];
+  }, [projects, chats]);
 
   const tabStyle = {
     padding: "0 1vh",
@@ -923,7 +994,14 @@ const Chats = () => {
 
   //Returning loading indicator
   if (isLoading || isLoading3 || isLoading4) {
-    return <div className="loading-screen"><p><Spin />&nbsp; Loading....</p></div>;
+    return (
+      <div className="loading-screen">
+        <p>
+          <Spin />
+          &nbsp; Loading....
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -947,7 +1025,6 @@ const Chats = () => {
             />{" "} */}
               Messages
             </p>
-
 
             <div className="messages-box messages-box-sc">
               <div className="projects projects-sc">
@@ -1086,7 +1163,10 @@ const Chats = () => {
                   {profile?.type === "architect" ? (
                     <div className="header-icons">
                       <AiOutlinePlusCircle
-                        onClick={() => setAddChatToProject(true)}
+                        onClick={() => {
+                          if (selectedGroup) setAddMemberToGroup(true);
+                          else setAddChatToProject(true);
+                        }}
                       />
                     </div>
                   ) : null}
@@ -1095,32 +1175,38 @@ const Chats = () => {
                   className="projects-body"
                   onScroll={handleDebouncedScrollChatsOfProject}
                 >
-
                   {/* {groups?.length === 0 ? ( */}
-                    <>
-                      <p
-                        style={{
-                          borderBottom: "1px solid #000",
-                          margin: "10px",
-                          marginTop: "20px",
-                          paddingBottom: "7px",
-                          fontSize: ".7rem",
-                        }}
-                      >
-                        Groups
-                      </p>
-                      {profile?.type === "architect" ? (
-                        <div className="create-project-btn">
-                          <p
-                            style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-                            onClick={() => setCreateGroup(true)}
-                          >
-                            <UsergroupAddOutlined /> &nbsp;
-                            Create group
-                          </p>
-                        </div>) : <p style={{ textAlign: "center" }}>No groups</p>}
-                    </>
-                  
+
+                  <>
+                    <p
+                      style={{
+                        borderBottom: "1px solid #000",
+                        margin: "10px",
+                        marginTop: "20px",
+                        paddingBottom: "7px",
+                        fontSize: ".7rem",
+                      }}
+                    >
+                      Groups
+                    </p>
+                    {profile?.type === "architect" ? (
+                      <div className="create-project-btn">
+                        <p
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => setCreateGroup(true)}
+                        >
+                          <UsergroupAddOutlined /> &nbsp; Create group
+                        </p>
+                      </div>
+                    ) : (
+                      <p style={{ textAlign: "center" }}>No groups</p>
+                    )}
+                  </>
+
                   {groups
                     ?.sort(
                       (a, b) =>
@@ -1335,13 +1421,18 @@ const Chats = () => {
             <input
               type="text"
               placeholder="Search here"
+              onKeyDown={(e) => {
+                if (e.key === "ArrowDown") {
+                  setFilteredProfiles(profiles);
+                }
+              }}
               onChange={(e) => setInput(e.target.value)}
             />
           </div>
 
           {filteredProfiles
             ?.filter((reciver) => reciver?.type !== profile?.type)
-            ?.filter((_, i) => i < 5)
+            ?.filter((_, i) => i < 8)
             ?.map((reciver, i) => {
               return (
                 <div
@@ -1390,8 +1481,8 @@ const Chats = () => {
                 </>
               ) : (
                 <>
-                  <PlusOutlined />&nbsp;
-                  Add
+                  <PlusOutlined />
+                  &nbsp; Add
                 </>
               )}
             </button>,
@@ -1413,8 +1504,8 @@ const Chats = () => {
                 </>
               ) : (
                 <>
-                  <UserAddOutlined />&nbsp;
-                  Invite
+                  <UserAddOutlined />
+                  &nbsp; Invite
                 </>
               )}
             </button>,
@@ -1437,6 +1528,11 @@ const Chats = () => {
           <div className="search-chat-input">
             <AiOutlineSearch />
             <input
+              onKeyDown={(e) => {
+                if (e.key === "ArrowDown") {
+                  setFilteredProfiles(profilesOfSameCompanny);
+                }
+              }}
               type="text"
               placeholder="Search here"
               onChange={(e) => setInputSameCompany(e.target.value)}
@@ -1455,13 +1551,14 @@ const Chats = () => {
 
               if (!bool) return value;
             })
-            ?.filter((_, i) => i < 5)
+
             ?.map((reciver, i) => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                    }`}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1478,10 +1575,11 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}{" "}
                       <span
-                        className={`badge ${reciver.type === "vendor"
-                          ? "bg-vendor"
-                          : "bg-designer"
-                          }`}
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
                       >
                         {reciver?.type}
                       </span>
@@ -1580,6 +1678,11 @@ const Chats = () => {
             <input
               value={projectName}
               placeholder="Project Name"
+              onKeyDown={(e) => {
+                if (e.key === "ArrowDown") {
+                  setFilteredProfiles(profilesOfSameCompanny);
+                }
+              }}
               onChange={(e) => setProjectName(e.target.value)}
               required
             />
@@ -1594,49 +1697,50 @@ const Chats = () => {
             <AiOutlineSearch />
             <input
               type="text"
+              onKeyDown={(e) => {
+                if (e.key === "ArrowDown") {
+                  setFilteredProfiles(profilesOfSameCompanny);
+                }
+              }}
               placeholder="Search here"
               onChange={(e) => setInputSameCompany(e.target.value)}
             />
           </div>
 
-          {filteredProfiles
-            ?.filter((_, i) => i < 5)
-            ?.map((reciver, i) => {
-              return (
-                <div
-                  key={reciver?.id}
-                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                    }`}
-                  onClick={() => {
-                    handleSelectChats(reciver);
-                  }}
-                >
-                  <div className="chat-pic">
-                    {reciver?.profile_pic ? (
-                      <img src={reciver?.profile_pic} />
-                    ) : (
-                      <AiOutlineUser />
-                    )}
-                  </div>
-                  <div className="chat-info">
-                    <p>
-                      {reciver?.display_name}
-                      <span
-                        className={`badge ${reciver.type === "vendor"
-                          ? "bg-vendor"
-                          : "bg-designer"
-                          }`}
-                      >
-                        {reciver?.type}
-                      </span>
-                    </p>
-                    <p>
-                      {reciver?.bio ? reciver?.bio?.substring(0, 52) : null}
-                    </p>
-                  </div>
+          {filteredProfiles?.map((reciver, i) => {
+            return (
+              <div
+                key={reciver?.id}
+                className={`projects-chat ${
+                  selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                }`}
+                onClick={() => {
+                  handleSelectChats(reciver);
+                }}
+              >
+                <div className="chat-pic">
+                  {reciver?.profile_pic ? (
+                    <img src={reciver?.profile_pic} />
+                  ) : (
+                    <AiOutlineUser />
+                  )}
                 </div>
-              );
-            })}
+                <div className="chat-info">
+                  <p>
+                    {reciver?.display_name}
+                    <span
+                      className={`badge ${
+                        reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
+                      }`}
+                    >
+                      {reciver?.type}
+                    </span>
+                  </p>
+                  <p>{reciver?.bio ? reciver?.bio?.substring(0, 52) : null}</p>
+                </div>
+              </div>
+            );
+          })}
         </Modal>
 
         <Modal
@@ -1683,6 +1787,11 @@ const Chats = () => {
               placeholder="Group Name"
               onChange={(e) => setGroupName(e.target.value)}
               required
+              onKeyDown={(e) => {
+                if (e.key === "ArrowDown") {
+                  setFilteredProfiles(projectMembers);
+                }
+              }}
             />
           </div>
 
@@ -1692,7 +1801,12 @@ const Chats = () => {
             <input
               type="text"
               placeholder="Search here"
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => setInputSameCompany(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "ArrowDown") {
+                  setFilteredProfiles(projectMembers);
+                }
+              }}
             />
           </div>
           {filteredProfiles
@@ -1701,8 +1815,9 @@ const Chats = () => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                    }`}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1718,10 +1833,111 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}
                       <span
-                        className={`badge ${reciver.type === "vendor"
-                          ? "bg-vendor"
-                          : "bg-designer"
-                          }`}
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
+                      >
+                        {reciver?.type}
+                      </span>
+                    </p>
+                    <p>
+                      {reciver?.bio ? reciver?.bio?.substring(0, 52) : null}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+        </Modal>
+
+        <Modal
+          title={"Add member to " + selectedGroup?.name}
+          footer={[
+            <button
+              className="create-project"
+              onClick={() => {
+                handleAddMemberToGroup(selectedGroup?.group_id);
+              }}
+              disabled={memberAdding}
+            >
+              {memberAdding ? (
+                <>
+                  Adding... <Spin />
+                </>
+              ) : (
+                <>
+                  <PlusOutlined />
+                  &nbsp; Add
+                </>
+              )}
+            </button>,
+          ]}
+          open={addMemberToGroup}
+          afterClose={() => {
+            setSelectedChats([]);
+            setSelectedChatIds([]);
+            setSelectedChatTypes([]);
+            setInput("");
+            setInputSameCompany("");
+            setFilteredProfiles([]);
+          }}
+          onCancel={() => setAddMemberToGroup(false)}
+          bodyStyle={{
+            maxHeight: "500px",
+            overflowY: "auto",
+          }}
+        >
+          <div className="search-chat-input">
+            <AiOutlineSearch />
+            <input
+              type="text"
+              placeholder="Search member here"
+              onKeyDown={(e) => {
+                if (e.key === "ArrowDown") {
+                  setFilteredProfiles(projectMembers);
+                }
+              }}
+              onChange={(e) => setInputSameCompany(e.target.value)}
+            />
+          </div>
+          {filteredProfiles
+            ?.filter((value) => {
+              let memberIds = groupMembers?.reduce((acc, obj) => {
+                acc.push(obj.user_id);
+                return acc;
+              }, []);
+              if (!memberIds?.some((v) => v === value?.id)) return value;
+            })
+
+            ?.map((reciver, i) => {
+              return (
+                <div
+                  key={reciver?.id}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
+                  onClick={() => {
+                    handleSelectChats(reciver);
+                  }}
+                >
+                  <div className="chat-pic">
+                    {reciver?.profile_pic ? (
+                      <img src={reciver?.profile_pic} />
+                    ) : (
+                      <AiOutlineUser />
+                    )}
+                  </div>
+
+                  <div className="chat-info">
+                    <p>
+                      {reciver?.display_name}{" "}
+                      <span
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
                       >
                         {reciver?.type}
                       </span>
@@ -1787,7 +2003,7 @@ const Messeges = memo(
           </p>
         ) : (
           <div>
-            {groupMode ? (
+            {groupMode && groupMembers?.length !== 0 ? (
               <p style={{ textAlign: "center", fontSize: ".6rem" }}>
                 {createdBy} created this group with{" "}
                 {groupMembers?.map((mem, i) => {
@@ -1813,10 +2029,11 @@ const Messeges = memo(
                       return (
                         <div
                           key={message.id}
-                          className={`${message?.sender_id === profile?.id
-                            ? "mine"
-                            : "others"
-                            }`}
+                          className={`${
+                            message?.sender_id === profile?.id
+                              ? "mine"
+                              : "others"
+                          }`}
                         >
                           <p>{message?.text}</p>
                           <p>
@@ -1843,56 +2060,59 @@ const Messeges = memo(
   }
 );
 
-function Chat({
-  index,
-  last,
-  chat,
-  user_id,
-  selectedChat,
-  setSelectedChat,
-  setSelectedGroup = null,
-}) {
-  let {
-    sender_id,
-    reciver_id,
-    sender_name,
-    reciver_name,
-    sender_image,
-    reciver_image,
-  } = chat;
+const Chat = memo(
+  ({
+    index,
+    last,
+    chat,
+    user_id,
+    selectedChat,
+    setSelectedChat,
+    setSelectedGroup = null,
+  }) => {
+    let {
+      sender_id,
+      reciver_id,
+      sender_name,
+      reciver_name,
+      sender_image,
+      reciver_image,
+    } = chat;
 
-  return (
-    <div
-      className={`projects-chat ${selectedChat?.id === chat?.id ? "bg-dark" : ""
+    return (
+      <div
+        className={`projects-chat ${
+          selectedChat?.id === chat?.id ? "bg-dark" : ""
         } ${last === index ? "" : "border-bottom"} chats`}
-      onClick={() => {
-        setSelectedGroup(null);
-        setSelectedChat(chat);
-      }}
-    >
-      <div className="chat-pic">
-        {printPic(sender_id, sender_image, reciver_image, user_id) ? (
-          <img
-            src={printPic(sender_id, sender_image, reciver_image, user_id)}
-          />
-        ) : (
-          <AiOutlineUser />
-        )}
+        onClick={() => {
+          setSelectedGroup(null);
+          setSelectedChat(chat);
+        }}
+      >
+        <div className="chat-pic">
+          {printPic(sender_id, sender_image, reciver_image, user_id) ? (
+            <img
+              src={printPic(sender_id, sender_image, reciver_image, user_id)}
+            />
+          ) : (
+            <AiOutlineUser />
+          )}
+        </div>
+        <div className="chat-info">
+          <p>{printName(sender_id, sender_name, reciver_name, user_id)}</p>
+          <p>
+            {chat?.recent_message
+              ? chat?.recent_message?.substring(0, 7) + " ...."
+              : "New chat"}
+          </p>
+        </div>
+        <div className="chat-time">
+          <p>08:30 PM</p>
+        </div>
       </div>
-      <div className="chat-info">
-        <p>{printName(sender_id, sender_name, reciver_name, user_id)}</p>
-        <p>
-          {chat?.recent_message
-            ? chat?.recent_message?.substring(0, 7) + " ...."
-            : "New chat"}
-        </p>
-      </div>
-      <div className="chat-time">
-        <p>08:30 PM</p>
-      </div>
-    </div>
-  );
-}
+    );
+  }
+);
 function Group({
   index,
   last,
@@ -1904,8 +2124,9 @@ function Group({
 }) {
   return (
     <div
-      className={`projects-chat ${selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
-        } ${last === index ? "" : "border-bottom"}`}
+      className={`projects-chat ${
+        selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
+      } ${last === index ? "" : "border-bottom"}`}
       onClick={() => {
         setSelectedChat(null);
         setSelectedGroup(group);
@@ -1926,34 +2147,38 @@ function Group({
     </div>
   );
 }
-function Project({ index, last, project, user_id, setSelectedProject }) {
-  let { project_id, name, pic, is_active } = project;
-  const onChange = async (id, checked) => {
-    try {
-      await updateStatus(id, checked);
-    } catch (err) {
-      // console.log(err)
-    }
-  };
-  return (
-    <div className={`projects-chat ${last === index ? "" : "border-bottom"}`}>
-      <div className="chat-pic" onClick={() => setSelectedProject(project)}>
-        {pic ? <img src={pic} /> : <Avatar>P</Avatar>}
-      </div>
-      <div className="chat-info" onClick={() => setSelectedProject(project)}>
-        <p>{name}</p>
-      </div>
-      <div className="chat-time">
-        <Switch
-          defaultChecked={is_active}
-          onChange={(c) => onChange(project_id, c)}
-          size="small"
-        />
 
-        <p>08:30 PM</p>
+const Project = memo(
+  ({ index, last, project, user_id, setSelectedProject }) => {
+    let { project_id, name, pic, is_active } = project;
+    const onChange = async (id, checked) => {
+      try {
+        await updateStatus(id, checked);
+      } catch (err) {
+        // console.log(err)
+      }
+    };
+
+    return (
+      <div className={`projects-chat ${last === index ? "" : "border-bottom"}`}>
+        <div className="chat-pic" onClick={() => setSelectedProject(project)}>
+          {pic ? <img src={pic} /> : <Avatar>{name[0]?.toUpperCase()}</Avatar>}
+        </div>
+        <div className="chat-info" onClick={() => setSelectedProject(project)}>
+          <p>{name}</p>
+        </div>
+        <div className="chat-time">
+          <Switch
+            defaultChecked={is_active}
+            onChange={(c) => onChange(project_id, c)}
+            size="small"
+          />
+
+          <p>08:30 PM</p>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+);
 
 export default Chats;
