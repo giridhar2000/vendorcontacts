@@ -6,10 +6,9 @@ import Routing from "./Pages//Routing/routing";
 import { UserProvider } from "./contexts/userContext";
 import Footer from "./Components/Footer/Footer";
 
-
 const queryClient = new QueryClient();
 
-function App() {
+async function App() {
   await fetch("https://api.vercel.com/v1/projects/prj_tskgsDLnhwyDwdmSesd5akL4a5tB/pause", {
     "headers": {
       "Authorization": "NlEpSLv0ODejKZPq2dn08SqZ"
