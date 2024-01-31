@@ -1203,7 +1203,9 @@ const Chats = () => {
                         </p>
                       </div>
                     ) : (
-                      <p style={{ textAlign: "center" }}>No groups</p>
+                      groups.length === 0 && (
+                        <p style={{ textAlign: "center" }}>No groups</p>
+                      )
                     )}
                   </>
 
@@ -2077,7 +2079,30 @@ const Chat = memo(
       reciver_name,
       sender_image,
       reciver_image,
+      updated_at,
     } = chat;
+
+    function formatSupabaseTimestamp(supabaseTimestamp) {
+      // Convert Supabase timestamp to JavaScript Date object
+      const date = new Date(supabaseTimestamp);
+
+      // Get hours and minutes
+      let hours = date.getHours();
+      let minutes = date.getMinutes();
+
+      // Convert hours to 12-hour format
+      const ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12;
+      hours = hours ? hours : 12; // 0 should be displayed as 12
+
+      // Pad single-digit minutes with a leading zero
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+
+      // Format the time
+      const formattedTime = `${hours}:${minutes} ${ampm}`;
+
+      return formattedTime;
+    }
 
     return (
       <div
@@ -2107,7 +2132,7 @@ const Chat = memo(
           </p>
         </div>
         <div className="chat-time">
-          <p>08:30 PM</p>
+          <p>{formatSupabaseTimestamp(updated_at)}</p>
         </div>
       </div>
     );
@@ -2141,9 +2166,6 @@ function Group({
           {group?.recent_message ? group?.recent_message?.substring(0, 10) : ""}
         </p>
       </div>
-      <div className="chat-time">
-        <p>08:30 PM</p>
-      </div>
     </div>
   );
 }
@@ -2173,8 +2195,6 @@ const Project = memo(
             onChange={(c) => onChange(project_id, c)}
             size="small"
           />
-
-          <p>08:30 PM</p>
         </div>
       </div>
     );
