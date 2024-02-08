@@ -26,6 +26,7 @@ import { getUser } from "../../utils/profile_helper";
 import pdf from "../../Assets/TNC.pdf";
 import { SearchOutlined } from "@ant-design/icons";
 import { getUnreadMessagesOfUser } from "../../utils/chat_helper";
+import { getNotifications } from "../../utils/notifications_helper";
 
 const Header = () => {
   const [isAuth, setIsAuth] = useContext(AuthContext);
@@ -45,6 +46,16 @@ const Header = () => {
     },
     {
       enabled: profile?.id !== undefined,
+    }
+  );
+  const { data : notificationsData} = useQuery(
+    ["notifications", profile?.id],
+    async () => {
+      let data = await getNotifications(profile?.id, profile?.email);
+      return data;
+    },
+    {
+      enabled: profile?.id !== null,
     }
   );
   const navigate = useNavigate();
@@ -448,7 +459,9 @@ const Header = () => {
               <Badge count={unread_messages}>
                 <BsChatLeftText onClick={() => navigate("/chats")} />
               </Badge>
-              <BsBell onClick={() => navigate("/notifications")} />
+              <Badge count={notificationsData?.length}>
+                <BsBell onClick={() => navigate("/notifications")} />
+              </Badge>
               <Popover
                 placement="bottomRight"
                 content={content}

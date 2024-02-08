@@ -74,15 +74,15 @@
   background: #000 !important;
 }
 
-.ant-tabs-nav-wrap{
+.ant-tabs-nav-wrap {
   display: block !important;
 }
 
-.ant-tabs-nav-list{
+.ant-tabs-nav-list {
   justify-content: space-evenly;
 }
 
-.ant-tabs-nav{
+.ant-tabs-nav {
   margin: 0 !important;
 }
 
@@ -216,11 +216,10 @@
   display: flex;
   align-items: center;
   height: 7vh;
-  padding-top: 0rem;
   cursor: pointer;
   padding-inline: 1.3rem;
-  padding-bottom: 0rem;
   border-bottom: 1px solid #f0f0f0;
+  padding-block: 1rem;
 }
 
 .projects-chat:hover {
@@ -264,9 +263,9 @@
 }
 
 .chat-pic img {
-  width: 25px;
-  height: 25px;
+  height: 50px;
   object-fit: contain;
+  width: 50px;
 }
 
 .chat-info {
@@ -372,14 +371,15 @@ span.anticon.anticon-right {
   transition: all ease 0.5s;
 }
 
-.loading-screen{
+.loading-screen {
   height: 70vh;
 }
 
-.loading-screen p{
+.loading-screen p {
   padding: 5vh;
 }
-.font-bold{
+
+.font-bold {
   font-size: .8rem !important;
   font-weight: bolder;
 }
@@ -509,4 +509,18 @@ span.anticon.anticon-right {
   .chat-input .header-form {
     width: 92% !important;
   }
+}
+
+.ant-tabs-nav-operations {
+  display: none !important;
+}
+
+.ant-tabs-tab{
+  width: 50% !important;
+  justify-content: center !important;
+}
+
+.ant-tabs-nav-list{
+  width: 100%;
+  justify-content: space-around;
 }

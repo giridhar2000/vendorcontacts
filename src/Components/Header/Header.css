@@ -184,16 +184,15 @@ h8 {
 
 
 .icons {
-  width: 20rem;
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-around;
 }
 
 .icons svg,
 .small-pic {
   font-size: 1.6rem;
-  margin-inline: 1rem;
   cursor: pointer;
 }
 
@@ -219,7 +218,7 @@ h8 {
   display: flex;
   align-items: center;
   justify-content: center;
-
+  width: 15%;
 }
 
 /* */

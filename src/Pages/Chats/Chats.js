@@ -30,7 +30,6 @@ import {
   Spin,
   message,
   Avatar,
-  Popover,
   Tabs,
 } from "antd";
 import { useState } from "react";
@@ -769,9 +768,7 @@ const Chats = () => {
           project_id,
         });
         if (index === array?.length - 1) {
-          queryClient.invalidateQueries[
-            ("chatsOfProject", profile?.id, selectedProject?.project_id)
-          ];
+          queryClient.invalidateQueries(["chatsOfProject", profile?.id, selectedProject?.project_id]);
           resolve();
         }
       });
@@ -1006,7 +1003,6 @@ const Chats = () => {
   }, [projects, chats]);
 
   const tabStyle = {
-    padding: "0 1vh",
     width: "100%",
   };
 
@@ -1050,6 +1046,8 @@ const Chats = () => {
                   defaultActiveKey="1"
                   tabBarStyle={tabStyle}
                   items={items}
+                  indicator={"50%"}
+                  centered={true}
                   onChange={() => {
                     setSelectedProject(null);
                     setSelectedGroup(null);
@@ -1708,8 +1706,9 @@ const Chats = () => {
 
           <h3 style={{ margin: "0" }}>Select Members</h3>
           <p style={{ margin: "0", fontSize: ".6rem", color: "red" }}>
-            ** You can select max of 1 vendor and multiple designers from your
-            company
+            ** You can select max of 1 vendor and multiple designers
+          </p><p style={{ margin: "0", fontSize: ".6rem", color: "red" }}>
+            ** You can only add people from your company
           </p>
           <div className="search-chat-input">
             <AiOutlineSearch />
