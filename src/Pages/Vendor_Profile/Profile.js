@@ -11,6 +11,7 @@ import UserContext from "../../contexts/userContext";
 import { getAllDocs } from "../../utils/profile_helper";
 import { useQuery, useQueryClient } from "react-query";
 import supabase from "../../utils/supabase.config";
+
 const Profile = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();

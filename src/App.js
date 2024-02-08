@@ -6,7 +6,6 @@ import Routing from "./Pages//Routing/routing";
 import { UserProvider } from "./contexts/userContext";
 import Footer from "./Components/Footer/Footer";
 
-
 const queryClient = new QueryClient();
 
 function App() {

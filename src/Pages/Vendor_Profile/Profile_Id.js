@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getUserById, getUser, getAllDocs } from "../../utils/profile_helper";
 import { useQuery, useMutation } from "react-query";
 import { createChat } from "../../utils/chat_helper";
+import { WechatOutlined } from "@ant-design/icons"
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -116,7 +117,7 @@ const Profile = () => {
       <div className="profile-body">
         <div className="profile-info">
           <div className="profile-name">
-            <p>{profile?.display_name}</p>
+            <p>{profile?.display_name} &nbsp; <WechatOutlined className="chat-icn"/></p>
             <p>{profile?.location}</p>
             {id === user?.id ? (
               <p onClick={() => navigate("/edit")}>
