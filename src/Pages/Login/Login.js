@@ -189,6 +189,7 @@ export default function Login() {
     try {
       let isInserted = await insertCompany(newCompanyName);
       if (isInserted) toast("Company added", { type: "success" });
+      setNewCompanyName("");
       queryClient.invalidateQueries("companies");
     } catch (err) {
       console.log(err);
