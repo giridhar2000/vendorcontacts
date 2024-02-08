@@ -414,3 +414,73 @@ export async function sendChatRequest({ reciver, sender }) {
     return false;
   }
 }
+// Read messege ------------------------->
+
+export async function readMessage(message_id) {
+  try {
+    const { error } = await supabase
+      .from("messages")
+      .update({ is_read: true })
+      .eq("id", message_id);
+
+    if (error) throw new Error(error);
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}
+// Read all messege ------------------------->
+
+export async function readAllMesseges(chat_id, user_id) {
+  try {
+    const { error } = await supabase
+      .from("messages")
+      .update({ is_read: true })
+      .eq("chat_id", chat_id)
+      .eq("reciver_id", user_id);
+
+    if (error) throw new Error(error);
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}
+// Get UnRead Messages ------------------------->
+
+export async function getUnreadCount(chat_id) {
+  try {
+    console.log(chat_id);
+    const { data, error } = await supabase
+      .from("chat_unread_count")
+      .select("unread_messages")
+      .eq("chat_id", chat_id)
+      .single();
+
+    console.log(data);
+    if (error) throw new Error(error);
+    return data;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}
+// Get UnRead Messages ------------------------->
+
+export async function getUnreadMessagesOfUser(user_id) {
+  try {
+    const { data, error } = await supabase
+      .from("chat_unread_count_user")
+      .select("unread_messages")
+      .eq("reciver_id", user_id)
+      .single();
+
+    console.log(data);
+    if (error) throw new Error(error);
+    return data;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}

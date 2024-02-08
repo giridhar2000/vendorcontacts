@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Header.css";
 import dummi from "../../Assets/images/dummy.png";
-import { Button, Drawer, Skeleton } from "antd";
+import { Badge, Button, Drawer, Skeleton } from "antd";
 import Icon from "../../Assets/images/vc.svg";
 
 import {
@@ -25,6 +25,7 @@ import { useQuery } from "react-query";
 import { getUser } from "../../utils/profile_helper";
 import pdf from "../../Assets/TNC.pdf";
 import { SearchOutlined } from "@ant-design/icons";
+import { getUnreadMessagesOfUser } from "../../utils/chat_helper";
 
 const Header = () => {
   const [isAuth, setIsAuth] = useContext(AuthContext);
@@ -36,6 +37,16 @@ const Header = () => {
   const { data: profile, isLoading } = useQuery("profile", getUser, {
     enabled: isAuth !== undefined,
   });
+  const { data: unread_messages, isLoading: isLoading2 } = useQuery(
+    ["unread_messages", profile?.id],
+    async () => {
+      const data = await getUnreadMessagesOfUser(profile?.id);
+      return data.unread_messages || 0;
+    },
+    {
+      enabled: profile?.id !== undefined,
+    }
+  );
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
@@ -361,7 +372,6 @@ const Header = () => {
               onClose={onClose}
               open={openMenu}
             >
-
               {!isAuth ? (
                 <div className="buttons">
                   <button className="signin" onClick={signin}>
@@ -374,12 +384,14 @@ const Header = () => {
               ) : (
                 <div className="menu-icons">
                   <p onClick={() => navigate("/chats")}>
-                    <BsChatLeftText />&nbsp;
+                    <BsChatLeftText />
+                    &nbsp;
                     <p>Chats</p>
                   </p>
 
                   <p onClick={() => navigate("/notifications")}>
-                    <BsBell />&nbsp;
+                    <BsBell />
+                    &nbsp;
                     <p>Notifications</p>
                   </p>
                   <p onClick={() => navigate("/profile")}>
@@ -387,7 +399,8 @@ const Header = () => {
                     <p>Profile</p>
                   </p>
                   <p onClick={logout}>
-                    <AiOutlineLogout />&nbsp;
+                    <AiOutlineLogout />
+                    &nbsp;
                     <p>Logout</p>
                   </p>
                 </div>
@@ -403,7 +416,7 @@ const Header = () => {
             />
           </div>
 
-          <div className="menu-profile-pic" >
+          <div className="menu-profile-pic">
             <img src={profile?.profile_pic || dummi} alt="profile" />
           </div>
         </div>
@@ -420,7 +433,6 @@ const Header = () => {
           </div>
         )}
 
-
         <div className="right">
           {!isAuth ? (
             <div className="buttons">
@@ -433,7 +445,9 @@ const Header = () => {
             </div>
           ) : (
             <div className="buttons icons">
-              <BsChatLeftText onClick={() => navigate("/chats")} />
+              <Badge count={unread_messages}>
+                <BsChatLeftText onClick={() => navigate("/chats")} />
+              </Badge>
               <BsBell onClick={() => navigate("/notifications")} />
               <Popover
                 placement="bottomRight"
@@ -458,7 +472,6 @@ const Header = () => {
           )}
         </div>
       </div>
-
     </>
   );
 };

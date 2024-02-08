@@ -51,6 +51,9 @@ import {
   getReciverDetails,
   sendChatRequest,
   sendProjectRequest,
+  readMessage,
+  readAllMesseges,
+  getUnreadCount,
 } from "../../utils/chat_helper";
 import {
   useQuery,
@@ -147,6 +150,18 @@ const Chats = () => {
   const onVendorDetailsChange = (e) => {
     setVendorDetails({ ...vendorDetails, [e.target.name]: e.target.value });
   };
+
+  async function readMesseges(chat_id, user_id) {
+    try {
+      await readAllMesseges(chat_id, user_id);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  useEffect(() => {
+    readMesseges(selectedChat?.chat_id, profile?.id);
+    queryClient.invalidateQueries(["unread_messages", profile?.id]);
+  }, [selectedChat]);
 
   useEffect(() => {
     if (input === "") {
@@ -561,15 +576,16 @@ const Chats = () => {
   useEffect(() => {
     const chats = supabase
       .channel("custom-all-channel")
-
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "messages" },
-        (payload) => {
-          queryClient.invalidateQueries([
-            "messaagelist",
-            payload?.new?.group_id,
-          ]);
+        { event: "INSERT", schema: "public", table: "messages" },
+        async (payload) => {
+          if (payload.new.reciver_id === profile?.id) {
+            if (payload?.new?.chat_id === selectedChat?.chat_id) {
+              await readMessage(payload.new.id);
+            }
+          }
+
           queryClient.invalidateQueries([
             "messaagelist",
             payload?.new?.group_id,
@@ -581,6 +597,7 @@ const Chats = () => {
         "postgres_changes",
         { event: "*", schema: "public", table: "chats" },
         (payload) => {
+          // console.log(selectedChat);
           queryClient.invalidateQueries([
             "messaagelist",
             selectedChat?.chat_id,
@@ -618,9 +635,9 @@ const Chats = () => {
       .subscribe();
     return () => {
       chats.unsubscribe();
-      setSelectedChat(null);
+      // setSelectedChat(null);
     };
-  }, []);
+  }, [selectedChat]);
 
   //Handling selection of chats in creating a new project
   function handleSelectChats(profile) {
@@ -648,7 +665,7 @@ const Chats = () => {
             return [...old, profile?.type];
           });
           setSelectedChatTypes((old) => {
-            if (old.length <= 1) {
+            if (old?.length <= 1) {
               setSelectedChatIds((old) => {
                 return [...old, profile?.id];
               });
@@ -666,7 +683,7 @@ const Chats = () => {
           return [...old, profile?.type];
         });
         setSelectedChatTypes((old) => {
-          if (old.length <= 1) {
+          if (old?.length <= 1) {
             setSelectedChatIds((old) => {
               return [...old, profile?.id];
             });
@@ -725,7 +742,7 @@ const Chats = () => {
           reciver: chat,
           group_id,
         });
-        if (index === array.length - 1) resolve();
+        if (index === array?.length - 1) resolve();
       });
     });
     pr.then(() => {
@@ -751,7 +768,7 @@ const Chats = () => {
           user: profile,
           project_id,
         });
-        if (index === array.length - 1) {
+        if (index === array?.length - 1) {
           queryClient.invalidateQueries[
             ("chatsOfProject", profile?.id, selectedProject?.project_id)
           ];
@@ -949,6 +966,7 @@ const Chats = () => {
                         selectedChat={selectedChat}
                         setSelectedChat={setSelectedChat}
                         setSelectedGroup={setSelectedGroup}
+                        profile={profile}
                       />
                     );
                   })}
@@ -1203,7 +1221,7 @@ const Chats = () => {
                         </p>
                       </div>
                     ) : (
-                      groups.length === 0 && (
+                      groups?.length === 0 && (
                         <p style={{ textAlign: "center" }}>No groups</p>
                       )
                     )}
@@ -2071,6 +2089,7 @@ const Chat = memo(
     selectedChat,
     setSelectedChat,
     setSelectedGroup = null,
+    profile,
   }) => {
     let {
       sender_id,
@@ -2103,15 +2122,26 @@ const Chat = memo(
 
       return formattedTime;
     }
-
+    const [unreadCount, setUnreadCount] = useState(0);
+    async function getCountOfUnreadMessages(chat_id) {
+      try {
+        const data = await getUnreadCount(chat_id);
+        setUnreadCount(data?.unread_messages);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    useEffect(() => {
+      getCountOfUnreadMessages(chat.chat_id);
+    }, []);
     return (
       <div
         className={`projects-chat ${
           selectedChat?.id === chat?.id ? "bg-dark" : ""
         } ${last === index ? "" : "border-bottom"} chats`}
         onClick={() => {
-          setSelectedGroup(null);
           setSelectedChat(chat);
+          setSelectedGroup(null);
         }}
       >
         <div className="chat-pic">
@@ -2125,7 +2155,11 @@ const Chat = memo(
         </div>
         <div className="chat-info">
           <p>{printName(sender_id, sender_name, reciver_name, user_id)}</p>
-          <p>
+          <p
+            className={
+              unreadCount > 0 && chat.reciver_id !== profile.id && "font-bold"
+            }
+          >
             {chat?.recent_message
               ? chat?.recent_message?.substring(0, 7) + " ...."
               : "New chat"}
