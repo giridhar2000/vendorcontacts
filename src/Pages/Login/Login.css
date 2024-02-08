@@ -49,6 +49,11 @@
   width: 32.5%;
 }
 
+.ant-select-selection-placeholder{
+  color: #666666 !important;
+font-size: 1rem !important;
+font-weight: 400;
+}
 .passip svg {
   width: 5%;
   cursor: pointer;

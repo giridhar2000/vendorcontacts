@@ -379,6 +379,10 @@ span.anticon.anticon-right {
 .loading-screen p{
   padding: 5vh;
 }
+.font-bold{
+  font-size: .8rem !important;
+  font-weight: bolder;
+}
 
 @media (max-width: 1100px) {
   .messages-box-container>p {

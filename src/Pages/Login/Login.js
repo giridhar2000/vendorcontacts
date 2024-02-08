@@ -6,22 +6,27 @@ import { useNavigate } from "react-router-dom";
 import supabase from "../../utils/supabase.config.js";
 import { useContext } from "react";
 import UserContext from "../../contexts/authContext";
-import { Spin } from "antd";
+import { Button, Divider, Input, Select, Space, Spin } from "antd";
 import { getUserById } from "../../utils/profile_helper";
-import HubspotForm from "react-hubspot-form";
-import { v4 as uuidv4 } from "uuid";
+// import HubspotForm from "react-hubspot-form";
+// import { v4 as uuidv4 } from "uuid";
 import Icon from "../../Assets/images/vc.svg";
 import pdf from "../../Assets/TNC.pdf";
-import abstract1 from "../../Assets/images/abstract1.svg";
-import abstract2 from "../../Assets/images/abstract2.svg";
-import abstract3 from "../../Assets/images/abstract3.svg";
+// import abstract1 from "../../Assets/images/abstract1.svg";
+// import abstract2 from "../../Assets/images/abstract2.svg";
+// import abstract3 from "../../Assets/images/abstract3.svg";
+import { PlusOutlined } from "@ant-design/icons";
+import { useQuery, useQueryClient } from "react-query";
+import { getCompanies, insertCompany } from "../../utils/company_helper.js";
 
 export default function Login() {
+  const queryClient = useQueryClient();
   const [signup, setSignUp] = useState(true);
   const [ip, setIp] = useState("password");
   const [cip, setCIp] = useState("password");
   const [loading, setLoading] = useState(false);
   const [userType, setUserType] = useState(null);
+  const [newCompanyName, setNewCompanyName] = useState("");
   const [next, setNext] = useState(false);
   const [isAuth, setIsAuth] = useContext(UserContext);
   const navigate = useNavigate();
@@ -33,6 +38,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
   const [company, setCompany] = useState("");
+
+  const { data: companies, isLoading } = useQuery(["companies"], getCompanies);
 
   const back = () => {
     if (next) {
@@ -174,6 +181,21 @@ export default function Login() {
     }
   }
 
+  async function addNewCompany() {
+    if (!newCompanyName) {
+      toast("Company Name Required", { type: "warning" });
+      return;
+    }
+    try {
+      let isInserted = await insertCompany(newCompanyName);
+      if (isInserted) toast("Company added", { type: "success" });
+      setNewCompanyName("");
+      queryClient.invalidateQueries("companies");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div className="login">
       <div className="navbarheader">
@@ -196,9 +218,7 @@ export default function Login() {
             <div className="loginText">
               <h1>Welcome Back!</h1>
               <span>
-
                 Please provide your login details to access <br /> the content.
-
               </span>
             </div>
             <div className="Loginform">
@@ -313,10 +333,7 @@ export default function Login() {
               </button>
               <p className="p">
                 Don't have an account?{" "}
-                <span
-                  className="loginsignup"
-                  onClick={() => setSignUp(false)}
-                >
+                <span className="loginsignup" onClick={() => setSignUp(false)}>
                   <b>Sign Up</b>
                 </span>
               </p>
@@ -354,11 +371,55 @@ export default function Login() {
                     </div>
                   </div>
                   <div className="emailip">
-                    <input
-                      placeholder="Company"
-                      value={company}
-                      onChange={(e) => setCompany(e.target.value)}
+                    <Select
+                      style={{
+                        width: 700,
+                      }}
+                      onChange={(data) => setCompany(data)}
+                      placeholder="Select Company"
+                      dropdownRender={(menu) => (
+                        <>
+                          {menu}
+                          <Divider
+                            style={{
+                              margin: "8px 0",
+                            }}
+                          />
+                          <Space
+                            style={{
+                              padding: "0 8px 4px",
+                            }}
+                          >
+                            <Input
+                              placeholder="Please enter company name"
+                              onChange={(e) => {
+                                setNewCompanyName(e.target.value);
+                              }}
+                              onKeyDown={(e) => e.stopPropagation()}
+                            />
+                            <Button
+                              type="text"
+                              icon={<PlusOutlined />}
+                              onClick={addNewCompany}
+                            >
+                              Add New Company
+                            </Button>
+                          </Space>
+                        </>
+                      )}
+                      options={companies.map((item) => ({
+                        label: item,
+                        value: item,
+                      }))}
                     />
+
+                    {
+                      // <input
+                      //   placeholder="Company"
+                      //   value={company}
+                      //   onChange={(e) => setCompany(e.target.value)}
+                      // />
+                    }
                   </div>
                   <div className="emailip">
                     <input
@@ -576,17 +637,13 @@ export default function Login() {
                     </span>
                   </p>
                 </div>
-
                 <div className="y-img">
-
                   <img
                     src={loginbg}
                     alt="login"
                     className="loginimg singup-img"
                   />
-
                 </div>
-
               </>
             ) : (
               <div className="signup">
@@ -644,7 +701,6 @@ export default function Login() {
                         marginTop: "2vh",
                       }}
                     />
-
                   </div>
                 </div>
                 <img src={loginbg} alt="login" className="loginimg" />
@@ -654,12 +710,7 @@ export default function Login() {
         )}
       </div>
       <div className="imgi">
-        <img
-          src={loginbg}
-          alt="login"
-          className="loginimg"
-          id="loginimg"
-        />
+        <img src={loginbg} alt="login" className="loginimg" id="loginimg" />
       </div>
     </div>
   );
