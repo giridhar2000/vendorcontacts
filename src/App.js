@@ -15,8 +15,12 @@ function App() {
         <AuthProvider>
           <UserProvider>
             <div className="container">
-              <Routing />
-              <Footer />
+              <div className='container-body'>
+                <Routing />
+              </div>
+              <div className="container-footer">
+                <Footer />
+              </div>
             </div>
           </UserProvider>
         </AuthProvider>
