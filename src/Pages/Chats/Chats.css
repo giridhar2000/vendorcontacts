@@ -515,12 +515,12 @@ span.anticon.anticon-right {
   display: none !important;
 }
 
-.ant-tabs-tab{
+.ant-tabs-tab {
   width: 50% !important;
   justify-content: center !important;
 }
 
-.ant-tabs-nav-list{
+.ant-tabs-nav-list {
   width: 100%;
   justify-content: space-around;
 }

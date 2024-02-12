@@ -8,6 +8,7 @@ import { useContext } from "react";
 import UserContext from "../../contexts/authContext";
 import { Button, Divider, Input, Select, Space, Spin } from "antd";
 import { getUserById } from "../../utils/profile_helper";
+import $ from "jquery";
 // import HubspotForm from "react-hubspot-form";
 // import { v4 as uuidv4 } from "uuid";
 import Icon from "../../Assets/images/vc.svg";
@@ -112,6 +113,29 @@ export default function Login() {
       setLoading(false);
       toast(error.message, { type: "error" });
     }
+
+    var data = {
+      service_id: "service_cpytsjm",
+      template_id: "template_p7qh9y5",
+      user_id: "F3rrwZwcav-0a-BOW",
+      template_params: {
+        name: firstName,
+        companyName: 'VendorContacts',
+        email: email,
+      },
+    };
+
+    $.ajax("https://api.emailjs.com/api/v1.0/email/send", {
+      type: "POST",
+      data: JSON.stringify(data),
+      contentType: "application/json",
+    })
+      .done(function () {
+        alert("Your mail is sent!");
+      })
+      .fail(function (error) {
+        alert("Oops... " + JSON.stringify(error));
+      });
   };
 
   async function handleLogin() {

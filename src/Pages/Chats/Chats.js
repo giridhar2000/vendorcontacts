@@ -523,18 +523,18 @@ const Chats = () => {
   });
 
   const sendInvite = async () => {
-    if (vendorDetails?.VendorEmail === "" || vendorDetails?.VendorName === "") {
-      toast("Please fill all the details", { type: "error" });
-      return;
-    }
-    if (
-      !/^([\w.-]+)@(\[(\d{1,3}\.){3}|(?!hotmail|gmail|yahoo)(([a-zA-Z\d-]+\.)+))([a-zA-Z]{2,4}|\d{1,3})(\]?)$/.test(
-        vendorDetails?.VendorEmail
-      )
-    ) {
-      toast("Please use your company mail", { type: "error" });
-      return;
-    }
+    // if (vendorDetails?.VendorEmail === "" || vendorDetails?.VendorName === "") {
+    //   toast("Please fill all the details", { type: "error" });
+    //   return;
+    // }
+    // if (
+    //   !/^([\w.-]+)@(\[(\d{1,3}\.){3}|(?!hotmail|gmail|yahoo)(([a-zA-Z\d-]+\.)+))([a-zA-Z]{2,4}|\d{1,3})(\]?)$/.test(
+    //     vendorDetails?.VendorEmail
+    //   )
+    // ) {
+    //   toast("Please use your company mail", { type: "error" });
+    //   return;
+    // }
     send_project_request_mutation.mutateAsync({
       reciver: {
         display_name: vendorDetails?.VendorName,
@@ -570,6 +570,33 @@ const Chats = () => {
         alert("Oops... " + JSON.stringify(error));
       });
   };
+
+  //sending email after message request is being sent
+  const sendEmailNotify = (receiver) => {
+    // var data = {
+    //   service_id: "service_cpytsjm",
+    //   template_id: "template_0jmwqsd",
+    //   user_id: "F3rrwZwcav-0a-BOW",
+    //   template_params: {
+    //     name: receiver.display_name,
+    //     companyName: 'VendorContacts',
+    //     email: email,
+    //   },
+    // };
+
+    // $.ajax("https://api.emailjs.com/api/v1.0/email/send", {
+    //   type: "POST",
+    //   data: JSON.stringify(data),
+    //   contentType: "application/json",
+    // })
+    //   .done(function () {
+    //     alert("Your mail is sent!");
+    //   })
+    //   .fail(function (error) {
+    //     alert("Oops... " + JSON.stringify(error));
+    //   });
+    console.log(receiver)
+  }
 
   // Fetching chats and messages info in real time
   useEffect(() => {
@@ -1462,6 +1489,7 @@ const Chats = () => {
                         reciver,
                         sender: profile,
                       });
+                      sendEmailNotify(reciver)
                     }
                   }}
                 >
@@ -1593,8 +1621,8 @@ const Chats = () => {
                       {reciver?.display_name}{" "}
                       <span
                         className={`badge ${reciver.type === "vendor"
-                            ? "bg-vendor"
-                            : "bg-designer"
+                          ? "bg-vendor"
+                          : "bg-designer"
                           }`}
                       >
                         {reciver?.type}
@@ -1848,8 +1876,8 @@ const Chats = () => {
                       {reciver?.display_name}
                       <span
                         className={`badge ${reciver.type === "vendor"
-                            ? "bg-vendor"
-                            : "bg-designer"
+                          ? "bg-vendor"
+                          : "bg-designer"
                           }`}
                       >
                         {reciver?.type}
@@ -1946,8 +1974,8 @@ const Chats = () => {
                       {reciver?.display_name}{" "}
                       <span
                         className={`badge ${reciver.type === "vendor"
-                            ? "bg-vendor"
-                            : "bg-designer"
+                          ? "bg-vendor"
+                          : "bg-designer"
                           }`}
                       >
                         {reciver?.type}
@@ -2041,8 +2069,8 @@ const Messeges = memo(
                         <div
                           key={message.id}
                           className={`${message?.sender_id === profile?.id
-                              ? "mine"
-                              : "others"
+                            ? "mine"
+                            : "others"
                             }`}
                         >
                           <p>{message?.text}</p>

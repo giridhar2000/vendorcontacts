@@ -444,7 +444,7 @@ const Header = () => {
           </div>
         )}
 
-        <div className="right">
+        <div className="right" style={{width: !isAuth ? '':"15%"}}>
           {!isAuth ? (
             <div className="buttons">
               <button className="signin" onClick={signin}>
