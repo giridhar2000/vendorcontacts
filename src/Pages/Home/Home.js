@@ -274,9 +274,7 @@ export default function Home() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
-                    <br />
                   </div>
-                  <br />
                   <div>
                     <input
                       type="checkbox"
@@ -291,9 +289,7 @@ export default function Home() {
                       </a>
                       .
                     </label>
-                    <br />
                   </div>
-                  <br />
                 </form>
                 <button className="submit-btn" onClick={invite}>
                   Join the list
