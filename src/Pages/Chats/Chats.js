@@ -1152,9 +1152,9 @@ const Chats = () => {
                         }
                       }}
                     >
-                      <button>
+                      {/* <button>
                         <BsMicFill />
-                      </button>
+                      </button> */}
                       <input
                         value={text}
                         className="header-input"
@@ -1352,9 +1352,9 @@ const Chats = () => {
                             }
                           }}
                         >
-                          <button>
+                          {/* <button>
                             <BsMicFill />
-                          </button>
+                          </button> */}
                           <input
                             value={text}
                             className="header-input"
@@ -1408,9 +1408,9 @@ const Chats = () => {
                           }
                         }}
                       >
-                        <button>
+                        {/* <button>
                           <BsMicFill />
-                        </button>
+                        </button> */}
                         <input
                           value={text}
                           className="header-input"
