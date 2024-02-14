@@ -31,6 +31,7 @@ import {
   message,
   Avatar,
   Tabs,
+  Badge,
 } from "antd";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -948,7 +949,10 @@ const Chats = () => {
   const People = memo(() => {
     return (
       <div className="projects-body" onScroll={handleDebouncedScroll}>
-        <div className="create-project-btn">
+        <div className="create-project-btn" onClick={() => {
+                setOpenPopOver(false);
+                setAddChat(true);
+              }}>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <p
               style={{
@@ -956,10 +960,7 @@ const Chats = () => {
                 alignItems: "center",
                 cursor: "pointer",
               }}
-              onClick={() => {
-                setOpenPopOver(false);
-                setAddChat(true);
-              }}
+              
             >
               <PlusCircleOutlined />
               &nbsp; Invite people
@@ -2184,7 +2185,10 @@ const Chat = memo(
         </div>
         <div className="chat-time">
           <p>{formatSupabaseTimestamp(updated_at)}</p>
-        </div>
+        </div> &nbsp;
+        {
+          unreadCount &&  <Badge count={unreadCount}/>
+        }
       </div>
     );
   }

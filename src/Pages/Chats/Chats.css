@@ -220,6 +220,7 @@
   padding-inline: 1.3rem;
   border-bottom: 1px solid #f0f0f0;
   padding-block: 1rem;
+  justify-content: space-between;
 }
 
 .projects-chat:hover {
