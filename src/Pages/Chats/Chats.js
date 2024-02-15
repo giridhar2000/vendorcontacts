@@ -23,16 +23,7 @@ import {
   BsSkipBackwardCircleFill,
 } from "react-icons/bs";
 import { MdOutlineNavigateNext } from "react-icons/md";
-import {
-  Switch,
-  Empty,
-  Modal,
-  Spin,
-  message,
-  Avatar,
-  Tabs,
-  Badge,
-} from "antd";
+import { Switch, Empty, Modal, Spin, message, Avatar, Tabs, Badge } from "antd";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import supabase from "../../utils/supabase.config";
@@ -574,30 +565,30 @@ const Chats = () => {
 
   //sending email after message request is being sent
   const sendEmailNotify = (receiver) => {
-    // var data = {
-    //   service_id: "service_cpytsjm",
-    //   template_id: "template_0jmwqsd",
-    //   user_id: "F3rrwZwcav-0a-BOW",
-    //   template_params: {
-    //     name: receiver.display_name,
-    //     companyName: 'VendorContacts',
-    //     email: email,
-    //   },
-    // };
+    var data = {
+      service_id: "service_cpytsjm",
+      template_id: "template_0jmwqsd",
+      user_id: "F3rrwZwcav-0a-BOW",
+      template_params: {
+        name: receiver?.display_name,
+        companyName: "VendorContacts",
+        email: receiver?.email,
+      },
+    };
 
-    // $.ajax("https://api.emailjs.com/api/v1.0/email/send", {
-    //   type: "POST",
-    //   data: JSON.stringify(data),
-    //   contentType: "application/json",
-    // })
-    //   .done(function () {
-    //     alert("Your mail is sent!");
-    //   })
-    //   .fail(function (error) {
-    //     alert("Oops... " + JSON.stringify(error));
-    //   });
-    console.log(receiver)
-  }
+    $.ajax("https://api.emailjs.com/api/v1.0/email/send", {
+      type: "POST",
+      data: JSON.stringify(data),
+      contentType: "application/json",
+    })
+      .done(function () {
+        alert("Your mail is sent!");
+      })
+      .fail(function (error) {
+        alert("Oops... " + JSON.stringify(error));
+      });
+    console.log(receiver);
+  };
 
   // Fetching chats and messages info in real time
   useEffect(() => {
@@ -649,7 +640,7 @@ const Chats = () => {
         "postgres_changes",
         { event: "*", schema: "public", table: "groups" },
         (payload) => {
-          console.log(payload);
+          // console.log(payload);
           queryClient.invalidateQueries([
             "groups",
             selectedProject?.project_id,
@@ -796,7 +787,11 @@ const Chats = () => {
           project_id,
         });
         if (index === array?.length - 1) {
-          queryClient.invalidateQueries(["chatsOfProject", profile?.id, selectedProject?.project_id]);
+          queryClient.invalidateQueries([
+            "chatsOfProject",
+            profile?.id,
+            selectedProject?.project_id,
+          ]);
           resolve();
         }
       });
@@ -949,10 +944,13 @@ const Chats = () => {
   const People = memo(() => {
     return (
       <div className="projects-body" onScroll={handleDebouncedScroll}>
-        <div className="create-project-btn" onClick={() => {
-                setOpenPopOver(false);
-                setAddChat(true);
-              }}>
+        <div
+          className="create-project-btn"
+          onClick={() => {
+            setOpenPopOver(false);
+            setAddChat(true);
+          }}
+        >
           <div style={{ display: "flex", flexDirection: "column" }}>
             <p
               style={{
@@ -960,7 +958,6 @@ const Chats = () => {
                 alignItems: "center",
                 cursor: "pointer",
               }}
-              
             >
               <PlusCircleOutlined />
               &nbsp; Invite people
@@ -1490,7 +1487,7 @@ const Chats = () => {
                         reciver,
                         sender: profile,
                       });
-                      sendEmailNotify(reciver)
+                      sendEmailNotify(reciver);
                     }
                   }}
                 >
@@ -1603,8 +1600,9 @@ const Chats = () => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                    }`}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1621,10 +1619,11 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}{" "}
                       <span
-                        className={`badge ${reciver.type === "vendor"
-                          ? "bg-vendor"
-                          : "bg-designer"
-                          }`}
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
                       >
                         {reciver?.type}
                       </span>
@@ -1736,7 +1735,8 @@ const Chats = () => {
           <h3 style={{ margin: "0" }}>Select Members</h3>
           <p style={{ margin: "0", fontSize: ".6rem", color: "red" }}>
             ** You can select max of 1 vendor and multiple designers
-          </p><p style={{ margin: "0", fontSize: ".6rem", color: "red" }}>
+          </p>
+          <p style={{ margin: "0", fontSize: ".6rem", color: "red" }}>
             ** You can only add people from your company
           </p>
           <div className="search-chat-input">
@@ -1757,8 +1757,9 @@ const Chats = () => {
             return (
               <div
                 key={reciver?.id}
-                className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                  }`}
+                className={`projects-chat ${
+                  selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                }`}
                 onClick={() => {
                   handleSelectChats(reciver);
                 }}
@@ -1774,8 +1775,9 @@ const Chats = () => {
                   <p>
                     {reciver?.display_name}
                     <span
-                      className={`badge ${reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
-                        }`}
+                      className={`badge ${
+                        reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
+                      }`}
                     >
                       {reciver?.type}
                     </span>
@@ -1859,8 +1861,9 @@ const Chats = () => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                    }`}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1876,10 +1879,11 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}
                       <span
-                        className={`badge ${reciver.type === "vendor"
-                          ? "bg-vendor"
-                          : "bg-designer"
-                          }`}
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
                       >
                         {reciver?.type}
                       </span>
@@ -1956,8 +1960,9 @@ const Chats = () => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                    }`}
+                  className={`projects-chat ${
+                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1974,10 +1979,11 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}{" "}
                       <span
-                        className={`badge ${reciver.type === "vendor"
-                          ? "bg-vendor"
-                          : "bg-designer"
-                          }`}
+                        className={`badge ${
+                          reciver.type === "vendor"
+                            ? "bg-vendor"
+                            : "bg-designer"
+                        }`}
                       >
                         {reciver?.type}
                       </span>
@@ -2069,10 +2075,11 @@ const Messeges = memo(
                       return (
                         <div
                           key={message.id}
-                          className={`${message?.sender_id === profile?.id
-                            ? "mine"
-                            : "others"
-                            }`}
+                          className={`${
+                            message?.sender_id === profile?.id
+                              ? "mine"
+                              : "others"
+                          }`}
                         >
                           <p>{message?.text}</p>
                           <p>
@@ -2155,8 +2162,9 @@ const Chat = memo(
     }, []);
     return (
       <div
-        className={`projects-chat ${selectedChat?.id === chat?.id ? "bg-dark" : ""
-          } ${last === index ? "" : "border-bottom"} chats`}
+        className={`projects-chat ${
+          selectedChat?.id === chat?.id ? "bg-dark" : ""
+        } ${last === index ? "" : "border-bottom"} chats`}
         onClick={() => {
           setSelectedChat(chat);
           setSelectedGroup(null);
@@ -2175,7 +2183,7 @@ const Chat = memo(
           <p>{printName(sender_id, sender_name, reciver_name, user_id)}</p>
           <p
             className={
-              unreadCount > 0 && chat.reciver_id !== profile.id && "font-bold"
+              unreadCount > 0 && chat.reciver_id === profile.id && "font-bold"
             }
           >
             {chat?.recent_message
@@ -2185,10 +2193,11 @@ const Chat = memo(
         </div>
         <div className="chat-time">
           <p>{formatSupabaseTimestamp(updated_at)}</p>
-        </div> &nbsp;
-        {
-          unreadCount &&  <Badge count={unreadCount}/>
-        }
+        </div>{" "}
+        &nbsp;
+        {unreadCount > 0 && chat.reciver_id === profile.id && (
+          <Badge count={unreadCount} />
+        )}
       </div>
     );
   }
@@ -2204,8 +2213,9 @@ function Group({
 }) {
   return (
     <div
-      className={`projects-chat ${selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
-        } ${last === index ? "" : "border-bottom"}`}
+      className={`projects-chat ${
+        selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
+      } ${last === index ? "" : "border-bottom"}`}
       onClick={() => {
         setSelectedChat(null);
         setSelectedGroup(group);
