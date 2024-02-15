@@ -479,7 +479,7 @@ const Header = () => {
                 <AiFillRightCircle size={50} />
               </div>
             </div>
-            {searchData.length > 0 &&
+            {searchData?.length > 0 &&
               <div className="search-list">
                 <ul>
                   <li style={{color: 'red', fontSize: 'x-small'}}>* showing vendors only from your company</li>
