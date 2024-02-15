@@ -395,6 +395,7 @@ export async function sendProjectRequest({ reciver, sender, project }) {
 // Sneding chat request function ------------------------->
 
 export async function sendChatRequest({ reciver, sender }) {
+  console.log(sender);
   try {
     const { error } = await supabase.from("notifications").insert([
       {
@@ -479,6 +480,18 @@ export async function getUnreadMessagesOfUser(user_id) {
     // console.log(data);
     if (error) throw new Error(error);
     return data;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}
+// Check chat exist or not  ------------------------->
+
+export async function isChatExist(reciver_id, user_id) {
+  try {
+    let chatId = createChatId(reciver_id, user_id); // Getting chat id from recuver & sender id's
+    let { status, data } = await checkIsChatExist(chatId); // If chat is exist then return chat or return status:false otherwise
+    return { status, data };
   } catch (err) {
     console.log(err);
     return false;
