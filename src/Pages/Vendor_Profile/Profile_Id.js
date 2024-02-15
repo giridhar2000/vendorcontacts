@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import $ from "jquery";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 import bg1 from "../../Assets/img/img1.jpg";
@@ -6,14 +7,20 @@ import { AiOutlineArrowRight, AiOutlineUser, AiFillEdit } from "react-icons/ai";
 import { BsFillChatDotsFill } from "react-icons/bs";
 import "./Profile.css";
 import PdfCard from "../../Components/PdfCard/PdfCard";
-import { Empty, Skeleton } from "antd";
+import { Button, Empty, Modal, Skeleton } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserById, getUser, getAllDocs } from "../../utils/profile_helper";
 import { useQuery, useMutation } from "react-query";
-import { createChat } from "../../utils/chat_helper";
-import { WechatOutlined } from "@ant-design/icons"
+import {
+  createChat,
+  isChatExist,
+  sendChatRequest,
+} from "../../utils/chat_helper";
+import { WechatOutlined } from "@ant-design/icons";
+import { toast } from "react-toastify";
 
 const Profile = () => {
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   let { id } = useParams();
   const { data: profile, isLoading } = useQuery(
@@ -35,18 +42,58 @@ const Profile = () => {
   );
   const { data: user, isLoading: isLoading2 } = useQuery("profile", getUser);
 
-  // Mutation for sending message
-  const create_chat_mutation = useMutation(createChat, {
+  //sending email after message request is being sent
+  const sendEmailNotify = (receiver) => {
+    var data = {
+      service_id: "service_cpytsjm",
+      template_id: "template_0jmwqsd",
+      user_id: "F3rrwZwcav-0a-BOW",
+      template_params: {
+        name: receiver?.display_name,
+        companyName: "VendorContacts",
+        email: receiver?.email,
+      },
+    };
+
+    $.ajax("https://api.emailjs.com/api/v1.0/email/send", {
+      type: "POST",
+      data: JSON.stringify(data),
+      contentType: "application/json",
+    })
+      .done(function () {
+        alert("Your mail is sent!");
+      })
+      .fail(function (error) {
+        alert("Oops... " + JSON.stringify(error));
+      });
+    console.log(receiver);
+  };
+
+  // Mutation for sending chat request to a user
+  const send_chat_request_mutation = useMutation(sendChatRequest, {
     onSuccess: (data) => {
       if (data) {
-        navigate("/chats", {
-          state: {
-            data,
-          },
-        });
+        toast("Chat request sent!", { type: "success" });
+      } else {
+        toast("Chat request failed", { type: "error" });
       }
     },
   });
+  async function handleChatClick(reciver_id, user_id) {
+    if (!reciver_id || !user_id) return;
+    try {
+      let { status, data } = await isChatExist(reciver_id, user_id);
+      if (!status) {
+        setShowModal(true);
+        return;
+      }
+      navigate("/chats", {
+        state: {
+          data,
+        },
+      });
+    } catch (err) {}
+  }
 
   if (isLoading || isLoading2) {
     return (
@@ -96,7 +143,7 @@ const Profile = () => {
   }
   return (
     <>
-    <Header/>
+      <Header />
       <div className="cover-pic">
         {profile?.cover_pic ? (
           <img src={profile?.cover_pic} alt="bg" />
@@ -117,7 +164,22 @@ const Profile = () => {
       <div className="profile-body">
         <div className="profile-info">
           <div className="profile-name">
-            <p>{profile?.display_name} &nbsp; <WechatOutlined className="chat-icn"/></p>
+            <p>
+              {profile?.display_name} &nbsp;
+              <button
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  outline: "none",
+                }}
+                onClick={() => {
+                  handleChatClick(profile?.id, user?.id);
+                }}
+              >
+                <WechatOutlined className="chat-icn" />
+              </button>{" "}
+            </p>
+
             <p>{profile?.location}</p>
             {id === user?.id ? (
               <p onClick={() => navigate("/edit")}>
@@ -128,15 +190,13 @@ const Profile = () => {
               </p>
             ) : null}
           </div>
-          
         </div>
         <div className="profile-box-container">
           <div className="profile-box">
             <div className="line"></div>
             <p>{profile?.quote ? profile?.quote : "**Update your quote**"}</p>
           </div>
-          {
-            /* id !== user?.id ? (
+          {/* id !== user?.id ? (
             <div
               className="chat-icon"
               onClick={() => {
@@ -150,8 +210,7 @@ const Profile = () => {
             >
               <BsFillChatDotsFill />
             </div>
-          ) : null */
-        }
+          ) : null */}
         </div>
 
         <div className="profile-desc">
@@ -169,13 +228,35 @@ const Profile = () => {
           <hr />
           <div className="pdf-cards">
             {docs?.map((doc) => {
-              return <PdfCard doc={doc} key={doc.id} showDelete={false}/>;
+              return <PdfCard doc={doc} key={doc.id} showDelete={false} />;
             })}
           </div>
         </div>
       </div>
-
-    <Footer/>  
+      <Modal
+        open={showModal}
+        title="Chat with Vendor"
+        onOk={() => {
+          console.log(user);
+          send_chat_request_mutation.mutateAsync({
+            reciver: profile,
+            sender: user,
+          });
+          sendEmailNotify(profile);
+          setShowModal(false);
+        }}
+        okText="Yes"
+        cancelText="No"
+        onCancel={() => {
+          setShowModal(false);
+        }}
+      >
+        <p>
+          Chat with {profile?.display_name} didn't exist do you want to send
+          invite?
+        </p>
+      </Modal>
+      <Footer />
     </>
   );
 };
