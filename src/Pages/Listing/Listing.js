@@ -50,9 +50,9 @@ const Listing = () => {
     }
   }
 
-  useEffect(() => {
-    console.log(vendors);
-  }, [vendors]);
+  // useEffect(() => {
+  //   console.log(vendors);
+  // }, [vendors]);
 
   return (
     <>

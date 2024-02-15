@@ -150,6 +150,24 @@ export async function getAllUsersOfSameCompany(id, type, company) {
   }
 }
 
+// Getting all vendors from same company
+export async function getAllVendorsOfSameCompany(type, company) {
+  if (!company) return null;
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id,profile_pic,display_name,bio,type,company")
+      .eq("type", "vendor")
+      .eq("company", company);
+    if (error) throw new Error(error);
+    console.log(data)
+    return data;
+  } catch (err) {
+    // console.log(err);
+    return null;
+  }
+}
+
 // Getting all documents of a user by user id --------------->          returns [ < docs of a user > ] || null
 
 export async function getAllDocs(id) {

@@ -476,7 +476,7 @@ export async function getUnreadMessagesOfUser(user_id) {
       .eq("reciver_id", user_id)
       .single();
 
-    console.log(data);
+    // console.log(data);
     if (error) throw new Error(error);
     return data;
   } catch (err) {

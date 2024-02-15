@@ -3,7 +3,6 @@ import "./Header.css";
 import dummi from "../../Assets/images/dummy.png";
 import { Badge, Button, Drawer, Skeleton } from "antd";
 import Icon from "../../Assets/images/vc.svg";
-
 import {
   AiOutlineArrowRight,
   AiOutlineUser,
@@ -16,15 +15,14 @@ import { BsChatLeftText, BsBell } from "react-icons/bs";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../contexts/authContext";
-import UserContext from "../../contexts/userContext";
 import { Popover, message, Modal } from "antd";
 import { GiPartyPopper } from "react-icons/gi";
 import { toast } from "react-toastify";
 import supabase from "../../utils/supabase.config";
-import { useQuery } from "react-query";
-import { getUser } from "../../utils/profile_helper";
+import { useQuery, useInfiniteQuery } from "react-query";
+import { getAllVendorsOfSameCompany, getUser } from "../../utils/profile_helper";
 import pdf from "../../Assets/TNC.pdf";
-import { SearchOutlined } from "@ant-design/icons";
+import { ConsoleSqlOutlined, SearchOutlined } from "@ant-design/icons";
 import { getUnreadMessagesOfUser } from "../../utils/chat_helper";
 import { getNotifications } from "../../utils/notifications_helper";
 
@@ -38,6 +36,17 @@ const Header = () => {
   const { data: profile, isLoading } = useQuery("profile", getUser, {
     enabled: isAuth !== undefined,
   });
+
+  const { data: vendorsOfSameCompany, isLoading: isLoading5 } = useQuery(
+    ["vendorsSameCompany"],
+    async () => {
+      let data = await getAllVendorsOfSameCompany(
+        profile?.type,
+        profile?.company
+      );
+      return data;
+    }
+  );
   const { data: unread_messages, isLoading: isLoading2 } = useQuery(
     ["unread_messages", profile?.id],
     async () => {
@@ -48,7 +57,7 @@ const Header = () => {
       enabled: profile?.id !== undefined,
     }
   );
-  const { data : notificationsData} = useQuery(
+  const { data: notificationsData } = useQuery(
     ["notifications", profile?.id],
     async () => {
       let data = await getNotifications(profile?.id, profile?.email);
@@ -61,6 +70,7 @@ const Header = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
+  const [searchData, setSearchData] = useState([])
 
   const signin = () => {
     navigate("/login");
@@ -71,6 +81,24 @@ const Header = () => {
   const onClose = () => {
     setOpenMenu(false);
   };
+
+  const handleOnSearch = (e) => {
+    if (e.target.value === "") {
+      setSearchData([])
+    } else {
+      setSearchData((old) => {
+        return vendorsOfSameCompany?.filter((value, i) =>
+          value?.display_name.toLowerCase()?.includes(e.target.value?.toLowerCase())
+        ).map(val => val)
+      });
+    }
+  }
+
+  const getFullList = () => {
+    setSearchData((old) => {
+      return vendorsOfSameCompany?.slice(0, 5).map(val => val)
+    });
+  }
 
   async function invite() {
     if (email && checkbox) {
@@ -287,7 +315,6 @@ const Header = () => {
 
                 <form>
                   <div>
-                    {/* <label style={{color: 'rgba(0,0,0,0.5)'}}>Email</label><br /> */}
                     <input
                       className="mailinput"
                       type="text"
@@ -433,18 +460,41 @@ const Header = () => {
         </div>
 
         {isAuth && (
-          <div className="search-bar">
-            <div className="left" style={{ width: "100%" }}>
-              <SearchOutlined />
-              <input type="text" placeholder="Search your favourite vendor" />
+          <div className="search">
+            <div className="search-bar">
+              <div className="left" style={{ width: "100%" }}>
+                <SearchOutlined />
+                <input
+                  type="text"
+                  placeholder="Search your favourite vendor"
+                  onChange={handleOnSearch}
+                  onKeyDown={(e) => {
+                    if (e.key === "ArrowDown") {
+                      getFullList()
+                    }
+                  }}
+                />
+              </div>
+              <div className="righti">
+                <AiFillRightCircle size={50} />
+              </div>
             </div>
-            <div className="righti">
-              <AiFillRightCircle size={50} />
-            </div>
+            {searchData.length > 0 &&
+              <div className="search-list">
+                <ul>
+                  <li style={{color: 'red', fontSize: 'x-small'}}>* showing vendors only from your company</li>
+                  {searchData?.map((val) =>
+                    <li className="selected-data" onClick={()=>navigate(`/profile/${val?.id}`)}>
+                      {val.display_name}
+                    </li>
+                  )}
+                </ul>
+              </div>
+            }
           </div>
         )}
 
-        <div className="right" style={{width: !isAuth ? '':"15%"}}>
+        <div className="right" style={{ width: !isAuth ? '' : "15%" }}>
           {!isAuth ? (
             <div className="buttons">
               <button className="signin" onClick={signin}>

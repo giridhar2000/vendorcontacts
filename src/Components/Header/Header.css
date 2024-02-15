@@ -218,7 +218,7 @@ h8 {
   display: flex;
   align-items: center;
   justify-content: center;
-}
+  }
 
 /* */
 /* new */
@@ -256,6 +256,42 @@ h8 {
 
 .menu-profile-pic{
   display: none;
+}
+
+.search-list {
+  position: absolute;
+  background: #f4f4f4;
+  width: 50%;
+  border-radius: 1vh;
+  left: 5%;
+  border: 1px solid lightgray;
+  z-index: 9;
+}
+
+.search-list ul{
+  list-style-type: none;
+  padding: 0;
+}
+
+.search-list li{
+  padding: 1vh;
+  margin-inline: 2vh;
+  padding-inline-start: 2vh;
+}
+
+.search{
+  position: relative;
+}
+
+.selected-data{
+  border-radius: 2vh;
+  cursor: pointer;
+  
+}
+
+.selected-data:hover{
+  background-color: #d6db63;
+  color: white;
 }
 
 
