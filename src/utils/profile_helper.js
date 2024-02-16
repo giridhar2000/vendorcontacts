@@ -121,7 +121,7 @@ export async function getAllUsers(id, type) {
   try {
     const { data, error } = await supabase
       .from("profiles")
-      .select("id,profile_pic,display_name,bio,company,type")
+      .select("id,profile_pic,display_name,bio,company,type,email")
       .neq("id", id);
     // .neq("type", type);
     if (error) throw new Error(error);

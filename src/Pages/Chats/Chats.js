@@ -587,7 +587,6 @@ const Chats = () => {
       .fail(function (error) {
         alert("Oops... " + JSON.stringify(error));
       });
-    console.log(receiver);
   };
 
   // Fetching chats and messages info in real time
