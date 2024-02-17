@@ -875,18 +875,15 @@ const Chats = () => {
     return (
       <div className="projects-body" onScroll={handleDebouncedScrollProjects}>
         {profile?.type === "vendor" ? null : (
-          <div className="create-project-btn">
-            <p
-              style={{
-                display: "flex",
-                alignItems: "center",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                setOpenPopOver(false);
-                setAddProject(true);
-              }}
-            >
+          <div className="create-project-btn" onClick={() => {
+            setOpenPopOver(false);
+            setAddProject(true);
+          }}>
+            <p style={{
+              display: "flex",
+              alignItems: "center",
+              cursor: "pointer",
+            }}>
               <FolderAddOutlined />
               &nbsp; Create project
             </p>
@@ -1230,15 +1227,12 @@ const Chats = () => {
                       Groups
                     </p>
                     {profile?.type === "architect" ? (
-                      <div className="create-project-btn">
-                        <p
-                          style={{
+                      <div className="create-project-btn" onClick={() => setCreateGroup(true)}>
+                        <p style={{
                             display: "flex",
                             alignItems: "center",
                             cursor: "pointer",
-                          }}
-                          onClick={() => setCreateGroup(true)}
-                        >
+                          }}>
                           <UsergroupAddOutlined /> &nbsp; Create group
                         </p>
                       </div>
@@ -1599,9 +1593,8 @@ const Chats = () => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${
-                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                  }`}
+                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                    }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1618,11 +1611,10 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}{" "}
                       <span
-                        className={`badge ${
-                          reciver.type === "vendor"
-                            ? "bg-vendor"
-                            : "bg-designer"
-                        }`}
+                        className={`badge ${reciver.type === "vendor"
+                          ? "bg-vendor"
+                          : "bg-designer"
+                          }`}
                       >
                         {reciver?.type}
                       </span>
@@ -1756,9 +1748,8 @@ const Chats = () => {
             return (
               <div
                 key={reciver?.id}
-                className={`projects-chat ${
-                  selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                }`}
+                className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                  }`}
                 onClick={() => {
                   handleSelectChats(reciver);
                 }}
@@ -1774,9 +1765,8 @@ const Chats = () => {
                   <p>
                     {reciver?.display_name}
                     <span
-                      className={`badge ${
-                        reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
-                      }`}
+                      className={`badge ${reciver.type === "vendor" ? "bg-vendor" : "bg-designer"
+                        }`}
                     >
                       {reciver?.type}
                     </span>
@@ -1860,9 +1850,8 @@ const Chats = () => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${
-                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                  }`}
+                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                    }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1878,11 +1867,10 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}
                       <span
-                        className={`badge ${
-                          reciver.type === "vendor"
-                            ? "bg-vendor"
-                            : "bg-designer"
-                        }`}
+                        className={`badge ${reciver.type === "vendor"
+                          ? "bg-vendor"
+                          : "bg-designer"
+                          }`}
                       >
                         {reciver?.type}
                       </span>
@@ -1959,9 +1947,8 @@ const Chats = () => {
               return (
                 <div
                   key={reciver?.id}
-                  className={`projects-chat ${
-                    selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
-                  }`}
+                  className={`projects-chat ${selectedChatIds.includes(reciver.id) ? "bg-dark" : ""
+                    }`}
                   onClick={() => {
                     handleSelectChats(reciver);
                   }}
@@ -1978,11 +1965,10 @@ const Chats = () => {
                     <p>
                       {reciver?.display_name}{" "}
                       <span
-                        className={`badge ${
-                          reciver.type === "vendor"
-                            ? "bg-vendor"
-                            : "bg-designer"
-                        }`}
+                        className={`badge ${reciver.type === "vendor"
+                          ? "bg-vendor"
+                          : "bg-designer"
+                          }`}
                       >
                         {reciver?.type}
                       </span>
@@ -2074,11 +2060,10 @@ const Messeges = memo(
                       return (
                         <div
                           key={message.id}
-                          className={`${
-                            message?.sender_id === profile?.id
-                              ? "mine"
-                              : "others"
-                          }`}
+                          className={`${message?.sender_id === profile?.id
+                            ? "mine"
+                            : "others"
+                            }`}
                         >
                           <p>{message?.text}</p>
                           <p>
@@ -2161,9 +2146,8 @@ const Chat = memo(
     }, []);
     return (
       <div
-        className={`projects-chat ${
-          selectedChat?.id === chat?.id ? "bg-dark" : ""
-        } ${last === index ? "" : "border-bottom"} chats`}
+        className={`projects-chat ${selectedChat?.id === chat?.id ? "bg-dark" : ""
+          } ${last === index ? "" : "border-bottom"} chats`}
         onClick={() => {
           setSelectedChat(chat);
           setSelectedGroup(null);
@@ -2212,9 +2196,8 @@ function Group({
 }) {
   return (
     <div
-      className={`projects-chat ${
-        selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
-      } ${last === index ? "" : "border-bottom"}`}
+      className={`projects-chat ${selectedGroup?.group_id === group?.group_id ? "bg-dark" : ""
+        } ${last === index ? "" : "border-bottom"}`}
       onClick={() => {
         setSelectedChat(null);
         setSelectedGroup(group);
