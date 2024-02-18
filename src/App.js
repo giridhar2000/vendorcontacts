@@ -10,7 +10,7 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <BrowserRouter>
+    // <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <UserProvider>
@@ -18,14 +18,11 @@ function App() {
               <div className='container-body'>
                 <Routing />
               </div>
-              <div className="container-footer">
-                <Footer />
-              </div>
             </div>
           </UserProvider>
         </AuthProvider>
       </QueryClientProvider>
-    </BrowserRouter>
+    // </BrowserRouter>
   );
 }
 

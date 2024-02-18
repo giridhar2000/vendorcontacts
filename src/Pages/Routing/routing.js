@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "../Home/Home";
 import Profile from "../Vendor_Profile/Profile";
 import Profile_Id from "../Vendor_Profile/Profile_Id";
@@ -14,6 +14,8 @@ import { useQuery } from "react-query";
 import ProtectedLoginRoute from "../Protected/LoginProtect";
 import Header from "../../Components/Header/Header";
 import Notifications from "../Notifications/Notifications";
+import Footer from "../../Components/Footer/Footer";
+import { Spin } from "antd";
 
 const Routing = () => {
   const [isAuth, setIsAuth] = useContext(AuthContext);
@@ -57,7 +59,7 @@ const Routing = () => {
         <ProtectedRoute>
           <Header />
           <Chats />
-          
+
         </ProtectedRoute>
       ),
     },
@@ -98,14 +100,22 @@ const Routing = () => {
   ];
 
   return (
-    <Routes>
-      {!isLoading &&
-        routes.map((route, i) => {
-          return (
-            <Route key={i} exact path={route.path} element={route.element} />
-          );
-        })}
-    </Routes>
+    <Router>
+      {!isLoading ?
+        <>
+          <Routes>
+            {routes.map((route, i) => (
+              <Route key={i} exact path={route.path} element={route.element} />
+            ))}
+          </Routes>
+          <Footer />
+        </>
+        :
+        <div>
+          <Spin /> &nbsp; Loading....
+        </div>
+      }
+    </Router>
   );
 };
 
